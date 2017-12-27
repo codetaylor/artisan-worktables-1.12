@@ -73,7 +73,7 @@ public class ZenWorktable {
 
     AddShaped(String table, ItemStack result, Ingredient tool, Ingredient[][] input, int toolDamage, boolean mirrored) {
 
-      super("WorkbenchShaped");
+      super("WorktableShaped");
       this.table = table;
       this.result = result;
       this.tool = tool;
@@ -142,7 +142,7 @@ public class ZenWorktable {
 
     AddShapeless(String table, ItemStack result, Ingredient tool, Ingredient[] input, int toolDamage) {
 
-      super("WorkbenchShapeless");
+      super("WorktableShapeless");
       this.table = table;
       this.result = result;
       this.tool = tool;
