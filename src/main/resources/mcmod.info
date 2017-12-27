@@ -1,0 +1,16 @@
+[
+{
+  "modid": "artisanworktables",
+  "name": "Artisan Worktables",
+  "description": "Crafting tables with a tool slot.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["codetaylor"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
