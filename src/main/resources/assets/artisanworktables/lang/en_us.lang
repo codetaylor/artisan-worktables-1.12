@@ -1,11 +1,8 @@
-container.pwcustom.workbench.blacksmith.basic=Blacksmith's Worktable
-container.pwcustom.workbench.carpenter.basic=Carpenter's Worktable
-container.pwcustom.workbench.jeweler.basic=Jeweler's Worktable
-container.pwcustom.workbench.mason.basic=Mason's Worktable
-container.pwcustom.workbench.tailor.basic=Tailor's Worktable
+itemGroup.artisanworktables=Artisan Worktables
 
-text.pwcustom.jei.category.workbench.blacksmith=Blacksmith's Worktable
-text.pwcustom.jei.category.workbench.carpenter=Carpenter's Worktable
-text.pwcustom.jei.category.workbench.jeweler=Jeweler's Worktable
-text.pwcustom.jei.category.workbench.mason=Mason's Worktable
-text.pwcustom.jei.category.workbench.tailor=Tailor's Worktable
+tile.artisanworktables.worktable.basic.name=Basic Worktable
+tile.artisanworktables.worktable.blacksmith.name=Blacksmith's Worktable
+tile.artisanworktables.worktable.carpenter.name=Carpenter's Worktable
+tile.artisanworktables.worktable.jeweler.name=Jeweler's Worktable
+tile.artisanworktables.worktable.mason.name=Mason's Worktable
+tile.artisanworktables.worktable.tailor.name=Tailor's Worktable

@@ -1,29 +1,22 @@
-package com.sudoplay.mc.pwcustom;
+package com.codetaylor.mc.artisanworktables;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.gui.GuiHandler;
 import com.codetaylor.mc.athenaeum.module.ModBase;
-import com.sudoplay.mc.pwcustom.modules.blocks.ModuleBlocks;
-import com.sudoplay.mc.pwcustom.modules.casts.ModuleCasts;
-import com.sudoplay.mc.pwcustom.modules.craftingparts.ModuleCraftingParts;
-import com.sudoplay.mc.pwcustom.modules.enchanting.ModuleEnchanting;
-import com.sudoplay.mc.pwcustom.modules.knives.ModuleKnives;
-import com.sudoplay.mc.pwcustom.modules.portals.ModulePortals;
-import com.sudoplay.mc.pwcustom.modules.sawing.ModuleSawing;
-import com.sudoplay.mc.pwcustom.modules.toolparts.ModuleToolParts;
-import com.sudoplay.mc.pwcustom.modules.workbench.ModuleWorkbench;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(
-    modid = ModPWCustom.MOD_ID,
-    version = ModPWCustom.VERSION,
-    name = ModPWCustom.NAME,
-    dependencies = ModPWCustom.DEPENDENCIES
+    modid = ModArtisanWorktables.MOD_ID,
+    version = ModArtisanWorktables.VERSION,
+    name = ModArtisanWorktables.NAME,
+    dependencies = ModArtisanWorktables.DEPENDENCIES
 )
-public class ModPWCustom
+public class ModArtisanWorktables
     extends ModBase {
 
   public static final String MOD_ID = Reference.MOD_ID;
@@ -35,31 +28,23 @@ public class ModPWCustom
 
   @SuppressWarnings("unused")
   @Mod.Instance
-  public static ModPWCustom INSTANCE;
+  public static ModArtisanWorktables INSTANCE;
 
   public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(MOD_ID) {
 
     @Override
     public ItemStack getTabIconItem() {
 
-      return new ItemStack(ModulePortals.Items.PORTAL_WAND, 1, 0);
+      return new ItemStack(Item.getItemFromBlock(ModuleWorktables.Blocks.WORKBENCH_BASIC), 1, 0);
     }
   };
 
-  public ModPWCustom() {
+  public ModArtisanWorktables() {
 
     super(MOD_ID);
 
     this.registerModules(
-        ModuleWorkbench.class,
-        ModulePortals.class,
-        ModuleSawing.class,
-        ModuleToolParts.class,
-        ModuleCasts.class,
-        ModuleEnchanting.class,
-        ModuleBlocks.class,
-        ModuleCraftingParts.class,
-        ModuleKnives.class
+        ModuleWorktables.class
     );
   }
 
