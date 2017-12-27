@@ -7,7 +7,7 @@ public class Reference {
   public static final String MOD_ID = "artisanworktables";
   public static final String VERSION = "@@VERSION@@";
   public static final String NAME = "Artisan Worktables";
-  public static final String DEPENDENCIES = "before:jei";
+  public static final String DEPENDENCIES = "required-after:athenaeum;before:jei";
 
   public static final boolean IS_DEV = VERSION.equals("@@" + "VERSION" + "@@");
 
