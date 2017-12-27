@@ -16,7 +16,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Arrays;
 
-@ZenClass("mods.pwcustom.Workbench")
+@ZenClass("mods.artisanworktables.Worktable")
 public class ZenWorktable {
 
   // --------------------------------------------------------------------------
