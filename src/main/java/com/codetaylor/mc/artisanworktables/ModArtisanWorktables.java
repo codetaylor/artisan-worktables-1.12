@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.gui.GuiHandler;
-import com.codetaylor.mc.athenaeum.module.ModBase;
+import com.codetaylor.mc.athenaeum.module.ModuleManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,8 +16,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
     name = ModArtisanWorktables.NAME,
     dependencies = ModArtisanWorktables.DEPENDENCIES
 )
-public class ModArtisanWorktables
-    extends ModBase {
+public class ModArtisanWorktables {
 
   public static final String MOD_ID = Reference.MOD_ID;
   public static final String VERSION = Reference.VERSION;
@@ -26,8 +25,8 @@ public class ModArtisanWorktables
 
   public static final boolean IS_DEV = Reference.IS_DEV;
 
-  @SuppressWarnings("unused")
   @Mod.Instance
+  @SuppressWarnings("unused")
   public static ModArtisanWorktables INSTANCE;
 
   public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(MOD_ID) {
@@ -39,11 +38,12 @@ public class ModArtisanWorktables
     }
   };
 
+  private final ModuleManager moduleManager;
+
   public ModArtisanWorktables() {
 
-    super(MOD_ID);
-
-    this.registerModules(
+    this.moduleManager = new ModuleManager(MOD_ID);
+    this.moduleManager.registerModules(
         ModuleWorktables.class
     );
   }
@@ -51,7 +51,8 @@ public class ModArtisanWorktables
   @Mod.EventHandler
   public void onConstructionEvent(FMLConstructionEvent event) {
 
-    super._onConstructionEvent(event);
+    this.moduleManager.onConstructionEvent();
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
@@ -59,55 +60,55 @@ public class ModArtisanWorktables
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
-    super._onPreInitializationEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onInitializationEvent(FMLInitializationEvent event) {
 
-    super._onInitializationEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onPostInitializationEvent(FMLPostInitializationEvent event) {
 
-    super._onPostInitializationEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onLoadCompleteEvent(FMLLoadCompleteEvent event) {
 
-    super._onLoadCompleteEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onServerAboutToStartEvent(FMLServerAboutToStartEvent event) {
 
-    super._onServerAboutToStartEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onServerStartingEvent(FMLServerStartingEvent event) {
 
-    super._onServerStartingEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onServerStartedEvent(FMLServerStartedEvent event) {
 
-    super._onServerStartedEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onServerStoppingEvent(FMLServerStoppingEvent event) {
 
-    super._onServerStoppingEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
   @Mod.EventHandler
   public void onServerStoppedEvent(FMLServerStoppedEvent event) {
 
-    super._onServerStoppedEvent(event);
+    this.moduleManager.routeFMLStateEvent(event);
   }
 
 }
