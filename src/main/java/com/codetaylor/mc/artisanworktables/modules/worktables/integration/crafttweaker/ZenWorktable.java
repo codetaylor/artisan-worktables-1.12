@@ -24,24 +24,6 @@ public class ZenWorktable {
   // --------------------------------------------------------------------------
 
   @ZenMethod
-  public static void addRecipeShaped(String table, IItemStack result, IItemStack tool, IIngredient[][] input) {
-
-    ZenWorktable.addRecipeShaped(table, result, tool, 0, false, input);
-  }
-
-  @ZenMethod
-  public static void addRecipeShaped(
-      String table,
-      IItemStack result,
-      IIngredient tool,
-      int toolDamage,
-      IIngredient[][] input
-  ) {
-
-    ZenWorktable.addRecipeShaped(table, result, tool, toolDamage, false, input);
-  }
-
-  @ZenMethod
   public static void addRecipeShaped(
       String table,
       IItemStack result,
@@ -106,12 +88,6 @@ public class ZenWorktable {
   // --------------------------------------------------------------------------
   // - Shapeless
   // --------------------------------------------------------------------------
-
-  @ZenMethod
-  public static void addRecipeShapeless(String table, IItemStack result, IItemStack tool, IIngredient[] input) {
-
-    ZenWorktable.addRecipeShapeless(table, result, tool, 0, input);
-  }
 
   @ZenMethod
   public static void addRecipeShapeless(
