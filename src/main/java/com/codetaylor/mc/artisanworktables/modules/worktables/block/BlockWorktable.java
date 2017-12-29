@@ -13,6 +13,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -42,8 +43,15 @@ public class BlockWorktable
     super(Material.ROCK);
 
     this.setHardness(5);
-    this.setSoundType(SoundType.WOOD);
     this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.TAILOR));
+  }
+
+  @Override
+  public SoundType getSoundType(
+      IBlockState state, World world, BlockPos pos, @Nullable Entity entity
+  ) {
+
+    return state.getValue(VARIANT).getSoundType();
   }
 
   @Override
@@ -174,12 +182,12 @@ public class BlockWorktable
   public enum EnumType
       implements IVariant {
 
-    TAILOR(0, "tailor", TileEntityWorktableTailor.class),
-    CARPENTER(1, "carpenter", TileEntityWorktableCarpenter.class),
-    MASON(2, "mason", TileEntityWorktableMason.class),
-    BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class),
-    JEWELER(4, "jeweler", TileEntityWorktableJeweler.class),
-    BASIC(5, "basic", TileEntityWorktableBasic.class);
+    TAILOR(0, "tailor", TileEntityWorktableTailor.class, SoundType.CLOTH),
+    CARPENTER(1, "carpenter", TileEntityWorktableCarpenter.class, SoundType.WOOD),
+    MASON(2, "mason", TileEntityWorktableMason.class, SoundType.STONE),
+    BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class, SoundType.ANVIL),
+    JEWELER(4, "jeweler", TileEntityWorktableJeweler.class, SoundType.METAL),
+    BASIC(5, "basic", TileEntityWorktableBasic.class, SoundType.WOOD);
 
     private static final EnumType[] META_LOOKUP = Stream.of(EnumType.values())
         .sorted(Comparator.comparing(EnumType::getMeta))
@@ -193,16 +201,19 @@ public class BlockWorktable
     private final int meta;
     private final String name;
     private Class<? extends TileEntity> tileEntityClass;
+    private SoundType soundType;
 
     EnumType(
         int meta,
         String name,
-        Class<? extends TileEntity> tileEntityClass
+        Class<? extends TileEntity> tileEntityClass,
+        SoundType soundType
     ) {
 
       this.meta = meta;
       this.name = name;
       this.tileEntityClass = tileEntityClass;
+      this.soundType = soundType;
     }
 
     @Override
@@ -220,6 +231,11 @@ public class BlockWorktable
     public Class<? extends TileEntity> getTileEntityClass() {
 
       return this.tileEntityClass;
+    }
+
+    public SoundType getSoundType() {
+
+      return this.soundType;
     }
 
     public static EnumType fromName(String name) {
