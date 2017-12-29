@@ -29,7 +29,7 @@ Worktable.addRecipeShapeless("tailor", <minecraft:string> * 9, <minecraft:shears
 
 Worktable.addRecipeShapeless("carpenter", <minecraft:planks> * 16, <minecraft:diamond_axe>, 1, [<ore:logWood>, <minecraft:egg>]);
 
-// OreDict some pickaxes and to use for the recipe
+// OreDict some pickaxes to use for the recipe
 <ore:pickaxe>.addItems([
     <minecraft:diamond_pickaxe>,
     <minecraft:iron_pickaxe>
