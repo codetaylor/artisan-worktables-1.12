@@ -6,6 +6,7 @@ import com.codetaylor.mc.athenaeum.spi.BlockBase;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class BlockWorktable
-    extends BlockBase
+    extends Block
     implements IBlockVariant<BlockWorktable.EnumType> {
 
   public static final String NAME = "worktable";
@@ -39,7 +40,7 @@ public class BlockWorktable
 
   public BlockWorktable() {
 
-    super(ModuleWorktables.MOD_ID, ModuleWorktables.CREATIVE_TAB, Material.WOOD, NAME);
+    super(Material.WOOD);
 
     this.setHardness(5);
     this.setSoundType(SoundType.WOOD);

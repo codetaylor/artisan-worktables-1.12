@@ -41,7 +41,7 @@ public class JEIRecipeTransferInfoWorktable
     TileEntityWorktableBase tile = container.getTile();
     IBlockState blockState = tile.getWorld().getBlockState(tile.getPos());
 
-    return (blockState.getBlock() == ModuleWorktables.Blocks.WORKBENCH_BASIC
+    return (blockState.getBlock() == ModuleWorktables.Blocks.WORKTABLE
         && blockState.getValue(BlockWorktable.VARIANT) == this.type);
   }
 

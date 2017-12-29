@@ -36,7 +36,7 @@ public class PluginJEI
 
     for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
       registry.addRecipeCatalyst(
-          new ItemStack(ModuleWorktables.Blocks.WORKBENCH_BASIC, 1, type.getMeta()),
+          new ItemStack(ModuleWorktables.Blocks.WORKTABLE, 1, type.getMeta()),
           this.createUID(type)
       );
     }

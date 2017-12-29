@@ -4,17 +4,10 @@ import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
-import com.codetaylor.mc.athenaeum.helper.ModelRegistrationHelper;
-import com.codetaylor.mc.athenaeum.helper.TileEntityRegistrationHelper;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
-import net.minecraft.block.Block;
+import com.codetaylor.mc.athenaeum.registry.Registry;
+import com.codetaylor.mc.athenaeum.registry.strategy.VariantBlockItemModelRegistrationStrategy;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import static com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables.Blocks.WORKBENCH_BASIC;
 
 public class ModuleWorktables
     extends ModuleBase {
@@ -23,21 +16,6 @@ public class ModuleWorktables
   public static final String MOD_ID = ModArtisanWorktables.MOD_ID;
   public static final CreativeTabs CREATIVE_TAB = ModArtisanWorktables.CREATIVE_TAB;
   public static final ModArtisanWorktables MOD_INSTANCE = ModArtisanWorktables.INSTANCE;
-
-  public ModuleWorktables() {
-
-    super(0);
-
-    this.registerIntegrationPlugin(
-        "crafttweaker",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable"
-    );
-
-    this.registerIntegrationPlugin(
-        "jei",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI"
-    );
-  }
 
   public static class Lang {
 
@@ -51,37 +29,35 @@ public class ModuleWorktables
 
   public static class Blocks {
 
-    @GameRegistry.ObjectHolder(ModuleWorktables.MOD_ID + ":" + BlockWorktable.NAME)
-    public static final BlockWorktable WORKBENCH_BASIC;
-
-    static {
-      WORKBENCH_BASIC = null;
-    }
+    public static final BlockWorktable WORKTABLE = new BlockWorktable();
   }
 
-  @Override
-  public void onRegisterBlockEvent(RegistryEvent.Register<Block> event) {
+  public ModuleWorktables() {
 
-    // Blocks
-    event.getRegistry().registerAll(
-        new BlockWorktable()
+    super(0);
+    this.setRegistry(new Registry(MOD_ID, CREATIVE_TAB));
+    this.enableAutoRegistry();
+
+    this.registerIntegrationPlugin(
+        "crafttweaker",
+        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable"
+    );
+
+    this.registerIntegrationPlugin(
+        "jei",
+        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI"
     );
   }
 
   @Override
-  public void onRegisterItemEvent(RegistryEvent.Register<Item> event) {
+  public void onRegister(Registry registry) {
 
-    // Item Blocks
-    event.getRegistry().registerAll(
-        new ItemWorktable(WORKBENCH_BASIC)
+    registry.registerBlock(
+        Blocks.WORKTABLE,
+        new ItemWorktable(Blocks.WORKTABLE),
+        BlockWorktable.NAME
     );
-  }
-
-  @Override
-  public void onRegisterTileEntitiesEvent() {
-
-    TileEntityRegistrationHelper.registerTileEntities(
-        MOD_ID,
+    registry.registerTileEntities(
         TileEntityWorktableBlacksmith.class,
         TileEntityWorktableCarpenter.class,
         TileEntityWorktableJeweler.class,
@@ -92,12 +68,11 @@ public class ModuleWorktables
   }
 
   @Override
-  public void onClientRegisterModelsEvent(ModelRegistryEvent event) {
+  public void onClientRegister(Registry registry) {
 
-    // Workbench Basic
-    ModelRegistrationHelper.registerVariantBlockItemModels(
-        WORKBENCH_BASIC.getDefaultState(),
+    registry.registerItemModelStrategy(new VariantBlockItemModelRegistrationStrategy<>(
+        Blocks.WORKTABLE.getDefaultState(),
         BlockWorktable.VARIANT
-    );
+    ));
   }
 }

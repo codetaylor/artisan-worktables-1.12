@@ -9,8 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.*;
 
 public class TileEntityWorktableBlacksmith
-    extends
-    TileEntityWorktableBase {
+    extends TileEntityWorktableBase {
 
   private static final int TEXT_SHADOW_COLOR = new Color(162, 162, 162).getRGB();
   private static final BlockWorktable.EnumType TYPE = BlockWorktable.EnumType.BLACKSMITH;
