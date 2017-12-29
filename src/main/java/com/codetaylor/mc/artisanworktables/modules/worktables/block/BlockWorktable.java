@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
-import com.codetaylor.mc.athenaeum.spi.BlockBase;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
@@ -55,24 +54,15 @@ public class BlockWorktable
 
   @Nullable
   @Override
-  public TileEntity createTileEntity(World world, IBlockState state) {
+  public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
 
-    switch (state.getValue(VARIANT)) {
-      case TAILOR:
-        return new TileEntityWorktableTailor();
-      case MASON:
-        return new TileEntityWorktableMason();
-      case JEWELER:
-        return new TileEntityWorktableJeweler();
-      case CARPENTER:
-        return new TileEntityWorktableCarpenter();
-      case BLACKSMITH:
-        return new TileEntityWorktableBlacksmith();
-      case BASIC:
-        return new TileEntityWorktableBasic();
+    EnumType type = state.getValue(VARIANT);
 
-      default:
-        throw new RuntimeException("Unknown variant: " + state.getValue(VARIANT));
+    try {
+      return type.getTileEntityClass().newInstance();
+
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -184,12 +174,12 @@ public class BlockWorktable
   public enum EnumType
       implements IVariant {
 
-    TAILOR(0, "tailor"),
-    CARPENTER(1, "carpenter"),
-    MASON(2, "mason"),
-    BLACKSMITH(3, "blacksmith"),
-    JEWELER(4, "jeweler"),
-    BASIC(5, "basic");
+    TAILOR(0, "tailor", TileEntityWorktableTailor.class),
+    CARPENTER(1, "carpenter", TileEntityWorktableCarpenter.class),
+    MASON(2, "mason", TileEntityWorktableMason.class),
+    BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class),
+    JEWELER(4, "jeweler", TileEntityWorktableJeweler.class),
+    BASIC(5, "basic", TileEntityWorktableBasic.class);
 
     private static final EnumType[] META_LOOKUP = Stream.of(EnumType.values())
         .sorted(Comparator.comparing(EnumType::getMeta))
@@ -202,11 +192,13 @@ public class BlockWorktable
 
     private final int meta;
     private final String name;
+    private Class<? extends TileEntity> tileEntityClass;
 
-    EnumType(int meta, String name) {
+    EnumType(int meta, String name, Class<? extends TileEntity> tileEntityClass) {
 
       this.meta = meta;
       this.name = name;
+      this.tileEntityClass = tileEntityClass;
     }
 
     @Override
@@ -219,6 +211,11 @@ public class BlockWorktable
     public String getName() {
 
       return this.name;
+    }
+
+    public Class<? extends TileEntity> getTileEntityClass() {
+
+      return this.tileEntityClass;
     }
 
     public static EnumType fromName(String name) {
