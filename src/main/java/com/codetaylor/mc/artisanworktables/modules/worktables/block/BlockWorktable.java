@@ -39,17 +39,11 @@ public class BlockWorktable
 
   public BlockWorktable() {
 
-    super(Material.WOOD);
+    super(Material.ROCK);
 
     this.setHardness(5);
     this.setSoundType(SoundType.WOOD);
     this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.TAILOR));
-  }
-
-  @Override
-  public Material getMaterial(IBlockState state) {
-
-    return state.getValue(VARIANT).getMaterial();
   }
 
   @Override
@@ -180,12 +174,12 @@ public class BlockWorktable
   public enum EnumType
       implements IVariant {
 
-    TAILOR(0, "tailor", TileEntityWorktableTailor.class, Material.CLOTH),
-    CARPENTER(1, "carpenter", TileEntityWorktableCarpenter.class, Material.WOOD),
-    MASON(2, "mason", TileEntityWorktableMason.class, Material.ROCK),
-    BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class, Material.IRON),
-    JEWELER(4, "jeweler", TileEntityWorktableJeweler.class, Material.IRON),
-    BASIC(5, "basic", TileEntityWorktableBasic.class, Material.WOOD);
+    TAILOR(0, "tailor", TileEntityWorktableTailor.class),
+    CARPENTER(1, "carpenter", TileEntityWorktableCarpenter.class),
+    MASON(2, "mason", TileEntityWorktableMason.class),
+    BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class),
+    JEWELER(4, "jeweler", TileEntityWorktableJeweler.class),
+    BASIC(5, "basic", TileEntityWorktableBasic.class);
 
     private static final EnumType[] META_LOOKUP = Stream.of(EnumType.values())
         .sorted(Comparator.comparing(EnumType::getMeta))
@@ -199,19 +193,16 @@ public class BlockWorktable
     private final int meta;
     private final String name;
     private Class<? extends TileEntity> tileEntityClass;
-    private Material material;
 
     EnumType(
         int meta,
         String name,
-        Class<? extends TileEntity> tileEntityClass,
-        Material material
+        Class<? extends TileEntity> tileEntityClass
     ) {
 
       this.meta = meta;
       this.name = name;
       this.tileEntityClass = tileEntityClass;
-      this.material = material;
     }
 
     @Override
@@ -229,11 +220,6 @@ public class BlockWorktable
     public Class<? extends TileEntity> getTileEntityClass() {
 
       return this.tileEntityClass;
-    }
-
-    public Material getMaterial() {
-
-      return this.material;
     }
 
     public static EnumType fromName(String name) {
