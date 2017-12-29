@@ -57,7 +57,7 @@ public class ContainerWorktable
 
     // Tool Slot 47
     this.addSlotToContainer(new PredicateSlotItemHandler(
-        itemStack -> ContainerWorktable.this.tile.getRecipeRegistry().containsRecipeWithTool(itemStack),
+        itemStack -> this.tile.getRecipeRegistry().containsRecipeWithTool(itemStack),
         this.tile.getToolHandler(),
         0,
         87,
@@ -75,6 +75,32 @@ public class ContainerWorktable
   public boolean canInteractWith(EntityPlayer playerIn) {
 
     return this.tile.canPlayerUse(playerIn);
+  }
+
+  private boolean swapItemStack(int originSlotIndex, int targetSlotIndex) {
+
+    Slot originSlot = this.inventorySlots.get(originSlotIndex);
+    Slot targetSlot = this.inventorySlots.get(targetSlotIndex);
+
+    ItemStack originStack = originSlot.getStack();
+    ItemStack targetStack = targetSlot.getStack();
+
+    if (!originStack.isEmpty()
+        && targetSlot.isItemValid(originStack)) {
+
+      if (targetStack.isEmpty()) {
+        targetSlot.putStack(originStack);
+        originSlot.putStack(ItemStack.EMPTY);
+
+      } else {
+        targetSlot.putStack(originStack);
+        originSlot.putStack(targetStack);
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   @Override
@@ -101,6 +127,10 @@ public class ContainerWorktable
       } else if (slotIndex >= 10 && slotIndex < 37) {
         // Inventory clicked, try to move to tool slot first, then hotbar
 
+        if (this.swapItemStack(slotIndex, 46)) {
+          return ItemStack.EMPTY;
+        }
+
         if (!this.mergeItemStack(itemstack1, 46, 47, false)
             && !this.mergeItemStack(itemstack1, 37, 46, false)) {
           return ItemStack.EMPTY;
@@ -108,6 +138,10 @@ public class ContainerWorktable
 
       } else if (slotIndex >= 37 && slotIndex < 46) {
         // HotBar clicked, try to move to tool slot first, then inventory
+
+        if (this.swapItemStack(slotIndex, 46)) {
+          return ItemStack.EMPTY;
+        }
 
         if (!this.mergeItemStack(itemstack1, 46, 47, false)
             && !this.mergeItemStack(itemstack1, 10, 37, false)) {
