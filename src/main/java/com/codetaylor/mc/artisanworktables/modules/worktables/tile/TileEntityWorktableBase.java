@@ -24,6 +24,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
@@ -215,6 +217,7 @@ public abstract class TileEntityWorktableBase
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public GuiContainerWorktable getGuiContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
