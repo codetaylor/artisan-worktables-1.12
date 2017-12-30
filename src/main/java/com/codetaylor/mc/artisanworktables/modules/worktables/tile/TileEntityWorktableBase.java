@@ -231,28 +231,4 @@ public abstract class TileEntityWorktableBase
         this.getWorkbenchGuiTextShadowColor()
     );
   }
-
-  public enum EnumWorkbenchTier {
-
-    BASIC(0, "basic");
-
-    private final int index;
-    private final String name;
-
-    EnumWorkbenchTier(int index, String name) {
-
-      this.index = index;
-      this.name = name;
-    }
-
-    public String getName() {
-
-      return this.name;
-    }
-
-    public int getIndex() {
-
-      return this.index;
-    }
-  }
 }
