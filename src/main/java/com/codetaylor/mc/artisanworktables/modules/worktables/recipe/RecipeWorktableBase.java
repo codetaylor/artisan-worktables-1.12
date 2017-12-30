@@ -31,7 +31,12 @@ public abstract class RecipeWorktableBase
 
     for (ItemStack itemStack : this.tools) {
 
-      if (itemStack.isItemEqualIgnoreDurability(tool)) {
+      // We can't use itemStack.isItemEqualIgnoreDurability(tool) here because
+      // apparently Tinker's tools don't set the max durability on the tool
+      // which causes that check to fail because it thinks the item can't be
+      // damaged. Instead, we assume the item being used has durability and
+      // just compare items.
+      if (itemStack.getItem() == tool.getItem()) {
         return true;
       }
     }
