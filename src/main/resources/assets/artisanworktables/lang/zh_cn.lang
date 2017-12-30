@@ -1,0 +1,8 @@
+itemGroup.artisanworktables=Artisan Worktables
+
+tile.artisanworktables.worktable.basic.name=基础工作台
+tile.artisanworktables.worktable.blacksmith.name=铁匠工作台
+tile.artisanworktables.worktable.carpenter.name=木匠工作台
+tile.artisanworktables.worktable.jeweler.name=珠宝工作台
+tile.artisanworktables.worktable.mason.name=石匠工作台
+tile.artisanworktables.worktable.tailor.name=裁缝工作台
