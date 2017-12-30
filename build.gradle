@@ -20,7 +20,7 @@ def getVersionName = { String workTree ->
 
 project.ext.mcversion = "1.12.2"
 project.ext.forgeversion = "14.23.1.2556"
-version = getVersionName("${project.projectDir}")
+version = project.ext.mcversion + "-" + getVersionName("${project.projectDir}")
 group = "com.sudoplay.mc"
 archivesBaseName = "artisanworktables"
 
@@ -67,28 +67,12 @@ minecraft {
 
 repositories {
 
-    maven {
-        // location of the maven that hosts JEI files
-        url = "http://dvs1.progwml6.com/files/maven"
-    }
-
-    maven {
-        // CraftTweaker
-        url "http://maven.blamejared.com/"
-    }
-
     flatDir {
         dirs 'libs'
     }
 }
 
 dependencies {
-    //deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.10.306"
-    //deobfCompile "CraftTweaker2:CraftTweaker2-API:4.0.10.306"
-    //deobfCompile "CraftTweaker2:ZenScript:4.0.10.306"
-    //deobfCompile "mezz.jei:jei_1.12.2:4.8.0.+"
-    //deobfCompile "com.blamejared:MTLib:3.0.+"
-    //compile name: "jei_1.12.2-4.8.5"
     compile project(":athenaeum")
 }
 
