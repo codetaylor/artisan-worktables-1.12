@@ -1,3 +1,6 @@
+1.1.4
+* Fixed: Tables now work properly with Tinker's tools (#3)
+
 1.1.3
 * Fixed server crash (#2)
 
