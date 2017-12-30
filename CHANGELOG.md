@@ -1,3 +1,6 @@
+1.1.3
+* Fixed server crash (#2)
+
 1.1.2
 * Added feature: shift + click to swap tools
 
