@@ -28,6 +28,8 @@ Vanilla crafting table recipes are not supported in any table and there are curr
 
 #### Tools
 
-Two tools for each table are provided if you want to use them. The tools and their recipes can be easily disabled in the config file. Tools for vanilla materials and Thermal Foundation materials are provided.
+Two tools for each table, made from vanilla and Thermal Foundation materials, are provided if you want to use them.
+
+The tools and their recipes can easily be disabled in the config file. 
 
 ![TableTools](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/items.png)
