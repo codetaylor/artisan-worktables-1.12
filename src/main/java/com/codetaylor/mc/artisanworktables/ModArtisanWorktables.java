@@ -15,17 +15,14 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 @Mod(
     modid = ModArtisanWorktables.MOD_ID,
     version = ModArtisanWorktables.VERSION,
-    name = ModArtisanWorktables.NAME,
-    dependencies = ModArtisanWorktables.DEPENDENCIES
+    name = ModArtisanWorktables.NAME
+    //@@DEPENDENCIES@@
 )
 public class ModArtisanWorktables {
 
   public static final String MOD_ID = Reference.MOD_ID;
   public static final String VERSION = Reference.VERSION;
   public static final String NAME = Reference.NAME;
-  public static final String DEPENDENCIES = Reference.DEPENDENCIES;
-
-  public static final boolean IS_DEV = Reference.IS_DEV;
 
   @Mod.Instance
   @SuppressWarnings("unused")

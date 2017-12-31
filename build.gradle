@@ -24,6 +24,9 @@ version = project.ext.mcversion + "-" + getVersionName("${project.projectDir}")
 group = "com.sudoplay.mc"
 archivesBaseName = "artisanworktables"
 
+project.ext.athenaeum_version = "1.12.2-1.1.2"
+project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker;after:jei;"'
+
 compileJava.doFirst {
     project.sourceSets.main.java.srcDirs.each { dir ->
         copy {
@@ -32,6 +35,9 @@ compileJava.doFirst {
             include "**/*.java"
             filter {
                 it.replaceAll('@@VERSION@@', project.version)
+            }
+            filter {
+                it.replaceAll('//@@DEPENDENCIES@@', project.ext.dependencies)
             }
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         }
