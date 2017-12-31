@@ -1,3 +1,6 @@
+1.2.5
+* Fixed: scala dependency crash?
+
 1.2.4
 * Added: tools to use in the tables
 * Added: config option to disable all tools

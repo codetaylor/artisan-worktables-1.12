@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,32 +53,26 @@ public class ModuleTools
 
     super.onRegister(registry);
 
-    //noinspection unchecked
-    this.materialList.addAll(Arrays.asList(new EnumMaterial[]{
-        EnumMaterial.WOOD,
-        EnumMaterial.FLINT,
-        EnumMaterial.STONE,
-        EnumMaterial.IRON,
-        EnumMaterial.GOLD,
-        EnumMaterial.DIAMOND
-    }));
+    this.materialList.add(EnumMaterial.WOOD);
+    this.materialList.add(EnumMaterial.FLINT);
+    this.materialList.add(EnumMaterial.STONE);
+    this.materialList.add(EnumMaterial.IRON);
+    this.materialList.add(EnumMaterial.GOLD);
+    this.materialList.add(EnumMaterial.DIAMOND);
 
     if (ModuleToolsConfig.ENABLE_THERMAL_FOUNDATION_MATERIALS) {
-      //noinspection unchecked
-      this.materialList.addAll(Arrays.asList(new EnumMaterial[]{
-          EnumMaterial.ALUMINUM,
-          EnumMaterial.BRONZE,
-          EnumMaterial.CONSTANTAN,
-          EnumMaterial.COPPER,
-          EnumMaterial.ELECTRUM,
-          EnumMaterial.INVAR,
-          EnumMaterial.LEAD,
-          EnumMaterial.NICKEL,
-          EnumMaterial.PLATINUM,
-          EnumMaterial.SILVER,
-          EnumMaterial.STEEL,
-          EnumMaterial.TIN
-      }));
+      this.materialList.add(EnumMaterial.ALUMINUM);
+      this.materialList.add(EnumMaterial.BRONZE);
+      this.materialList.add(EnumMaterial.CONSTANTAN);
+      this.materialList.add(EnumMaterial.COPPER);
+      this.materialList.add(EnumMaterial.ELECTRUM);
+      this.materialList.add(EnumMaterial.INVAR);
+      this.materialList.add(EnumMaterial.LEAD);
+      this.materialList.add(EnumMaterial.NICKEL);
+      this.materialList.add(EnumMaterial.PLATINUM);
+      this.materialList.add(EnumMaterial.SILVER);
+      this.materialList.add(EnumMaterial.STEEL);
+      this.materialList.add(EnumMaterial.TIN);
     }
 
     for (EnumWorktableToolType type : EnumWorktableToolType.values()) {
