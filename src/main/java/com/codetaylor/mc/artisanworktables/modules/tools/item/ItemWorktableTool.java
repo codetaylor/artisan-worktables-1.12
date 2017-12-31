@@ -2,10 +2,10 @@ package com.codetaylor.mc.artisanworktables.modules.tools.item;
 
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleTools;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.text.translation.I18n;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -40,12 +40,17 @@ public class ItemWorktableTool
   @Override
   public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 
+    // This is called on the server so we can't use net/minecraft/client/resources/I18n here.
+
     Item item = stack.getItem();
 
     if (item instanceof ItemWorktableTool) {
       EnumMaterial material = ((ItemWorktableTool) item).getMaterial();
-      String parameter = I18n.format(String.format(ModuleTools.Lang.MATERIAL_STRING, material.getName()));
-      return I18n.format(this.getUnlocalizedNameInefficiently(stack) + ".name", parameter);
+      String parameter = I18n.translateToLocalFormatted(String.format(
+          ModuleTools.Lang.MATERIAL_STRING,
+          material.getName()
+      ));
+      return I18n.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", parameter);
     }
 
     return super.getItemStackDisplayName(stack);
