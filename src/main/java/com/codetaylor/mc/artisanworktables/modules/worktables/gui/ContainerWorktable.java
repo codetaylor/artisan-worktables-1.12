@@ -125,25 +125,27 @@ public class ContainerWorktable
         slot.onSlotChange(itemstack1, itemstack);
 
       } else if (slotIndex >= 10 && slotIndex < 37) {
-        // Inventory clicked, try to move to tool slot first, then hotbar
+        // Inventory clicked, try to move to tool slot first, then crafting matrix, then hotbar
 
         if (this.swapItemStack(slotIndex, 46)) {
-          return ItemStack.EMPTY;
+          return ItemStack.EMPTY; // Swapped tools
         }
 
         if (!this.mergeItemStack(itemstack1, 46, 47, false)
+            && !this.mergeItemStack(itemstack1, 1, 10, false)
             && !this.mergeItemStack(itemstack1, 37, 46, false)) {
           return ItemStack.EMPTY;
         }
 
       } else if (slotIndex >= 37 && slotIndex < 46) {
-        // HotBar clicked, try to move to tool slot first, then inventory
+        // HotBar clicked, try to move to tool slot first, then crafting matrix, then inventory
 
         if (this.swapItemStack(slotIndex, 46)) {
-          return ItemStack.EMPTY;
+          return ItemStack.EMPTY; // Swapped tools
         }
 
         if (!this.mergeItemStack(itemstack1, 46, 47, false)
+            && !this.mergeItemStack(itemstack1, 1, 10, false)
             && !this.mergeItemStack(itemstack1, 10, 37, false)) {
           return ItemStack.EMPTY;
         }

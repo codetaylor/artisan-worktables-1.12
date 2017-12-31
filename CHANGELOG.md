@@ -4,6 +4,7 @@
 * Added: config option to disable all tool recipes
 * Added: tools made from Thermal Foundation (TF) materials
 * Added: config option to disable all tools made from TF materials
+* Added: shift + click ingredients into the table
 
 1.1.4
 * Fixed: Tables now work properly with Tinker's tools (#3)
