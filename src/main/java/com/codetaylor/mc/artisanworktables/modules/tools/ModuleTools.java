@@ -19,6 +19,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -96,6 +97,9 @@ public class ModuleTools
 
     super.onInitializationEvent(event);
 
+    for (ItemWorktableTool item : this.registeredToolList) {
+      OreDictionary.registerOre(item.getType().getName(), item);
+    }
   }
 
   @Override

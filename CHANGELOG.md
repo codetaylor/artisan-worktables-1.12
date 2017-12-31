@@ -1,3 +1,6 @@
+1.2.6
+* Added: all tools are now grouped in OreDict entries by tool type, see zenscript.md
+
 1.2.5
 * Fixed: scala dependency crash?
 
