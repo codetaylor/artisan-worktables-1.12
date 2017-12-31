@@ -8,7 +8,7 @@ Quick links:
 
 Themed worktables with a tool slot.
 
-This mod is designed for modpack makers. It contains only example recipes and is intended to be used with CraftTweaker. JEI integration is supported.
+This mod is designed for modpack makers. It is intended to be used with CraftTweaker. JEI integration is supported.
 
 Depends on the library mod Athenaeum.
 
@@ -28,6 +28,6 @@ Vanilla crafting table recipes are not supported in any table and there are curr
 
 #### Tools
 
-![TableTools](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/items.png)
-
 Two tools for each table are provided if you want to use them. The tools and their recipes can be easily disabled in the config file. Tools for vanilla materials and Thermal Foundation materials are provided.
+
+![TableTools](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/items.png)
