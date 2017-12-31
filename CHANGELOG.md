@@ -1,3 +1,8 @@
+1.2.4
+* Added: tools to use in the tables
+* Added: config option to disable all tools
+* Added: config option to disable all tool recipes
+
 1.1.4
 * Fixed: Tables now work properly with Tinker's tools (#3)
 

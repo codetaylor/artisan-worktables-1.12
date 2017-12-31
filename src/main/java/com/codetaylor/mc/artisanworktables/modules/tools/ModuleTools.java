@@ -108,6 +108,10 @@ public class ModuleTools
   @SubscribeEvent
   public void onRegisterRecipesEvent(RegistryEvent.Register<IRecipe> event) {
 
+    if (!ModuleToolsConfig.ENABLE_TOOL_RECIPES) {
+      return;
+    }
+
     /*
     Go through all the registered worktable tools and register the appropriate recipe for each.
      */
