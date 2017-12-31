@@ -64,6 +64,24 @@ public class ModuleTools
         EnumMaterial.DIAMOND
     }));
 
+    if (ModuleToolsConfig.ENABLE_THERMAL_FOUNDATION_MATERIALS) {
+      //noinspection unchecked
+      this.materialList.addAll(Arrays.asList(new EnumMaterial[]{
+          EnumMaterial.ALUMINUM,
+          EnumMaterial.BRONZE,
+          EnumMaterial.CONSTANTAN,
+          EnumMaterial.COPPER,
+          EnumMaterial.ELECTRUM,
+          EnumMaterial.INVAR,
+          EnumMaterial.LEAD,
+          EnumMaterial.NICKEL,
+          EnumMaterial.PLATINUM,
+          EnumMaterial.SILVER,
+          EnumMaterial.STEEL,
+          EnumMaterial.TIN
+      }));
+    }
+
     for (EnumWorktableToolType type : EnumWorktableToolType.values()) {
       String name = type.getName();
 

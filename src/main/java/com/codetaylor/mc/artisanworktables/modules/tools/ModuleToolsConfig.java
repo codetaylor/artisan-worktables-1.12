@@ -11,4 +11,7 @@ public class ModuleToolsConfig {
   @Config.Comment({"Set to false to disable all tool recipes."})
   public static boolean ENABLE_TOOL_RECIPES = true;
 
+  @Config.Comment({"Set to false to disable all tools made from Thermal Foundation materials."})
+  public static boolean ENABLE_THERMAL_FOUNDATION_MATERIALS = true;
+
 }

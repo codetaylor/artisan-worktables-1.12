@@ -28,3 +28,17 @@ material.artisanworktables.stone=Stone
 material.artisanworktables.iron=Iron
 material.artisanworktables.gold=Gold
 material.artisanworktables.diamond=Diamond
+
+# Extended Worktable Tool Material Names
+material.artisanworktables.aluminum=Aluminum
+material.artisanworktables.bronze=Bronze
+material.artisanworktables.Constantan=Constantan
+material.artisanworktables.copper=Copper
+material.artisanworktables.electrum=Electrum
+material.artisanworktables.invar=Invar
+material.artisanworktables.lead=Lead
+material.artisanworktables.nickel=Nickel
+material.artisanworktables.platinum=Platinum
+material.artisanworktables.silver=Silver
+material.artisanworktables.steel=Steel
+material.artisanworktables.tin=Tin
