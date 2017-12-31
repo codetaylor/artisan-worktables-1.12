@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " . ",
+    "sx.",
+    " s "
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:string"
+    },
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    ".": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "artisanworktables:tailors_shears_flint"
+  }
+}

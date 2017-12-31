@@ -1,0 +1,8 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "artisanworktables:items/jewelers_gemcutter_base",
+    "layer1": "artisanworktables:items/jewelers_gemcutter_color",
+    "layer2": "artisanworktables:items/jewelers_gemcutter_highlight"
+  }
+}

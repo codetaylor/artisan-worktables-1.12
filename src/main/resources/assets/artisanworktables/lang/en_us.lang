@@ -1,8 +1,30 @@
+# Creative Tab
 itemGroup.artisanworktables=Artisan Worktables
 
+# Worktables
 tile.artisanworktables.worktable.basic.name=Basic Worktable
 tile.artisanworktables.worktable.blacksmith.name=Blacksmith's Worktable
 tile.artisanworktables.worktable.carpenter.name=Carpenter's Worktable
 tile.artisanworktables.worktable.jeweler.name=Jeweler's Worktable
 tile.artisanworktables.worktable.mason.name=Mason's Worktable
 tile.artisanworktables.worktable.tailor.name=Tailor's Worktable
+
+# Worktable Tools
+item.artisanworktables.blacksmiths.cutters.name=%s Blacksmith's Cutters
+item.artisanworktables.blacksmiths.hammer.name=%s Blacksmith's Hammer
+item.artisanworktables.carpenters.hammer.name=%s Carpenter's Hammer
+item.artisanworktables.carpenters.handsaw.name=%s Carpenter's Handsaw
+item.artisanworktables.jewelers.gemcutter.name=%s Jeweler's Gemcutter
+item.artisanworktables.jewelers.pliers.name=%s Jeweler's Pliers
+item.artisanworktables.masons.chisel.name=%s Mason's Chisel
+item.artisanworktables.masons.trowel.name=%s Mason's Trowel
+item.artisanworktables.tailors.needle.name=%s Tailor's Needle
+item.artisanworktables.tailors.shears.name=%s Tailor's Shears
+
+# Worktable Tool Material Names
+material.artisanworktables.wood=Wooden
+material.artisanworktables.flint=Flint
+material.artisanworktables.stone=Stone
+material.artisanworktables.iron=Iron
+material.artisanworktables.gold=Gold
+material.artisanworktables.diamond=Diamond

@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables;
 
+import com.codetaylor.mc.artisanworktables.modules.tools.ModuleTools;
+import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.gui.GuiHandler;
 import com.codetaylor.mc.athenaeum.module.ModuleManager;
@@ -46,6 +48,10 @@ public class ModArtisanWorktables {
     this.moduleManager.registerModules(
         ModuleWorktables.class
     );
+
+    if (ModuleToolsConfig.ENABLE_MODULE) {
+      this.moduleManager.registerModules(ModuleTools.class);
+    }
   }
 
   @Mod.EventHandler

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  .",
+    " . ",
+    "s  "
+  ],
+  "key": {
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    ".": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "artisanworktables:masons_chisel_flint"
+  }
+}

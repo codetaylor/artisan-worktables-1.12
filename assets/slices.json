@@ -1,0 +1,53 @@
+{
+  "slices": [
+    {
+      "sourceImage": "tools.png",
+      "targetPath": "../src/main/resources/assets/artisanworktables/textures/items",
+      
+      "targetSlices": [
+
+        { "target": "tailors_shears_base.png", "position": [0, 0] },
+        { "target": "tailors_shears_color.png", "position": [1, 0] },
+        { "target": "tailors_shears_highlight.png", "position": [2, 0] },
+
+        { "target": "tailors_needle_base.png", "position": [0, 1] },
+        { "target": "tailors_needle_color.png", "position": [1, 1] },
+        { "target": "tailors_needle_highlight.png", "position": [2, 1] },
+
+        { "target": "blacksmiths_hammer_base.png", "position": [0, 2] },
+        { "target": "blacksmiths_hammer_color.png", "position": [1, 2] },
+        { "target": "blacksmiths_hammer_overlay.png", "position": [3, 2] },
+
+        { "target": "blacksmiths_cutters_base.png", "position": [0, 3] },
+        { "target": "blacksmiths_cutters_color.png", "position": [1, 3] },
+        { "target": "blacksmiths_cutters_highlight.png", "position": [2, 3] },
+
+        { "target": "carpenters_handsaw_base.png", "position": [0, 4] },
+        { "target": "carpenters_handsaw_color.png", "position": [1, 4] },
+        { "target": "carpenters_handsaw_highlight.png", "position": [2, 4] },
+
+        { "target": "carpenters_hammer_base.png", "position": [0, 5] },
+        { "target": "carpenters_hammer_color.png", "position": [1, 5] },
+        { "target": "carpenters_hammer_highlight.png", "position": [2, 5] },
+        { "target": "carpenters_hammer_overlay.png", "position": [3, 5] },
+
+        { "target": "masons_chisel_base.png", "position": [0, 6] },
+        { "target": "masons_chisel_color.png", "position": [1, 6] },
+        { "target": "masons_chisel_highlight.png", "position": [2, 6] },
+
+        { "target": "masons_trowel_base.png", "position": [0, 7] },
+        { "target": "masons_trowel_color.png", "position": [1, 7] },
+        { "target": "masons_trowel_highlight.png", "position": [2, 7] },
+
+        { "target": "jewelers_pliers_base.png", "position": [4, 0] },
+        { "target": "jewelers_pliers_color.png", "position": [5, 0] },
+        { "target": "jewelers_pliers_highlight.png", "position": [6, 0] },
+
+        { "target": "jewelers_gemcutter_base.png", "position": [4, 1] },
+        { "target": "jewelers_gemcutter_color.png", "position": [5, 1] },
+        { "target": "jewelers_gemcutter_highlight.png", "position": [6, 1] }
+
+      ]
+    }
+  ]
+}
