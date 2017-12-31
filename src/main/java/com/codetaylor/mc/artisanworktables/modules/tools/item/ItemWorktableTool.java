@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.tools.item;
 
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleTools;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
+import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -13,22 +14,27 @@ import java.util.Collections;
 public class ItemWorktableTool
     extends ItemTool {
 
-  private String name;
+  private EnumWorktableToolType type;
   private EnumMaterial material;
 
   public ItemWorktableTool(
-      String name, EnumMaterial material
+      EnumWorktableToolType type, EnumMaterial material
   ) {
 
     super(material.getToolMaterial(), Collections.emptySet());
-    this.name = name;
+    this.type = type;
     this.material = material;
     this.setMaxStackSize(1);
   }
 
+  public EnumWorktableToolType getType() {
+
+    return this.type;
+  }
+
   public String getName() {
 
-    return this.name;
+    return this.type.getName();
   }
 
   public EnumMaterial getMaterial() {

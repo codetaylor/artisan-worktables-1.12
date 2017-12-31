@@ -1,38 +1,39 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.reference;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import java.awt.*;
 
 public enum EnumMaterial {
 
-  WOOD("wood", Item.ToolMaterial.WOOD, new Color(0x493615), false, "ore:plankWood"),
-  STONE("stone", Item.ToolMaterial.STONE, new Color(0x969696), false, "minecraft:stone"),
-  IRON("iron", Item.ToolMaterial.IRON, new Color(0xD4D4D4), true, "ore:ingotIron"),
-  GOLD("gold", Item.ToolMaterial.GOLD, new Color(0xFFE947), false, "ore:ingotGold"),
-  DIAMOND("diamond", Item.ToolMaterial.DIAMOND, new Color(0x33EBCB), false, "ore:gemDiamond"),
+  WOOD("wood", Item.ToolMaterial.WOOD, new Color(0x493615), false, "plankWood"),
+  STONE("stone", Item.ToolMaterial.STONE, new Color(0x969696), false, "stone"),
+  IRON("iron", Item.ToolMaterial.IRON, new Color(0xD4D4D4), true, "ingotIron"),
+  GOLD("gold", Item.ToolMaterial.GOLD, new Color(0xFFE947), false, "ingotGold"),
+  DIAMOND("diamond", Item.ToolMaterial.DIAMOND, new Color(0x33EBCB), false, "gemDiamond"),
 
-  FLINT("flint", ModMaterials.FLINT, new Color(0x1A1A1A), true, "minecraft:flint"),
-  ALUMINUM("aluminum", ModMaterials.ALUMINUM, new Color(0xC5C6D0), true, "ore:ingotAluminum"),
-  BRONZE("bronze", ModMaterials.BRONZE, new Color(0xE8983F), true, "ore:ingotBronze"),
-  CONSTANTAN("constantan", ModMaterials.CONSTANTAN, new Color(0xBD8D46), true, "ore:ingotConstantan"),
-  COPPER("copper", ModMaterials.COPPER, new Color(0xFFA131), true, "ore:ingotCopper"),
-  ELECTRUM("electrum", ModMaterials.ELECTRUM, new Color(0xFFE947), true, "ore:ingotElectrum"),
-  INVAR("invar", ModMaterials.INVAR, new Color(0x8E9A95), true, "ore:ingotInvar"),
-  LEAD("lead", ModMaterials.LEAD, new Color(0x8A93B1), true, "ore:ingotLead"),
-  NICKEL("nickel", ModMaterials.NICKEL, new Color(0xA2975D), true, "ore:ingotNickel"),
-  PLATINUM("platinum", ModMaterials.PLATINUM, new Color(0x4BACD8), true, "ore:ingotPlatinum"),
-  SILVER("silver", ModMaterials.SILVER, new Color(0x7B9DA4), true, "ore:ingotSilver"),
-  STEEL("steel", ModMaterials.STEEL, new Color(0x858585), false, "ore:ingotSteel"),
-  TIN("tin", ModMaterials.TIN, new Color(0x7C9AB2), true, "ore:ingotTin");
+  FLINT("flint", ModuleMaterials.FLINT, new Color(0x1A1A1A), true, Items.FLINT),
+  ALUMINUM("aluminum", ModuleMaterials.ALUMINUM, new Color(0xC5C6D0), true, "ingotAluminum"),
+  BRONZE("bronze", ModuleMaterials.BRONZE, new Color(0xE8983F), true, "ingotBronze"),
+  CONSTANTAN("constantan", ModuleMaterials.CONSTANTAN, new Color(0xBD8D46), true, "ingotConstantan"),
+  COPPER("copper", ModuleMaterials.COPPER, new Color(0xFFA131), true, "ingotCopper"),
+  ELECTRUM("electrum", ModuleMaterials.ELECTRUM, new Color(0xFFE947), true, "ingotElectrum"),
+  INVAR("invar", ModuleMaterials.INVAR, new Color(0x8E9A95), true, "ingotInvar"),
+  LEAD("lead", ModuleMaterials.LEAD, new Color(0x8A93B1), true, "ingotLead"),
+  NICKEL("nickel", ModuleMaterials.NICKEL, new Color(0xA2975D), true, "ingotNickel"),
+  PLATINUM("platinum", ModuleMaterials.PLATINUM, new Color(0x4BACD8), true, "ingotPlatinum"),
+  SILVER("silver", ModuleMaterials.SILVER, new Color(0x7B9DA4), true, "ingotSilver"),
+  STEEL("steel", ModuleMaterials.STEEL, new Color(0x858585), false, "ingotSteel"),
+  TIN("tin", ModuleMaterials.TIN, new Color(0x7C9AB2), true, "ingotTin");
 
   private String name;
   private Item.ToolMaterial toolMaterial;
   private int color;
   private boolean highlighted;
-  private String recipeIngredient;
+  private Object recipeIngredient;
 
-  EnumMaterial(String name, Item.ToolMaterial toolMaterial, Color color, boolean highlighted, String recipeIngredient) {
+  EnumMaterial(String name, Item.ToolMaterial toolMaterial, Color color, boolean highlighted, Object recipeIngredient) {
 
     this.name = name;
     this.toolMaterial = toolMaterial;
@@ -61,7 +62,7 @@ public enum EnumMaterial {
     return this.highlighted;
   }
 
-  public String getRecipeIngredient() {
+  public Object getRecipeIngredient() {
 
     return this.recipeIngredient;
   }

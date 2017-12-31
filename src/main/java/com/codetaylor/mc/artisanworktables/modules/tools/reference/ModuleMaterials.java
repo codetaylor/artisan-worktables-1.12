@@ -3,7 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.tools.reference;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class ModMaterials {
+public class ModuleMaterials {
 
   // @formatter:off
   public static final Item.ToolMaterial FLINT = EnumHelper.addToolMaterial("artisanworktables:FLINT", 1, 150, 3.8f, 1.0f, 10);

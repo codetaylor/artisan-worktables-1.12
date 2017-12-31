@@ -3,19 +3,27 @@ package com.codetaylor.mc.artisanworktables.modules.tools;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
+import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
+import com.codetaylor.mc.artisanworktables.modules.tools.reference.ModuleRecipes;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
+import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ModuleTools
@@ -29,35 +37,16 @@ public class ModuleTools
     public static final String MATERIAL_STRING = "material.artisanworktables.%s";
   }
 
-  public static final String[] TOOL_NAMES = new String[]{
-      "blacksmiths_cutters",
-      "blacksmiths_hammer",
-      "carpenters_hammer",
-      "carpenters_handsaw",
-      "jewelers_gemcutter",
-      "jewelers_pliers",
-      "masons_chisel",
-      "masons_trowel",
-      "tailors_needle",
-      "tailors_shears"
-  };
-
-  public static final EnumMaterial[] MATERIALS_VANILLA = new EnumMaterial[]{
-      EnumMaterial.WOOD,
-      EnumMaterial.FLINT,
-      EnumMaterial.STONE,
-      EnumMaterial.IRON,
-      EnumMaterial.GOLD,
-      EnumMaterial.DIAMOND
-  };
-
-  public static final List<ItemWorktableTool> TOOL_LIST = new ArrayList<>();
+  public final List<EnumMaterial> materialList = new ArrayList<>();
+  public final List<ItemWorktableTool> registeredToolList = new ArrayList<>();
 
   public ModuleTools() {
 
     super(0);
     this.setRegistry(new Registry(MOD_ID, CREATIVE_TAB));
     this.enableAutoRegistry();
+
+    MinecraftForge.EVENT_BUS.register(this);
   }
 
   @Override
@@ -65,22 +54,37 @@ public class ModuleTools
 
     super.onRegister(registry);
 
-    for (String name : TOOL_NAMES) {
+    //noinspection unchecked
+    this.materialList.addAll(Arrays.asList(new EnumMaterial[]{
+        EnumMaterial.WOOD,
+        EnumMaterial.FLINT,
+        EnumMaterial.STONE,
+        EnumMaterial.IRON,
+        EnumMaterial.GOLD,
+        EnumMaterial.DIAMOND
+    }));
 
-      for (EnumMaterial material : MATERIALS_VANILLA) {
+    for (EnumWorktableToolType type : EnumWorktableToolType.values()) {
+      String name = type.getName();
+
+      for (EnumMaterial material : this.materialList) {
         String materialName = material.getName();
 
-        if (Arrays.stream(ModuleToolsConfig.ENABLED_TOOLS)
-            .anyMatch(s -> s.startsWith(name) && s.endsWith(materialName))) {
-          ItemWorktableTool item = new ItemWorktableTool(name, material);
-          this.TOOL_LIST.add(item);
-          ResourceLocation registryName = new ResourceLocation(MOD_ID, name + "_" + materialName);
-          registry.registerItem(item, registryName);
-          item.setUnlocalizedName(registryName.getResourceDomain().replaceAll("_", ".")
-              + "." + name.replaceAll("_", "."));
-        }
+        ItemWorktableTool item = new ItemWorktableTool(type, material);
+        this.registeredToolList.add(item);
+        ResourceLocation registryName = new ResourceLocation(MOD_ID, name + "_" + materialName);
+        registry.registerItem(item, registryName);
+        item.setUnlocalizedName(registryName.getResourceDomain().replaceAll("_", ".")
+            + "." + name.replaceAll("_", "."));
       }
     }
+  }
+
+  @Override
+  public void onInitializationEvent(FMLInitializationEvent event) {
+
+    super.onInitializationEvent(event);
+
   }
 
   @Override
@@ -88,12 +92,41 @@ public class ModuleTools
 
     super.onClientRegisterModelsEvent(event);
 
+    /*
+    Register different model resource locations depending on if the material is highlighted or not.
+     */
+
     // TODO: this needs to be migrated to a custom (?) model registration strategy
-    for (ItemWorktableTool item : TOOL_LIST) {
+    for (ItemWorktableTool item : this.registeredToolList) {
       String resourcePath = item.getMaterial().isHighlighted() ? item.getName() + "_highlighted" : item.getName();
       ResourceLocation location = new ResourceLocation(MOD_ID, resourcePath);
       ModelResourceLocation modelResourceLocation = new ModelResourceLocation(location, "inventory");
       ModelLoader.setCustomModelResourceLocation(item, 0, modelResourceLocation);
+    }
+  }
+
+  @SubscribeEvent
+  public void onRegisterRecipesEvent(RegistryEvent.Register<IRecipe> event) {
+
+    /*
+    Go through all the registered worktable tools and register the appropriate recipe for each.
+     */
+
+    IForgeRegistry<IRecipe> registry = event.getRegistry();
+
+    for (ItemWorktableTool item : this.registeredToolList) {
+      Object[] recipeDefinition = ModuleRecipes.getRecipeDefinition(
+          item.getType(),
+          item.getMaterial().getRecipeIngredient()
+      );
+
+      ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
+      recipe.setRegistryName(new ResourceLocation(
+          MOD_ID,
+          "recipe." + item.getName() + "." + item.getMaterial().getName()
+      ));
+
+      registry.register(recipe);
     }
   }
 
@@ -102,13 +135,17 @@ public class ModuleTools
 
     super.onClientInitializationEvent(event);
 
+    /*
+    Register item color handlers to colorize layer 1 of each item model.
+     */
+
     ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 
     itemColors.registerItemColorHandler(
         (stack, tintIndex) -> (tintIndex == 1)
             ? ((ItemWorktableTool) stack.getItem()).getMaterial().getColor()
             : 0xFFFFFF,
-        TOOL_LIST.toArray(new ItemWorktableTool[TOOL_LIST.size()])
+        this.registeredToolList.toArray(new ItemWorktableTool[this.registeredToolList.size()])
     );
   }
 }
