@@ -1,5 +1,6 @@
 Quick links:
 
+* [CONFIG.md](https://github.com/codetaylor/artisan-worktables/blob/master/CONFIG.md)
 * [ZENSCRIPT.md](https://github.com/codetaylor/artisan-worktables/blob/master/ZENSCRIPT.md)
 * [CHANGELOG.md](https://github.com/codetaylor/artisan-worktables/blob/master/CHANGELOG.md)
 * [LICENSE](https://github.com/codetaylor/artisan-worktables/blob/master/LICENSE)
