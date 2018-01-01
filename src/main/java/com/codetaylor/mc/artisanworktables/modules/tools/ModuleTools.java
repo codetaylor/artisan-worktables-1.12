@@ -2,27 +2,23 @@ package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
+import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleRecipes;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
-import com.codetaylor.mc.artisanworktables.modules.tools.reference.ModuleRecipes;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.registry.Registry;
-import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,29 +118,8 @@ public class ModuleTools
   @SubscribeEvent
   public void onRegisterRecipesEvent(RegistryEvent.Register<IRecipe> event) {
 
-    if (!ModuleToolsConfig.ENABLE_TOOL_RECIPES) {
-      return;
-    }
-
-    /*
-    Go through all the registered worktable tools and register the appropriate recipe for each.
-     */
-
-    IForgeRegistry<IRecipe> registry = event.getRegistry();
-
-    for (ItemWorktableTool item : this.registeredToolList) {
-      Object[] recipeDefinition = ModuleRecipes.getRecipeDefinition(
-          item.getType(),
-          item.getMaterial().getRecipeIngredient()
-      );
-
-      ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
-      recipe.setRegistryName(new ResourceLocation(
-          MOD_ID,
-          "recipe." + item.getName() + "." + item.getMaterial().getName()
-      ));
-
-      registry.register(recipe);
+    if (ModuleToolsConfig.ENABLE_TOOL_RECIPES) {
+      ModuleRecipes.register(event.getRegistry(), MOD_ID, this.registeredToolList);
     }
   }
 
@@ -153,9 +128,8 @@ public class ModuleTools
 
     super.onClientInitializationEvent(event);
 
-    /*
-    Register item color handlers to colorize layer 1 of each item model.
-     */
+    // Register item color handlers to colorize layer 1 of each item model
+    // using the color stored in the material enum.
 
     ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 

@@ -1,8 +1,15 @@
-package com.codetaylor.mc.artisanworktables.modules.tools.reference;
+package com.codetaylor.mc.artisanworktables.modules.tools.recipe;
 
+import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
+import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import net.minecraft.init.Items;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.EnumMap;
+import java.util.List;
 
 public class ModuleRecipes {
 
@@ -149,6 +156,26 @@ public class ModuleRecipes {
     }
 
     return result;
+  }
+
+  public static void register(IForgeRegistry<IRecipe> registry, String modId, List<ItemWorktableTool> toolList) {
+
+    // Go through all the registered worktable tools and register the appropriate recipe for each.
+
+    for (ItemWorktableTool item : toolList) {
+      Object[] recipeDefinition = ModuleRecipes.getRecipeDefinition(
+          item.getType(),
+          item.getMaterial().getRecipeIngredient()
+      );
+
+      ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
+      recipe.setRegistryName(new ResourceLocation(
+          modId,
+          "recipe." + item.getName() + "." + item.getMaterial().getName()
+      ));
+
+      registry.register(recipe);
+    }
   }
 
 }
