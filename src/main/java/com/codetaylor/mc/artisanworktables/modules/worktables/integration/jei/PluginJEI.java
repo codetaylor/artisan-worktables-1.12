@@ -57,8 +57,7 @@ public class PluginJEI
     for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
       List<IRecipeWorktable> recipeList = new ArrayList<>();
       RegistryRecipeWorktable recipeRegistry = WorktableAPI.RECIPE_REGISTRY_MAP.get(type.getName());
-      recipeRegistry.getRecipeShapedList(recipeList);
-      recipeRegistry.getRecipeShapelessList(recipeList);
+      recipeRegistry.getRecipeList(recipeList);
       registry.addRecipes(recipeList, this.createUID(type));
     }
   }

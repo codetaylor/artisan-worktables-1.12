@@ -12,18 +12,16 @@ import java.util.List;
 
 public class RegistryRecipeWorktable {
 
-  private List<IRecipeWorktable> recipeShapedList;
-  private List<IRecipeWorktable> recipeShapelessList;
+  private List<IRecipeWorktable> recipeList;
 
   public RegistryRecipeWorktable() {
 
-    this.recipeShapedList = new ArrayList<>();
-    this.recipeShapelessList = new ArrayList<>();
+    this.recipeList = new ArrayList<>();
   }
 
-  public List<IRecipeWorktable> getRecipeShapedList(List<IRecipeWorktable> result) {
+  public List<IRecipeWorktable> getRecipeList(List<IRecipeWorktable> result) {
 
-    result.addAll(this.recipeShapedList);
+    result.addAll(this.recipeList);
     return result;
   }
 
@@ -59,14 +57,8 @@ public class RegistryRecipeWorktable {
         mirrored
     );
 
-    this.recipeShapedList.add(recipe);
+    this.recipeList.add(recipe);
     return recipe;
-  }
-
-  public List<IRecipeWorktable> getRecipeShapelessList(List<IRecipeWorktable> result) {
-
-    result.addAll(this.recipeShapelessList);
-    return result;
   }
 
   public IRecipeWorktable addRecipeShapeless(
@@ -86,21 +78,14 @@ public class RegistryRecipeWorktable {
         toolDamage
     );
 
-    this.recipeShapelessList.add(recipe);
+    this.recipeList.add(recipe);
     return recipe;
   }
 
   @Nullable
   public IRecipeWorktable findRecipe(ItemStack tool, CraftingMatrixStackHandler craftingMatrix) {
 
-    for (IRecipeWorktable recipe : this.recipeShapedList) {
-
-      if (recipe.matches(tool, craftingMatrix)) {
-        return recipe;
-      }
-    }
-
-    for (IRecipeWorktable recipe : this.recipeShapelessList) {
+    for (IRecipeWorktable recipe : this.recipeList) {
 
       if (recipe.matches(tool, craftingMatrix)) {
         return recipe;
@@ -112,14 +97,7 @@ public class RegistryRecipeWorktable {
 
   public boolean containsRecipeWithTool(ItemStack tool) {
 
-    for (IRecipeWorktable recipe : this.recipeShapedList) {
-
-      if (recipe.isValidTool(tool)) {
-        return true;
-      }
-    }
-
-    for (IRecipeWorktable recipe : this.recipeShapelessList) {
+    for (IRecipeWorktable recipe : this.recipeList) {
 
       if (recipe.isValidTool(tool)) {
         return true;
