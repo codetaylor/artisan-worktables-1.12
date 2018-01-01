@@ -7,6 +7,7 @@ import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktable
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.ModuleRecipes;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.registry.Registry;
+import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -37,8 +38,8 @@ public class ModuleTools
     public static final String MATERIAL_STRING = "material.artisanworktables.%s";
   }
 
-  public final List<EnumMaterial> materialList = new ArrayList<>();
-  public final List<ItemWorktableTool> registeredToolList = new ArrayList<>();
+  private final List<EnumMaterial> materialList = new ArrayList<>();
+  private final List<ItemWorktableTool> registeredToolList = new ArrayList<>();
 
   public ModuleTools() {
 
@@ -93,30 +94,28 @@ public class ModuleTools
   }
 
   @Override
+  public void onClientRegister(Registry registry) {
+
+    super.onClientRegister(registry);
+
+    registry.registerItemModelStrategy(() -> {
+
+      for (ItemWorktableTool item : ModuleTools.this.registeredToolList) {
+        String resourcePath = item.getMaterial().isHighlighted() ? item.getName() + "_highlighted" : item.getName();
+        ResourceLocation location = new ResourceLocation(MOD_ID, resourcePath);
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(location, "inventory");
+        ModelLoader.setCustomModelResourceLocation(item, 0, modelResourceLocation);
+      }
+    });
+  }
+
+  @Override
   public void onInitializationEvent(FMLInitializationEvent event) {
 
     super.onInitializationEvent(event);
 
     for (ItemWorktableTool item : this.registeredToolList) {
       OreDictionary.registerOre(item.getType().getName(), item);
-    }
-  }
-
-  @Override
-  public void onClientRegisterModelsEvent(ModelRegistryEvent event) {
-
-    super.onClientRegisterModelsEvent(event);
-
-    /*
-    Register different model resource locations depending on if the material is highlighted or not.
-     */
-
-    // TODO: this needs to be migrated to a custom (?) model registration strategy
-    for (ItemWorktableTool item : this.registeredToolList) {
-      String resourcePath = item.getMaterial().isHighlighted() ? item.getName() + "_highlighted" : item.getName();
-      ResourceLocation location = new ResourceLocation(MOD_ID, resourcePath);
-      ModelResourceLocation modelResourceLocation = new ModelResourceLocation(location, "inventory");
-      ModelLoader.setCustomModelResourceLocation(item, 0, modelResourceLocation);
     }
   }
 
