@@ -13,8 +13,15 @@ import java.util.List;
 
 public class ModuleRecipes {
 
-  public static final EnumMap<EnumWorktableToolType, Object[]> RECIPE_MAP;
-  public static final String MATERIAL_ALIAS = "#material_alias";
+  /**
+   * Contains the recipe definitions for each tool type.
+   */
+  private static final EnumMap<EnumWorktableToolType, Object[]> RECIPE_MAP;
+
+  /**
+   * The alias used for ingredient substitution. This is replaced before a recipe is registered.
+   */
+  private static final String MATERIAL_ALIAS = "#material_alias";
 
   static {
     RECIPE_MAP = new EnumMap<>(EnumWorktableToolType.class);
@@ -137,7 +144,44 @@ public class ModuleRecipes {
     );
   }
 
-  public static Object[] getRecipeDefinition(EnumWorktableToolType type, Object substitution) {
+  /**
+   * Iterates through all given items in the tool list and registers a recipe for each.
+   *
+   * @param registry the recipe registry
+   * @param modId    the mod id
+   * @param toolList the tool list
+   */
+  public static void register(IForgeRegistry<IRecipe> registry, String modId, List<ItemWorktableTool> toolList) {
+
+    for (ItemWorktableTool item : toolList) {
+      Object[] recipeDefinition = ModuleRecipes.getRecipeDefinition(
+          item.getType(),
+          item.getMaterial().getRecipeIngredient()
+      );
+
+      if (recipeDefinition == null) {
+        throw new RuntimeException("Missing recipe definition for tool type: " + item.getType().getName());
+      }
+
+      ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
+      recipe.setRegistryName(new ResourceLocation(
+          modId,
+          "recipe." + item.getName() + "." + item.getMaterial().getName()
+      ));
+
+      registry.register(recipe);
+    }
+  }
+
+  /**
+   * Returns an object array containing the recipe shape and ingredient composition. Replaces
+   * the material alias token with the given substitution.
+   *
+   * @param type         the tool type
+   * @param substitution the substitution
+   * @return object array containing the recipe shape and ingredient composition
+   */
+  private static Object[] getRecipeDefinition(EnumWorktableToolType type, Object substitution) {
 
     Object[] objects = RECIPE_MAP.get(type);
 
@@ -156,26 +200,6 @@ public class ModuleRecipes {
     }
 
     return result;
-  }
-
-  public static void register(IForgeRegistry<IRecipe> registry, String modId, List<ItemWorktableTool> toolList) {
-
-    // Go through all the registered worktable tools and register the appropriate recipe for each.
-
-    for (ItemWorktableTool item : toolList) {
-      Object[] recipeDefinition = ModuleRecipes.getRecipeDefinition(
-          item.getType(),
-          item.getMaterial().getRecipeIngredient()
-      );
-
-      ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
-      recipe.setRegistryName(new ResourceLocation(
-          modId,
-          "recipe." + item.getName() + "." + item.getMaterial().getName()
-      ));
-
-      registry.register(recipe);
-    }
   }
 
 }
