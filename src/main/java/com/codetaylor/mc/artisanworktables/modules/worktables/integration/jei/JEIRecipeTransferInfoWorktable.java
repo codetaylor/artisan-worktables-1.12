@@ -57,9 +57,9 @@ public class JEIRecipeTransferInfoWorktable
     return container.getInventorySlots(new ArrayList<>());
   }
 
-  /*@Override
+  @Override
   public boolean requireCompleteSets() {
 
     return false;
-  }*/
+  }
 }

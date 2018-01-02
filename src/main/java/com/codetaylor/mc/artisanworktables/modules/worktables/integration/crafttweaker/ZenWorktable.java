@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
@@ -33,7 +34,7 @@ public class ZenWorktable {
       IIngredient[][] input
   ) {
 
-    PluginDelegate.LATE_ADDITIONS.add(new AddShaped(
+    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
         table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
@@ -98,7 +99,7 @@ public class ZenWorktable {
       IIngredient[] input
   ) {
 
-    PluginDelegate.LATE_ADDITIONS.add(new AddShapeless(
+    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
         table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
