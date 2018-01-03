@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ModuleTools
@@ -34,7 +35,6 @@ public class ModuleTools
     public static final String MATERIAL_STRING = "material.artisanworktables.%s";
   }
 
-  private final List<EnumMaterial> materialList = new ArrayList<>();
   private final List<ItemWorktableTool> registeredToolList = new ArrayList<>();
 
   public ModuleTools() {
@@ -51,40 +51,68 @@ public class ModuleTools
 
     super.onRegister(registry);
 
-    this.materialList.add(EnumMaterial.WOOD);
-    this.materialList.add(EnumMaterial.FLINT);
-    this.materialList.add(EnumMaterial.STONE);
-    this.materialList.add(EnumMaterial.IRON);
-    this.materialList.add(EnumMaterial.GOLD);
-    this.materialList.add(EnumMaterial.DIAMOND);
+    final List<EnumMaterial> materialList = new ArrayList<>();
 
-    if (ModuleToolsConfig.ENABLE_THERMAL_FOUNDATION_MATERIALS) {
-      this.materialList.add(EnumMaterial.ALUMINUM);
-      this.materialList.add(EnumMaterial.BRONZE);
-      this.materialList.add(EnumMaterial.CONSTANTAN);
-      this.materialList.add(EnumMaterial.COPPER);
-      this.materialList.add(EnumMaterial.ELECTRUM);
-      this.materialList.add(EnumMaterial.INVAR);
-      this.materialList.add(EnumMaterial.LEAD);
-      this.materialList.add(EnumMaterial.NICKEL);
-      this.materialList.add(EnumMaterial.PLATINUM);
-      this.materialList.add(EnumMaterial.SILVER);
-      this.materialList.add(EnumMaterial.STEEL);
-      this.materialList.add(EnumMaterial.TIN);
+    // Vanilla materials
+    materialList.add(EnumMaterial.WOOD);
+    materialList.add(EnumMaterial.FLINT);
+    materialList.add(EnumMaterial.STONE);
+    materialList.add(EnumMaterial.IRON);
+    materialList.add(EnumMaterial.GOLD);
+    materialList.add(EnumMaterial.DIAMOND);
+
+    // Thermal Foundation materials
+    materialList.add(EnumMaterial.ALUMINUM);
+    materialList.add(EnumMaterial.BRONZE);
+    materialList.add(EnumMaterial.CONSTANTAN);
+    materialList.add(EnumMaterial.COPPER);
+    materialList.add(EnumMaterial.ELECTRUM);
+    materialList.add(EnumMaterial.INVAR);
+    materialList.add(EnumMaterial.LEAD);
+    materialList.add(EnumMaterial.NICKEL);
+    materialList.add(EnumMaterial.PLATINUM);
+    materialList.add(EnumMaterial.SILVER);
+    materialList.add(EnumMaterial.STEEL);
+    materialList.add(EnumMaterial.TIN);
+
+    List<String> allowedToolTypeList = new ArrayList<>();
+    allowedToolTypeList.addAll(Arrays.asList(ModuleToolsConfig.ENABLED_TOOL_TYPES));
+
+    if (allowedToolTypeList.isEmpty()) {
+      // User has disabled all tool types.
+      return;
+    }
+
+    List<String> allowedToolMaterialList = new ArrayList<>();
+    allowedToolMaterialList.addAll(Arrays.asList(ModuleToolsConfig.ENABLED_TOOL_MATERIALS));
+
+    if (allowedToolMaterialList.isEmpty()) {
+      // User has disabled all tool materials.
+      return;
     }
 
     for (EnumWorktableToolType type : EnumWorktableToolType.values()) {
-      String name = type.getName();
+      String typeName = type.getName();
 
-      for (EnumMaterial material : this.materialList) {
+      if (!allowedToolTypeList.contains(typeName)) {
+        // User has disabled this tool type.
+        continue;
+      }
+
+      for (EnumMaterial material : materialList) {
         String materialName = material.getName();
+
+        if (!allowedToolMaterialList.contains(materialName)) {
+          // User has disabled this material.
+          continue;
+        }
 
         ItemWorktableTool item = new ItemWorktableTool(type, material);
         this.registeredToolList.add(item);
-        ResourceLocation registryName = new ResourceLocation(MOD_ID, name + "_" + materialName);
+        ResourceLocation registryName = new ResourceLocation(MOD_ID, typeName + "_" + materialName);
         registry.registerItem(item, registryName);
         item.setUnlocalizedName(registryName.getResourceDomain().replaceAll("_", ".")
-            + "." + name.replaceAll("_", "."));
+            + "." + typeName.replaceAll("_", "."));
       }
     }
   }
@@ -118,7 +146,8 @@ public class ModuleTools
   @SubscribeEvent
   public void onRegisterRecipesEvent(RegistryEvent.Register<IRecipe> event) {
 
-    if (ModuleToolsConfig.ENABLE_TOOL_RECIPES) {
+    if (ModuleToolsConfig.ENABLE_TOOL_RECIPES
+        && !this.registeredToolList.isEmpty()) {
       ModuleRecipes.register(event.getRegistry(), MOD_ID, this.registeredToolList);
     }
   }
@@ -127,6 +156,11 @@ public class ModuleTools
   public void onClientInitializationEvent(FMLInitializationEvent event) {
 
     super.onClientInitializationEvent(event);
+
+    if (this.registeredToolList.isEmpty()) {
+      // No tools were registered.
+      return;
+    }
 
     // Register item color handlers to colorize layer 1 of each item model
     // using the color stored in the material enum.
