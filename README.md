@@ -17,7 +17,7 @@ Depends on the library mod Athenaeum.
 
 ![Tables](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/tables.png)
 
-![TableGuis](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/table_gui.gif)
+![TableGuis](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/tabs.gif)
 
 Recipes for the worktables are like the vanilla crafting recipes (shaped, shapeless) except they require a tool and tool durability cost to be specified. Tools go into the extra slot in the table and remain in the table between crafts. The tables will also retain their contents when closed, but not when broken.
 
