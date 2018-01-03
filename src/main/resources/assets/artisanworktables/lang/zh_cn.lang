@@ -1,8 +1,44 @@
+# Creative Tab
 itemGroup.artisanworktables=Artisan Worktables
 
+# Worktables
 tile.artisanworktables.worktable.basic.name=基础工作台
 tile.artisanworktables.worktable.blacksmith.name=铁匠工作台
 tile.artisanworktables.worktable.carpenter.name=木匠工作台
 tile.artisanworktables.worktable.jeweler.name=珠宝工作台
 tile.artisanworktables.worktable.mason.name=石匠工作台
 tile.artisanworktables.worktable.tailor.name=裁缝工作台
+
+# Worktable Tools
+item.artisanworktables.blacksmiths.cutters.name=%s 铁匠剪
+item.artisanworktables.blacksmiths.hammer.name=%s 铁匠锤
+item.artisanworktables.carpenters.hammer.name=%s 木匠锤
+item.artisanworktables.carpenters.handsaw.name=%s 木匠锯
+item.artisanworktables.jewelers.gemcutter.name=%s 珠宝抛光工具
+item.artisanworktables.jewelers.pliers.name=%s 珠宝钳
+item.artisanworktables.masons.chisel.name=%s 石匠凿
+item.artisanworktables.masons.trowel.name=%s 石匠抹子
+item.artisanworktables.tailors.needle.name=%s 裁缝针
+item.artisanworktables.tailors.shears.name=%s 裁缝剪
+
+# Worktable Tool Material Names
+material.artisanworktables.wood=木
+material.artisanworktables.flint=燧石
+material.artisanworktables.stone=石
+material.artisanworktables.iron=铁
+material.artisanworktables.gold=金
+material.artisanworktables.diamond=钻石
+
+# Extended Worktable Tool Material Names
+material.artisanworktables.aluminum=铝
+material.artisanworktables.bronze=青铜
+material.artisanworktables.constantan=康铜
+material.artisanworktables.copper=铜
+material.artisanworktables.electrum=琥珀金
+material.artisanworktables.invar=铱
+material.artisanworktables.lead=铅
+material.artisanworktables.nickel=镍
+material.artisanworktables.platinum=铂
+material.artisanworktables.silver=银
+material.artisanworktables.steel=钢
+material.artisanworktables.tin=锡
