@@ -9,8 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.*;
 
 public class TileEntityWorktableCarpenter
-    extends
-    TileEntityWorktableBase {
+    extends TileEntityWorktableBase {
 
   private static final int TEXT_SHADOW_COLOR = new Color(188, 152, 98).getRGB();
   private static final BlockWorktable.EnumType TYPE = BlockWorktable.EnumType.CARPENTER;
@@ -40,5 +39,11 @@ public class TileEntityWorktableCarpenter
   protected ResourceLocation getBackgroundTexture() {
 
     return BACKGROUND_TEXTURE;
+  }
+
+  @Override
+  public int getGuiTabTextureYOffset() {
+
+    return 2;
   }
 }

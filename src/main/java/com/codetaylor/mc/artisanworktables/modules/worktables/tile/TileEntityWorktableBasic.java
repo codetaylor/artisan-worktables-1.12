@@ -40,4 +40,10 @@ public class TileEntityWorktableBasic
 
     return BACKGROUND_TEXTURE;
   }
+
+  @Override
+  public int getGuiTabTextureYOffset() {
+
+    return 0;
+  }
 }

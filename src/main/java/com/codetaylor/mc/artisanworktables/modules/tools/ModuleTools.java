@@ -39,7 +39,7 @@ public class ModuleTools
 
   public ModuleTools() {
 
-    super(0);
+    super(0, MOD_ID);
     this.setRegistry(new Registry(MOD_ID, CREATIVE_TAB));
     this.enableAutoRegistry();
 

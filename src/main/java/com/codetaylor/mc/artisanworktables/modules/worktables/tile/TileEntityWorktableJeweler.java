@@ -9,8 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.*;
 
 public class TileEntityWorktableJeweler
-    extends
-    TileEntityWorktableBase {
+    extends TileEntityWorktableBase {
 
   private static final int TEXT_SHADOW_COLOR = new Color(105, 89, 133).getRGB();
   private static final BlockWorktable.EnumType TYPE = BlockWorktable.EnumType.JEWELER;
@@ -40,5 +39,11 @@ public class TileEntityWorktableJeweler
   protected ResourceLocation getBackgroundTexture() {
 
     return BACKGROUND_TEXTURE;
+  }
+
+  @Override
+  public int getGuiTabTextureYOffset() {
+
+    return 3;
   }
 }

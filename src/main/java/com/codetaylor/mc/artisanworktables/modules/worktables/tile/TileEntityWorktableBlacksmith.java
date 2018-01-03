@@ -40,4 +40,10 @@ public class TileEntityWorktableBlacksmith
 
     return BACKGROUND_TEXTURE;
   }
+
+  @Override
+  public int getGuiTabTextureYOffset() {
+
+    return 5;
+  }
 }

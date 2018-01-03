@@ -3,11 +3,15 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
+import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
+import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.registry.strategy.VariantBlockItemModelRegistrationStrategy;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ModuleWorktables
     extends ModuleBase {
@@ -32,11 +36,16 @@ public class ModuleWorktables
     public static final BlockWorktable WORKTABLE = new BlockWorktable();
   }
 
+  public static IPacketService PACKET_SERVICE;
+
   public ModuleWorktables() {
 
-    super(0);
+    super(0, MOD_ID);
+
     this.setRegistry(new Registry(MOD_ID, CREATIVE_TAB));
     this.enableAutoRegistry();
+
+    PACKET_SERVICE = this.enableNetwork();
 
     this.registerIntegrationPlugin(
         "crafttweaker",
@@ -47,6 +56,12 @@ public class ModuleWorktables
         "jei",
         "com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI"
     );
+  }
+
+  @Override
+  public void onNetworkRegister(IPacketRegistry registry) {
+
+    registry.register(SPacketWorktableTab.class, SPacketWorktableTab.class, Side.SERVER);
   }
 
   @Override

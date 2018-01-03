@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -28,8 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class TileEntityWorktableBase
     extends TileEntity
@@ -202,11 +202,66 @@ public abstract class TileEntityWorktableBase
     }
   }
 
+  public List<TileEntityWorktableBase> getJoinedTables() {
+
+    Map<String, TileEntityWorktableBase> joinedTableMap = new TreeMap<>();
+    joinedTableMap.put(this.getClass().getName(), this);
+
+    Set<BlockPos> searchedPositionSet = new HashSet<>();
+    searchedPositionSet.add(this.pos);
+
+    Queue<BlockPos> toSearchQueue = new ArrayDeque<>();
+    toSearchQueue.offer(this.pos.offset(EnumFacing.NORTH));
+    toSearchQueue.offer(this.pos.offset(EnumFacing.EAST));
+    toSearchQueue.offer(this.pos.offset(EnumFacing.SOUTH));
+    toSearchQueue.offer(this.pos.offset(EnumFacing.WEST));
+
+    BlockPos searchPosition;
+
+    while ((searchPosition = toSearchQueue.poll()) != null) {
+
+      if (searchedPositionSet.contains(searchPosition)) {
+        // we've already looked here, skip
+        continue;
+      }
+
+      // record that we've looked here
+      searchedPositionSet.add(searchPosition);
+
+      TileEntity tileEntity = this.world.getTileEntity(searchPosition);
+
+      if (tileEntity instanceof TileEntityWorktableBase) {
+        String name = tileEntity.getClass().getName();
+
+        if (joinedTableMap.containsKey(name)) {
+          // this indicates two tables of the same type joined in the pseudo-multiblock
+          // and we need to invalidate the structure by returning nothing
+          return Collections.emptyList();
+        }
+
+        // found a table!
+        joinedTableMap.put(name, (TileEntityWorktableBase) tileEntity);
+
+        // check around this newly discovered table
+        toSearchQueue.offer(tileEntity.getPos().offset(EnumFacing.NORTH));
+        toSearchQueue.offer(tileEntity.getPos().offset(EnumFacing.EAST));
+        toSearchQueue.offer(tileEntity.getPos().offset(EnumFacing.SOUTH));
+        toSearchQueue.offer(tileEntity.getPos().offset(EnumFacing.WEST));
+      }
+    }
+
+    List<TileEntityWorktableBase> result = new ArrayList<>();
+    result.addAll(joinedTableMap.values());
+    return result.size() < 2 ? Collections.emptyList() : result;
+  }
+
   protected abstract int getWorkbenchGuiTextShadowColor();
 
   protected abstract ResourceLocation getBackgroundTexture();
 
   public abstract RegistryRecipeWorktable getRecipeRegistry();
+
+  public abstract int getGuiTabTextureYOffset();
 
   @Override
   public ContainerWorktable getContainer(
@@ -228,7 +283,8 @@ public abstract class TileEntityWorktableBase
         this.getContainer(inventoryPlayer, world, state, pos),
         this.getBackgroundTexture(),
         String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, type.getName()),
-        this.getWorkbenchGuiTextShadowColor()
+        this.getWorkbenchGuiTextShadowColor(),
+        this
     );
   }
 }
