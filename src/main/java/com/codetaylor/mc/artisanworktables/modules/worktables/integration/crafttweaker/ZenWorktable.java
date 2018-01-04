@@ -47,7 +47,7 @@ public class ZenWorktable {
 
   @ZenMethod
   public static void addStagedRecipeShaped(
-      String gameStageName,
+      String[] stages,
       String table,
       IItemStack result,
       IIngredient tool,
@@ -57,7 +57,7 @@ public class ZenWorktable {
   ) {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
-        gameStageName,
+        stages,
         table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
@@ -79,7 +79,7 @@ public class ZenWorktable {
     private final boolean mirrored;
 
     AddShaped(
-        String gameStageName,
+        String[] stages,
         String table,
         ItemStack result,
         Ingredient tool,
@@ -179,7 +179,14 @@ public class ZenWorktable {
     private final Ingredient[] input;
     private final int toolDamage;
 
-    AddShapeless(String gameStageName, String table, ItemStack result, Ingredient tool, Ingredient[] input, int toolDamage) {
+    AddShapeless(
+        String gameStageName,
+        String table,
+        ItemStack result,
+        Ingredient tool,
+        Ingredient[] input,
+        int toolDamage
+    ) {
 
       super("WorktableShapeless");
       this.gameStageName = gameStageName;
