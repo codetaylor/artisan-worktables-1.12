@@ -1,3 +1,6 @@
+1.4.8
+* Changed: now loads AFTER gamestages, fixes NoClassDefFound crash
+
 1.4.7
 * Added: support for staged recipes using GameStages
 
