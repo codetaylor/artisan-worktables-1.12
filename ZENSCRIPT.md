@@ -13,8 +13,13 @@ import mods.artisanworktables.Worktable;
 Valid table names are: `basic`, `blacksmith`, `carpenter`, `jeweler`, `mason`, and `tailor`.
 
 ```
+// Normal recipes
 Worktable.addRecipeShaped(String table, IItemStack result, IIngredient tool, int toolDamage, boolean mirrored, IIngredient[][] input);
 Worktable.addRecipeShapeless(String table, IItemStack result, IIngredient tool, int toolDamage, IIngredient[] input);
+
+// GameStages staged recipes 
+Worktable.addStagedRecipeShaped(String gameStageName, String table, IItemStack result, IIngredient tool, int toolDamage, boolean mirrored, IIngredient[][] input);
+Worktable.addStagedRecipeShapeless(String gameStageName, String table, IItemStack result, IIngredient tool, int toolDamage, IIngredient[] input);
 ```
 
 All tools are grouped in OreDict entries based on their tool type for easy recipe reference:

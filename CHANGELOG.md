@@ -1,3 +1,6 @@
+1.4.7
+* Added: support for staged recipes using GameStages
+
 1.3.7
 * Added: GUI tabs to switch between adjacent tables
 * Added: config option to disable select tool types
