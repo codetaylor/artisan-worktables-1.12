@@ -87,13 +87,6 @@ public class BlockWorktable
       float hitZ
   ) {
 
-    TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-    if (tileEntity != null
-        && tileEntity instanceof TileEntityWorktableBase) {
-      ((TileEntityWorktableBase) tileEntity).updateRecipe();
-    }
-
     if (worldIn.isRemote) {
       return true;
     }

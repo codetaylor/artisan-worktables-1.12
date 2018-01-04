@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
-import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class CraftingMatrixStackHandler
-    extends ObservableStackHandler {
+    extends ItemStackHandler {
 
   private int width;
   private int height;

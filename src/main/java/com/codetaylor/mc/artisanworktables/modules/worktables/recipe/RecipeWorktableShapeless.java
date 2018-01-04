@@ -13,13 +13,14 @@ public class RecipeWorktableShapeless
     extends RecipeWorktableBase {
 
   public RecipeWorktableShapeless(
+      String gameStageName,
       ItemStack[] tools,
       NonNullList<Ingredient> input,
       ItemStack result,
       int toolDamage
   ) {
 
-    super(result, tools, toolDamage, input);
+    super(gameStageName, result, tools, toolDamage, input);
   }
 
   @Override

@@ -11,6 +11,8 @@ import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.registry.strategy.VariantBlockItemModelRegistrationStrategy;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ModuleWorktables
@@ -37,6 +39,7 @@ public class ModuleWorktables
   }
 
   public static IPacketService PACKET_SERVICE;
+  public static boolean MOD_LOADED_GAMESTAGES = false;
 
   public ModuleWorktables() {
 
@@ -56,6 +59,19 @@ public class ModuleWorktables
         "jei",
         "com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI"
     );
+
+    this.registerIntegrationPlugin(
+        "gamestages",
+        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.PluginGameStages"
+    );
+  }
+
+  @Override
+  public void onConstructionEvent(FMLConstructionEvent event) {
+
+    super.onConstructionEvent(event);
+
+    MOD_LOADED_GAMESTAGES = Loader.isModLoaded("gamestages");
   }
 
   @Override

@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
@@ -26,6 +27,7 @@ public class RegistryRecipeWorktable {
   }
 
   public IRecipeWorktable addRecipeShaped(
+      String gameStageName,
       ItemStack result,
       Ingredient tool,
       Ingredient[][] inputs,
@@ -48,6 +50,7 @@ public class RegistryRecipeWorktable {
     int height = inputs.length;
 
     RecipeWorktableShaped recipe = new RecipeWorktableShaped(
+        gameStageName,
         width,
         height,
         tool.getMatchingStacks(),
@@ -62,6 +65,7 @@ public class RegistryRecipeWorktable {
   }
 
   public IRecipeWorktable addRecipeShapeless(
+      String gameStageName,
       ItemStack result,
       Ingredient tool,
       Ingredient[] inputs,
@@ -72,6 +76,7 @@ public class RegistryRecipeWorktable {
     Collections.addAll(inputList, inputs);
 
     IRecipeWorktable recipe = new RecipeWorktableShapeless(
+        gameStageName,
         tool.getMatchingStacks(),
         inputList,
         result,
@@ -83,11 +88,15 @@ public class RegistryRecipeWorktable {
   }
 
   @Nullable
-  public IRecipeWorktable findRecipe(ItemStack tool, CraftingMatrixStackHandler craftingMatrix) {
+  public IRecipeWorktable findRecipe(
+      EntityPlayer player,
+      ItemStack tool,
+      CraftingMatrixStackHandler craftingMatrix
+  ) {
 
     for (IRecipeWorktable recipe : this.recipeList) {
 
-      if (recipe.matches(tool, craftingMatrix)) {
+      if (recipe.matches(player, tool, craftingMatrix)) {
         return recipe;
       }
     }

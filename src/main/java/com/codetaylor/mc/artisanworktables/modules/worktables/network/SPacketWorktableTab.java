@@ -72,9 +72,6 @@ public class SPacketWorktableTab
     TileEntity tileEntity = player.getEntityWorld().getTileEntity(pos);
 
     if (tileEntity instanceof TileEntityWorktableBase) {
-
-      ((TileEntityWorktableBase) tileEntity).updateRecipe();
-
       player.openGui(
           ModuleWorktables.MOD_INSTANCE,
           1,

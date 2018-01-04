@@ -36,23 +36,16 @@ public abstract class TileEntityWorktableBase
     implements IContainer,
     IContainerProvider<ContainerWorktable, GuiContainerWorktable> {
 
-  protected ObservableStackHandler toolHandler;
+  protected ItemStackHandler toolHandler;
   protected CraftingMatrixStackHandler craftingMatrixHandler;
-  protected ItemStackHandler resultHandler;
-  protected IRecipeWorktable lastRecipeCrafted;
 
   public TileEntityWorktableBase(int width, int height) {
 
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);
-    this.craftingMatrixHandler.addObserver(this::onInputsChanged);
-
     this.toolHandler = new ObservableStackHandler(1);
-    this.toolHandler.addObserver(this::onInputsChanged);
-
-    this.resultHandler = new ItemStackHandler();
   }
 
-  public ObservableStackHandler getToolHandler() {
+  public ItemStackHandler getToolHandler() {
 
     return this.toolHandler;
   }
@@ -60,11 +53,6 @@ public abstract class TileEntityWorktableBase
   public CraftingMatrixStackHandler getCraftingMatrixHandler() {
 
     return this.craftingMatrixHandler;
-  }
-
-  public ItemStackHandler getResultHandler() {
-
-    return this.resultHandler;
   }
 
   @Override
@@ -130,6 +118,9 @@ public abstract class TileEntityWorktableBase
 
   public void onTakeResult(EntityPlayer player) {
 
+    RegistryRecipeWorktable registry = this.getRecipeRegistry();
+    IRecipeWorktable recipe = registry.findRecipe(player, this.toolHandler.getStackInSlot(0), this.craftingMatrixHandler);
+
     int slotCount = this.craftingMatrixHandler.getSlots();
 
     for (int i = 0; i < slotCount; i++) {
@@ -150,7 +141,7 @@ public abstract class TileEntityWorktableBase
     ItemStack itemStack = this.toolHandler.getStackInSlot(0);
 
     if (!itemStack.isEmpty()) {
-      int itemDamage = itemStack.getMetadata() + this.lastRecipeCrafted.getToolDamage();
+      int itemDamage = itemStack.getMetadata() + recipe.getToolDamage();
 
       if (itemDamage >= itemStack.getItem().getMaxDamage(itemStack)) {
         this.toolHandler.setStackInSlot(0, ItemStack.EMPTY);
@@ -174,31 +165,6 @@ public abstract class TileEntityWorktableBase
         this.toolHandler.setStackInSlot(0, copy);
       }
 
-    }
-  }
-
-  public void updateRecipe() {
-
-    this.findResult();
-    this.markDirty();
-  }
-
-  protected void onInputsChanged(ItemStackHandler stackHandler, int slotIndex) {
-
-    this.updateRecipe();
-  }
-
-  protected void findResult() {
-
-    RegistryRecipeWorktable registry = this.getRecipeRegistry();
-    IRecipeWorktable recipe = registry.findRecipe(this.toolHandler.getStackInSlot(0), this.craftingMatrixHandler);
-
-    if (recipe != null) {
-      this.lastRecipeCrafted = recipe;
-      this.resultHandler.setStackInSlot(0, recipe.getOutput());
-
-    } else {
-      this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
     }
   }
 

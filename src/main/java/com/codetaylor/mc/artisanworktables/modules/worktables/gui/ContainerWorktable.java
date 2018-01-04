@@ -1,7 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
-import com.codetaylor.mc.athenaeum.inventory.PredicateSlotItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -9,7 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ContainerWorktable
 
   private World world;
   private TileEntityWorktableBase tile;
+  private final ItemStackHandler resultHandler;
 
   public ContainerWorktable(
       InventoryPlayer playerInventory,
@@ -28,14 +30,27 @@ public class ContainerWorktable
     this.world = world;
     this.tile = tile;
 
+    Runnable slotChangeListener = () -> this.updateRecipeOutput(playerInventory.player);
+
     // Result Slot 0
-    this.addSlotToContainer(new CraftingResultSlot(this.tile, this.tile.getResultHandler(), 0, 124, 35));
+    this.resultHandler = new ItemStackHandler(1);
+    this.addSlotToContainer(new CraftingResultSlot(
+        slotChangeListener,
+        this.tile,
+        resultHandler,
+        0,
+        124,
+        35
+    ));
 
     // Crafting Matrix 1 - 9
-    for (int y = 0; y < this.tile.getCraftingMatrixHandler().getHeight(); ++y) {
-      for (int x = 0; x < this.tile.getCraftingMatrixHandler().getWidth(); ++x) {
-        this.addSlotToContainer(new SlotItemHandler(
-            this.tile.getCraftingMatrixHandler(),
+    CraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
+
+    for (int y = 0; y < craftingMatrixHandler.getHeight(); ++y) {
+      for (int x = 0; x < craftingMatrixHandler.getWidth(); ++x) {
+        this.addSlotToContainer(new CraftingIngredientSlot(
+            slotChangeListener,
+            craftingMatrixHandler,
             x + y * 3,
             29 + x * 18,
             17 + y * 18
@@ -56,13 +71,33 @@ public class ContainerWorktable
     }
 
     // Tool Slot 47
-    this.addSlotToContainer(new PredicateSlotItemHandler(
+    this.addSlotToContainer(new CraftingToolSlot(
+        slotChangeListener,
         itemStack -> this.tile.getRecipeRegistry().containsRecipeWithTool(itemStack),
         this.tile.getToolHandler(),
         0,
         87,
         35
     ));
+
+    this.updateRecipeOutput(playerInventory.player);
+  }
+
+  private void updateRecipeOutput(EntityPlayer player) {
+
+    RegistryRecipeWorktable registry = this.tile.getRecipeRegistry();
+    IRecipeWorktable recipe = registry.findRecipe(
+        player,
+        this.tile.getToolHandler().getStackInSlot(0),
+        this.tile.getCraftingMatrixHandler()
+    );
+
+    if (recipe != null) {
+      this.resultHandler.setStackInSlot(0, recipe.getOutput());
+
+    } else {
+      this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
+    }
   }
 
   @Override
@@ -172,8 +207,6 @@ public class ContainerWorktable
         playerIn.dropItem(itemstack2, false);
       }
     }
-
-    this.tile.updateRecipe();
 
     return itemstack;
   }

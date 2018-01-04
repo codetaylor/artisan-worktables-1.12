@@ -13,6 +13,7 @@ public class RecipeWorktableShaped
   private boolean mirrored;
 
   public RecipeWorktableShaped(
+      String gameStageName,
       int width,
       int height,
       ItemStack[] tools,
@@ -22,7 +23,7 @@ public class RecipeWorktableShaped
       boolean mirrored
   ) {
 
-    super(result, tools, toolDamage, input);
+    super(gameStageName, result, tools, toolDamage, input);
 
     this.width = width;
     this.height = height;

@@ -35,6 +35,29 @@ public class ZenWorktable {
   ) {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
+        null,
+        table,
+        CTInputHelper.toStack(result),
+        CTInputHelper.toIngredient(tool),
+        CTInputHelper.toIngredientMatrix(input),
+        toolDamage,
+        mirrored
+    ));
+  }
+
+  @ZenMethod
+  public static void addStagedRecipeShaped(
+      String gameStageName,
+      String table,
+      IItemStack result,
+      IIngredient tool,
+      int toolDamage,
+      boolean mirrored,
+      IIngredient[][] input
+  ) {
+
+    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
+        gameStageName,
         table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
@@ -47,6 +70,7 @@ public class ZenWorktable {
   private static class AddShaped
       extends BaseUndoable {
 
+    private String gameStageName;
     private String table;
     private final ItemStack result;
     private final Ingredient tool;
@@ -54,9 +78,18 @@ public class ZenWorktable {
     private final int toolDamage;
     private final boolean mirrored;
 
-    AddShaped(String table, ItemStack result, Ingredient tool, Ingredient[][] input, int toolDamage, boolean mirrored) {
+    AddShaped(
+        String gameStageName,
+        String table,
+        ItemStack result,
+        Ingredient tool,
+        Ingredient[][] input,
+        int toolDamage,
+        boolean mirrored
+    ) {
 
       super("WorktableShaped");
+      this.gameStageName = gameStageName;
       this.table = table;
       this.result = result;
       this.tool = tool;
@@ -71,7 +104,14 @@ public class ZenWorktable {
       RegistryRecipeWorktable registry = WorktableAPI.RECIPE_REGISTRY_MAP.get(this.table);
 
       if (registry != null) {
-        registry.addRecipeShaped(this.result, this.tool, this.input, this.toolDamage, this.mirrored);
+        registry.addRecipeShaped(
+            this.gameStageName,
+            this.result,
+            this.tool,
+            this.input,
+            this.toolDamage,
+            this.mirrored
+        );
 
       } else {
         CTLogHelper.logError("Unrecognized table name: " + this.table + ", valid values are: " + Arrays.toString(
@@ -100,6 +140,27 @@ public class ZenWorktable {
   ) {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
+        null,
+        table,
+        CTInputHelper.toStack(result),
+        CTInputHelper.toIngredient(tool),
+        CTInputHelper.toIngredientArray(input),
+        toolDamage
+    ));
+  }
+
+  @ZenMethod
+  public static void addStagedRecipeShapeless(
+      String gameStageName,
+      String table,
+      IItemStack result,
+      IIngredient tool,
+      int toolDamage,
+      IIngredient[] input
+  ) {
+
+    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
+        gameStageName,
         table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
@@ -111,15 +172,17 @@ public class ZenWorktable {
   private static class AddShapeless
       extends BaseUndoable {
 
+    private String gameStageName;
     private String table;
     private final ItemStack result;
     private final Ingredient tool;
     private final Ingredient[] input;
     private final int toolDamage;
 
-    AddShapeless(String table, ItemStack result, Ingredient tool, Ingredient[] input, int toolDamage) {
+    AddShapeless(String gameStageName, String table, ItemStack result, Ingredient tool, Ingredient[] input, int toolDamage) {
 
       super("WorktableShapeless");
+      this.gameStageName = gameStageName;
       this.table = table;
       this.result = result;
       this.tool = tool;
@@ -133,7 +196,7 @@ public class ZenWorktable {
       RegistryRecipeWorktable registry = WorktableAPI.RECIPE_REGISTRY_MAP.get(this.table);
 
       if (registry != null) {
-        registry.addRecipeShapeless(this.result, this.tool, this.input, this.toolDamage);
+        registry.addRecipeShapeless(this.gameStageName, this.result, this.tool, this.input, this.toolDamage);
 
       } else {
         CTLogHelper.logError("Unrecognized table name: " + this.table + ", valid values are: " + Arrays.toString(

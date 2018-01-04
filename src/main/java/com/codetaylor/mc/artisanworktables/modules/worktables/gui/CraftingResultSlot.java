@@ -11,9 +11,11 @@ import javax.annotation.Nonnull;
 public class CraftingResultSlot
     extends SlotItemHandler {
 
+  private final Runnable slotChangeListener;
   private final TileEntityWorktableBase tile;
 
   public CraftingResultSlot(
+      Runnable slotChangeListener,
       TileEntityWorktableBase tile,
       IItemHandler itemHandler,
       int index,
@@ -23,6 +25,7 @@ public class CraftingResultSlot
 
     super(itemHandler, index, xPosition, yPosition);
     this.tile = tile;
+    this.slotChangeListener = slotChangeListener;
   }
 
   @Override
@@ -37,6 +40,7 @@ public class CraftingResultSlot
   ) {
 
     this.tile.onTakeResult(player);
+    this.slotChangeListener.run();
     return stack;
   }
 }
