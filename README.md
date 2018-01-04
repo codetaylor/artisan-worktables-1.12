@@ -9,7 +9,7 @@ Quick links:
 
 Themed worktables with a tool slot.
 
-This mod is designed for modpack makers. It is intended to be used with CraftTweaker. JEI integration is supported.
+This mod is designed for modpack makers. It is intended to be used with CraftTweaker. JEI and GameStages integration is supported.
 
 Depends on the library mod Athenaeum.
 
