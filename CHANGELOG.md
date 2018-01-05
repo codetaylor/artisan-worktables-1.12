@@ -1,10 +1,8 @@
-1.5.9
+1.5.8
+* Added: tools for the Botania materials - Manasteel, Elementium, Terrasteel
 * Changed: migrated GameStages plugin handler to Athenaeum lib
 * Requires: Athenaeum >= 1.3.3
 * Note: don't forget to regenerate the config or manually add the new materials to the list
-
-1.5.8
-* Added: tools for the Botania materials - Manasteel, Elementium, Terrasteel
 
 1.4.8
 * Changed: now loads AFTER gamestages, fixes NoClassDefFound crash
