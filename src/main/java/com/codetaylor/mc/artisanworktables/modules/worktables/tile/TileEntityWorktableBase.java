@@ -27,8 +27,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class TileEntityWorktableBase
@@ -119,7 +122,11 @@ public abstract class TileEntityWorktableBase
   public void onTakeResult(EntityPlayer player) {
 
     RegistryRecipeWorktable registry = this.getRecipeRegistry();
-    IRecipeWorktable recipe = registry.findRecipe(player, this.toolHandler.getStackInSlot(0), this.craftingMatrixHandler);
+    IRecipeWorktable recipe = registry.findRecipe(
+        player,
+        this.toolHandler.getStackInSlot(0),
+        this.craftingMatrixHandler
+    );
 
     int slotCount = this.craftingMatrixHandler.getSlots();
 
@@ -219,6 +226,50 @@ public abstract class TileEntityWorktableBase
     List<TileEntityWorktableBase> result = new ArrayList<>();
     result.addAll(joinedTableMap.values());
     return result.size() < 2 ? Collections.emptyList() : result;
+  }
+
+  /**
+   * Searches cardinal directions around all joined tables and returns an adjacent inventory.
+   * <p>
+   * If more than one inventory is found, null is returned.
+   *
+   * @return adjacent inventory or null
+   */
+  @Nullable
+  public IItemHandler getAdjacentInventory() {
+
+    List<TileEntityWorktableBase> joinedTables = this.getJoinedTables();
+    IItemHandler result = null;
+
+    for (TileEntityWorktableBase joinedTable : joinedTables) {
+      BlockPos pos = joinedTable.getPos();
+      TileEntity tileEntity;
+
+      for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+
+        if ((tileEntity = this.world.getTileEntity(pos.offset(facing))) != null) {
+
+          if (!(tileEntity instanceof TileEntityWorktableBase)) {
+
+            IItemHandler capability = tileEntity.getCapability(
+                CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+                facing.getOpposite()
+            );
+
+            if (capability != null) {
+
+              if (result != null) {
+                return null;
+              }
+
+              result = capability;
+            }
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   protected abstract int getWorkbenchGuiTextShadowColor();
