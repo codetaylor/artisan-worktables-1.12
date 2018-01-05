@@ -49,11 +49,6 @@ public class ModArtisanWorktables {
     if (ModuleToolsConfig.ENABLE_MODULE) {
       this.moduleManager.registerModules(ModuleTools.class);
     }
-
-    this.moduleManager.registerIntegrationHandler(
-        "gamestages",
-        "com.codetaylor.mc.artisanworktables.integration.PluginHandlerGameStages"
-    );
   }
 
   @Mod.EventHandler

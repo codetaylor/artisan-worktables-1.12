@@ -26,6 +26,9 @@ general {
         silver
         steel
         tin
+        manasteel
+        elementium
+        terrasteel
      >
 
     # To disable a tool type, remove it from this list.
