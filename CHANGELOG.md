@@ -1,3 +1,6 @@
+1.5.8
+* Added: tools for the Botania materials - Manasteel, Elementium, Terrasteel
+
 1.4.8
 * Changed: now loads AFTER gamestages, fixes NoClassDefFound crash
 

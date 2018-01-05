@@ -42,3 +42,8 @@ material.artisanworktables.platinum=Platinum
 material.artisanworktables.silver=Silver
 material.artisanworktables.steel=Steel
 material.artisanworktables.tin=Tin
+
+# Botania Worktable Tool Material Names
+material.artisanworktables.manasteel=Manasteel
+material.artisanworktables.elementium=Elementium
+material.artisanworktables.terrasteel=Terrasteel

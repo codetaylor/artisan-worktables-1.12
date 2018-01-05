@@ -22,5 +22,11 @@ public class ModuleMaterials {
   public static final Item.ToolMaterial SILVER = EnumHelper.addToolMaterial("artisanworktables:SILVER", 2, 200, 6.0F, 1.5F, 20);
   public static final Item.ToolMaterial STEEL = EnumHelper.addToolMaterial("artisanworktables:STEEL", 2, 500, 6.5F, 2.5F, 10);
   public static final Item.ToolMaterial TIN = EnumHelper.addToolMaterial("artisanworktables:TIN", 1, 200, 4.5F, 1.0F, 7);
+
+  // Botania tool material stats
+  // https://github.com/Vazkii/Botania/blob/938aab69e5c46d782af3fdb9d647ccd754651853/src/main/java/vazkii/botania/api/BotaniaAPI.java
+  public static final Item.ToolMaterial MANASTEEL = EnumHelper.addToolMaterial("artisanworktables:MANASTEEL", 3, 300, 6.2F, 2F, 20);
+  public static final Item.ToolMaterial ELEMENTIUM = EnumHelper.addToolMaterial("artisanworktables:ELEMENTIUM", 3, 720, 6.2F, 2F, 20);
+  public static final Item.ToolMaterial TERRASTEEL = EnumHelper.addToolMaterial("artisanworktables:TERRASTEEL", 4, 2300, 9F, 3F, 26);
   // @formatter:on
 }

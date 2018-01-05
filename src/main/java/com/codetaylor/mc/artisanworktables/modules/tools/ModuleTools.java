@@ -75,6 +75,11 @@ public class ModuleTools
     materialList.add(EnumMaterial.STEEL);
     materialList.add(EnumMaterial.TIN);
 
+    // Botania materials
+    materialList.add(EnumMaterial.MANASTEEL);
+    materialList.add(EnumMaterial.ELEMENTIUM);
+    materialList.add(EnumMaterial.TERRASTEEL);
+
     List<String> allowedToolTypeList = new ArrayList<>();
     allowedToolTypeList.addAll(Arrays.asList(ModuleToolsConfig.ENABLED_TOOL_TYPES));
 

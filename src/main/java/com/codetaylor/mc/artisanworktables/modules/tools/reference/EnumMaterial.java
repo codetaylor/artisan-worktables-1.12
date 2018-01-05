@@ -25,7 +25,11 @@ public enum EnumMaterial {
   PLATINUM("platinum", ModuleMaterials.PLATINUM, new Color(0x4BACD8), true, "ingotPlatinum"),
   SILVER("silver", ModuleMaterials.SILVER, new Color(0x7B9DA4), true, "ingotSilver"),
   STEEL("steel", ModuleMaterials.STEEL, new Color(0x858585), false, "ingotSteel"),
-  TIN("tin", ModuleMaterials.TIN, new Color(0x7C9AB2), true, "ingotTin");
+  TIN("tin", ModuleMaterials.TIN, new Color(0x7C9AB2), true, "ingotTin"),
+
+  MANASTEEL("manasteel", ModuleMaterials.MANASTEEL, new Color(0x3389ff), true, "ingotManasteel"),
+  ELEMENTIUM("elementium", ModuleMaterials.ELEMENTIUM, new Color(0xf15cae), true, "ingotElvenElementium"),
+  TERRASTEEL("terrasteel", ModuleMaterials.TERRASTEEL, new Color(0x53f900), true, "ingotTerrasteel");
 
   private String name;
   private Item.ToolMaterial toolMaterial;
