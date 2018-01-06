@@ -42,3 +42,8 @@ material.artisanworktables.platinum=铂
 material.artisanworktables.silver=银
 material.artisanworktables.steel=钢
 material.artisanworktables.tin=锡
+
+# Botania Worktable Tool Material Names
+material.artisanworktables.manasteel=魔力钢
+material.artisanworktables.elementium=源质钢
+material.artisanworktables.terrasteel=泰拉钢
