@@ -1,3 +1,6 @@
+1.5.9
+* Fixed: shaped recipes displaying as shapeless recipes in JEI (#12)
+
 1.5.8
 * Added: tools for the Botania materials - Manasteel, Elementium, Terrasteel
 * Changed: migrated GameStages plugin handler to Athenaeum lib
