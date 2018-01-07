@@ -26,6 +26,7 @@ public class ModuleWorktables
   public static class Lang {
 
     public static final String WORKTABLE_TITLE = "tile.%s.worktable.%s.name";
+    public static final String JEI_TOOLTIP_SHAPELESS_RECIPE = "jei.tooltip.shapeless.recipe";
   }
 
   public static class Textures {

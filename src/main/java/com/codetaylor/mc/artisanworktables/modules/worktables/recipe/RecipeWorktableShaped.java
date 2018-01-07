@@ -20,11 +20,28 @@ public class RecipeWorktableShaped
       NonNullList<Ingredient> input,
       ItemStack result,
       int toolDamage,
-      boolean mirrored
+      boolean mirrored,
+      ItemStack secondaryOutput,
+      float secondaryOutputChance,
+      ItemStack tertiaryOutput,
+      float tertiaryOutputChance,
+      ItemStack quaternaryOutput,
+      float quaternaryOutputChance
   ) {
 
-    super(gameStageName, result, tools, toolDamage, input);
-
+    super(
+        gameStageName,
+        result,
+        tools,
+        toolDamage,
+        input,
+        secondaryOutput,
+        secondaryOutputChance,
+        tertiaryOutput,
+        tertiaryOutputChance,
+        quaternaryOutput,
+        quaternaryOutputChance
+    );
     this.width = width;
     this.height = height;
     this.mirrored = mirrored;
@@ -39,6 +56,8 @@ public class RecipeWorktableShaped
 
     return this.height;
   }
+
+
 
   @Override
   protected boolean matches(CraftingMatrixStackHandler craftingMatrix) {

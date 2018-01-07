@@ -47,3 +47,6 @@ material.artisanworktables.tin=Tin
 material.artisanworktables.manasteel=Manasteel
 material.artisanworktables.elementium=Elementium
 material.artisanworktables.terrasteel=Terrasteel
+
+# JEI
+jei.tooltip.shapeless.recipe=Shapeless Recipe

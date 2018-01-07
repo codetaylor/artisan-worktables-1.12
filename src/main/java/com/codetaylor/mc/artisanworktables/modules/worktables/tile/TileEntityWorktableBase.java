@@ -39,13 +39,17 @@ public abstract class TileEntityWorktableBase
     implements IContainer,
     IContainerProvider<ContainerWorktable, GuiContainerWorktable> {
 
+  private static final Random RANDOM = new Random();
+
   protected ItemStackHandler toolHandler;
   protected CraftingMatrixStackHandler craftingMatrixHandler;
+  protected ItemStackHandler secondaryOutputHandler;
 
   public TileEntityWorktableBase(int width, int height) {
 
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);
     this.toolHandler = new ObservableStackHandler(1);
+    this.secondaryOutputHandler = new ItemStackHandler(3);
   }
 
   public ItemStackHandler getToolHandler() {
@@ -56,6 +60,11 @@ public abstract class TileEntityWorktableBase
   public CraftingMatrixStackHandler getCraftingMatrixHandler() {
 
     return this.craftingMatrixHandler;
+  }
+
+  public ItemStackHandler getSecondaryOutputHandler() {
+
+    return this.secondaryOutputHandler;
   }
 
   @Override
@@ -121,12 +130,20 @@ public abstract class TileEntityWorktableBase
 
   public void onTakeResult(EntityPlayer player) {
 
+    // Find the recipe
+
     RegistryRecipeWorktable registry = this.getRecipeRegistry();
     IRecipeWorktable recipe = registry.findRecipe(
         player,
         this.toolHandler.getStackInSlot(0),
         this.craftingMatrixHandler
     );
+
+    if (recipe == null) {
+      return;
+    }
+
+    // Decrease stacks in crafting matrix
 
     int slotCount = this.craftingMatrixHandler.getSlots();
 
@@ -144,6 +161,37 @@ public abstract class TileEntityWorktableBase
         }
       }
     }
+
+    // Check for and populate secondary, tertiary and quaternary outputs
+
+    ItemStack extraOutput = recipe.getSecondaryOutput();
+
+    if (!extraOutput.isEmpty()) {
+
+      if (RANDOM.nextFloat() < recipe.getSecondaryOutputChance()) {
+        this.generateExtraOutput(extraOutput);
+      }
+    }
+
+    extraOutput = recipe.getTertiaryOutput();
+
+    if (!extraOutput.isEmpty()) {
+
+      if (RANDOM.nextFloat() < recipe.getTertiaryOutputChance()) {
+        this.generateExtraOutput(extraOutput);
+      }
+    }
+
+    extraOutput = recipe.getQuaternaryOutput();
+
+    if (!extraOutput.isEmpty()) {
+
+      if (RANDOM.nextFloat() < recipe.getQuaternaryOutputChance()) {
+        this.generateExtraOutput(extraOutput);
+      }
+    }
+
+    // Damage or destroy tool
 
     ItemStack itemStack = this.toolHandler.getStackInSlot(0);
 
@@ -172,6 +220,23 @@ public abstract class TileEntityWorktableBase
         this.toolHandler.setStackInSlot(0, copy);
       }
 
+    }
+  }
+
+  private void generateExtraOutput(ItemStack extraOutput) {
+
+    ItemStack result = extraOutput;
+
+    for (int i = 0; i < 3; i++) {
+      result = this.secondaryOutputHandler.insertItem(i, result, false);
+
+      if (result.isEmpty()) {
+        break;
+      }
+    }
+
+    if (!result.isEmpty() && !this.world.isRemote) {
+      StackHelper.spawnStackOnTop(this.world, result, this.pos.add(0, 1, 0));
     }
   }
 

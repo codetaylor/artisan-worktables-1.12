@@ -17,10 +17,28 @@ public class RecipeWorktableShapeless
       ItemStack[] tools,
       NonNullList<Ingredient> input,
       ItemStack result,
-      int toolDamage
+      int toolDamage,
+      ItemStack secondaryOutput,
+      float secondaryOutputChance,
+      ItemStack tertiaryOutput,
+      float tertiaryOutputChance,
+      ItemStack quaternaryOutput,
+      float quaternaryOutputChance
   ) {
 
-    super(gameStageName, result, tools, toolDamage, input);
+    super(
+        gameStageName,
+        result,
+        tools,
+        toolDamage,
+        input,
+        secondaryOutput,
+        secondaryOutputChance,
+        tertiaryOutput,
+        tertiaryOutputChance,
+        quaternaryOutput,
+        quaternaryOutputChance
+    );
   }
 
   @Override

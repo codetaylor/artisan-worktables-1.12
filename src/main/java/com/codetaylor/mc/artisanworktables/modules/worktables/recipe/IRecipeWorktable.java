@@ -21,6 +21,18 @@ public interface IRecipeWorktable {
   @Nullable
   String getGameStageName();
 
+  ItemStack getSecondaryOutput();
+
+  float getSecondaryOutputChance();
+
+  ItemStack getTertiaryOutput();
+
+  float getTertiaryOutputChance();
+
+  ItemStack getQuaternaryOutput();
+
+  float getQuaternaryOutputChance();
+
   boolean isValidTool(ItemStack tool);
 
   ItemStack[] getTools();

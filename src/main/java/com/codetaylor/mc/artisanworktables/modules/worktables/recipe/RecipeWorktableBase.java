@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 
@@ -18,13 +19,25 @@ public abstract class RecipeWorktableBase
   protected ItemStack output;
   protected int toolDamage;
   protected NonNullList<Ingredient> ingredients;
+  protected ItemStack secondaryOutput;
+  protected float secondaryOutputChance;
+  protected ItemStack tertiaryOutput;
+  protected float tertiaryOutputChance;
+  protected ItemStack quaternaryOutput;
+  protected float quaternaryOutputChance;
 
   /* package */ RecipeWorktableBase(
       @Nullable String gameStageName,
       ItemStack output,
       ItemStack[] tools,
       int toolDamage,
-      NonNullList<Ingredient> ingredients
+      NonNullList<Ingredient> ingredients,
+      ItemStack secondaryOutput,
+      float secondaryOutputChance,
+      ItemStack tertiaryOutput,
+      float tertiaryOutputChance,
+      ItemStack quaternaryOutput,
+      float quaternaryOutputChance
   ) {
 
     this.gameStageName = gameStageName;
@@ -32,6 +45,12 @@ public abstract class RecipeWorktableBase
     this.tools = tools;
     this.toolDamage = toolDamage;
     this.ingredients = ingredients;
+    this.secondaryOutput = secondaryOutput;
+    this.secondaryOutputChance = MathHelper.clamp(secondaryOutputChance, 0, 1);
+    this.tertiaryOutput = tertiaryOutput;
+    this.tertiaryOutputChance = MathHelper.clamp(tertiaryOutputChance, 0, 1);
+    this.quaternaryOutput = quaternaryOutput;
+    this.quaternaryOutputChance = MathHelper.clamp(quaternaryOutputChance, 0, 1);
   }
 
   @Override
@@ -39,6 +58,54 @@ public abstract class RecipeWorktableBase
   public String getGameStageName() {
 
     return this.gameStageName;
+  }
+
+  @Override
+  public ItemStack getSecondaryOutput() {
+
+    if (this.secondaryOutput.isEmpty()) {
+      return ItemStack.EMPTY;
+    }
+
+    return this.secondaryOutput.copy();
+  }
+
+  @Override
+  public float getSecondaryOutputChance() {
+
+    return this.secondaryOutputChance;
+  }
+
+  @Override
+  public ItemStack getTertiaryOutput() {
+
+    if (this.tertiaryOutput.isEmpty()) {
+      return ItemStack.EMPTY;
+    }
+
+    return this.tertiaryOutput.copy();
+  }
+
+  @Override
+  public float getTertiaryOutputChance() {
+
+    return this.tertiaryOutputChance;
+  }
+
+  @Override
+  public ItemStack getQuaternaryOutput() {
+
+    if (this.quaternaryOutput.isEmpty()) {
+      return ItemStack.EMPTY;
+    }
+
+    return this.quaternaryOutput.copy();
+  }
+
+  @Override
+  public float getQuaternaryOutputChance() {
+
+    return this.quaternaryOutputChance;
   }
 
   @Override

@@ -20,7 +20,6 @@ public class JEICategoryWorktable
   private String uid;
   private String titleTranslateKey;
   private IDrawable background;
-  private IGuiHelper guiHelper;
   private ICraftingGridHelper craftingGridHelper;
 
   public JEICategoryWorktable(String uid, String titleTranslateKey, IDrawable background, IGuiHelper guiHelper) {
@@ -67,13 +66,13 @@ public class JEICategoryWorktable
     List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
     List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class).get(0);
 
-    stacks.init(0, false, 123 - 3, 34 - 3);
+    stacks.init(0, false, 108 - 3, 34 - 3);
     stacks.set(0, outputs);
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {
         int index = 1 + x + (y * 3);
-        stacks.init(index, true, x * 18 + 28 - 3, y * 18 + 16 - 3);
+        stacks.init(index, true, x * 18 + 13 - 3, y * 18 + 16 - 3);
       }
     }
 
@@ -82,12 +81,33 @@ public class JEICategoryWorktable
 
     } else {
       this.craftingGridHelper.setInputs(stacks, inputs);
-      recipeLayout.setShapeless();
     }
 
-    stacks.init(10, true, 86 - 3, 34 - 3);
+    stacks.init(10, true, 71 - 3, 34 - 3);
     stacks.set(10, tools);
 
-    recipeLayout.setRecipeTransferButton(156, 66);
+    stacks.init(11, false, 145 - 3, 16 - 3);
+    stacks.init(12, false, 145 - 3, 18 + 16 - 3);
+    stacks.init(13, false, 145 - 3, 36 + 16 - 3);
+
+    ItemStack extraOutput = wrapperWorktable.getSecondaryOutput();
+
+    if (!extraOutput.isEmpty()) {
+      stacks.set(11, extraOutput);
+    }
+
+    extraOutput = wrapperWorktable.getTertiaryOutput();
+
+    if (!extraOutput.isEmpty()) {
+      stacks.set(12, extraOutput);
+    }
+
+    extraOutput = wrapperWorktable.getQuaternaryOutput();
+
+    if (!extraOutput.isEmpty()) {
+      stacks.set(13, extraOutput);
+    }
+
+    recipeLayout.setRecipeTransferButton(157, 67); //x=157
   }
 }

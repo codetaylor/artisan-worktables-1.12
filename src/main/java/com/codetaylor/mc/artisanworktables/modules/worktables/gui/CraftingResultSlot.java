@@ -9,7 +9,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import javax.annotation.Nonnull;
 
 public class CraftingResultSlot
-    extends SlotItemHandler {
+    extends ResultSlot {
 
   private final Runnable slotChangeListener;
   private final TileEntityWorktableBase tile;
@@ -26,12 +26,6 @@ public class CraftingResultSlot
     super(itemHandler, index, xPosition, yPosition);
     this.tile = tile;
     this.slotChangeListener = slotChangeListener;
-  }
-
-  @Override
-  public boolean isItemValid(@Nonnull ItemStack stack) {
-
-    return false;
   }
 
   @Override

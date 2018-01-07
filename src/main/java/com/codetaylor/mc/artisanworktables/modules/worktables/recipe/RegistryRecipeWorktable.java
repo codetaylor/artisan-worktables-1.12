@@ -32,7 +32,13 @@ public class RegistryRecipeWorktable {
       Ingredient tool,
       Ingredient[][] inputs,
       int toolDamage,
-      boolean mirrored
+      boolean mirrored,
+      ItemStack secondaryOutput,
+      float secondaryOutputChance,
+      ItemStack tertiaryOutput,
+      float tertiaryOutputChance,
+      ItemStack quaternaryOutput,
+      float quaternaryOutputChance
   ) {
 
     NonNullList<Ingredient> inputList = NonNullList.create();
@@ -57,7 +63,13 @@ public class RegistryRecipeWorktable {
         inputList,
         result,
         toolDamage,
-        mirrored
+        mirrored,
+        secondaryOutput,
+        secondaryOutputChance,
+        tertiaryOutput,
+        tertiaryOutputChance,
+        quaternaryOutput,
+        quaternaryOutputChance
     );
 
     this.recipeList.add(recipe);
@@ -69,7 +81,13 @@ public class RegistryRecipeWorktable {
       ItemStack result,
       Ingredient tool,
       Ingredient[] inputs,
-      int toolDamage
+      int toolDamage,
+      ItemStack secondaryOutput,
+      float secondaryOutputChance,
+      ItemStack tertiaryOutput,
+      float tertiaryOutputChance,
+      ItemStack quaternaryOutput,
+      float quaternaryOutputChance
   ) {
 
     NonNullList<Ingredient> inputList = NonNullList.create();
@@ -80,7 +98,13 @@ public class RegistryRecipeWorktable {
         tool.getMatchingStacks(),
         inputList,
         result,
-        toolDamage
+        toolDamage,
+        secondaryOutput,
+        secondaryOutputChance,
+        tertiaryOutput,
+        tertiaryOutputChance,
+        quaternaryOutput,
+        quaternaryOutputChance
     );
 
     this.recipeList.add(recipe);

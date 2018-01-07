@@ -1,3 +1,9 @@
+1.6.9:
+* Added: support for up to three optional outputs with chance
+* Added: shapeless recipe indicator with tooltip in JEI
+* Changed: updated zh_cn.lang (PR#10 DYColdWind)
+* Note: be sure to checkout the ZENSCRIPT.md link for the added syntax
+
 1.5.9
 * Fixed: shaped recipes displaying as shapeless recipes in JEI (#12)
 

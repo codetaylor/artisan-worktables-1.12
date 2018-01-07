@@ -39,7 +39,7 @@ public class ContainerWorktable
         this.tile,
         resultHandler,
         0,
-        124,
+        109,
         35
     ));
 
@@ -52,7 +52,7 @@ public class ContainerWorktable
             slotChangeListener,
             craftingMatrixHandler,
             x + y * 3,
-            29 + x * 18,
+            14 + x * 18,
             17 + y * 18
         ));
       }
@@ -76,9 +76,14 @@ public class ContainerWorktable
         itemStack -> this.tile.getRecipeRegistry().containsRecipeWithTool(itemStack),
         this.tile.getToolHandler(),
         0,
-        87,
+        72,
         35
     ));
+
+    // Secondary output 48 - 50
+    for (int i = 0; i < 3; i++) {
+      this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146, 17 + i * 18));
+    }
 
     this.updateRecipeOutput(playerInventory.player);
   }

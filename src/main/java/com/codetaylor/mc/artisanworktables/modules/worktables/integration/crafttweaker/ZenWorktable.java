@@ -12,6 +12,7 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -31,7 +32,13 @@ public class ZenWorktable {
       IIngredient tool,
       int toolDamage,
       boolean mirrored,
-      IIngredient[][] input
+      IIngredient[][] input,
+      @Optional IItemStack secondaryOutput,
+      @Optional float secondaryOutputChance,
+      @Optional IItemStack tertiaryOutput,
+      @Optional float tertiaryOutputChance,
+      @Optional IItemStack quaternaryOutput,
+      @Optional float quaternaryOutputChance
   ) {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
@@ -41,7 +48,13 @@ public class ZenWorktable {
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientMatrix(input),
         toolDamage,
-        mirrored
+        mirrored,
+        CTInputHelper.toStack(secondaryOutput),
+        secondaryOutputChance,
+        CTInputHelper.toStack(tertiaryOutput),
+        tertiaryOutputChance,
+        CTInputHelper.toStack(quaternaryOutput),
+        quaternaryOutputChance
     ));
   }
 
@@ -53,7 +66,13 @@ public class ZenWorktable {
       IIngredient tool,
       int toolDamage,
       boolean mirrored,
-      IIngredient[][] input
+      IIngredient[][] input,
+      @Optional IItemStack secondaryOutput,
+      @Optional float secondaryOutputChance,
+      @Optional IItemStack tertiaryOutput,
+      @Optional float tertiaryOutputChance,
+      @Optional IItemStack quaternaryOutput,
+      @Optional float quaternaryOutputChance
   ) {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
@@ -63,20 +82,32 @@ public class ZenWorktable {
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientMatrix(input),
         toolDamage,
-        mirrored
+        mirrored,
+        CTInputHelper.toStack(secondaryOutput),
+        secondaryOutputChance,
+        CTInputHelper.toStack(tertiaryOutput),
+        tertiaryOutputChance,
+        CTInputHelper.toStack(quaternaryOutput),
+        quaternaryOutputChance
     ));
   }
 
   private static class AddShaped
       extends BaseUndoable {
 
-    private String gameStageName;
-    private String table;
+    private final String gameStageName;
+    private final String table;
     private final ItemStack result;
     private final Ingredient tool;
     private final Ingredient[][] input;
     private final int toolDamage;
     private final boolean mirrored;
+    private final ItemStack secondaryOutput;
+    private final float secondaryOutputChance;
+    private final ItemStack tertiaryOutput;
+    private final float tertiaryOutputChance;
+    private final ItemStack quaternaryOutput;
+    private final float quaternaryOutputChance;
 
     AddShaped(
         String gameStageName,
@@ -85,7 +116,13 @@ public class ZenWorktable {
         Ingredient tool,
         Ingredient[][] input,
         int toolDamage,
-        boolean mirrored
+        boolean mirrored,
+        ItemStack secondaryOutput,
+        float secondaryOutputChance,
+        ItemStack tertiaryOutput,
+        float tertiaryOutputChance,
+        ItemStack quaternaryOutput,
+        float quaternaryOutputChance
     ) {
 
       super("WorktableShaped");
@@ -96,6 +133,12 @@ public class ZenWorktable {
       this.input = input;
       this.toolDamage = toolDamage;
       this.mirrored = mirrored;
+      this.secondaryOutput = secondaryOutput;
+      this.secondaryOutputChance = secondaryOutputChance;
+      this.tertiaryOutput = tertiaryOutput;
+      this.tertiaryOutputChance = tertiaryOutputChance;
+      this.quaternaryOutput = quaternaryOutput;
+      this.quaternaryOutputChance = quaternaryOutputChance;
     }
 
     @Override
@@ -110,7 +153,13 @@ public class ZenWorktable {
             this.tool,
             this.input,
             this.toolDamage,
-            this.mirrored
+            this.mirrored,
+            this.secondaryOutput,
+            this.secondaryOutputChance,
+            this.tertiaryOutput,
+            this.tertiaryOutputChance,
+            this.quaternaryOutput,
+            this.quaternaryOutputChance
         );
 
       } else {
@@ -136,7 +185,13 @@ public class ZenWorktable {
       IItemStack result,
       IIngredient tool,
       int toolDamage,
-      IIngredient[] input
+      IIngredient[] input,
+      @Optional IItemStack secondaryOutput,
+      @Optional float secondaryOutputChance,
+      @Optional IItemStack tertiaryOutput,
+      @Optional float tertiaryOutputChance,
+      @Optional IItemStack quaternaryOutput,
+      @Optional float quaternaryOutputChance
   ) {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
@@ -145,7 +200,13 @@ public class ZenWorktable {
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientArray(input),
-        toolDamage
+        toolDamage,
+        CTInputHelper.toStack(secondaryOutput),
+        secondaryOutputChance,
+        CTInputHelper.toStack(tertiaryOutput),
+        tertiaryOutputChance,
+        CTInputHelper.toStack(quaternaryOutput),
+        quaternaryOutputChance
     ));
   }
 
@@ -156,7 +217,13 @@ public class ZenWorktable {
       IItemStack result,
       IIngredient tool,
       int toolDamage,
-      IIngredient[] input
+      IIngredient[] input,
+      @Optional IItemStack secondaryOutput,
+      @Optional float secondaryOutputChance,
+      @Optional IItemStack tertiaryOutput,
+      @Optional float tertiaryOutputChance,
+      @Optional IItemStack quaternaryOutput,
+      @Optional float quaternaryOutputChance
   ) {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
@@ -165,21 +232,46 @@ public class ZenWorktable {
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientArray(input),
-        toolDamage
+        toolDamage,
+        CTInputHelper.toStack(secondaryOutput),
+        secondaryOutputChance,
+        CTInputHelper.toStack(tertiaryOutput),
+        tertiaryOutputChance,
+        CTInputHelper.toStack(quaternaryOutput),
+        quaternaryOutputChance
     ));
   }
 
   private static class AddShapeless
       extends BaseUndoable {
 
-    private String gameStageName;
-    private String table;
+    private final String gameStageName;
+    private final String table;
     private final ItemStack result;
     private final Ingredient tool;
     private final Ingredient[] input;
     private final int toolDamage;
+    private final ItemStack secondaryOutput;
+    private final float secondaryOutputChance;
+    private final ItemStack tertiaryOutput;
+    private final float tertiaryOutputChance;
+    private final ItemStack quaternaryOutput;
+    private final float quaternaryOutputChance;
 
-    AddShapeless(String gameStageName, String table, ItemStack result, Ingredient tool, Ingredient[] input, int toolDamage) {
+    AddShapeless(
+        String gameStageName,
+        String table,
+        ItemStack result,
+        Ingredient tool,
+        Ingredient[] input,
+        int toolDamage,
+        ItemStack secondaryOutput,
+        float secondaryOutputChance,
+        ItemStack tertiaryOutput,
+        float tertiaryOutputChance,
+        ItemStack quaternaryOutput,
+        float quaternaryOutputChance
+    ) {
 
       super("WorktableShapeless");
       this.gameStageName = gameStageName;
@@ -188,6 +280,12 @@ public class ZenWorktable {
       this.tool = tool;
       this.input = input;
       this.toolDamage = toolDamage;
+      this.secondaryOutput = secondaryOutput;
+      this.secondaryOutputChance = secondaryOutputChance;
+      this.tertiaryOutput = tertiaryOutput;
+      this.tertiaryOutputChance = tertiaryOutputChance;
+      this.quaternaryOutput = quaternaryOutput;
+      this.quaternaryOutputChance = quaternaryOutputChance;
     }
 
     @Override
@@ -196,7 +294,19 @@ public class ZenWorktable {
       RegistryRecipeWorktable registry = WorktableAPI.RECIPE_REGISTRY_MAP.get(this.table);
 
       if (registry != null) {
-        registry.addRecipeShapeless(this.gameStageName, this.result, this.tool, this.input, this.toolDamage);
+        registry.addRecipeShapeless(
+            this.gameStageName,
+            this.result,
+            this.tool,
+            this.input,
+            this.toolDamage,
+            this.secondaryOutput,
+            this.secondaryOutputChance,
+            this.tertiaryOutput,
+            this.tertiaryOutputChance,
+            this.quaternaryOutput,
+            this.quaternaryOutputChance
+        );
 
       } else {
         CTLogHelper.logError("Unrecognized table name: " + this.table + ", valid values are: " + Arrays.toString(

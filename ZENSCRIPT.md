@@ -12,14 +12,70 @@ import mods.artisanworktables.Worktable;
 
 Valid table names are: `basic`, `blacksmith`, `carpenter`, `jeweler`, `mason`, and `tailor`.
 
+All extra outputs are optional.
+
 ```
 // Normal recipes
-Worktable.addRecipeShaped(String table, IItemStack result, IIngredient tool, int toolDamage, boolean mirrored, IIngredient[][] input);
-Worktable.addRecipeShapeless(String table, IItemStack result, IIngredient tool, int toolDamage, IIngredient[] input);
+Worktable.addRecipeShaped(
+  String table, 
+  IItemStack result, 
+  IIngredient tool, 
+  int toolDamage, 
+  boolean mirrored, 
+  IIngredient[][] input,
+  @Optional IItemStack secondaryOutput,
+  @Optional float secondaryOutputChance,
+  @Optional IItemStack tertiaryOutput,
+  @Optional float tertiaryOutputChance,
+  @Optional IItemStack quaternaryOutput,
+  @Optional float quaternaryOutputChance  
+);
+
+Worktable.addRecipeShapeless(
+  String table, 
+  IItemStack result, 
+  IIngredient tool, 
+  int toolDamage, 
+  IIngredient[] input,
+  @Optional IItemStack secondaryOutput,
+  @Optional float secondaryOutputChance,
+  @Optional IItemStack tertiaryOutput,
+  @Optional float tertiaryOutputChance,
+  @Optional IItemStack quaternaryOutput,
+  @Optional float quaternaryOutputChance
+);
 
 // GameStages staged recipes 
-Worktable.addStagedRecipeShaped(String gameStageName, String table, IItemStack result, IIngredient tool, int toolDamage, boolean mirrored, IIngredient[][] input);
-Worktable.addStagedRecipeShapeless(String gameStageName, String table, IItemStack result, IIngredient tool, int toolDamage, IIngredient[] input);
+Worktable.addStagedRecipeShaped(
+  String gameStageName, 
+  String table, 
+  IItemStack result, 
+  IIngredient tool, 
+  int toolDamage, 
+  boolean mirrored, 
+  IIngredient[][] input,
+  @Optional IItemStack secondaryOutput,
+  @Optional float secondaryOutputChance,
+  @Optional IItemStack tertiaryOutput,
+  @Optional float tertiaryOutputChance,
+  @Optional IItemStack quaternaryOutput,
+  @Optional float quaternaryOutputChance
+);
+
+Worktable.addStagedRecipeShapeless(
+  String gameStageName, 
+  String table, 
+  IItemStack result, 
+  IIngredient tool, 
+  int toolDamage, 
+  IIngredient[] input,
+  @Optional IItemStack secondaryOutput,
+  @Optional float secondaryOutputChance,
+  @Optional IItemStack tertiaryOutput,
+  @Optional float tertiaryOutputChance,
+  @Optional IItemStack quaternaryOutput,
+  @Optional float quaternaryOutputChance
+);
 ```
 
 All tools are grouped in OreDict entries based on their tool type for easy recipe reference:
@@ -59,4 +115,14 @@ Worktable.addRecipeShapeless("carpenter", <minecraft:planks> * 16, <minecraft:di
 ]);
 
 Worktable.addRecipeShapeless("jeweler", <minecraft:emerald>, <ore:pickaxe>, 1, [<minecraft:diamond>]);
+
+// Create a recipe that turns three leather into a string using the tailor's shears with a 50% chance to create
+// 5 extra string and a 1% chance to create an extra diamond.
+Worktable.addStagedRecipeShaped("gameStageOne", "tailor", <minecraft:string>, <ore:tailors_shears>, 10, true, [
+    [<minecraft:leather>, null, null],
+    [null, <minecraft:leather>, null],
+    [null, null, <minecraft:leather>]],
+    <minecraft:string> * 5, 0.5,
+    <minecraft:diamond>, 0.01
+);
 ```
