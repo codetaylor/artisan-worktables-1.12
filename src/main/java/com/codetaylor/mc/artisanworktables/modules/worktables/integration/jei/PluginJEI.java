@@ -31,7 +31,7 @@ public class PluginJEI
 
     // Workbench
     for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
-      registry.addRecipeCategories(this.createWorkbenchCategory(type));
+      registry.addRecipeCategories(this.createWorkbenchCategory(type, registry.getJeiHelpers().getGuiHelper()));
     }
 
     for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
@@ -42,8 +42,16 @@ public class PluginJEI
     }
 
     for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
-      registry.handleRecipes(RecipeWorktableShaped.class, JEIRecipeWrapperWorktable::new, PluginJEI.createUID(type));
-      registry.handleRecipes(RecipeWorktableShapeless.class, JEIRecipeWrapperWorktable::new, PluginJEI.createUID(type));
+      registry.handleRecipes(
+          RecipeWorktableShaped.class,
+          recipe -> new JEIRecipeWrapperWorktable(recipe, true),
+          PluginJEI.createUID(type)
+      );
+      registry.handleRecipes(
+          RecipeWorktableShapeless.class,
+          recipe -> new JEIRecipeWrapperWorktable(recipe, false),
+          PluginJEI.createUID(type)
+      );
     }
 
     // TODO: recipe click area
@@ -92,12 +100,13 @@ public class PluginJEI
     }
   }
 
-  private JEICategoryWorktable createWorkbenchCategory(BlockWorktable.EnumType type) {
+  private JEICategoryWorktable createWorkbenchCategory(BlockWorktable.EnumType type, IGuiHelper guiHelper) {
 
     return new JEICategoryWorktable(
         PluginJEI.createUID(type),
         this.createTitleTranslateKey(type),
-        this.createBackground(type)
+        this.createBackground(type),
+        guiHelper
     );
   }
 

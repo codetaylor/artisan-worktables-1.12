@@ -30,6 +30,16 @@ public class RecipeWorktableShaped
     this.mirrored = mirrored;
   }
 
+  public int getWidth() {
+
+    return this.width;
+  }
+
+  public int getHeight() {
+
+    return this.height;
+  }
+
   @Override
   protected boolean matches(CraftingMatrixStackHandler craftingMatrix) {
 

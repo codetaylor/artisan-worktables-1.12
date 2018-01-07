@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.gui.ICraftingGridHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -18,12 +20,15 @@ public class JEICategoryWorktable
   private String uid;
   private String titleTranslateKey;
   private IDrawable background;
+  private IGuiHelper guiHelper;
+  private ICraftingGridHelper craftingGridHelper;
 
-  public JEICategoryWorktable(String uid, String titleTranslateKey, IDrawable background) {
+  public JEICategoryWorktable(String uid, String titleTranslateKey, IDrawable background, IGuiHelper guiHelper) {
 
     this.uid = uid;
     this.titleTranslateKey = titleTranslateKey;
     this.background = background;
+    this.craftingGridHelper = guiHelper.createCraftingGridHelper(1, 0);
   }
 
   @Override
@@ -57,7 +62,8 @@ public class JEICategoryWorktable
 
     IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
 
-    List<ItemStack> tools = ((JEIRecipeWrapperWorktable) recipeWrapper).getTools();
+    JEIRecipeWrapperWorktable wrapperWorktable = (JEIRecipeWrapperWorktable) recipeWrapper;
+    List<ItemStack> tools = wrapperWorktable.getTools();
     List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
     List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class).get(0);
 
@@ -71,8 +77,12 @@ public class JEICategoryWorktable
       }
     }
 
-    for (int i = 1; i <= inputs.size(); i++) {
-      stacks.set(i, inputs.get(i - 1));
+    if (wrapperWorktable.isShaped()) {
+      this.craftingGridHelper.setInputs(stacks, inputs, wrapperWorktable.getWidth(), wrapperWorktable.getHeight());
+
+    } else {
+      this.craftingGridHelper.setInputs(stacks, inputs);
+      recipeLayout.setShapeless();
     }
 
     stacks.init(10, true, 86 - 3, 34 - 3);
