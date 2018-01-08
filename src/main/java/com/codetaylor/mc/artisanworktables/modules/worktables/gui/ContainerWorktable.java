@@ -226,7 +226,7 @@ public class ContainerWorktable
     }
 
     // tool
-    result.add(this.inventorySlots.get(this.inventorySlots.size() - 1));
+    result.add(this.inventorySlots.get(this.inventorySlots.size() - 4));
 
     return result;
   }
