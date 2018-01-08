@@ -103,7 +103,13 @@ public class JEIRecipeWrapperWorktable
   public void getIngredients(IIngredients ingredients) {
 
     ingredients.setInputLists(ItemStack.class, this.inputs);
-    ingredients.setOutput(ItemStack.class, this.output);
+
+    List<ItemStack> output = new ArrayList<>();
+    output.add(this.output);
+    output.add(this.secondaryOutput);
+    output.add(this.tertiaryOutput);
+    output.add(this.quaternaryOutput);
+    ingredients.setOutputs(ItemStack.class, output);
   }
 
   @Override
