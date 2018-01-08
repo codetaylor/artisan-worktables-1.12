@@ -17,6 +17,7 @@ import java.util.List;
 public class ContainerWorktable
     extends Container {
 
+  private final CraftingResultSlot craftingResultSlot;
   private World world;
   private TileEntityWorktableBase tile;
   private final ItemStackHandler resultHandler;
@@ -34,14 +35,15 @@ public class ContainerWorktable
 
     // Result Slot 0
     this.resultHandler = new ItemStackHandler(1);
-    this.addSlotToContainer(new CraftingResultSlot(
+    this.craftingResultSlot = new CraftingResultSlot(
         slotChangeListener,
         this.tile,
         resultHandler,
         0,
         109,
         35
-    ));
+    );
+    this.addSlotToContainer(this.craftingResultSlot);
 
     // Crafting Matrix 1 - 9
     CraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
@@ -143,6 +145,12 @@ public class ContainerWorktable
     }
 
     return false;
+  }
+
+  @Override
+  public boolean canMergeSlot(ItemStack stack, Slot slotIn) {
+
+    return slotIn != this.craftingResultSlot && super.canMergeSlot(stack, slotIn);
   }
 
   @Override

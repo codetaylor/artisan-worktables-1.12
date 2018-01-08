@@ -1,5 +1,6 @@
 1.6.10:
-* Fixed: extra chance drops are now properly linked in JEI; when searching for recipes to make the extra chance drop, it will show the worktable recipe 
+* Fixed: extra chance drops are now properly linked in JEI; when searching for recipes to make the extra chance drop, it will show the worktable recipe (#14)
+* Fixed: double-click same item as craft result will not cause a craft to happen (#15) 
 
 1.6.9:
 * Added: support for up to three optional outputs with chance
