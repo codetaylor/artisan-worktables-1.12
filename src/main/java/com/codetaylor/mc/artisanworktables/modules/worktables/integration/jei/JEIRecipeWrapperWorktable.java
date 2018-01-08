@@ -158,16 +158,7 @@ public class JEIRecipeWrapperWorktable
     }
 
     if (!this.shaped) {
-      //GlStateManager.color(0, 0, 0);
       GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 221, 8, 18, 17, 100, 0, 0, 1, 1);
-
-      minecraft.fontRenderer.drawString(
-          mouseX + "," + mouseY,
-          0,
-          0,
-          0xFFFFFFFF,
-          true
-      );
     }
 
     GlStateManager.popMatrix();
