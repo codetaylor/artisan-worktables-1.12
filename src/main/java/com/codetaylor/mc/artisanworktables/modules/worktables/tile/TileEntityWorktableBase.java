@@ -99,6 +99,7 @@ public abstract class TileEntityWorktableBase
     tag = super.writeToNBT(tag);
     tag.setTag("craftingMatrixHandler", this.craftingMatrixHandler.serializeNBT());
     tag.setTag("toolHandler", this.toolHandler.serializeNBT());
+    tag.setTag("secondaryOutputHandler", this.secondaryOutputHandler.serializeNBT());
     return tag;
   }
 
@@ -108,6 +109,7 @@ public abstract class TileEntityWorktableBase
     super.readFromNBT(tag);
     this.craftingMatrixHandler.deserializeNBT(tag.getCompoundTag("craftingMatrixHandler"));
     this.toolHandler.deserializeNBT(tag.getCompoundTag("toolHandler"));
+    this.secondaryOutputHandler.deserializeNBT(tag.getCompoundTag("secondaryOutputHandler"));
   }
 
   @Override
@@ -164,30 +166,32 @@ public abstract class TileEntityWorktableBase
 
     // Check for and populate secondary, tertiary and quaternary outputs
 
-    ItemStack extraOutput = recipe.getSecondaryOutput();
+    if (!this.world.isRemote) {
+      ItemStack extraOutput = recipe.getSecondaryOutput();
 
-    if (!extraOutput.isEmpty()) {
+      if (!extraOutput.isEmpty()) {
 
-      if (RANDOM.nextFloat() < recipe.getSecondaryOutputChance()) {
-        this.generateExtraOutput(extraOutput);
+        if (RANDOM.nextFloat() < recipe.getSecondaryOutputChance()) {
+          this.generateExtraOutput(extraOutput);
+        }
       }
-    }
 
-    extraOutput = recipe.getTertiaryOutput();
+      extraOutput = recipe.getTertiaryOutput();
 
-    if (!extraOutput.isEmpty()) {
+      if (!extraOutput.isEmpty()) {
 
-      if (RANDOM.nextFloat() < recipe.getTertiaryOutputChance()) {
-        this.generateExtraOutput(extraOutput);
+        if (RANDOM.nextFloat() < recipe.getTertiaryOutputChance()) {
+          this.generateExtraOutput(extraOutput);
+        }
       }
-    }
 
-    extraOutput = recipe.getQuaternaryOutput();
+      extraOutput = recipe.getQuaternaryOutput();
 
-    if (!extraOutput.isEmpty()) {
+      if (!extraOutput.isEmpty()) {
 
-      if (RANDOM.nextFloat() < recipe.getQuaternaryOutputChance()) {
-        this.generateExtraOutput(extraOutput);
+        if (RANDOM.nextFloat() < recipe.getQuaternaryOutputChance()) {
+          this.generateExtraOutput(extraOutput);
+        }
       }
     }
 
@@ -219,8 +223,9 @@ public abstract class TileEntityWorktableBase
         copy.setItemDamage(itemDamage);
         this.toolHandler.setStackInSlot(0, copy);
       }
-
     }
+
+    this.markDirty();
   }
 
   private void generateExtraOutput(ItemStack extraOutput) {

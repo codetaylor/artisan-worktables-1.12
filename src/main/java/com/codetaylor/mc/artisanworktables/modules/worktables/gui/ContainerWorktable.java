@@ -103,6 +103,8 @@ public class ContainerWorktable
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
     }
+
+    this.detectAndSendChanges();
   }
 
   @Override
