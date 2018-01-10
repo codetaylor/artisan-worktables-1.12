@@ -90,12 +90,13 @@ public class ModuleWorktables
         BlockWorktable.NAME
     );
     registry.registerTileEntities(
+        TileEntityWorktableBasic.class,
         TileEntityWorktableBlacksmith.class,
         TileEntityWorktableCarpenter.class,
+        TileEntityWorktableEngineer.class,
         TileEntityWorktableJeweler.class,
         TileEntityWorktableMason.class,
-        TileEntityWorktableTailor.class,
-        TileEntityWorktableBasic.class
+        TileEntityWorktableTailor.class
     );
   }
 

@@ -10,7 +10,7 @@ import mods.artisanworktables.Worktable;
 
 **Note:** The tool slots assume the item being used as the tool is an item with durability. Using an item without durability in a recipe will have unexpected and, most likely, undesired results. Also, matching tools based on NBT data is not supported.
 
-Valid table names are: `basic`, `blacksmith`, `carpenter`, `jeweler`, `mason`, and `tailor`.
+Valid table names are: `basic`, `blacksmith`, `carpenter`, `engineer`, `jeweler`, `mason`, and `tailor`.
 
 All extra outputs are optional.
 

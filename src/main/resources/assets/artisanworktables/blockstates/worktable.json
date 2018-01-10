@@ -52,6 +52,14 @@
           "top": "artisanworktables:blocks/worktable_basic_top",
           "particle": "artisanworktables:blocks/worktable_basic_side"
         }
+      },
+      "engineer": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_engineer_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_engineer_top",
+          "particle": "artisanworktables:blocks/worktable_engineer_side"
+        }
       }
     }
   }
