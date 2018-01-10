@@ -1,6 +1,7 @@
 1.7.10:
 * Added: new table: engineers worktable
 * Added: new tools: engineers spanner, engineers driver
+* Changed: lightened the wood tool color slightly
 * Note: don't forget to regenerate the config or manually add the new tool types to the list
 
 1.6.10:
