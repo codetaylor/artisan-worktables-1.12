@@ -12,7 +12,7 @@ import java.util.List;
 public class RecipeWorktableShapeless
     extends RecipeWorktableBase {
 
-  public RecipeWorktableShapeless(
+  /* package */ RecipeWorktableShapeless(
       String gameStageName,
       ItemStack[] tools,
       NonNullList<Ingredient> input,

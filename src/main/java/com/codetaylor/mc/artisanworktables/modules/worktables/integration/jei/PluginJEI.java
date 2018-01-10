@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShaped;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShapeless;
@@ -30,18 +30,18 @@ public class PluginJEI
     this.jeiHelpers = registry.getJeiHelpers();
 
     // Workbench
-    for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
+    for (EnumWorktableType type : EnumWorktableType.values()) {
       registry.addRecipeCategories(this.createWorkbenchCategory(type, registry.getJeiHelpers().getGuiHelper()));
     }
 
-    for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
+    for (EnumWorktableType type : EnumWorktableType.values()) {
       registry.addRecipeCatalyst(
           new ItemStack(ModuleWorktables.Blocks.WORKTABLE, 1, type.getMeta()),
           PluginJEI.createUID(type)
       );
     }
 
-    for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
+    for (EnumWorktableType type : EnumWorktableType.values()) {
       registry.handleRecipes(
           RecipeWorktableShaped.class,
           recipe -> new JEIRecipeWrapperWorktable(recipe, true),
@@ -58,13 +58,13 @@ public class PluginJEI
 
     // Transfer handlers
     IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
-    for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
+    for (EnumWorktableType type : EnumWorktableType.values()) {
       transferRegistry.addRecipeTransferHandler(new JEIRecipeTransferInfoWorktable(type, PluginJEI.createUID(type)));
     }
 
-    for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
+    for (EnumWorktableType type : EnumWorktableType.values()) {
       List<IRecipeWorktable> recipeList = new ArrayList<>();
-      RegistryRecipeWorktable recipeRegistry = WorktableAPI.RECIPE_REGISTRY_MAP.get(type.getName());
+      RegistryRecipeWorktable recipeRegistry = WorktableAPI.getRecipeRegistry(type);
       recipeRegistry.getRecipeList(recipeList);
       registry.addRecipes(recipeList, PluginJEI.createUID(type));
     }
@@ -79,8 +79,8 @@ public class PluginJEI
     // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
 
-      for (BlockWorktable.EnumType type : BlockWorktable.EnumType.values()) {
-        RegistryRecipeWorktable registry = WorktableAPI.RECIPE_REGISTRY_MAP.get(type.getName());
+      for (EnumWorktableType type : EnumWorktableType.values()) {
+        RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(type);
 
         if (registry != null) {
           List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());
@@ -100,7 +100,7 @@ public class PluginJEI
     }
   }
 
-  private JEICategoryWorktable createWorkbenchCategory(BlockWorktable.EnumType type, IGuiHelper guiHelper) {
+  private JEICategoryWorktable createWorkbenchCategory(EnumWorktableType type, IGuiHelper guiHelper) {
 
     return new JEICategoryWorktable(
         PluginJEI.createUID(type),
@@ -110,7 +110,7 @@ public class PluginJEI
     );
   }
 
-  private IDrawable createBackground(BlockWorktable.EnumType type) {
+  private IDrawable createBackground(EnumWorktableType type) {
 
     IGuiHelper guiHelper = this.jeiHelpers.getGuiHelper();
     ResourceLocation resourceLocation = new ResourceLocation(
@@ -120,12 +120,12 @@ public class PluginJEI
     return guiHelper.createDrawable(resourceLocation, 0 + 3, 0 + 3, 176 - 6, 80);
   }
 
-  private String createTitleTranslateKey(BlockWorktable.EnumType type) {
+  private String createTitleTranslateKey(EnumWorktableType type) {
 
     return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, type.getName());
   }
 
-  public static String createUID(BlockWorktable.EnumType type) {
+  public static String createUID(EnumWorktableType type) {
 
     return ModuleWorktables.MOD_ID + "_" + type.getName();
   }

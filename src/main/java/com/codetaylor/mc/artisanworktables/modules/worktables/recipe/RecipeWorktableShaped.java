@@ -12,7 +12,7 @@ public class RecipeWorktableShaped
   private final int height;
   private boolean mirrored;
 
-  public RecipeWorktableShaped(
+  /* package */ RecipeWorktableShaped(
       String gameStageName,
       int width,
       int height,
@@ -56,8 +56,6 @@ public class RecipeWorktableShaped
 
     return this.height;
   }
-
-
 
   @Override
   protected boolean matches(CraftingMatrixStackHandler craftingMatrix) {

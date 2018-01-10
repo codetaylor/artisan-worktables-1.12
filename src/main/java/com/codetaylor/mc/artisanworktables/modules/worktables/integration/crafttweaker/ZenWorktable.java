@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
@@ -41,9 +41,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
+    EnumWorktableType type;
+
+    try {
+      type = EnumWorktableType.fromName(table);
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
+      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      return;
+    }
+
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
         null,
-        table,
+        type,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientMatrix(input),
@@ -75,9 +86,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
+    EnumWorktableType type;
+
+    try {
+      type = EnumWorktableType.fromName(table);
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
+      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      return;
+    }
+
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
         gameStageName,
-        table,
+        type,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientMatrix(input),
@@ -96,7 +118,7 @@ public class ZenWorktable {
       extends BaseUndoable {
 
     private final String gameStageName;
-    private final String table;
+    private final EnumWorktableType type;
     private final ItemStack result;
     private final Ingredient tool;
     private final Ingredient[][] input;
@@ -111,7 +133,7 @@ public class ZenWorktable {
 
     AddShaped(
         String gameStageName,
-        String table,
+        EnumWorktableType type,
         ItemStack result,
         Ingredient tool,
         Ingredient[][] input,
@@ -127,7 +149,7 @@ public class ZenWorktable {
 
       super("WorktableShaped");
       this.gameStageName = gameStageName;
-      this.table = table;
+      this.type = type;
       this.result = result;
       this.tool = tool;
       this.input = input;
@@ -144,28 +166,22 @@ public class ZenWorktable {
     @Override
     public void apply() {
 
-      RegistryRecipeWorktable registry = WorktableAPI.RECIPE_REGISTRY_MAP.get(this.table);
+      RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(this.type);
 
-      if (registry != null) {
-        registry.addRecipeShaped(
-            this.gameStageName,
-            this.result,
-            this.tool,
-            this.input,
-            this.toolDamage,
-            this.mirrored,
-            this.secondaryOutput,
-            this.secondaryOutputChance,
-            this.tertiaryOutput,
-            this.tertiaryOutputChance,
-            this.quaternaryOutput,
-            this.quaternaryOutputChance
-        );
-
-      } else {
-        CTLogHelper.logError("Unrecognized table name: " + this.table + ", valid values are: " + Arrays.toString(
-            BlockWorktable.EnumType.NAMES));
-      }
+      registry.addRecipeShaped(
+          this.gameStageName,
+          this.result,
+          this.tool,
+          this.input,
+          this.toolDamage,
+          this.mirrored,
+          this.secondaryOutput,
+          this.secondaryOutputChance,
+          this.tertiaryOutput,
+          this.tertiaryOutputChance,
+          this.quaternaryOutput,
+          this.quaternaryOutputChance
+      );
     }
 
     @Override
@@ -194,9 +210,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
+    EnumWorktableType type;
+
+    try {
+      type = EnumWorktableType.fromName(table);
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
+      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      return;
+    }
+
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
         null,
-        table,
+        type,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientArray(input),
@@ -226,9 +253,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
+    EnumWorktableType type;
+
+    try {
+      type = EnumWorktableType.fromName(table);
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
+      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      return;
+    }
+
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
         gameStageName,
-        table,
+        type,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientArray(input),
@@ -246,7 +284,7 @@ public class ZenWorktable {
       extends BaseUndoable {
 
     private final String gameStageName;
-    private final String table;
+    private final EnumWorktableType type;
     private final ItemStack result;
     private final Ingredient tool;
     private final Ingredient[] input;
@@ -260,7 +298,7 @@ public class ZenWorktable {
 
     AddShapeless(
         String gameStageName,
-        String table,
+        EnumWorktableType type,
         ItemStack result,
         Ingredient tool,
         Ingredient[] input,
@@ -275,7 +313,7 @@ public class ZenWorktable {
 
       super("WorktableShapeless");
       this.gameStageName = gameStageName;
-      this.table = table;
+      this.type = type;
       this.result = result;
       this.tool = tool;
       this.input = input;
@@ -291,27 +329,21 @@ public class ZenWorktable {
     @Override
     public void apply() {
 
-      RegistryRecipeWorktable registry = WorktableAPI.RECIPE_REGISTRY_MAP.get(this.table);
+      RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(this.type);
 
-      if (registry != null) {
-        registry.addRecipeShapeless(
-            this.gameStageName,
-            this.result,
-            this.tool,
-            this.input,
-            this.toolDamage,
-            this.secondaryOutput,
-            this.secondaryOutputChance,
-            this.tertiaryOutput,
-            this.tertiaryOutputChance,
-            this.quaternaryOutput,
-            this.quaternaryOutputChance
-        );
-
-      } else {
-        CTLogHelper.logError("Unrecognized table name: " + this.table + ", valid values are: " + Arrays.toString(
-            BlockWorktable.EnumType.values()));
-      }
+      registry.addRecipeShapeless(
+          this.gameStageName,
+          this.result,
+          this.tool,
+          this.input,
+          this.toolDamage,
+          this.secondaryOutput,
+          this.secondaryOutputChance,
+          this.tertiaryOutput,
+          this.tertiaryOutputChance,
+          this.quaternaryOutput,
+          this.quaternaryOutputChance
+      );
     }
 
     @Override

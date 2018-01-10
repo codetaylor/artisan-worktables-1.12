@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
@@ -14,10 +15,10 @@ import java.util.List;
 public class JEIRecipeTransferInfoWorktable
     implements IRecipeTransferInfo<ContainerWorktable> {
 
-  private BlockWorktable.EnumType type;
+  private EnumWorktableType type;
   private String uid;
 
-  public JEIRecipeTransferInfoWorktable(BlockWorktable.EnumType type, String uid) {
+  public JEIRecipeTransferInfoWorktable(EnumWorktableType type, String uid) {
 
     this.type = type;
     this.uid = uid;

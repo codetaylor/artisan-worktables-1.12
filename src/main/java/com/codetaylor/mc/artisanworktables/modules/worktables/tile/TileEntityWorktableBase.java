@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
@@ -41,9 +42,9 @@ public abstract class TileEntityWorktableBase
 
   private static final Random RANDOM = new Random();
 
-  protected ItemStackHandler toolHandler;
-  protected CraftingMatrixStackHandler craftingMatrixHandler;
-  protected ItemStackHandler secondaryOutputHandler;
+  private ItemStackHandler toolHandler;
+  private CraftingMatrixStackHandler craftingMatrixHandler;
+  private ItemStackHandler secondaryOutputHandler;
 
   public TileEntityWorktableBase(int width, int height) {
 
@@ -364,7 +365,7 @@ public abstract class TileEntityWorktableBase
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 
-    BlockWorktable.EnumType type = state.getValue(BlockWorktable.VARIANT);
+    EnumWorktableType type = state.getValue(BlockWorktable.VARIANT);
 
     return new GuiContainerWorktable(
         this.getContainer(inventoryPlayer, world, state, pos),
