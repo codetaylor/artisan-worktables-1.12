@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
-import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleRecipes;
+import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleToolsRecipes;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
@@ -153,7 +153,7 @@ public class ModuleTools
 
     if (ModuleToolsConfig.ENABLE_TOOL_RECIPES
         && !this.registeredToolList.isEmpty()) {
-      ModuleRecipes.register(event.getRegistry(), MOD_ID, this.registeredToolList);
+      ModuleToolsRecipes.register(event.getRegistry(), MOD_ID, this.registeredToolList);
     }
   }
 
