@@ -3,8 +3,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
+import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -16,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiContainerWorktable
@@ -28,6 +31,11 @@ public class GuiContainerWorktable
   private static final int TAB_LEFT_OFFSET = 4;
   private static final int TAB_ITEM_HORZONTAL_OFFSET = 4;
   private static final int TAB_ITEM_VERTICAL_OFFSET = 4;
+
+  private static final ResourceLocation TEXTURE_TABS = new ResourceLocation(
+      ModuleWorktables.MOD_ID,
+      "textures/gui/tabs.png"
+  );
 
   private final ResourceLocation backgroundTexture;
   private final String titleKey;
@@ -68,7 +76,11 @@ public class GuiContainerWorktable
       return;
     }
 
-    List<TileEntityWorktableBase> joinedTables = this.currentWorktable.getJoinedTables();
+    List<TileEntityWorktableBase> joinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
+
+    while (joinedTables.size() > 6) { // for now, just limit to six joined tables
+      joinedTables.remove(joinedTables.size() - 1);
+    }
 
     int yMin = (this.height - this.ySize) / 2 - TAB_HEIGHT;
     int yMax = yMin + TAB_HEIGHT;
@@ -104,25 +116,37 @@ public class GuiContainerWorktable
     int tabX = x + TAB_LEFT_OFFSET;
     int tabY = y - TAB_HEIGHT;
 
-    for (TileEntityWorktableBase joinedTable : this.currentWorktable.getJoinedTables()) {
+    List<TileEntityWorktableBase> joinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
+
+    while (joinedTables.size() > 6) { // for now, just limit to six joined tables
+      joinedTables.remove(joinedTables.size() - 1);
+    }
+
+    // draw tabs
+    this.mc.getTextureManager().bindTexture(TEXTURE_TABS);
+
+    for (TileEntityWorktableBase joinedTable : joinedTables) {
       int textureY = joinedTable.getGuiTabTextureYOffset() * TAB_HEIGHT;
 
       if (joinedTable == this.currentWorktable) {
-        this.drawTexturedModalRect(tabX, tabY + TAB_CURRENT_OFFSET, this.xSize, textureY, TAB_WIDTH, TAB_HEIGHT);
+        //this.drawTexturedModalRect(tabX, tabY + TAB_CURRENT_OFFSET, 0, textureY, TAB_WIDTH, TAB_HEIGHT);
+        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY + TAB_CURRENT_OFFSET, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 24, 147);
 
       } else {
-        this.drawTexturedModalRect(tabX, tabY, this.xSize, textureY, TAB_WIDTH, 21);
+        //this.drawTexturedModalRect(tabX, tabY, 0, textureY, TAB_WIDTH, 21);
+        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 24, 147);
       }
 
       tabX += TAB_WIDTH + TAB_SPACING;
     }
 
+    // draw tab icons
     tabX = x + TAB_LEFT_OFFSET + TAB_ITEM_HORZONTAL_OFFSET;
     tabY = y - TAB_HEIGHT + TAB_ITEM_VERTICAL_OFFSET;
 
     RenderHelper.enableGUIStandardItemLighting();
 
-    for (TileEntityWorktableBase joinedTable : this.currentWorktable.getJoinedTables()) {
+    for (TileEntityWorktableBase joinedTable : joinedTables) {
       IBlockState blockState = joinedTable.getWorld().getBlockState(joinedTable.getPos());
       Block block = blockState.getBlock();
       Item item = Item.getItemFromBlock(block);

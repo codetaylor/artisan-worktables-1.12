@@ -11,7 +11,7 @@ import java.awt.*;
 public class TileEntityWorktableEngineer
     extends TileEntityWorktableBase {
 
-  private static final int TEXT_SHADOW_COLOR = new Color(170, 106, 15).getRGB();
+  private static final int TEXT_SHADOW_COLOR = new Color(202, 103, 27).getRGB();
   private static final EnumWorktableType TYPE = EnumWorktableType.ENGINEER;
   private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(
       ModuleWorktables.MOD_ID,

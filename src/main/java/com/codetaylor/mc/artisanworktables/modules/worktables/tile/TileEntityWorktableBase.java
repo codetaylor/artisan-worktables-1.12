@@ -246,7 +246,7 @@ public abstract class TileEntityWorktableBase
     }
   }
 
-  public List<TileEntityWorktableBase> getJoinedTables() {
+  public List<TileEntityWorktableBase> getJoinedTables(List<TileEntityWorktableBase> result) {
 
     Map<String, TileEntityWorktableBase> joinedTableMap = new TreeMap<>();
     joinedTableMap.put(this.getClass().getName(), this);
@@ -294,7 +294,6 @@ public abstract class TileEntityWorktableBase
       }
     }
 
-    List<TileEntityWorktableBase> result = new ArrayList<>();
     result.addAll(joinedTableMap.values());
     return result.size() < 2 ? Collections.emptyList() : result;
   }
@@ -309,7 +308,7 @@ public abstract class TileEntityWorktableBase
   @Nullable
   public IItemHandler getAdjacentInventory() {
 
-    List<TileEntityWorktableBase> joinedTables = this.getJoinedTables();
+    List<TileEntityWorktableBase> joinedTables = this.getJoinedTables(new ArrayList<>());
     IItemHandler result = null;
 
     for (TileEntityWorktableBase joinedTable : joinedTables) {
