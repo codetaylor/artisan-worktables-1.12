@@ -1,3 +1,8 @@
+1.7.10:
+* Added: new table: engineers worktable
+* Added: new tools: engineers spanner, engineers driver
+* Note: don't forget to regenerate the config or manually add the new tool types to the list
+
 1.6.10:
 * Fixed: extra chance drops are now properly linked in JEI; when searching for recipes to make the extra chance drop, it will show the worktable recipe (#14)
 * Fixed: double-click same item as craft result will not cause a craft to happen (#15) 

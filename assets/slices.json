@@ -45,7 +45,15 @@
 
         { "target": "jewelers_gemcutter_base.png", "position": [4, 1] },
         { "target": "jewelers_gemcutter_color.png", "position": [5, 1] },
-        { "target": "jewelers_gemcutter_highlight.png", "position": [6, 1] }
+        { "target": "jewelers_gemcutter_highlight.png", "position": [6, 1] },
+
+        { "target": "engineers_spanner_base.png", "position": [4, 2] },
+        { "target": "engineers_spanner_color.png", "position": [5, 2] },
+        { "target": "engineers_spanner_highlight.png", "position": [6, 2] },
+
+        { "target": "engineers_driver_base.png", "position": [4, 3] },
+        { "target": "engineers_driver_color.png", "position": [5, 3] },
+        { "target": "engineers_driver_highlight.png", "position": [6, 3] }
 
       ]
     }

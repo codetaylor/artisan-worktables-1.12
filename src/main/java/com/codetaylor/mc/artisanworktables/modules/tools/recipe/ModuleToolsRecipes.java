@@ -142,6 +142,29 @@ public class ModuleToolsRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.ENGINEERS_DRIVER,
+        new Object[]{
+            "  .",
+            " . ",
+            "sx ",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.ENGINEERS_SPANNER,
+        new Object[]{
+            " . ",
+            " s.",
+            "s  ",
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
   }
 
   /**
