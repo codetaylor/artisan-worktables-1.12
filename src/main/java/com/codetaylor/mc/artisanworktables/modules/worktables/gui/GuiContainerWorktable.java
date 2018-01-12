@@ -4,7 +4,6 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -12,7 +11,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -181,8 +179,8 @@ public class GuiContainerWorktable
   @Override
   protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 
-    this.drawString(this.titleKey, 8, 5);
-    this.drawString("container.inventory", 8, this.ySize - 96 + 2);
+    this.drawString(this.titleKey, 8, 6);
+    this.drawString("container.inventory", 8, this.ySize - 96 + 3);
 
     if (this.currentWorktable instanceof TileEntityWorktableMage
         && mouseX >= this.guiLeft + 108
