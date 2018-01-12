@@ -16,7 +16,7 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 @ZenClass("mods.artisanworktables.Worktable")
 public class ZenWorktable {
@@ -41,20 +41,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
-    EnumWorktableType type;
+    table = table.toLowerCase();
 
-    try {
-      type = EnumWorktableType.fromName(table);
-
-    } catch (Exception e) {
+    if (!EnumWorktableType.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
-      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      CTLogHelper.logInfo("Valid table types are: " + String.join(
+          ",",
+          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+      ));
       return;
     }
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
         null,
-        type,
+        table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientMatrix(input),
@@ -86,20 +86,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
-    EnumWorktableType type;
+    table = table.toLowerCase();
 
-    try {
-      type = EnumWorktableType.fromName(table);
-
-    } catch (Exception e) {
+    if (!EnumWorktableType.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
-      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      CTLogHelper.logInfo("Valid table types are: " + String.join(
+          ",",
+          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+      ));
       return;
     }
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
         gameStageName,
-        type,
+        table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientMatrix(input),
@@ -118,7 +118,7 @@ public class ZenWorktable {
       extends BaseUndoable {
 
     private final String gameStageName;
-    private final EnumWorktableType type;
+    private final String type;
     private final ItemStack result;
     private final Ingredient tool;
     private final Ingredient[][] input;
@@ -133,7 +133,7 @@ public class ZenWorktable {
 
     AddShaped(
         String gameStageName,
-        EnumWorktableType type,
+        String type,
         ItemStack result,
         Ingredient tool,
         Ingredient[][] input,
@@ -210,20 +210,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
-    EnumWorktableType type;
+    table = table.toLowerCase();
 
-    try {
-      type = EnumWorktableType.fromName(table);
-
-    } catch (Exception e) {
+    if (!EnumWorktableType.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
-      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      CTLogHelper.logInfo("Valid table types are: " + String.join(
+          ",",
+          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+      ));
       return;
     }
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
         null,
-        type,
+        table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientArray(input),
@@ -253,20 +253,20 @@ public class ZenWorktable {
       @Optional float quaternaryOutputChance
   ) {
 
-    EnumWorktableType type;
+    table = table.toLowerCase();
 
-    try {
-      type = EnumWorktableType.fromName(table);
-
-    } catch (Exception e) {
+    if (!EnumWorktableType.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
-      CTLogHelper.logInfo("Valid table types are: " + Arrays.toString(EnumWorktableType.NAMES));
+      CTLogHelper.logInfo("Valid table types are: " + String.join(
+          ",",
+          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+      ));
       return;
     }
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
         gameStageName,
-        type,
+        table,
         CTInputHelper.toStack(result),
         CTInputHelper.toIngredient(tool),
         CTInputHelper.toIngredientArray(input),
@@ -284,7 +284,7 @@ public class ZenWorktable {
       extends BaseUndoable {
 
     private final String gameStageName;
-    private final EnumWorktableType type;
+    private final String type;
     private final ItemStack result;
     private final Ingredient tool;
     private final Ingredient[] input;
@@ -298,7 +298,7 @@ public class ZenWorktable {
 
     AddShapeless(
         String gameStageName,
-        EnumWorktableType type,
+        String type,
         ItemStack result,
         Ingredient tool,
         Ingredient[] input,

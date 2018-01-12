@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
@@ -10,7 +11,13 @@ import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.registry.strategy.VariantBlockItemModelRegistrationStrategy;
+import com.google.common.base.Preconditions;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,6 +44,7 @@ public class ModuleWorktables
   public static class Blocks {
 
     public static final BlockWorktable WORKTABLE = new BlockWorktable();
+    public static final BlockWorktableMage WORKTABLE_MAGE = new BlockWorktableMage();
   }
 
   public static IPacketService PACKET_SERVICE;
@@ -89,6 +97,11 @@ public class ModuleWorktables
         new ItemWorktable(Blocks.WORKTABLE),
         BlockWorktable.NAME
     );
+    registry.registerBlock(
+        Blocks.WORKTABLE_MAGE,
+        new ItemBlock(Blocks.WORKTABLE_MAGE),
+        BlockWorktableMage.NAME
+    );
     registry.registerTileEntities(
         TileEntityWorktableBasic.class,
         TileEntityWorktableBlacksmith.class,
@@ -108,5 +121,27 @@ public class ModuleWorktables
         Blocks.WORKTABLE.getDefaultState(),
         BlockWorktable.VARIANT
     ));
+
+    registry.registerItemModelStrategy(() -> {
+
+      IBlockState blockState = Blocks.WORKTABLE_MAGE.getDefaultState();
+      Item item = Item.getItemFromBlock(blockState.getBlock());
+      ModelLoader.setCustomModelResourceLocation(
+          item,
+          0,
+          new ModelResourceLocation(
+              Preconditions.checkNotNull(item.getRegistryName(), "Item %s has null registry name", item),
+              "active=false"
+          )
+      );
+      ModelLoader.setCustomModelResourceLocation(
+          item,
+          1,
+          new ModelResourceLocation(
+              Preconditions.checkNotNull(item.getRegistryName(), "Item %s has null registry name", item),
+              "active=true"
+          )
+      );
+    });
   }
 }

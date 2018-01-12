@@ -164,9 +164,7 @@ public class GuiContainerWorktable
 
     for (TileEntityWorktableBase joinedTable : joinedTables) {
       IBlockState blockState = joinedTable.getWorld().getBlockState(joinedTable.getPos());
-      Block block = blockState.getBlock();
-      Item item = Item.getItemFromBlock(block);
-      ItemStack itemStack = new ItemStack(item, 1, block.getMetaFromState(blockState));
+      ItemStack itemStack = joinedTable.getItemStackForTabDisplay(blockState);
 
       if (joinedTable == this.currentWorktable) {
         this.itemRender.renderItemAndEffectIntoGUI(itemStack, tabX, tabY + TAB_CURRENT_OFFSET);
