@@ -53,7 +53,15 @@
 
         { "target": "engineers_driver_base.png", "position": [4, 3] },
         { "target": "engineers_driver_color.png", "position": [5, 3] },
-        { "target": "engineers_driver_highlight.png", "position": [6, 3] }
+        { "target": "engineers_driver_highlight.png", "position": [6, 3] },
+
+        { "target": "mages_athame_base.png", "position": [4, 4] },
+        { "target": "mages_athame_color.png", "position": [5, 4] },
+        { "target": "mages_athame_highlight.png", "position": [6, 4] },
+
+        { "target": "mages_grimoire_base.png", "position": [4, 5] },
+        { "target": "mages_grimoire_color.png", "position": [5, 5] },
+        { "target": "mages_grimoire_highlight.png", "position": [6, 5] }
 
       ]
     }

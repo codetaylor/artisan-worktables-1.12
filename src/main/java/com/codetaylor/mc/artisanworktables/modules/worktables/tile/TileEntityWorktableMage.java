@@ -65,27 +65,29 @@ public class TileEntityWorktableMage
         return;
       }
 
-      this.world.spawnParticle(
-          EnumParticleTypes.PORTAL,
-          this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-          this.pos.getY() + 0.5,
-          this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-          0,
-          this.random.nextFloat(),
-          0
-      );
+      if (this.random.nextFloat() < 0.5) {
+        this.world.spawnParticle(
+            EnumParticleTypes.PORTAL,
+            this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+            this.pos.getY() + 0.5,
+            this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+            0,
+            this.random.nextFloat(),
+            0
+        );
 
-      Minecraft.getMinecraft().effectRenderer.addEffect(
-          new ParticleWorktableMage(
-              this.world,
-              this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-              this.pos.getY() + 0.5,
-              this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-              0,
-              this.random.nextFloat(),
-              0
-          )
-      );
+        Minecraft.getMinecraft().effectRenderer.addEffect(
+            new ParticleWorktableMage(
+                this.world,
+                this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+                this.pos.getY() + 1.5,
+                this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+                0,
+                this.random.nextFloat(),
+                0
+            )
+        );
+      }
     }
 
   }

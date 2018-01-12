@@ -165,6 +165,30 @@ public class ModuleToolsRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.MAGES_ATHAME,
+        new Object[]{
+            "  .",
+            "x. ",
+            "sx ",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.MAGES_GRIMOIRE,
+        new Object[]{
+            " . ",
+            "xbx",
+            " . ",
+            'b', Items.BOOK,
+            'x', Items.STRING,
+            '.', MATERIAL_ALIAS
+        }
+    );
   }
 
   /**

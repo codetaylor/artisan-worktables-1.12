@@ -10,6 +10,8 @@ public enum EnumWorktableToolType {
   ENGINEERS_SPANNER("engineers_spanner"),
   JEWELERS_GEMCUTTER("jewelers_gemcutter"),
   JEWELERS_PLIERS("jewelers_pliers"),
+  MAGES_ATHAME("mages_athame"),
+  MAGES_GRIMOIRE("mages_grimoire"),
   MASONS_CHISEL("masons_chisel"),
   MASONS_TROWEL("masons_trowel"),
   TAILORS_NEEDLE("tailors_needle"),

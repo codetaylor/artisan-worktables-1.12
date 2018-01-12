@@ -37,7 +37,7 @@ public class ParticleWorktableMage
     this.particleScale = this.rand.nextFloat() * 0.5F + 0.2F;
     this.oSize = this.particleScale;
 
-    float f = this.rand.nextFloat();
+    float f = this.rand.nextFloat() * 0.25f + 0.75f;
     this.particleRed = 145 / 255f * f;
     this.particleGreen = 82 / 255f * f;
     this.particleBlue = 198 / 255f * f;
@@ -82,6 +82,8 @@ public class ParticleWorktableMage
     this.posX = this.coordX + this.motionX * (double) f;
     this.posY = this.coordY + this.motionY * (double) f - (double) (f1 * 1.2F);
     this.posZ = this.coordZ + this.motionZ * (double) f;
+
+    this.particleAlpha = f;
 
     if (this.particleAge++ >= this.particleMaxAge) {
       this.setExpired();
