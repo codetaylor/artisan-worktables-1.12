@@ -198,7 +198,7 @@ public class GuiContainerWorktable
       int radius = 21;
       int count = 12;
       float angleIncrement = (float) (TWO_PI / (float) count);
-      float offset = (float) ((System.currentTimeMillis() / 4 * (Math.PI / 180f)) % TWO_PI);
+      float offset = (float) ((System.currentTimeMillis() / 12 * (Math.PI / 180f)) % TWO_PI);
 
       for (int i = 0; i < count; i++) {
         int x = Math.round(MathHelper.cos(i * angleIncrement + offset) * radius) + originX;
