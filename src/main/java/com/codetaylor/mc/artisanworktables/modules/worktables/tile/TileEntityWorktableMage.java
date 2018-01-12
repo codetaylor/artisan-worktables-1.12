@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.util.Random;
@@ -70,14 +72,6 @@ public class TileEntityWorktableMage
     return String.format("tile.%s.worktable_mage.name", ModuleWorktables.MOD_ID);
   }
 
-  /*@Override
-  public ItemStack getItemStackForTabDisplay(IBlockState state) {
-
-    Block block = state.getBlock();
-    Item item = Item.getItemFromBlock(block);
-    return new ItemStack(item, 1, 0);
-  }*/
-
   @Override
   public void update() {
 
@@ -92,27 +86,7 @@ public class TileEntityWorktableMage
       }
 
       if (this.random.nextFloat() < 0.5) {
-        this.world.spawnParticle(
-            EnumParticleTypes.PORTAL,
-            this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-            this.pos.getY() + 0.5,
-            this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-            0,
-            this.random.nextFloat(),
-            0
-        );
-
-        Minecraft.getMinecraft().effectRenderer.addEffect(
-            new ParticleWorktableMage(
-                this.world,
-                this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-                this.pos.getY() + 1.5,
-                this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
-                0,
-                this.random.nextFloat(),
-                0
-            )
-        );
+        this.spawnParticles();
       }
 
     } else { // server
@@ -134,6 +108,32 @@ public class TileEntityWorktableMage
       }
     }
 
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void spawnParticles() {
+
+    this.world.spawnParticle(
+        EnumParticleTypes.PORTAL,
+        this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+        this.pos.getY() + 0.5,
+        this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+        0,
+        this.random.nextFloat(),
+        0
+    );
+
+    Minecraft.getMinecraft().effectRenderer.addEffect(
+        new ParticleWorktableMage(
+            this.world,
+            this.pos.getX() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+            this.pos.getY() + 1.5,
+            this.pos.getZ() + 0.5 + this.random.nextFloat() * 0.5 - 0.25,
+            0,
+            this.random.nextFloat(),
+            0
+        )
+    );
   }
 
   private boolean isActive() {
