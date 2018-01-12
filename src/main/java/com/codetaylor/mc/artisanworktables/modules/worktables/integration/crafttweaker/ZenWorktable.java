@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.WorktableNameReference;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
@@ -15,8 +15,6 @@ import net.minecraft.item.crafting.Ingredient;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-
-import java.util.ArrayList;
 
 @ZenClass("mods.artisanworktables.Worktable")
 public class ZenWorktable {
@@ -43,11 +41,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!EnumWorktableType.isAllowedWorktableName(table)) {
+    if (!WorktableNameReference.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+          WorktableNameReference.getAllowedWorktableNames()
       ));
       return;
     }
@@ -88,11 +86,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!EnumWorktableType.isAllowedWorktableName(table)) {
+    if (!WorktableNameReference.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+          WorktableNameReference.getAllowedWorktableNames()
       ));
       return;
     }
@@ -212,11 +210,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!EnumWorktableType.isAllowedWorktableName(table)) {
+    if (!WorktableNameReference.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+          WorktableNameReference.getAllowedWorktableNames()
       ));
       return;
     }
@@ -255,11 +253,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!EnumWorktableType.isAllowedWorktableName(table)) {
+    if (!WorktableNameReference.isAllowedWorktableName(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          EnumWorktableType.getAllowedWorktableNames(new ArrayList<>())
+          WorktableNameReference.getAllowedWorktableNames()
       ));
       return;
     }

@@ -356,6 +356,8 @@ public abstract class TileEntityWorktableBase
 
   public abstract int getGuiTabTextureYOffset();
 
+  public abstract boolean canHandleJEIRecipeTransfer(String name);
+
   protected String getTableTypeName(IBlockState state) {
 
     return state.getValue(BlockWorktable.VARIANT).getName();

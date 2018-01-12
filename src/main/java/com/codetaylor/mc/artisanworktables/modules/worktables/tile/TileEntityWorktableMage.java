@@ -141,4 +141,9 @@ public class TileEntityWorktableMage
     return !this.getToolHandler().getStackInSlot(0).isEmpty();
   }
 
+  @Override
+  public boolean canHandleJEIRecipeTransfer(String name) {
+
+    return "mage".equals(name);
+  }
 }

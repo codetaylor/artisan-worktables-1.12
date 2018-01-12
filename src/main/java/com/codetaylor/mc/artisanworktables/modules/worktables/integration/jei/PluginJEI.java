@@ -1,17 +1,16 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShaped;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShapeless;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.WorktableNameReference;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -30,27 +29,27 @@ public class PluginJEI
     this.jeiHelpers = registry.getJeiHelpers();
 
     // Workbench
-    for (EnumWorktableType type : EnumWorktableType.values()) {
-      registry.addRecipeCategories(this.createWorkbenchCategory(type, registry.getJeiHelpers().getGuiHelper()));
+    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+      registry.addRecipeCategories(this.createWorkbenchCategory(name, registry.getJeiHelpers().getGuiHelper()));
     }
 
-    for (EnumWorktableType type : EnumWorktableType.values()) {
+    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
       registry.addRecipeCatalyst(
-          new ItemStack(ModuleWorktables.Blocks.WORKTABLE, 1, type.getMeta()),
-          PluginJEI.createUID(type)
+          WorktableNameReference.getJEIRecipeCatalyst(name),
+          PluginJEI.createUID(name)
       );
     }
 
-    for (EnumWorktableType type : EnumWorktableType.values()) {
+    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
       registry.handleRecipes(
           RecipeWorktableShaped.class,
           recipe -> new JEIRecipeWrapperWorktable(recipe, true),
-          PluginJEI.createUID(type)
+          PluginJEI.createUID(name)
       );
       registry.handleRecipes(
           RecipeWorktableShapeless.class,
           recipe -> new JEIRecipeWrapperWorktable(recipe, false),
-          PluginJEI.createUID(type)
+          PluginJEI.createUID(name)
       );
     }
 
@@ -58,15 +57,18 @@ public class PluginJEI
 
     // Transfer handlers
     IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
-    for (EnumWorktableType type : EnumWorktableType.values()) {
-      transferRegistry.addRecipeTransferHandler(new JEIRecipeTransferInfoWorktable(type, PluginJEI.createUID(type)));
+    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+      transferRegistry.addRecipeTransferHandler(new JEIRecipeTransferInfoWorktable(
+          name,
+          PluginJEI.createUID(name)
+      ));
     }
 
-    for (EnumWorktableType type : EnumWorktableType.values()) {
+    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
       List<IRecipeWorktable> recipeList = new ArrayList<>();
-      RegistryRecipeWorktable recipeRegistry = WorktableAPI.getRecipeRegistry(type);
+      RegistryRecipeWorktable recipeRegistry = WorktableAPI.getRecipeRegistry(name);
       recipeRegistry.getRecipeList(recipeList);
-      registry.addRecipes(recipeList, PluginJEI.createUID(type));
+      registry.addRecipes(recipeList, PluginJEI.createUID(name));
     }
   }
 
@@ -79,8 +81,8 @@ public class PluginJEI
     // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
 
-      for (EnumWorktableType type : EnumWorktableType.values()) {
-        RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(type);
+      for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+        RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(name);
 
         if (registry != null) {
           List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());
@@ -88,7 +90,10 @@ public class PluginJEI
           for (IRecipeWorktable recipe : recipeList) {
 
             if (recipe.getGameStageName() != null) {
-              IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(recipe, PluginJEI.createUID(type));
+              IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
+                  recipe,
+                  PluginJEI.createUID(name)
+              );
 
               if (recipeWrapper != null) {
                 RECIPE_REGISTRY.hideRecipe(recipeWrapper);
@@ -100,33 +105,37 @@ public class PluginJEI
     }
   }
 
-  private JEICategoryWorktable createWorkbenchCategory(EnumWorktableType type, IGuiHelper guiHelper) {
+  private JEICategoryWorktable createWorkbenchCategory(String name, IGuiHelper guiHelper) {
 
     return new JEICategoryWorktable(
-        PluginJEI.createUID(type),
-        this.createTitleTranslateKey(type),
-        this.createBackground(type),
+        PluginJEI.createUID(name),
+        this.createTitleTranslateKey(name),
+        this.createBackground(name),
         guiHelper
     );
   }
 
-  private IDrawable createBackground(EnumWorktableType type) {
+  private IDrawable createBackground(String name) {
 
     IGuiHelper guiHelper = this.jeiHelpers.getGuiHelper();
     ResourceLocation resourceLocation = new ResourceLocation(
         ModuleWorktables.MOD_ID,
-        String.format(ModuleWorktables.Textures.WORKTABLE_GUI, type.getName())
+        String.format(ModuleWorktables.Textures.WORKTABLE_GUI, name)
     );
     return guiHelper.createDrawable(resourceLocation, 0 + 3, 0 + 3, 176 - 6, 80);
   }
 
-  private String createTitleTranslateKey(EnumWorktableType type) {
+  private String createTitleTranslateKey(String name) {
 
-    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, type.getName());
+    if ("mage".equals(name)) {
+      return String.format("tile.%s.worktable_mage.name", ModuleWorktables.MOD_ID);
+    }
+    
+    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, name);
   }
 
-  public static String createUID(EnumWorktableType type) {
+  public static String createUID(String name) {
 
-    return ModuleWorktables.MOD_ID + "_" + type.getName();
+    return ModuleWorktables.MOD_ID + "_" + name;
   }
 }

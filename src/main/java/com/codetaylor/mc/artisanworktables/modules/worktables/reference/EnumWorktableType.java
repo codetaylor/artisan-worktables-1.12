@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.api;
+package com.codetaylor.mc.artisanworktables.modules.worktables.reference;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
@@ -7,7 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 
 import javax.annotation.Nonnull;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Stream;
 
 public enum EnumWorktableType
@@ -93,37 +92,6 @@ public enum EnumWorktableType
     }
 
     return META_LOOKUP[meta];
-  }
-
-  public static boolean isAllowedWorktableName(String name) {
-
-    name = name.toLowerCase();
-
-    if ("mage".equals(name)) {
-      return true;
-    }
-
-    EnumWorktableType[] values = EnumWorktableType.values();
-
-    for (EnumWorktableType value : values) {
-
-      if (value.name.equals(name)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  public static List<String> getAllowedWorktableNames(List<String> result) {
-
-    for (EnumWorktableType type : EnumWorktableType.values()) {
-      result.add(type.getName());
-    }
-
-    result.add("mage");
-
-    return result;
   }
 
 }

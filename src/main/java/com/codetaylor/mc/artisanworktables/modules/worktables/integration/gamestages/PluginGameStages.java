@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.WorktableNameReference;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
@@ -60,12 +60,12 @@ public class PluginGameStages {
       return;
     }
 
-    for (EnumWorktableType type : EnumWorktableType.values()) {
-      RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(type);
+    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+      RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(name);
 
       if (registry != null) {
         List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());
-        String uid = PluginJEI.createUID(type);
+        String uid = PluginJEI.createUID(name);
 
         for (IRecipeWorktable recipe : recipeList) {
 

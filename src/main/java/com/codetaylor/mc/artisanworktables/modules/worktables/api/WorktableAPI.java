@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.api;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
-import com.sun.org.apache.regexp.internal.RE;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumWorktableType;
 
 import java.util.HashMap;
 import java.util.Map;
