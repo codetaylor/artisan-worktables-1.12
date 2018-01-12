@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import net.minecraft.util.ResourceLocation;
@@ -45,5 +45,11 @@ public class TileEntityWorktableTailor
   public int getGuiTabTextureYOffset() {
 
     return 1;
+  }
+
+  @Override
+  public boolean canHandleJEIRecipeTransfer(String name) {
+
+    return TYPE.getName().equals(name);
   }
 }

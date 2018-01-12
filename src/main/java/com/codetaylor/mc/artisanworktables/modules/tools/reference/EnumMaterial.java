@@ -7,7 +7,7 @@ import java.awt.*;
 
 public enum EnumMaterial {
 
-  WOOD("wood", Item.ToolMaterial.WOOD, new Color(0x493615), false, "plankWood"),
+  WOOD("wood", Item.ToolMaterial.WOOD, new Color(0x73523E), false, "plankWood"),
   STONE("stone", Item.ToolMaterial.STONE, new Color(0x969696), false, "stone"),
   IRON("iron", Item.ToolMaterial.IRON, new Color(0xD4D4D4), true, "ingotIron"),
   GOLD("gold", Item.ToolMaterial.GOLD, new Color(0xFFE947), false, "ingotGold"),

@@ -10,7 +10,7 @@ import mods.artisanworktables.Worktable;
 
 **Note:** The tool slots assume the item being used as the tool is an item with durability. Using an item without durability in a recipe will have unexpected and, most likely, undesired results. Also, matching tools based on NBT data is not supported.
 
-Valid table names are: `basic`, `blacksmith`, `carpenter`, `jeweler`, `mason`, and `tailor`.
+Valid table names are: `basic`, `blacksmith`, `carpenter`, `engineer`, `jeweler`, `mage`, `mason`, and `tailor`.
 
 All extra outputs are optional.
 
@@ -85,8 +85,12 @@ All tools are grouped in OreDict entries based on their tool type for easy recip
 <ore:blacksmiths_hammer>
 <ore:carpenters_hammer>
 <ore:carpenters_handsaw>
+<ore:engineers_driver>
+<ore:engineers_spanner>
 <ore:jewelers_gemcutter>
 <ore:jewelers_pliers>
+<ore:mages_athame>
+<ore:mages_grimoire>
 <ore:masons_chisel>
 <ore:masons_trowel>
 <ore:tailors_needle>

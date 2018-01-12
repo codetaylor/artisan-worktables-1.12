@@ -1,12 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.Slot;
 
 import java.util.ArrayList;
@@ -15,12 +10,12 @@ import java.util.List;
 public class JEIRecipeTransferInfoWorktable
     implements IRecipeTransferInfo<ContainerWorktable> {
 
-  private EnumWorktableType type;
+  private String name;
   private String uid;
 
-  public JEIRecipeTransferInfoWorktable(EnumWorktableType type, String uid) {
+  public JEIRecipeTransferInfoWorktable(String name, String uid) {
 
-    this.type = type;
+    this.name = name;
     this.uid = uid;
   }
 
@@ -39,11 +34,7 @@ public class JEIRecipeTransferInfoWorktable
   @Override
   public boolean canHandle(ContainerWorktable container) {
 
-    TileEntityWorktableBase tile = container.getTile();
-    IBlockState blockState = tile.getWorld().getBlockState(tile.getPos());
-
-    return (blockState.getBlock() == ModuleWorktables.Blocks.WORKTABLE
-        && blockState.getValue(BlockWorktable.VARIANT) == this.type);
+    return container.canHandleJEIRecipeTransfer(this.name);
   }
 
   @Override

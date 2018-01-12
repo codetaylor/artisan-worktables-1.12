@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
@@ -12,10 +11,12 @@ import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -42,7 +43,7 @@ public abstract class TileEntityWorktableBase
 
   private static final Random RANDOM = new Random();
 
-  private ItemStackHandler toolHandler;
+  private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
   private ItemStackHandler secondaryOutputHandler;
 
@@ -50,7 +51,12 @@ public abstract class TileEntityWorktableBase
 
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);
     this.toolHandler = new ObservableStackHandler(1);
+    this.toolHandler.addObserver(this::onToolSlotChange);
     this.secondaryOutputHandler = new ItemStackHandler(3);
+  }
+
+  protected void onToolSlotChange(ItemStackHandler handler, int slotIndex) {
+    //
   }
 
   public ItemStackHandler getToolHandler() {
@@ -246,7 +252,7 @@ public abstract class TileEntityWorktableBase
     }
   }
 
-  public List<TileEntityWorktableBase> getJoinedTables() {
+  public List<TileEntityWorktableBase> getJoinedTables(List<TileEntityWorktableBase> result) {
 
     Map<String, TileEntityWorktableBase> joinedTableMap = new TreeMap<>();
     joinedTableMap.put(this.getClass().getName(), this);
@@ -294,7 +300,6 @@ public abstract class TileEntityWorktableBase
       }
     }
 
-    List<TileEntityWorktableBase> result = new ArrayList<>();
     result.addAll(joinedTableMap.values());
     return result.size() < 2 ? Collections.emptyList() : result;
   }
@@ -309,7 +314,7 @@ public abstract class TileEntityWorktableBase
   @Nullable
   public IItemHandler getAdjacentInventory() {
 
-    List<TileEntityWorktableBase> joinedTables = this.getJoinedTables();
+    List<TileEntityWorktableBase> joinedTables = this.getJoinedTables(new ArrayList<>());
     IItemHandler result = null;
 
     for (TileEntityWorktableBase joinedTable : joinedTables) {
@@ -351,6 +356,25 @@ public abstract class TileEntityWorktableBase
 
   public abstract int getGuiTabTextureYOffset();
 
+  public abstract boolean canHandleJEIRecipeTransfer(String name);
+
+  protected String getTableTypeName(IBlockState state) {
+
+    return state.getValue(BlockWorktable.VARIANT).getName();
+  }
+
+  protected String getTableTitleKey(IBlockState state) {
+
+    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, this.getTableTypeName(state));
+  }
+
+  public ItemStack getItemStackForTabDisplay(IBlockState state) {
+
+    Block block = state.getBlock();
+    Item item = Item.getItemFromBlock(block);
+    return new ItemStack(item, 1, block.getMetaFromState(state));
+  }
+
   @Override
   public ContainerWorktable getContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
@@ -365,12 +389,10 @@ public abstract class TileEntityWorktableBase
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 
-    EnumWorktableType type = state.getValue(BlockWorktable.VARIANT);
-
     return new GuiContainerWorktable(
         this.getContainer(inventoryPlayer, world, state, pos),
         this.getBackgroundTexture(),
-        String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, type.getName()),
+        this.getTableTitleKey(state),
         this.getWorkbenchGuiTextShadowColor(),
         this
     );

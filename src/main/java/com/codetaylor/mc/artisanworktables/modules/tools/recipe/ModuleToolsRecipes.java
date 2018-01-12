@@ -11,7 +11,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import java.util.EnumMap;
 import java.util.List;
 
-public class ModuleRecipes {
+public class ModuleToolsRecipes {
 
   /**
    * Contains the recipe definitions for each tool type.
@@ -142,6 +142,53 @@ public class ModuleRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.ENGINEERS_DRIVER,
+        new Object[]{
+            "  .",
+            " . ",
+            "sx ",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.ENGINEERS_SPANNER,
+        new Object[]{
+            " . ",
+            " s.",
+            "s  ",
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.MAGES_ATHAME,
+        new Object[]{
+            "  .",
+            "x. ",
+            "sx ",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.MAGES_GRIMOIRE,
+        new Object[]{
+            " . ",
+            "xbx",
+            " . ",
+            'b', Items.BOOK,
+            'x', Items.STRING,
+            '.', MATERIAL_ALIAS
+        }
+    );
   }
 
   /**
@@ -154,7 +201,7 @@ public class ModuleRecipes {
   public static void register(IForgeRegistry<IRecipe> registry, String modId, List<ItemWorktableTool> toolList) {
 
     for (ItemWorktableTool item : toolList) {
-      Object[] recipeDefinition = ModuleRecipes.getRecipeDefinition(
+      Object[] recipeDefinition = ModuleToolsRecipes.getRecipeDefinition(
           item.getType(),
           item.getMaterial().getRecipeIngredient()
       );

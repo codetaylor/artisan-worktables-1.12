@@ -252,4 +252,9 @@ public class ContainerWorktable
 
     return this.tile;
   }
+
+  public boolean canHandleJEIRecipeTransfer(String name) {
+
+    return this.tile.canHandleJEIRecipeTransfer(name);
+  }
 }

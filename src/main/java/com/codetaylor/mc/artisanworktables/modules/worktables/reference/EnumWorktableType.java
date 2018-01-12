@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.api;
+package com.codetaylor.mc.artisanworktables.modules.worktables.reference;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
@@ -17,7 +17,8 @@ public enum EnumWorktableType
   MASON(2, "mason", TileEntityWorktableMason.class, SoundType.STONE),
   BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class, SoundType.ANVIL),
   JEWELER(4, "jeweler", TileEntityWorktableJeweler.class, SoundType.METAL),
-  BASIC(5, "basic", TileEntityWorktableBasic.class, SoundType.WOOD);
+  BASIC(5, "basic", TileEntityWorktableBasic.class, SoundType.WOOD),
+  ENGINEER(6, "engineer", TileEntityWorktableEngineer.class, SoundType.METAL);
 
   private static final EnumWorktableType[] META_LOOKUP = Stream.of(EnumWorktableType.values())
       .sorted(Comparator.comparing(EnumWorktableType::getMeta))

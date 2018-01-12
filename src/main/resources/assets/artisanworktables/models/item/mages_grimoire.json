@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "artisanworktables:items/mages_grimoire_base",
+    "layer1": "artisanworktables:items/mages_grimoire_color"
+  }
+}

@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.EnumWorktableType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumWorktableType;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import net.minecraft.block.Block;
@@ -32,7 +32,6 @@ public class BlockWorktable
     implements IBlockVariant<EnumWorktableType> {
 
   public static final String NAME = "worktable";
-
   public static final IProperty<EnumWorktableType> VARIANT = PropertyEnum.create("variant", EnumWorktableType.class);
 
   public BlockWorktable() {
