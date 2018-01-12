@@ -95,6 +95,7 @@ public class ModuleWorktables
         TileEntityWorktableCarpenter.class,
         TileEntityWorktableEngineer.class,
         TileEntityWorktableJeweler.class,
+        TileEntityWorktableMage.class,
         TileEntityWorktableMason.class,
         TileEntityWorktableTailor.class
     );

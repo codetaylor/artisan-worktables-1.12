@@ -3,9 +3,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
-import com.codetaylor.mc.athenaeum.gui.GuiHelper;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 import java.io.IOException;
@@ -37,6 +39,10 @@ public class GuiContainerWorktable
       "textures/gui/tabs.png"
   );
 
+  private static final double TWO_PI = Math.PI * 2;
+  private static final String[] LETTERS = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+  private final ContainerWorktable container;
   private final ResourceLocation backgroundTexture;
   private final String titleKey;
   private final int textShadowColor;
@@ -51,6 +57,7 @@ public class GuiContainerWorktable
   ) {
 
     super(container);
+    this.container = container;
     this.backgroundTexture = backgroundTexture;
     this.titleKey = titleKey;
     this.textShadowColor = textShadowColor;
@@ -130,11 +137,20 @@ public class GuiContainerWorktable
 
       if (joinedTable == this.currentWorktable) {
         //this.drawTexturedModalRect(tabX, tabY + TAB_CURRENT_OFFSET, 0, textureY, TAB_WIDTH, TAB_HEIGHT);
-        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY + TAB_CURRENT_OFFSET, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 24, 147);
+        Gui.drawModalRectWithCustomSizedTexture(
+            tabX,
+            tabY + TAB_CURRENT_OFFSET,
+            0,
+            textureY,
+            TAB_WIDTH,
+            TAB_HEIGHT,
+            24,
+            168
+        );
 
       } else {
         //this.drawTexturedModalRect(tabX, tabY, 0, textureY, TAB_WIDTH, 21);
-        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 24, 147);
+        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 24, 168);
       }
 
       tabX += TAB_WIDTH + TAB_SPACING;
@@ -169,23 +185,51 @@ public class GuiContainerWorktable
 
     this.drawString(this.titleKey, 8, 5);
     this.drawString("container.inventory", 8, this.ySize - 96 + 2);
+
+    if (this.currentWorktable instanceof TileEntityWorktableMage
+        && mouseX >= this.guiLeft + 108
+        && mouseX <= this.guiLeft + 125
+        && mouseY >= this.guiTop + 34
+        && mouseY <= this.guiTop + 51
+        && !this.container.inventorySlots.get(0).getStack().isEmpty()) {
+
+      int originX = 115;
+      int originY = 40;
+      int radius = 21;
+      int count = 12;
+      float angleIncrement = (float) (TWO_PI / (float) count);
+      float offset = (float) ((System.currentTimeMillis() / 4 * (Math.PI / 180f)) % TWO_PI);
+
+      for (int i = 0; i < count; i++) {
+        int x = Math.round(MathHelper.cos(i * angleIncrement + offset) * radius) + originX;
+        int y = Math.round(MathHelper.sin(i * angleIncrement + offset) * radius) + originY;
+        this.drawString(LETTERS[i], x, y);
+      }
+
+    }
   }
 
   private void drawString(String translateKey, int x, int y) {
 
     String displayText = I18n.format(translateKey);
 
-    this.fontRenderer.drawString(displayText, x + 0, y + 1, this.textShadowColor);
-    this.fontRenderer.drawString(displayText, x + 1, y + 1, this.textShadowColor);
-    this.fontRenderer.drawString(displayText, x + 1, y - 1, this.textShadowColor);
-    this.fontRenderer.drawString(displayText, x + 1, y + 0, this.textShadowColor);
+    FontRenderer fontRenderer = this.fontRenderer;
 
-    this.fontRenderer.drawString(displayText, x - 0, y - 1, this.textShadowColor);
-    this.fontRenderer.drawString(displayText, x - 1, y - 1, this.textShadowColor);
-    this.fontRenderer.drawString(displayText, x - 1, y + 1, this.textShadowColor);
-    this.fontRenderer.drawString(displayText, x - 1, y - 0, this.textShadowColor);
+    if (this.currentWorktable instanceof TileEntityWorktableMage) {
+      fontRenderer = this.mc.standardGalacticFontRenderer;
+    }
 
-    this.fontRenderer.drawString(displayText, x, y, Color.BLACK.getRGB());
+    fontRenderer.drawString(displayText, x + 0, y + 1, this.textShadowColor);
+    fontRenderer.drawString(displayText, x + 1, y + 1, this.textShadowColor);
+    fontRenderer.drawString(displayText, x + 1, y - 1, this.textShadowColor);
+    fontRenderer.drawString(displayText, x + 1, y + 0, this.textShadowColor);
+
+    fontRenderer.drawString(displayText, x - 0, y - 1, this.textShadowColor);
+    fontRenderer.drawString(displayText, x - 1, y - 1, this.textShadowColor);
+    fontRenderer.drawString(displayText, x - 1, y + 1, this.textShadowColor);
+    fontRenderer.drawString(displayText, x - 1, y - 0, this.textShadowColor);
+
+    fontRenderer.drawString(displayText, x, y, Color.BLACK.getRGB());
   }
 
 }
