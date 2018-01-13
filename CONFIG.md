@@ -39,8 +39,12 @@ general {
         blacksmiths_hammer
         carpenters_hammer
         carpenters_handsaw
+        engineers_driver
+        engineers_spanner
         jewelers_gemcutter
         jewelers_pliers
+        mages_athame
+        mages_grimoire
         masons_chisel
         masons_trowel
         tailors_needle
