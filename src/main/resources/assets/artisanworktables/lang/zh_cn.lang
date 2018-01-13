@@ -1,11 +1,13 @@
 # Creative Tab
-itemGroup.artisanworktables=Artisan Worktables
+itemGroup.artisanworktables=工匠之作
 
 # Worktables
 tile.artisanworktables.worktable.basic.name=基础工作台
 tile.artisanworktables.worktable.blacksmith.name=铁匠工作台
 tile.artisanworktables.worktable.carpenter.name=木匠工作台
+tile.artisanworktables.worktable.engineer.name=工程师工作台
 tile.artisanworktables.worktable.jeweler.name=珠宝工作台
+tile.artisanworktables.worktable_mage.name=法师工作台
 tile.artisanworktables.worktable.mason.name=石匠工作台
 tile.artisanworktables.worktable.tailor.name=裁缝工作台
 
@@ -14,8 +16,12 @@ item.artisanworktables.blacksmiths.cutters.name=%s 铁匠剪
 item.artisanworktables.blacksmiths.hammer.name=%s 铁匠锤
 item.artisanworktables.carpenters.hammer.name=%s 木匠锤
 item.artisanworktables.carpenters.handsaw.name=%s 木匠锯
+item.artisanworktables.engineers.driver.name=%s 工程师起子
+item.artisanworktables.engineers.spanner.name=%s 工程师扳手
 item.artisanworktables.jewelers.gemcutter.name=%s 珠宝抛光工具
 item.artisanworktables.jewelers.pliers.name=%s 珠宝钳
+item.artisanworktables.mages.athame.name=%s 法师匕首
+item.artisanworktables.mages.grimoire.name=%s 法师宝典
 item.artisanworktables.masons.chisel.name=%s 石匠凿
 item.artisanworktables.masons.trowel.name=%s 石匠抹子
 item.artisanworktables.tailors.needle.name=%s 裁缝针
@@ -47,3 +53,6 @@ material.artisanworktables.tin=锡
 material.artisanworktables.manasteel=魔力钢
 material.artisanworktables.elementium=源质钢
 material.artisanworktables.terrasteel=泰拉钢
+
+# JEI
+jei.tooltip.shapeless.recipe=无序合成
