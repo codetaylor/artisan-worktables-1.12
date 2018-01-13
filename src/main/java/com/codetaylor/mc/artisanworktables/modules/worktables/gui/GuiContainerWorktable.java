@@ -131,7 +131,7 @@ public class GuiContainerWorktable
     this.mc.getTextureManager().bindTexture(TEXTURE_TABS);
 
     for (TileEntityWorktableBase joinedTable : joinedTables) {
-      int textureY = joinedTable.getGuiTabTextureYOffset() * TAB_HEIGHT;
+      int textureY = joinedTable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT;
 
       if (joinedTable == this.currentWorktable) {
         //this.drawTexturedModalRect(tabX, tabY + TAB_CURRENT_OFFSET, 0, textureY, TAB_WIDTH, TAB_HEIGHT);
@@ -162,6 +162,7 @@ public class GuiContainerWorktable
 
     for (TileEntityWorktableBase joinedTable : joinedTables) {
       IBlockState blockState = joinedTable.getWorld().getBlockState(joinedTable.getPos());
+      blockState = blockState.getBlock().getActualState(blockState, this.mc.world, joinedTable.getPos());
       ItemStack itemStack = joinedTable.getItemStackForTabDisplay(blockState);
 
       if (joinedTable == this.currentWorktable) {

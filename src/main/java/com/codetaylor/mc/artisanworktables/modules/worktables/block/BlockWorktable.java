@@ -1,13 +1,15 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumWorktableType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
+import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +23,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,17 +34,24 @@ import java.util.List;
 
 public class BlockWorktable
     extends Block
-    implements IBlockVariant<EnumWorktableType> {
+    implements IBlockVariant<BlockWorktableEnumType>,
+    IModelRegistrationStrategyProvider {
 
   public static final String NAME = "worktable";
-  public static final IProperty<EnumWorktableType> VARIANT = PropertyEnum.create("variant", EnumWorktableType.class);
+  public static final IProperty<BlockWorktableEnumType> VARIANT = PropertyEnum.create(
+      "variant",
+      BlockWorktableEnumType.class
+  );
+  public static final IProperty<Boolean> ACTIVE = PropertyBool.create("active");
 
   public BlockWorktable() {
 
     super(Material.ROCK);
 
     this.setHardness(5);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumWorktableType.TAILOR));
+    this.setDefaultState(this.blockState.getBaseState()
+        .withProperty(VARIANT, BlockWorktableEnumType.TAILOR)
+        .withProperty(ACTIVE, false));
   }
 
   @Override
@@ -60,7 +72,7 @@ public class BlockWorktable
   @Override
   public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
 
-    EnumWorktableType type = state.getValue(VARIANT);
+    BlockWorktableEnumType type = state.getValue(VARIANT);
 
     try {
       return type.getTileEntityClass().newInstance();
@@ -110,13 +122,13 @@ public class BlockWorktable
   @Override
   protected BlockStateContainer createBlockState() {
 
-    return new BlockStateContainer(this, VARIANT);
+    return new BlockStateContainer(this, VARIANT, ACTIVE);
   }
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
 
-    return this.getDefaultState().withProperty(VARIANT, EnumWorktableType.fromMeta(meta));
+    return this.getDefaultState().withProperty(VARIANT, BlockWorktableEnumType.fromMeta(meta));
   }
 
   @Override
@@ -132,12 +144,50 @@ public class BlockWorktable
   }
 
   @Override
+  public IBlockState getActualState(
+      IBlockState state, IBlockAccess worldIn, BlockPos pos
+  ) {
+
+    if (state.getValue(VARIANT) == BlockWorktableEnumType.MAGE) {
+
+      TileEntity tileEntity;
+
+      if (worldIn instanceof ChunkCache) {
+        tileEntity = ((ChunkCache) worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK);
+
+      } else {
+        tileEntity = worldIn.getTileEntity(pos);
+      }
+
+      if (tileEntity instanceof TileEntityWorktableMage) {
+        boolean active = !((TileEntityWorktableMage) tileEntity).getToolHandler().getStackInSlot(0).isEmpty();
+        return state.withProperty(ACTIVE, active);
+      }
+    }
+
+    return super.getActualState(state, worldIn, pos);
+  }
+
+  @Override
+  public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+    if (state.getValue(VARIANT) == BlockWorktableEnumType.MAGE) {
+
+      if (this.getActualState(state, world, pos).getValue(ACTIVE)) {
+        return 8;
+      }
+    }
+
+    return super.getLightValue(state, world, pos);
+  }
+
+  @Override
   public void getSubBlocks(
       CreativeTabs tab,
       NonNullList<ItemStack> list
   ) {
 
-    for (EnumWorktableType type : EnumWorktableType.values()) {
+    for (BlockWorktableEnumType type : BlockWorktableEnumType.values()) {
       list.add(new ItemStack(this, 1, type.getMeta()));
     }
   }
@@ -158,14 +208,20 @@ public class BlockWorktable
   @Override
   public String getModelName(ItemStack itemStack) {
 
-    return EnumWorktableType.fromMeta(itemStack.getMetadata()).getName();
+    return BlockWorktableEnumType.fromMeta(itemStack.getMetadata()).getName();
   }
 
   @Nonnull
   @Override
-  public IProperty<EnumWorktableType> getVariant() {
+  public IProperty<BlockWorktableEnumType> getVariant() {
 
     return VARIANT;
+  }
+
+  @Override
+  public IModelRegistrationStrategy getModelRegistrationStrategy() {
+
+    return new BlockWorktableModelRegistrationStrategy();
   }
 
 }

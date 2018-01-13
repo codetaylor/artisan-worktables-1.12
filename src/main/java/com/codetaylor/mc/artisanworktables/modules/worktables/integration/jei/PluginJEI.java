@@ -6,7 +6,6 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWork
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShaped;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShapeless;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.WorktableNameReference;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -29,18 +28,18 @@ public class PluginJEI
     this.jeiHelpers = registry.getJeiHelpers();
 
     // Workbench
-    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+    for (String name : WorktableAPI.getWorktableNames()) {
       registry.addRecipeCategories(this.createWorkbenchCategory(name, registry.getJeiHelpers().getGuiHelper()));
     }
 
-    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+    for (String name : WorktableAPI.getWorktableNames()) {
       registry.addRecipeCatalyst(
-          WorktableNameReference.getJEIRecipeCatalyst(name),
+          WorktableAPI.getWorktableAsItemStack(name),
           PluginJEI.createUID(name)
       );
     }
 
-    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+    for (String name : WorktableAPI.getWorktableNames()) {
       registry.handleRecipes(
           RecipeWorktableShaped.class,
           recipe -> new JEIRecipeWrapperWorktable(recipe, true),
@@ -57,16 +56,16 @@ public class PluginJEI
 
     // Transfer handlers
     IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
-    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+    for (String name : WorktableAPI.getWorktableNames()) {
       transferRegistry.addRecipeTransferHandler(new JEIRecipeTransferInfoWorktable(
           name,
           PluginJEI.createUID(name)
       ));
     }
 
-    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
+    for (String name : WorktableAPI.getWorktableNames()) {
       List<IRecipeWorktable> recipeList = new ArrayList<>();
-      RegistryRecipeWorktable recipeRegistry = WorktableAPI.getRecipeRegistry(name);
+      RegistryRecipeWorktable recipeRegistry = WorktableAPI.getWorktableRecipeRegistry(name);
       recipeRegistry.getRecipeList(recipeList);
       registry.addRecipes(recipeList, PluginJEI.createUID(name));
     }
@@ -81,8 +80,8 @@ public class PluginJEI
     // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
 
-      for (String name : WorktableNameReference.getAllowedWorktableNames()) {
-        RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(name);
+      for (String name : WorktableAPI.getWorktableNames()) {
+        RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(name);
 
         if (registry != null) {
           List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());
@@ -130,7 +129,7 @@ public class PluginJEI
     if ("mage".equals(name)) {
       return String.format("tile.%s.worktable_mage.name", ModuleWorktables.MOD_ID);
     }
-    
+
     return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, name);
   }
 

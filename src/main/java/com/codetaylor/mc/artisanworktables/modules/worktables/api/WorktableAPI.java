@@ -1,34 +1,52 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.api;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableEnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumWorktableType;
+import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class WorktableAPI {
 
   private static final Map<String, RegistryRecipeWorktable> RECIPE_REGISTRY_MAP = new HashMap<>();
 
+  private static final List<String> WORKTABLE_NAME_LIST = new ArrayList<>();
+
   static {
+    WORKTABLE_NAME_LIST.addAll(Arrays.asList(BlockWorktableEnumType.NAMES));
 
-    EnumWorktableType[] values = EnumWorktableType.values();
-
-    for (EnumWorktableType type : values) {
-      RECIPE_REGISTRY_MAP.put(type.getName(), new RegistryRecipeWorktable());
+    for (String name : WorktableAPI.getWorktableNames()) {
+      RECIPE_REGISTRY_MAP.put(name, new RegistryRecipeWorktable());
     }
-
-    RECIPE_REGISTRY_MAP.put("mage", new RegistryRecipeWorktable());
   }
 
-  public static RegistryRecipeWorktable getRecipeRegistry(EnumWorktableType type) {
-
-    return WorktableAPI.getRecipeRegistry(type.getName());
-  }
-
-  public static RegistryRecipeWorktable getRecipeRegistry(String name) {
+  public static RegistryRecipeWorktable getWorktableRecipeRegistry(String name) {
 
     return RECIPE_REGISTRY_MAP.get(name);
+  }
+
+  public static boolean isWorktableNameValid(String name) {
+
+    return WORKTABLE_NAME_LIST.contains(name.toLowerCase());
+  }
+
+  public static List<String> getWorktableNames() {
+
+    return Collections.unmodifiableList(WORKTABLE_NAME_LIST);
+  }
+
+  public static ItemStack getWorktableAsItemStack(String name) {
+
+    try {
+      BlockWorktableEnumType type = BlockWorktableEnumType.fromName(name);
+      return new ItemStack(ModuleWorktables.Blocks.WORKTABLE, 1, type.getMeta());
+
+    } catch (Exception e) {
+      //
+    }
+
+    return ItemStack.EMPTY;
   }
 
   private WorktableAPI() {

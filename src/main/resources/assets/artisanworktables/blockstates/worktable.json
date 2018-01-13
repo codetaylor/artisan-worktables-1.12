@@ -63,6 +63,14 @@
       },
       "mage": {
         "textures": {
+          "side": "artisanworktables:blocks/worktable_mage_side_inactive",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_mage_top_inactive",
+          "particle": "artisanworktables:blocks/worktable_mage_side_inactive"
+        }
+      },
+      "mage_active": {
+        "textures": {
           "side": "artisanworktables:blocks/worktable_mage_side",
           "bottom": "artisanworktables:blocks/worktable_bottom",
           "top": "artisanworktables:blocks/worktable_mage_top",

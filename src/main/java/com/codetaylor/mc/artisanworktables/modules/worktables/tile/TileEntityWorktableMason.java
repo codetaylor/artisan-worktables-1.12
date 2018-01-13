@@ -1,9 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumWorktableType;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableEnumType;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
@@ -12,7 +10,7 @@ public class TileEntityWorktableMason
     extends TileEntityWorktableBase {
 
   private static final int TEXT_SHADOW_COLOR = new Color(151, 151, 151).getRGB();
-  private static final EnumWorktableType TYPE = EnumWorktableType.MASON;
+  private static final BlockWorktableEnumType TYPE = BlockWorktableEnumType.MASON;
   private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(
       ModuleWorktables.MOD_ID,
       String.format(ModuleWorktables.Textures.WORKTABLE_GUI, TYPE.getName())
@@ -24,25 +22,25 @@ public class TileEntityWorktableMason
   }
 
   @Override
-  protected int getWorkbenchGuiTextShadowColor() {
+  protected String getWorktableName() {
+
+    return TYPE.getName();
+  }
+
+  @Override
+  protected int getWorktableGuiTextShadowColor() {
 
     return TEXT_SHADOW_COLOR;
   }
 
   @Override
-  public RegistryRecipeWorktable getRecipeRegistry() {
-
-    return WorktableAPI.getRecipeRegistry(TYPE);
-  }
-
-  @Override
-  protected ResourceLocation getBackgroundTexture() {
+  protected ResourceLocation getWorktableGuiBackgroundTexture() {
 
     return BACKGROUND_TEXTURE;
   }
 
   @Override
-  public int getGuiTabTextureYOffset() {
+  public int getWorktableGuiTabTextureYOffset() {
 
     return 4;
   }

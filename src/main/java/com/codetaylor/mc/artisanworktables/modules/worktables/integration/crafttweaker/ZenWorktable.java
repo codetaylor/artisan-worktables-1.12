@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.WorktableNameReference;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
@@ -41,11 +40,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!WorktableNameReference.isAllowedWorktableName(table)) {
+    if (!WorktableAPI.isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          WorktableNameReference.getAllowedWorktableNames()
+          WorktableAPI.getWorktableNames()
       ));
       return;
     }
@@ -86,11 +85,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!WorktableNameReference.isAllowedWorktableName(table)) {
+    if (!WorktableAPI.isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          WorktableNameReference.getAllowedWorktableNames()
+          WorktableAPI.getWorktableNames()
       ));
       return;
     }
@@ -164,7 +163,7 @@ public class ZenWorktable {
     @Override
     public void apply() {
 
-      RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(this.type);
+      RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(this.type);
 
       registry.addRecipeShaped(
           this.gameStageName,
@@ -210,11 +209,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!WorktableNameReference.isAllowedWorktableName(table)) {
+    if (!WorktableAPI.isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          WorktableNameReference.getAllowedWorktableNames()
+          WorktableAPI.getWorktableNames()
       ));
       return;
     }
@@ -253,11 +252,11 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!WorktableNameReference.isAllowedWorktableName(table)) {
+    if (!WorktableAPI.isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          WorktableNameReference.getAllowedWorktableNames()
+          WorktableAPI.getWorktableNames()
       ));
       return;
     }
@@ -327,7 +326,7 @@ public class ZenWorktable {
     @Override
     public void apply() {
 
-      RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(this.type);
+      RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(this.type);
 
       registry.addRecipeShapeless(
           this.gameStageName,

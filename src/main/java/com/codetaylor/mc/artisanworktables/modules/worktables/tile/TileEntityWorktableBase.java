@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
@@ -51,12 +51,7 @@ public abstract class TileEntityWorktableBase
 
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);
     this.toolHandler = new ObservableStackHandler(1);
-    this.toolHandler.addObserver(this::onToolSlotChange);
     this.secondaryOutputHandler = new ItemStackHandler(3);
-  }
-
-  protected void onToolSlotChange(ItemStackHandler handler, int slotIndex) {
-    //
   }
 
   public ItemStackHandler getToolHandler() {
@@ -101,6 +96,14 @@ public abstract class TileEntityWorktableBase
   }
 
   @Override
+  public boolean shouldRefresh(
+      World world, BlockPos pos, IBlockState oldState, IBlockState newSate
+  ) {
+
+    return oldState.getBlock() != newSate.getBlock();
+  }
+
+  @Override
   public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 
     tag = super.writeToNBT(tag);
@@ -141,7 +144,7 @@ public abstract class TileEntityWorktableBase
 
     // Find the recipe
 
-    RegistryRecipeWorktable registry = this.getRecipeRegistry();
+    RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
     IRecipeWorktable recipe = registry.findRecipe(
         player,
         this.toolHandler.getStackInSlot(0),
@@ -348,24 +351,9 @@ public abstract class TileEntityWorktableBase
     return result;
   }
 
-  protected abstract int getWorkbenchGuiTextShadowColor();
+  public RegistryRecipeWorktable getWorktableRecipeRegistry() {
 
-  protected abstract ResourceLocation getBackgroundTexture();
-
-  public abstract RegistryRecipeWorktable getRecipeRegistry();
-
-  public abstract int getGuiTabTextureYOffset();
-
-  public abstract boolean canHandleJEIRecipeTransfer(String name);
-
-  protected String getTableTypeName(IBlockState state) {
-
-    return state.getValue(BlockWorktable.VARIANT).getName();
-  }
-
-  protected String getTableTitleKey(IBlockState state) {
-
-    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, this.getTableTypeName(state));
+    return WorktableAPI.getWorktableRecipeRegistry(this.getWorktableName());
   }
 
   public ItemStack getItemStackForTabDisplay(IBlockState state) {
@@ -391,10 +379,26 @@ public abstract class TileEntityWorktableBase
 
     return new GuiContainerWorktable(
         this.getContainer(inventoryPlayer, world, state, pos),
-        this.getBackgroundTexture(),
-        this.getTableTitleKey(state),
-        this.getWorkbenchGuiTextShadowColor(),
+        this.getWorktableGuiBackgroundTexture(),
+        this.getTableTitleKey(),
+        this.getWorktableGuiTextShadowColor(),
         this
     );
   }
+
+  private String getTableTitleKey() {
+
+    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, this.getWorktableName());
+  }
+
+  public abstract int getWorktableGuiTabTextureYOffset();
+
+  public abstract boolean canHandleJEIRecipeTransfer(String name);
+
+  protected abstract int getWorktableGuiTextShadowColor();
+
+  protected abstract ResourceLocation getWorktableGuiBackgroundTexture();
+
+  protected abstract String getWorktableName();
+
 }

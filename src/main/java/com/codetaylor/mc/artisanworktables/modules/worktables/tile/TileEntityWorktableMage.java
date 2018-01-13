@@ -1,12 +1,15 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.particle.ParticleWorktableMage;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableEnumType;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +24,7 @@ public class TileEntityWorktableMage
     implements ITickable {
 
   private static final int TEXT_SHADOW_COLOR = new Color(172, 81, 227).getRGB();
+  private static final BlockWorktableEnumType TYPE = BlockWorktableEnumType.MAGE;
   private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(
       ModuleWorktables.MOD_ID,
       String.format(ModuleWorktables.Textures.WORKTABLE_GUI, "mage")
@@ -37,39 +41,27 @@ public class TileEntityWorktableMage
   }
 
   @Override
-  protected int getWorkbenchGuiTextShadowColor() {
+  protected String getWorktableName() {
+
+    return TYPE.getName();
+  }
+
+  @Override
+  protected int getWorktableGuiTextShadowColor() {
 
     return TEXT_SHADOW_COLOR;
   }
 
   @Override
-  public RegistryRecipeWorktable getRecipeRegistry() {
-
-    return WorktableAPI.getRecipeRegistry("mage");
-  }
-
-  @Override
-  protected ResourceLocation getBackgroundTexture() {
+  protected ResourceLocation getWorktableGuiBackgroundTexture() {
 
     return BACKGROUND_TEXTURE;
   }
 
   @Override
-  public int getGuiTabTextureYOffset() {
+  public int getWorktableGuiTabTextureYOffset() {
 
     return 7;
-  }
-
-  @Override
-  protected String getTableTypeName(IBlockState state) {
-
-    return "mage";
-  }
-
-  @Override
-  protected String getTableTitleKey(IBlockState state) {
-
-    return String.format("tile.%s.worktable_mage.name", ModuleWorktables.MOD_ID);
   }
 
   @Override
@@ -91,23 +83,48 @@ public class TileEntityWorktableMage
 
     } else { // server
 
-      boolean active = this.isActive();
+      boolean active = !this.getToolHandler().getStackInSlot(0).isEmpty();
 
       if (this.active != active || this.activeDirty) {
         this.activeDirty = false;
         this.active = active;
-
-        this.world.setBlockState(
-            this.pos,
-            ModuleWorktables.Blocks.WORKTABLE_MAGE.getDefaultState()
-                .withProperty(BlockWorktableMage.ACTIVE, active)
-        );
-
-        this.validate();
-        this.world.setTileEntity(this.pos, this);
+        this.notifyBlockUpdate();
       }
     }
+  }
 
+  @Override
+  public void onDataPacket(
+      NetworkManager manager, SPacketUpdateTileEntity packet
+  ) {
+
+    super.onDataPacket(manager, packet);
+    this.notifyBlockUpdate();
+  }
+
+  private void notifyBlockUpdate() {
+
+    IBlockState blockState = this.getWorld().getBlockState(this.getPos());
+    this.getWorld().notifyBlockUpdate(this.getPos(), blockState, blockState, 3);
+  }
+
+  @Override
+  public boolean canHandleJEIRecipeTransfer(String name) {
+
+    return "mage".equals(name);
+  }
+
+  public ItemStack getItemStackForTabDisplay(IBlockState state) {
+
+    Block block = state.getBlock();
+    Item item = Item.getItemFromBlock(block);
+
+    if (!this.getToolHandler().getStackInSlot(0).isEmpty()) {
+      return new ItemStack(item, 1, Short.MAX_VALUE / 2 + block.getMetaFromState(state));
+
+    } else {
+      return new ItemStack(item, 1, block.getMetaFromState(state));
+    }
   }
 
   @SideOnly(Side.CLIENT)
@@ -134,16 +151,5 @@ public class TileEntityWorktableMage
             0
         )
     );
-  }
-
-  private boolean isActive() {
-
-    return !this.getToolHandler().getStackInSlot(0).isEmpty();
-  }
-
-  @Override
-  public boolean canHandleJEIRecipeTransfer(String name) {
-
-    return "mage".equals(name);
   }
 }

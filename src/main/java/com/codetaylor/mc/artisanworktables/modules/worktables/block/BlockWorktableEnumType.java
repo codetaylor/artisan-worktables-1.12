@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.reference;
+package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-public enum EnumWorktableType
+public enum BlockWorktableEnumType
     implements IVariant {
 
   TAILOR(0, "tailor", TileEntityWorktableTailor.class, SoundType.CLOTH),
@@ -18,15 +18,16 @@ public enum EnumWorktableType
   BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class, SoundType.ANVIL),
   JEWELER(4, "jeweler", TileEntityWorktableJeweler.class, SoundType.METAL),
   BASIC(5, "basic", TileEntityWorktableBasic.class, SoundType.WOOD),
-  ENGINEER(6, "engineer", TileEntityWorktableEngineer.class, SoundType.METAL);
+  ENGINEER(6, "engineer", TileEntityWorktableEngineer.class, SoundType.METAL),
+  MAGE(7, "mage", TileEntityWorktableMage.class, SoundType.CLOTH);
 
-  private static final EnumWorktableType[] META_LOOKUP = Stream.of(EnumWorktableType.values())
-      .sorted(Comparator.comparing(EnumWorktableType::getMeta))
-      .toArray(EnumWorktableType[]::new);
+  private static final BlockWorktableEnumType[] META_LOOKUP = Stream.of(BlockWorktableEnumType.values())
+      .sorted(Comparator.comparing(BlockWorktableEnumType::getMeta))
+      .toArray(BlockWorktableEnumType[]::new);
 
-  public static final String[] NAMES = Stream.of(EnumWorktableType.values())
-      .sorted(Comparator.comparing(EnumWorktableType::getMeta))
-      .map(EnumWorktableType::getName)
+  public static final String[] NAMES = Stream.of(BlockWorktableEnumType.values())
+      .sorted(Comparator.comparing(BlockWorktableEnumType::getMeta))
+      .map(BlockWorktableEnumType::getName)
       .toArray(String[]::new);
 
   private final int meta;
@@ -34,7 +35,7 @@ public enum EnumWorktableType
   private Class<? extends TileEntity> tileEntityClass;
   private SoundType soundType;
 
-  EnumWorktableType(
+  BlockWorktableEnumType(
       int meta,
       String name,
       Class<? extends TileEntity> tileEntityClass,
@@ -70,12 +71,12 @@ public enum EnumWorktableType
     return this.soundType;
   }
 
-  public static EnumWorktableType fromName(String name) {
+  public static BlockWorktableEnumType fromName(String name) {
 
-    EnumWorktableType[] values = EnumWorktableType.values();
+    BlockWorktableEnumType[] values = BlockWorktableEnumType.values();
     name = name.toLowerCase();
 
-    for (EnumWorktableType value : values) {
+    for (BlockWorktableEnumType value : values) {
 
       if (value.name.equals(name)) {
         return value;
@@ -85,7 +86,7 @@ public enum EnumWorktableType
     throw new IllegalArgumentException("Unknown name: " + name);
   }
 
-  public static EnumWorktableType fromMeta(int meta) {
+  public static BlockWorktableEnumType fromMeta(int meta) {
 
     if (meta < 0 || meta >= META_LOOKUP.length) {
       meta = 0;

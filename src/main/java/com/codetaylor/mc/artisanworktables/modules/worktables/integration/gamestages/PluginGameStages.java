@@ -1,7 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.WorktableNameReference;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
@@ -60,8 +59,8 @@ public class PluginGameStages {
       return;
     }
 
-    for (String name : WorktableNameReference.getAllowedWorktableNames()) {
-      RegistryRecipeWorktable registry = WorktableAPI.getRecipeRegistry(name);
+    for (String name : WorktableAPI.getWorktableNames()) {
+      RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(name);
 
       if (registry != null) {
         List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());

@@ -75,7 +75,7 @@ public class ContainerWorktable
     // Tool Slot 47
     this.addSlotToContainer(new CraftingToolSlot(
         slotChangeListener,
-        itemStack -> this.tile.getRecipeRegistry().containsRecipeWithTool(itemStack),
+        itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithTool(itemStack),
         this.tile.getToolHandler(),
         0,
         72,
@@ -92,7 +92,7 @@ public class ContainerWorktable
 
   private void updateRecipeOutput(EntityPlayer player) {
 
-    RegistryRecipeWorktable registry = this.tile.getRecipeRegistry();
+    RegistryRecipeWorktable registry = this.tile.getWorktableRecipeRegistry();
     IRecipeWorktable recipe = registry.findRecipe(
         player,
         this.tile.getToolHandler().getStackInSlot(0),
