@@ -1,3 +1,6 @@
+1.7.11:
+* Changed: updated zh_cn.lang (PR#20 DYColdWind)
+
 1.7.10:
 * Added: new tables: engineers worktable, mages worktable
 * Added: new tools: engineers spanner, engineers driver, mages athame, mages grimoire
