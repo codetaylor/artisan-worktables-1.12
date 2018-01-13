@@ -1,4 +1,5 @@
 1.7.11:
+* Changed: code refactor / cleanup
 * Changed: updated zh_cn.lang (PR#20 DYColdWind)
 
 1.7.10:
