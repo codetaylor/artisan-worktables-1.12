@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class RecipeWorktable
@@ -128,13 +129,13 @@ public class RecipeWorktable
   @Override
   public List<Ingredient> getIngredients() {
 
-    return this.ingredients;
+    return Collections.unmodifiableList(this.ingredients);
   }
 
   @Override
   public List<OutputWeightPair> getOutput() {
 
-    return this.output;
+    return Collections.unmodifiableList(this.output);
   }
 
   @Override

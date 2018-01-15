@@ -6,20 +6,24 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorkt
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
+import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -171,6 +175,24 @@ public abstract class TileEntityWorktableBase
         } else {
           this.craftingMatrixHandler.setStackInSlot(i, StackHelper.decrease(itemStack.copy(), 1, false));
         }
+      }
+    }
+
+    // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
+
+    if (!this.world.isRemote) {
+      List<OutputWeightPair> output = recipe.getOutput();
+
+      if (output.size() > 1) {
+        WeightedPicker<ItemStack> picker = new WeightedPicker<>();
+
+        for (OutputWeightPair pair : output) {
+          picker.add(pair.getWeight(), pair.getOutput());
+        }
+
+        ItemStack itemStack = picker.get();
+        player.inventory.setItemStack(itemStack);
+        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
       }
     }
 

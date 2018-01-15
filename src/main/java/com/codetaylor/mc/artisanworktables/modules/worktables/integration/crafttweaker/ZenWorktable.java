@@ -53,7 +53,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTools(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       if (mirrored) {
         recipeBuilder.setMirrored();
@@ -112,7 +112,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTools(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       if (mirrored) {
         recipeBuilder.setMirrored();
@@ -175,7 +175,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTools(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
 
@@ -229,7 +229,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTools(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
 
@@ -256,10 +256,31 @@ public class ZenWorktable {
   }
 
   // --------------------------------------------------------------------------
+  // - Builder
+  // --------------------------------------------------------------------------
+
+  @ZenMethod
+  public static IZenRecipeBuilder createRecipeBuilder(String table) {
+
+    table = table.toLowerCase();
+
+    if (!WorktableAPI.isWorktableNameValid(table)) {
+      CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
+      CTLogHelper.logInfo("Valid table types are: " + String.join(
+          ",",
+          WorktableAPI.getWorktableNames()
+      ));
+      return ZenRecipeBuilderNoOp.INSTANCE;
+    }
+
+    return new ZenRecipeBuilder(table);
+  }
+
+  // --------------------------------------------------------------------------
   // - Internal
   // --------------------------------------------------------------------------
 
-  private static class Add
+  public static class Add
       extends BaseUndoable {
 
     private final String tableName;

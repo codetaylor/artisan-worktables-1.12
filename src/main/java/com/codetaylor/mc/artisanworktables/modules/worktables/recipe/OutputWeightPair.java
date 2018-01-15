@@ -15,7 +15,7 @@ public class OutputWeightPair {
 
   public ItemStack getOutput() {
 
-    return this.output;
+    return this.output.copy();
   }
 
   public int getWeight() {

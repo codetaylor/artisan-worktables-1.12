@@ -56,6 +56,11 @@ public class ModuleWorktables
     );
 
     this.registerIntegrationPlugin(
+        "crafttweaker",
+        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.IZenRecipeBuilder"
+    );
+
+    this.registerIntegrationPlugin(
         "jei",
         "com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI"
     );

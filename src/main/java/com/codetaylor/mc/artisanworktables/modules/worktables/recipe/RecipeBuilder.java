@@ -65,7 +65,7 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setTools(Ingredient tool, int toolDamage) {
+  public RecipeBuilder setTool(Ingredient tool, int toolDamage) {
 
     this.tool = tool;
     this.toolDamage = toolDamage;
