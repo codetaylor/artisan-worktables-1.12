@@ -1,25 +1,32 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 
-import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.List;
 
 public interface IRecipeWorktable {
 
   boolean matches(
-      EntityPlayer player,
+      Collection<String> unlockedStages,
       ItemStack tool,
       CraftingMatrixStackHandler craftingMatrix
   );
 
+  int getWidth();
+
+  int getHeight();
+
+  boolean isShaped();
+
+  boolean isMirrored();
+
   int getToolDamage();
 
-  @Nullable
-  String getGameStageName();
+  boolean matchGameStages(Collection<String> unlockedStages);
 
   ItemStack getSecondaryOutput();
 
@@ -37,7 +44,7 @@ public interface IRecipeWorktable {
 
   ItemStack[] getTools();
 
-  NonNullList<Ingredient> getIngredients();
+  List<Ingredient> getIngredients();
 
-  ItemStack getOutput();
+  List<OutputWeightPair> getOutput();
 }

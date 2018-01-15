@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShaped;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -26,24 +26,19 @@ public class JEIRecipeWrapperWorktable
       "textures/gui/recipe_background.png"
   );
 
-  private RecipeWorktableBase recipe;
-  private boolean shaped;
+  private RecipeWorktable recipe;
   private List<List<ItemStack>> inputs;
   private List<ItemStack> tools;
-  private ItemStack output;
-  private int width;
-  private int height;
-  protected ItemStack secondaryOutput;
-  protected ItemStack tertiaryOutput;
-  protected ItemStack quaternaryOutput;
+  private List<ItemStack> output;
+  private ItemStack secondaryOutput;
+  private ItemStack tertiaryOutput;
+  private ItemStack quaternaryOutput;
 
   public JEIRecipeWrapperWorktable(
-      RecipeWorktableBase recipe,
-      boolean shaped
+      RecipeWorktable recipe
   ) {
 
     this.recipe = recipe;
-    this.shaped = shaped;
     this.inputs = new ArrayList<>();
     this.tools = new ArrayList<>();
 
@@ -52,11 +47,12 @@ public class JEIRecipeWrapperWorktable
     }
 
     this.tools = Arrays.asList(this.recipe.getTools());
-    this.output = this.recipe.getOutput();
 
-    if (recipe instanceof RecipeWorktableShaped) {
-      this.width = ((RecipeWorktableShaped) recipe).getWidth();
-      this.height = ((RecipeWorktableShaped) recipe).getHeight();
+    List<OutputWeightPair> output = this.recipe.getOutput();
+    this.output = new ArrayList<>(output.size());
+
+    for (OutputWeightPair pair : output) {
+      this.output.add(pair.getOutput());
     }
 
     this.secondaryOutput = recipe.getSecondaryOutput();
@@ -66,17 +62,17 @@ public class JEIRecipeWrapperWorktable
 
   public boolean isShaped() {
 
-    return this.shaped;
+    return this.recipe.isShaped();
   }
 
   public int getWidth() {
 
-    return this.width;
+    return this.recipe.getWidth();
   }
 
   public int getHeight() {
 
-    return this.height;
+    return this.recipe.getHeight();
   }
 
   public List<ItemStack> getTools() {
@@ -105,7 +101,7 @@ public class JEIRecipeWrapperWorktable
     ingredients.setInputLists(ItemStack.class, this.inputs);
 
     List<ItemStack> output = new ArrayList<>();
-    output.add(this.output);
+    output.addAll(this.output);
     output.add(this.secondaryOutput);
     output.add(this.tertiaryOutput);
     output.add(this.quaternaryOutput);
@@ -163,7 +159,7 @@ public class JEIRecipeWrapperWorktable
       );
     }
 
-    if (!this.shaped) {
+    if (!this.recipe.isShaped()) {
       GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 221, 8, 18, 17, 100, 0, 0, 1, 1);
     }
 
@@ -172,7 +168,7 @@ public class JEIRecipeWrapperWorktable
     GlStateManager.pushMatrix();
     GlStateManager.translate(0, -8, 0);
 
-    if (!this.shaped) {
+    if (!this.recipe.isShaped()) {
       if (mouseX >= 110 && mouseX <= 110 + 9 && mouseY >= 4 && mouseY <= 4 + 9) {
         List<String> tooltip = new ArrayList<>();
         tooltip.add(I18n.format(ModuleWorktables.Lang.JEI_TOOLTIP_SHAPELESS_RECIPE));

@@ -1,0 +1,101 @@
+package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
+
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.common.util.RecipeMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public interface IRecipeMatcher {
+
+  IRecipeMatcher SHAPED = new IRecipeMatcher() {
+
+    @Override
+    public boolean matches(IRecipeWorktable recipe, CraftingMatrixStackHandler craftingMatrix) {
+
+      int width = recipe.getWidth();
+      int height = recipe.getHeight();
+      boolean mirrored = recipe.isMirrored();
+      List<Ingredient> ingredients = recipe.getIngredients();
+
+      for (int x = 0; x <= craftingMatrix.getWidth() - width; ++x) {
+
+        for (int y = 0; y <= craftingMatrix.getHeight() - height; ++y) {
+
+          if (this.checkMatch(ingredients, craftingMatrix, x, y, width, height, false)) {
+            return true;
+          }
+
+          if (mirrored && this.checkMatch(ingredients, craftingMatrix, x, y, width, height, true)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    private boolean checkMatch(
+        List<Ingredient> ingredients,
+        CraftingMatrixStackHandler craftingMatrix,
+        int startX,
+        int startY,
+        int width,
+        int height,
+        boolean mirror
+    ) {
+
+      for (int x = 0; x < craftingMatrix.getWidth(); ++x) {
+
+        for (int y = 0; y < craftingMatrix.getHeight(); ++y) {
+
+          int subX = x - startX;
+          int subY = y - startY;
+          Ingredient ingredient = Ingredient.EMPTY;
+
+          if (subX >= 0 && subY >= 0 && subX < width && subY < height) {
+
+            if (mirror) {
+              ingredient = ingredients.get(width - subX - 1 + subY * width);
+
+            } else {
+              ingredient = ingredients.get(subX + subY * width);
+            }
+          }
+
+          if (!ingredient.apply(craftingMatrix.getStackInSlot(x + y * craftingMatrix.getWidth()))) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+  };
+
+  IRecipeMatcher SHAPELESS = (recipe, craftingMatrix) -> {
+
+    int count = 0;
+    List<ItemStack> itemList = new ArrayList<>();
+    List<Ingredient> ingredients = recipe.getIngredients();
+
+    for (int i = 0; i < craftingMatrix.getSlots(); i++) {
+      ItemStack itemStack = craftingMatrix.getStackInSlot(i);
+
+      if (!itemStack.isEmpty()) {
+        count += 1;
+        itemList.add(itemStack);
+      }
+    }
+
+    if (count != ingredients.size()) {
+      return false;
+    }
+
+    return RecipeMatcher.findMatches(itemList, ingredients) != null;
+  };
+
+  boolean matches(IRecipeWorktable recipe, CraftingMatrixStackHandler craftingMatrix);
+}

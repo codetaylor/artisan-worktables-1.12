@@ -3,8 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShaped;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktableShapeless;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IDrawable;
@@ -13,7 +12,9 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class PluginJEI
     implements IModPlugin {
@@ -41,13 +42,8 @@ public class PluginJEI
 
     for (String name : WorktableAPI.getWorktableNames()) {
       registry.handleRecipes(
-          RecipeWorktableShaped.class,
-          recipe -> new JEIRecipeWrapperWorktable(recipe, true),
-          PluginJEI.createUID(name)
-      );
-      registry.handleRecipes(
-          RecipeWorktableShapeless.class,
-          recipe -> new JEIRecipeWrapperWorktable(recipe, false),
+          RecipeWorktable.class,
+          JEIRecipeWrapperWorktable::new,
           PluginJEI.createUID(name)
       );
     }
@@ -79,6 +75,7 @@ public class PluginJEI
 
     // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
+      Set<String> unlockedStages = Collections.emptySet();
 
       for (String name : WorktableAPI.getWorktableNames()) {
         RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(name);
@@ -88,7 +85,7 @@ public class PluginJEI
 
           for (IRecipeWorktable recipe : recipeList) {
 
-            if (recipe.getGameStageName() != null) {
+            if (!recipe.matchGameStages(unlockedStages)) {
               IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
                   recipe,
                   PluginJEI.createUID(name)

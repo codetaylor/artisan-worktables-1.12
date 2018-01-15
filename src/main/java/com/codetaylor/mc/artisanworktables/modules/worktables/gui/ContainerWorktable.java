@@ -100,7 +100,7 @@ public class ContainerWorktable
     );
 
     if (recipe != null) {
-      this.resultHandler.setStackInSlot(0, recipe.getOutput());
+      this.resultHandler.setStackInSlot(0, recipe.getOutput().get(0).getOutput());
 
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
