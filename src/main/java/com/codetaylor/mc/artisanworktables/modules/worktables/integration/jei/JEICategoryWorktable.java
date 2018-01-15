@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.ICraftingGridHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -11,7 +12,9 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JEICategoryWorktable
@@ -64,10 +67,12 @@ public class JEICategoryWorktable
     JEIRecipeWrapperWorktable wrapperWorktable = (JEIRecipeWrapperWorktable) recipeWrapper;
     List<ItemStack> tools = wrapperWorktable.getTools();
     List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-    List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class).get(0);
+    List<ItemStack> outputs = wrapperWorktable.getOutput();
 
     stacks.init(0, false, 108 - 3, 34 - 3);
     stacks.set(0, outputs);
+
+    this.setupTooltip(stacks, wrapperWorktable.getWeightedOutput());
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {
@@ -108,6 +113,49 @@ public class JEICategoryWorktable
       stacks.set(13, extraOutput);
     }
 
-    recipeLayout.setRecipeTransferButton(157, 67); //x=157
+    recipeLayout.setRecipeTransferButton(157, 67);
+  }
+
+  private void setupTooltip(
+      IGuiItemStackGroup stacks, List<OutputWeightPair> weightedOutput
+  ) {
+
+    if (weightedOutput.size() > 1) {
+      int sum = 0;
+
+      for (OutputWeightPair pair : weightedOutput) {
+        sum += pair.getWeight();
+      }
+
+      final int weightSum = sum;
+
+      stacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+        if (slotIndex == 0) {
+
+          for (OutputWeightPair pair : weightedOutput) {
+
+            if (ItemStack.areItemStacksEqual(pair.getOutput(), ingredient)) {
+              int chance = Math.round(pair.getWeight() / (float) weightSum * 100);
+
+              List<String> result = new ArrayList<>();
+              result.add(tooltip.get(0));
+              result.add(I18n.format(
+                  ModuleWorktables.Lang.JEI_TOOLTIP_CHANCE,
+                  TextFormatting.GRAY,
+                  String.valueOf(chance)
+              ));
+
+              for (int i = 1; i < tooltip.size(); i++) {
+                result.add(tooltip.get(i));
+              }
+
+              tooltip.clear();
+              tooltip.addAll(result);
+            }
+          }
+        }
+      });
+    }
   }
 }

@@ -60,6 +60,15 @@ public class JEIRecipeWrapperWorktable
     this.quaternaryOutput = recipe.getQuaternaryOutput();
   }
 
+  public List<OutputWeightPair> getWeightedOutput() {
+
+    return this.recipe.getOutput();
+  }
+
+  public List<ItemStack> getOutput() {
+    return this.output;
+  }
+
   public boolean isShaped() {
 
     return this.recipe.isShaped();
