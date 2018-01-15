@@ -1,3 +1,6 @@
+1.7.12:
+* Fixed: JEI recipe category name for the Mage's Worktable using wrong translation key
+
 1.7.11:
 * Changed: code refactor / cleanup
 * Changed: updated zh_cn.lang (PR#20 DYColdWind)
