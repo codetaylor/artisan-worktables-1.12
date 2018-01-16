@@ -166,6 +166,10 @@ public class ContainerWorktable
       if (slotIndex == 0) {
         // Result
 
+        // This is executed on both the client and server for each craft. If the crafting
+        // grid has multiple, complete recipes, this will be executed for each complete
+        // recipe.
+
         itemstack1.getItem().onCreated(itemstack1, this.world, playerIn);
 
         if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
