@@ -1,3 +1,6 @@
+1.7.13:
+* Fixed: staged recipes using stage names with capital letters not showing in JEI (#24) 
+
 1.7.12:
 * Fixed: JEI recipe category name for the Mage's Worktable using wrong translation key
 

@@ -40,7 +40,7 @@ public abstract class RecipeWorktableBase
       float quaternaryOutputChance
   ) {
 
-    this.gameStageName = gameStageName;
+    this.gameStageName = (gameStageName == null) ? null : gameStageName.toLowerCase();
     this.output = output;
     this.tools = tools;
     this.toolDamage = toolDamage;
