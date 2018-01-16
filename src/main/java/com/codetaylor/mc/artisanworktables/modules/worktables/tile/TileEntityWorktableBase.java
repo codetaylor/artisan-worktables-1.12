@@ -49,13 +49,19 @@ public abstract class TileEntityWorktableBase
 
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
-  private ItemStackHandler secondaryOutputHandler;
+  private ObservableStackHandler secondaryOutputHandler;
 
   public TileEntityWorktableBase(int width, int height) {
 
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);
     this.toolHandler = new ObservableStackHandler(1);
-    this.secondaryOutputHandler = new ItemStackHandler(3);
+    this.secondaryOutputHandler = new ObservableStackHandler(3);
+
+    ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
+    contentsChangedEventHandler = (stackHandler, slotIndex) -> this.markDirty();
+    this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
+    this.toolHandler.addObserver(contentsChangedEventHandler);
+    this.secondaryOutputHandler.addObserver(contentsChangedEventHandler);
   }
 
   public ItemStackHandler getToolHandler() {
