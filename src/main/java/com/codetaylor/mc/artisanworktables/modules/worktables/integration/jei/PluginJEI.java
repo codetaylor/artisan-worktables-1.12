@@ -123,10 +123,6 @@ public class PluginJEI
 
   private String createTitleTranslateKey(String name) {
 
-    if ("mage".equals(name)) {
-      return String.format("tile.%s.worktable_mage.name", ModuleWorktables.MOD_ID);
-    }
-
     return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, name);
   }
 
