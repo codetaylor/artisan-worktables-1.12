@@ -1,3 +1,6 @@
+1.7.14:
+* Fixed: worktables not saving contents properly (#23)
+
 1.7.13:
 * Fixed: staged recipes using stage names with capital letters not showing in JEI (#24) 
 
