@@ -1,3 +1,6 @@
+1.8.14:
+* Added: exposed advanced recipe builder syntax to ZenScript, exposes more recipe features - see ZENSCRIPT_ADVANCED.md for syntax
+
 1.7.14:
 * Fixed: worktables not saving contents properly (#23)
 
