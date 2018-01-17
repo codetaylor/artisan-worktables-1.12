@@ -42,13 +42,13 @@ public class JEIRecipeWrapperWorktable
     this.inputs = new ArrayList<>();
     this.tools = new ArrayList<>();
 
-    for (Ingredient input : this.recipe.getIngredients()) {
+    for (Ingredient input : this.recipe.getIngredientList()) {
       this.inputs.add(Arrays.asList(input.getMatchingStacks()));
     }
 
     this.tools = Arrays.asList(this.recipe.getTools());
 
-    List<OutputWeightPair> output = this.recipe.getOutput();
+    List<OutputWeightPair> output = this.recipe.getOutputWeightPairList();
     this.output = new ArrayList<>(output.size());
 
     for (OutputWeightPair pair : output) {
@@ -62,7 +62,7 @@ public class JEIRecipeWrapperWorktable
 
   public List<OutputWeightPair> getWeightedOutput() {
 
-    return this.recipe.getOutput();
+    return this.recipe.getOutputWeightPairList();
   }
 
   public List<ItemStack> getOutput() {

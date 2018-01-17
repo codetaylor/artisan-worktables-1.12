@@ -18,7 +18,7 @@ public interface IRecipeMatcher {
       int width = recipe.getWidth();
       int height = recipe.getHeight();
       boolean mirrored = recipe.isMirrored();
-      List<Ingredient> ingredients = recipe.getIngredients();
+      List<Ingredient> ingredients = recipe.getIngredientList();
 
       for (int x = 0; x <= craftingMatrix.getWidth() - width; ++x) {
 
@@ -79,7 +79,7 @@ public interface IRecipeMatcher {
 
     int count = 0;
     List<ItemStack> itemList = new ArrayList<>();
-    List<Ingredient> ingredients = recipe.getIngredients();
+    List<Ingredient> ingredients = recipe.getIngredientList();
 
     for (int i = 0; i < craftingMatrix.getSlots(); i++) {
       ItemStack itemStack = craftingMatrix.getStackInSlot(i);

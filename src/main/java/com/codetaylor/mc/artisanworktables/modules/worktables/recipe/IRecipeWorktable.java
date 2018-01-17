@@ -3,10 +3,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 public interface IRecipeWorktable {
 
@@ -44,7 +44,13 @@ public interface IRecipeWorktable {
 
   ItemStack[] getTools();
 
-  List<Ingredient> getIngredients();
+  List<Ingredient> getIngredientList();
 
-  List<OutputWeightPair> getOutput();
+  List<OutputWeightPair> getOutputWeightPairList();
+
+  ItemStack selectOutput(Random random);
+
+  ItemStack getBaseOutput();
+
+  boolean hasMultipleWeightedOutputs();
 }

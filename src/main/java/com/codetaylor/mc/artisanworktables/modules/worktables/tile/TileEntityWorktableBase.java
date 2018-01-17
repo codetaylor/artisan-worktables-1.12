@@ -6,13 +6,11 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorkt
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
-import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +43,7 @@ public abstract class TileEntityWorktableBase
     implements IContainer,
     IContainerProvider<ContainerWorktable, GuiContainerWorktable> {
 
-  private static final Random RANDOM = new Random();
+  private Random random = new Random();
 
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
@@ -154,12 +152,7 @@ public abstract class TileEntityWorktableBase
 
     // Find the recipe
 
-    RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
-    IRecipeWorktable recipe = registry.findRecipe(
-        player,
-        this.toolHandler.getStackInSlot(0),
-        this.craftingMatrixHandler
-    );
+    IRecipeWorktable recipe = this.getRecipe(player);
 
     if (recipe == null) {
       return;
@@ -186,17 +179,10 @@ public abstract class TileEntityWorktableBase
 
     // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
 
-    if (!this.world.isRemote) {
-      List<OutputWeightPair> output = recipe.getOutput();
+    if (!this.world.isRemote && !player.inventory.getItemStack().isEmpty()) {
 
-      if (output.size() > 1) {
-        WeightedPicker<ItemStack> picker = new WeightedPicker<>();
-
-        for (OutputWeightPair pair : output) {
-          picker.add(pair.getWeight(), pair.getOutput());
-        }
-
-        ItemStack itemStack = picker.get();
+      if (recipe.hasMultipleWeightedOutputs()) {
+        ItemStack itemStack = recipe.selectOutput(this.random);
         player.inventory.setItemStack(itemStack);
         ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
       }
@@ -209,7 +195,7 @@ public abstract class TileEntityWorktableBase
 
       if (!extraOutput.isEmpty()) {
 
-        if (RANDOM.nextFloat() < recipe.getSecondaryOutputChance()) {
+        if (this.random.nextFloat() < recipe.getSecondaryOutputChance()) {
           this.generateExtraOutput(extraOutput);
         }
       }
@@ -218,7 +204,7 @@ public abstract class TileEntityWorktableBase
 
       if (!extraOutput.isEmpty()) {
 
-        if (RANDOM.nextFloat() < recipe.getTertiaryOutputChance()) {
+        if (this.random.nextFloat() < recipe.getTertiaryOutputChance()) {
           this.generateExtraOutput(extraOutput);
         }
       }
@@ -227,7 +213,7 @@ public abstract class TileEntityWorktableBase
 
       if (!extraOutput.isEmpty()) {
 
-        if (RANDOM.nextFloat() < recipe.getQuaternaryOutputChance()) {
+        if (this.random.nextFloat() < recipe.getQuaternaryOutputChance()) {
           this.generateExtraOutput(extraOutput);
         }
       }
@@ -264,6 +250,16 @@ public abstract class TileEntityWorktableBase
     }
 
     this.markDirty();
+  }
+
+  public IRecipeWorktable getRecipe(EntityPlayer player) {
+
+    RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
+    return registry.findRecipe(
+        player,
+        this.toolHandler.getStackInSlot(0),
+        this.craftingMatrixHandler
+    );
   }
 
   private void generateExtraOutput(ItemStack extraOutput) {

@@ -2,12 +2,14 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
+import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class RecipeWorktable
     implements IRecipeWorktable {
@@ -127,15 +129,44 @@ public class RecipeWorktable
   }
 
   @Override
-  public List<Ingredient> getIngredients() {
+  public List<Ingredient> getIngredientList() {
 
     return Collections.unmodifiableList(this.ingredients);
   }
 
   @Override
-  public List<OutputWeightPair> getOutput() {
+  public List<OutputWeightPair> getOutputWeightPairList() {
 
     return Collections.unmodifiableList(this.output);
+  }
+
+  @Override
+  public ItemStack selectOutput(Random random) {
+
+    if (this.output.size() > 1) {
+      WeightedPicker<ItemStack> picker = new WeightedPicker<>(random);
+
+      for (OutputWeightPair pair : this.output) {
+        picker.add(pair.getWeight(), pair.getOutput());
+      }
+
+      return picker.get();
+
+    } else {
+      return this.getBaseOutput();
+    }
+  }
+
+  @Override
+  public ItemStack getBaseOutput() {
+
+    return this.output.get(0).getOutput();
+  }
+
+  @Override
+  public boolean hasMultipleWeightedOutputs() {
+
+    return this.output.size() > 1;
   }
 
   @Override

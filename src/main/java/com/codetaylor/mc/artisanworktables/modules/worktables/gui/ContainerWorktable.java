@@ -100,7 +100,7 @@ public class ContainerWorktable
     );
 
     if (recipe != null) {
-      this.resultHandler.setStackInSlot(0, recipe.getOutput().get(0).getOutput());
+      this.resultHandler.setStackInSlot(0, recipe.getBaseOutput());
 
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
@@ -170,12 +170,22 @@ public class ContainerWorktable
         // grid has multiple, complete recipes, this will be executed for each complete
         // recipe.
 
-        itemstack1.getItem().onCreated(itemstack1, this.world, playerIn);
+        IRecipeWorktable recipe = this.tile.getRecipe(playerIn);
 
-        if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
+        if (recipe == null) {
           return ItemStack.EMPTY;
         }
 
+        if (recipe.hasMultipleWeightedOutputs()) {
+          return ItemStack.EMPTY;
+        }
+
+        if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
+          // Can't merge the craft result into any inventory slot.
+          return ItemStack.EMPTY;
+        }
+
+        itemstack1.getItem().onCreated(itemstack1, this.world, playerIn);
         slot.onSlotChange(itemstack1, itemstack);
 
       } else if (slotIndex >= 10 && slotIndex < 37) {
