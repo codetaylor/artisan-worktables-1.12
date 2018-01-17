@@ -97,7 +97,7 @@ This method can be called more than once to add multiple, weighted, exclusive ou
 IRecipeBuilder addOutput(IItemStack output, @Optional int weight);
 ```
 
-#### addExtraOutput
+#### setExtraOutput[One, Two, Three]
 
 &#x1F539;*Optional*
 
