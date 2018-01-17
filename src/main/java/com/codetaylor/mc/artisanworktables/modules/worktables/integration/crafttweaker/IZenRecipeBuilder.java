@@ -6,7 +6,7 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass("mods.artisanworktables.RecipeBuilder")
+@ZenClass("mods.artisanworktables.IRecipeBuilder")
 public interface IZenRecipeBuilder {
 
   @ZenMethod
