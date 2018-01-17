@@ -15,12 +15,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import yalter.mousetweaks.api.MouseTweaksDisableWheelTweak;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@MouseTweaksDisableWheelTweak
 public class GuiContainerWorktable
     extends GuiContainer {
 
