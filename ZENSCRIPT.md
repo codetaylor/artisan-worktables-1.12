@@ -1,21 +1,43 @@
 ### ZenScript
 
-#### Import
-
-```
-import mods.artisanworktables.Worktable;
-```
-
-#### Syntax
-
 **Note:** The tool slots assume the item being used as the tool is an item with durability. Using an item without durability in a recipe will have unexpected and, most likely, undesired results. Also, matching tools based on NBT data is not supported.
 
 Valid table names are: `basic`, `blacksmith`, `carpenter`, `engineer`, `jeweler`, `mage`, `mason`, and `tailor`.
 
 All extra outputs are optional.
 
+#### Import
+
+```
+import mods.artisanworktables.Worktable;
+```
+
+#### Tool OreDict Groups
+
+All tools are grouped in OreDict entries based on their tool type for easy recipe reference:
+
+```
+<ore:blacksmiths_cutters>
+<ore:blacksmiths_hammer>
+<ore:carpenters_hammer>
+<ore:carpenters_handsaw>
+<ore:engineers_driver>
+<ore:engineers_spanner>
+<ore:jewelers_gemcutter>
+<ore:jewelers_pliers>
+<ore:mages_athame>
+<ore:mages_grimoire>
+<ore:masons_chisel>
+<ore:masons_trowel>
+<ore:tailors_needle>
+<ore:tailors_shears>
+```
+
+#### Basic Syntax
+
 ```
 // Normal recipes
+
 Worktable.addRecipeShaped(
   String table, 
   IItemStack result, 
@@ -46,6 +68,7 @@ Worktable.addRecipeShapeless(
 );
 
 // GameStages staged recipes 
+
 Worktable.addStagedRecipeShaped(
   String gameStageName, 
   String table, 
@@ -78,26 +101,7 @@ Worktable.addStagedRecipeShapeless(
 );
 ```
 
-All tools are grouped in OreDict entries based on their tool type for easy recipe reference:
-
-```
-<ore:blacksmiths_cutters>
-<ore:blacksmiths_hammer>
-<ore:carpenters_hammer>
-<ore:carpenters_handsaw>
-<ore:engineers_driver>
-<ore:engineers_spanner>
-<ore:jewelers_gemcutter>
-<ore:jewelers_pliers>
-<ore:mages_athame>
-<ore:mages_grimoire>
-<ore:masons_chisel>
-<ore:masons_trowel>
-<ore:tailors_needle>
-<ore:tailors_shears>
-```
-
-#### Examples
+##### Examples
 
 ```
 import mods.artisanworktables.Worktable;

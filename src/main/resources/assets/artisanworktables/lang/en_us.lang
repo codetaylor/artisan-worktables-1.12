@@ -56,3 +56,4 @@ material.artisanworktables.terrasteel=Terrasteel
 
 # JEI
 jei.tooltip.shapeless.recipe=Shapeless Recipe
+jei.tooltip.chance=%s%s%% chance to craft

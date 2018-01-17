@@ -1,13 +1,14 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
+import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,86 +27,7 @@ public class RegistryRecipeWorktable {
     return result;
   }
 
-  public IRecipeWorktable addRecipeShaped(
-      String gameStageName,
-      ItemStack result,
-      Ingredient tool,
-      Ingredient[][] inputs,
-      int toolDamage,
-      boolean mirrored,
-      ItemStack secondaryOutput,
-      float secondaryOutputChance,
-      ItemStack tertiaryOutput,
-      float tertiaryOutputChance,
-      ItemStack quaternaryOutput,
-      float quaternaryOutputChance
-  ) {
-
-    NonNullList<Ingredient> inputList = NonNullList.create();
-    int width = 0;
-
-    for (Ingredient[] row : inputs) {
-
-      if (row.length > width) {
-        width = row.length;
-      }
-
-      Collections.addAll(inputList, row);
-    }
-
-    int height = inputs.length;
-
-    RecipeWorktableShaped recipe = new RecipeWorktableShaped(
-        gameStageName,
-        width,
-        height,
-        tool.getMatchingStacks(),
-        inputList,
-        result,
-        toolDamage,
-        mirrored,
-        secondaryOutput,
-        secondaryOutputChance,
-        tertiaryOutput,
-        tertiaryOutputChance,
-        quaternaryOutput,
-        quaternaryOutputChance
-    );
-
-    this.recipeList.add(recipe);
-    return recipe;
-  }
-
-  public IRecipeWorktable addRecipeShapeless(
-      String gameStageName,
-      ItemStack result,
-      Ingredient tool,
-      Ingredient[] inputs,
-      int toolDamage,
-      ItemStack secondaryOutput,
-      float secondaryOutputChance,
-      ItemStack tertiaryOutput,
-      float tertiaryOutputChance,
-      ItemStack quaternaryOutput,
-      float quaternaryOutputChance
-  ) {
-
-    NonNullList<Ingredient> inputList = NonNullList.create();
-    Collections.addAll(inputList, inputs);
-
-    IRecipeWorktable recipe = new RecipeWorktableShapeless(
-        gameStageName,
-        tool.getMatchingStacks(),
-        inputList,
-        result,
-        toolDamage,
-        secondaryOutput,
-        secondaryOutputChance,
-        tertiaryOutput,
-        tertiaryOutputChance,
-        quaternaryOutput,
-        quaternaryOutputChance
-    );
+  public IRecipeWorktable addRecipe(IRecipeWorktable recipe) {
 
     this.recipeList.add(recipe);
     return recipe;
@@ -118,9 +40,19 @@ public class RegistryRecipeWorktable {
       CraftingMatrixStackHandler craftingMatrix
   ) {
 
+    Collection<String> unlockedStages;
+
+    if (ModuleWorktables.MOD_LOADED_GAMESTAGES
+        && player != null) {
+      unlockedStages = this.getUnlockedStages(player);
+
+    } else {
+      unlockedStages = Collections.emptySet();
+    }
+
     for (IRecipeWorktable recipe : this.recipeList) {
 
-      if (recipe.matches(player, tool, craftingMatrix)) {
+      if (recipe.matches(unlockedStages, tool, craftingMatrix)) {
         return recipe;
       }
     }
@@ -138,5 +70,10 @@ public class RegistryRecipeWorktable {
     }
 
     return false;
+  }
+
+  private Collection<String> getUnlockedStages(EntityPlayer player) {
+
+    return PlayerDataHandler.getStageData(player).getUnlockedStages();
   }
 }

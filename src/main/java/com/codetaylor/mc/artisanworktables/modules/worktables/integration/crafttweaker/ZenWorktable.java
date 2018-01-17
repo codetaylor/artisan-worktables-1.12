@@ -2,6 +2,9 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
@@ -9,8 +12,6 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.utils.BaseUndoable;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -49,21 +50,35 @@ public class ZenWorktable {
       return;
     }
 
-    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
-        null,
-        table,
-        CTInputHelper.toStack(result),
-        CTInputHelper.toIngredient(tool),
-        CTInputHelper.toIngredientMatrix(input),
-        toolDamage,
-        mirrored,
-        CTInputHelper.toStack(secondaryOutput),
-        secondaryOutputChance,
-        CTInputHelper.toStack(tertiaryOutput),
-        tertiaryOutputChance,
-        CTInputHelper.toStack(quaternaryOutput),
-        quaternaryOutputChance
-    ));
+    try {
+      RecipeBuilder recipeBuilder = new RecipeBuilder();
+      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
+
+      if (mirrored) {
+        recipeBuilder.setMirrored();
+      }
+
+      recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(input));
+
+      if (secondaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+      }
+
+      if (tertiaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+      }
+
+      if (quaternaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+      }
+
+      PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new Add(table, recipeBuilder));
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unable to build recipe: " + e.getMessage());
+    }
+
   }
 
   @ZenMethod
@@ -94,98 +109,37 @@ public class ZenWorktable {
       return;
     }
 
-    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShaped(
-        gameStageName,
-        table,
-        CTInputHelper.toStack(result),
-        CTInputHelper.toIngredient(tool),
-        CTInputHelper.toIngredientMatrix(input),
-        toolDamage,
-        mirrored,
-        CTInputHelper.toStack(secondaryOutput),
-        secondaryOutputChance,
-        CTInputHelper.toStack(tertiaryOutput),
-        tertiaryOutputChance,
-        CTInputHelper.toStack(quaternaryOutput),
-        quaternaryOutputChance
-    ));
-  }
+    try {
+      RecipeBuilder recipeBuilder = new RecipeBuilder();
+      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
 
-  private static class AddShaped
-      extends BaseUndoable {
+      if (mirrored) {
+        recipeBuilder.setMirrored();
+      }
 
-    private final String gameStageName;
-    private final String type;
-    private final ItemStack result;
-    private final Ingredient tool;
-    private final Ingredient[][] input;
-    private final int toolDamage;
-    private final boolean mirrored;
-    private final ItemStack secondaryOutput;
-    private final float secondaryOutputChance;
-    private final ItemStack tertiaryOutput;
-    private final float tertiaryOutputChance;
-    private final ItemStack quaternaryOutput;
-    private final float quaternaryOutputChance;
+      recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(input));
 
-    AddShaped(
-        String gameStageName,
-        String type,
-        ItemStack result,
-        Ingredient tool,
-        Ingredient[][] input,
-        int toolDamage,
-        boolean mirrored,
-        ItemStack secondaryOutput,
-        float secondaryOutputChance,
-        ItemStack tertiaryOutput,
-        float tertiaryOutputChance,
-        ItemStack quaternaryOutput,
-        float quaternaryOutputChance
-    ) {
+      if (secondaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+      }
 
-      super("WorktableShaped");
-      this.gameStageName = gameStageName;
-      this.type = type;
-      this.result = result;
-      this.tool = tool;
-      this.input = input;
-      this.toolDamage = toolDamage;
-      this.mirrored = mirrored;
-      this.secondaryOutput = secondaryOutput;
-      this.secondaryOutputChance = secondaryOutputChance;
-      this.tertiaryOutput = tertiaryOutput;
-      this.tertiaryOutputChance = tertiaryOutputChance;
-      this.quaternaryOutput = quaternaryOutput;
-      this.quaternaryOutputChance = quaternaryOutputChance;
+      if (tertiaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+      }
+
+      if (quaternaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+      }
+
+      recipeBuilder.requireGamestages(EnumGameStageRequire.ANY, new String[]{gameStageName});
+
+      PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new Add(table, recipeBuilder));
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unable to build recipe: " + e.getMessage());
     }
 
-    @Override
-    public void apply() {
-
-      RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(this.type);
-
-      registry.addRecipeShaped(
-          this.gameStageName,
-          this.result,
-          this.tool,
-          this.input,
-          this.toolDamage,
-          this.mirrored,
-          this.secondaryOutput,
-          this.secondaryOutputChance,
-          this.tertiaryOutput,
-          this.tertiaryOutputChance,
-          this.quaternaryOutput,
-          this.quaternaryOutputChance
-      );
-    }
-
-    @Override
-    protected String getRecipeInfo() {
-
-      return CTLogHelper.getStackDescription(this.result);
-    }
   }
 
   // --------------------------------------------------------------------------
@@ -218,20 +172,31 @@ public class ZenWorktable {
       return;
     }
 
-    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
-        null,
-        table,
-        CTInputHelper.toStack(result),
-        CTInputHelper.toIngredient(tool),
-        CTInputHelper.toIngredientArray(input),
-        toolDamage,
-        CTInputHelper.toStack(secondaryOutput),
-        secondaryOutputChance,
-        CTInputHelper.toStack(tertiaryOutput),
-        tertiaryOutputChance,
-        CTInputHelper.toStack(quaternaryOutput),
-        quaternaryOutputChance
-    ));
+    try {
+      RecipeBuilder recipeBuilder = new RecipeBuilder();
+      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
+
+      recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
+
+      if (secondaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+      }
+
+      if (tertiaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+      }
+
+      if (quaternaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+      }
+
+      PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new Add(table, recipeBuilder));
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unable to build recipe: " + e.getMessage());
+    }
+
   }
 
   @ZenMethod
@@ -261,92 +226,91 @@ public class ZenWorktable {
       return;
     }
 
-    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new AddShapeless(
-        gameStageName,
-        table,
-        CTInputHelper.toStack(result),
-        CTInputHelper.toIngredient(tool),
-        CTInputHelper.toIngredientArray(input),
-        toolDamage,
-        CTInputHelper.toStack(secondaryOutput),
-        secondaryOutputChance,
-        CTInputHelper.toStack(tertiaryOutput),
-        tertiaryOutputChance,
-        CTInputHelper.toStack(quaternaryOutput),
-        quaternaryOutputChance
-    ));
+    try {
+      RecipeBuilder recipeBuilder = new RecipeBuilder();
+      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
+      recipeBuilder.setTool(CTInputHelper.toIngredient(tool), toolDamage);
+
+      recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
+
+      if (secondaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+      }
+
+      if (tertiaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+      }
+
+      if (quaternaryOutput != null) {
+        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+      }
+
+      recipeBuilder.requireGamestages(EnumGameStageRequire.ANY, new String[]{gameStageName});
+
+      PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new Add(table, recipeBuilder));
+
+    } catch (Exception e) {
+      CTLogHelper.logErrorFromZenMethod("Unable to build recipe: " + e.getMessage());
+    }
+
   }
 
-  private static class AddShapeless
+  // --------------------------------------------------------------------------
+  // - Builder
+  // --------------------------------------------------------------------------
+
+  @ZenMethod
+  public static IZenRecipeBuilder createRecipeBuilder(String table) {
+
+    table = table.toLowerCase();
+
+    if (!WorktableAPI.isWorktableNameValid(table)) {
+      CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
+      CTLogHelper.logInfo("Valid table types are: " + String.join(
+          ",",
+          WorktableAPI.getWorktableNames()
+      ));
+      return ZenRecipeBuilderNoOp.INSTANCE;
+    }
+
+    return new ZenRecipeBuilder(table);
+  }
+
+  // --------------------------------------------------------------------------
+  // - Internal
+  // --------------------------------------------------------------------------
+
+  public static class Add
       extends BaseUndoable {
 
-    private final String gameStageName;
-    private final String type;
-    private final ItemStack result;
-    private final Ingredient tool;
-    private final Ingredient[] input;
-    private final int toolDamage;
-    private final ItemStack secondaryOutput;
-    private final float secondaryOutputChance;
-    private final ItemStack tertiaryOutput;
-    private final float tertiaryOutputChance;
-    private final ItemStack quaternaryOutput;
-    private final float quaternaryOutputChance;
+    private final String tableName;
+    private final RecipeBuilder recipeBuilder;
 
-    AddShapeless(
-        String gameStageName,
-        String type,
-        ItemStack result,
-        Ingredient tool,
-        Ingredient[] input,
-        int toolDamage,
-        ItemStack secondaryOutput,
-        float secondaryOutputChance,
-        ItemStack tertiaryOutput,
-        float tertiaryOutputChance,
-        ItemStack quaternaryOutput,
-        float quaternaryOutputChance
-    ) {
+    Add(String tableName, RecipeBuilder recipeBuilder) {
 
-      super("WorktableShapeless");
-      this.gameStageName = gameStageName;
-      this.type = type;
-      this.result = result;
-      this.tool = tool;
-      this.input = input;
-      this.toolDamage = toolDamage;
-      this.secondaryOutput = secondaryOutput;
-      this.secondaryOutputChance = secondaryOutputChance;
-      this.tertiaryOutput = tertiaryOutput;
-      this.tertiaryOutputChance = tertiaryOutputChance;
-      this.quaternaryOutput = quaternaryOutput;
-      this.quaternaryOutputChance = quaternaryOutputChance;
+      super("RecipeWorktable");
+      this.tableName = tableName;
+      this.recipeBuilder = recipeBuilder;
     }
 
     @Override
     public void apply() {
 
-      RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(this.type);
+      try {
+        RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(this.tableName);
+        IRecipeWorktable recipeWorktable = this.recipeBuilder.create();
+        registry.addRecipe(recipeWorktable);
 
-      registry.addRecipeShapeless(
-          this.gameStageName,
-          this.result,
-          this.tool,
-          this.input,
-          this.toolDamage,
-          this.secondaryOutput,
-          this.secondaryOutputChance,
-          this.tertiaryOutput,
-          this.tertiaryOutputChance,
-          this.quaternaryOutput,
-          this.quaternaryOutputChance
-      );
+      } catch (Exception e) {
+        CTLogHelper.logError("Unable to register recipe", e);
+      }
     }
 
     @Override
     protected String getRecipeInfo() {
 
-      return CTLogHelper.getStackDescription(this.result);
+      return CTLogHelper.getStackDescription(this.tableName);
     }
   }
+
 }

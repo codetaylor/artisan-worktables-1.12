@@ -7,6 +7,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRec
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.darkhax.gamestages.event.GameStageEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -14,7 +15,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Handles adding and removing worktable recipes from JEI on the client when
@@ -30,26 +30,22 @@ public class PluginGameStages {
   @SubscribeEvent
   public void gameStageAddedEvent(GameStageEvent.Added event) {
 
-    this.processStagedRecipes(event.getStageName(), (wrapper) -> PluginJEI.RECIPE_REGISTRY.unhideRecipe(wrapper));
+    this.processStagedRecipes();
   }
 
   @SubscribeEvent
   public void gameStageRemovedEvent(GameStageEvent.Removed event) {
 
-    this.processStagedRecipes(event.getStageName(), (wrapper) -> PluginJEI.RECIPE_REGISTRY.hideRecipe(wrapper));
+    this.processStagedRecipes();
   }
 
   @SubscribeEvent
   public void gameStageClientSyncEvent(GameStageEvent.ClientSync event) {
 
-    Collection<String> unlockedStages = PlayerDataHandler.getStageData(event.getPlayer()).getUnlockedStages();
-
-    for (String unlockedStage : unlockedStages) {
-      this.processStagedRecipes(unlockedStage, (wrapper) -> PluginJEI.RECIPE_REGISTRY.unhideRecipe(wrapper));
-    }
+    this.processStagedRecipes();
   }
 
-  private void processStagedRecipes(String stageName, Consumer<IRecipeWrapper> consumer) {
+  private void processStagedRecipes() {
 
     if (!FMLCommonHandler.instance().getEffectiveSide().isClient()) {
       return;
@@ -59,6 +55,9 @@ public class PluginGameStages {
       return;
     }
 
+    Collection<String> unlockedStages = PlayerDataHandler.getStageData(Minecraft.getMinecraft().player)
+        .getUnlockedStages();
+
     for (String name : WorktableAPI.getWorktableNames()) {
       RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(name);
 
@@ -67,13 +66,17 @@ public class PluginGameStages {
         String uid = PluginJEI.createUID(name);
 
         for (IRecipeWorktable recipe : recipeList) {
+          IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 
-          if (stageName.equals(recipe.getGameStageName())) {
-            IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
+          if (recipeWrapper == null) {
+            continue;
+          }
 
-            if (recipeWrapper != null) {
-              consumer.accept(recipeWrapper);
-            }
+          if (recipe.matchGameStages(unlockedStages)) {
+            PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper);
+
+          } else {
+            PluginJEI.RECIPE_REGISTRY.hideRecipe(recipeWrapper);
           }
         }
       }

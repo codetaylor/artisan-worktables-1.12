@@ -14,12 +14,14 @@ import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -41,7 +43,7 @@ public abstract class TileEntityWorktableBase
     implements IContainer,
     IContainerProvider<ContainerWorktable, GuiContainerWorktable> {
 
-  private static final Random RANDOM = new Random();
+  private Random random = new Random();
 
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
@@ -150,12 +152,7 @@ public abstract class TileEntityWorktableBase
 
     // Find the recipe
 
-    RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
-    IRecipeWorktable recipe = registry.findRecipe(
-        player,
-        this.toolHandler.getStackInSlot(0),
-        this.craftingMatrixHandler
-    );
+    IRecipeWorktable recipe = this.getRecipe(player);
 
     if (recipe == null) {
       return;
@@ -180,6 +177,17 @@ public abstract class TileEntityWorktableBase
       }
     }
 
+    // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
+
+    if (!this.world.isRemote && !player.inventory.getItemStack().isEmpty()) {
+
+      if (recipe.hasMultipleWeightedOutputs()) {
+        ItemStack itemStack = recipe.selectOutput(this.random);
+        player.inventory.setItemStack(itemStack);
+        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
+      }
+    }
+
     // Check for and populate secondary, tertiary and quaternary outputs
 
     if (!this.world.isRemote) {
@@ -187,7 +195,7 @@ public abstract class TileEntityWorktableBase
 
       if (!extraOutput.isEmpty()) {
 
-        if (RANDOM.nextFloat() < recipe.getSecondaryOutputChance()) {
+        if (this.random.nextFloat() < recipe.getSecondaryOutputChance()) {
           this.generateExtraOutput(extraOutput);
         }
       }
@@ -196,7 +204,7 @@ public abstract class TileEntityWorktableBase
 
       if (!extraOutput.isEmpty()) {
 
-        if (RANDOM.nextFloat() < recipe.getTertiaryOutputChance()) {
+        if (this.random.nextFloat() < recipe.getTertiaryOutputChance()) {
           this.generateExtraOutput(extraOutput);
         }
       }
@@ -205,7 +213,7 @@ public abstract class TileEntityWorktableBase
 
       if (!extraOutput.isEmpty()) {
 
-        if (RANDOM.nextFloat() < recipe.getQuaternaryOutputChance()) {
+        if (this.random.nextFloat() < recipe.getQuaternaryOutputChance()) {
           this.generateExtraOutput(extraOutput);
         }
       }
@@ -242,6 +250,16 @@ public abstract class TileEntityWorktableBase
     }
 
     this.markDirty();
+  }
+
+  public IRecipeWorktable getRecipe(EntityPlayer player) {
+
+    RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
+    return registry.findRecipe(
+        player,
+        this.toolHandler.getStackInSlot(0),
+        this.craftingMatrixHandler
+    );
   }
 
   private void generateExtraOutput(ItemStack extraOutput) {
