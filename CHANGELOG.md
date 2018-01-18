@@ -1,5 +1,8 @@
-1.9.14:
+1.9.15:
 * Added: clicking worktable tabs now plays ui click sound
+
+1.8.15:
+* Fixed: server crash (#25)
 
 1.8.14:
 * Added: exposed advanced recipe builder syntax to ZenScript, exposes more recipe features - see ZENSCRIPT_ADVANCED.md for syntax
