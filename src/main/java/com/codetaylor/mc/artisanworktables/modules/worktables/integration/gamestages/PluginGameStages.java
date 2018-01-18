@@ -11,6 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,23 +30,27 @@ public class PluginGameStages {
   }
 
   @SubscribeEvent
+  @SideOnly(Side.CLIENT)
   public void gameStageAddedEvent(GameStageEvent.Added event) {
 
     this.processStagedRecipes();
   }
 
   @SubscribeEvent
+  @SideOnly(Side.CLIENT)
   public void gameStageRemovedEvent(GameStageEvent.Removed event) {
 
     this.processStagedRecipes();
   }
 
   @SubscribeEvent
+  @SideOnly(Side.CLIENT)
   public void gameStageClientSyncEvent(GameStageEvent.ClientSync event) {
 
     this.processStagedRecipes();
   }
 
+  @SideOnly(Side.CLIENT)
   private void processStagedRecipes() {
 
     if (!FMLCommonHandler.instance().getEffectiveSide().isClient()) {
