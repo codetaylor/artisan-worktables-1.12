@@ -1,3 +1,6 @@
+1.8.15:
+* Fixed: server crash (#25)
+
 1.8.14:
 * Added: exposed advanced recipe builder syntax to ZenScript, exposes more recipe features - see ZENSCRIPT_ADVANCED.md for syntax
 * Added: new recipe option - unlimited, exclusive (only one will be crafted) weighted outputs 
