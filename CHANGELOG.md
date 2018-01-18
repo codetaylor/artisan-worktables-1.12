@@ -1,3 +1,6 @@
+1.8.16:
+* Fixed: gamestage ALL logic not behaving as expected (#26)
+
 1.8.15:
 * Fixed: server crash (#25)
 
