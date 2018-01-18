@@ -5,12 +5,15 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWor
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +28,8 @@ import java.util.List;
 @MouseTweaksDisableWheelTweak
 public class GuiContainerWorktable
     extends GuiContainer {
+
+  public static final int TAB_VIEW_SIZE = 6;
 
   private static final int TAB_WIDTH = 24;
   private static final int TAB_SPACING = 2;
@@ -83,11 +88,11 @@ public class GuiContainerWorktable
       return;
     }
 
-    List<TileEntityWorktableBase> joinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
-
-    while (joinedTables.size() > 6) { // for now, just limit to six joined tables
-      joinedTables.remove(joinedTables.size() - 1);
-    }
+    List<TileEntityWorktableBase> actualJoinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
+    List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
+        actualJoinedTables,
+        this.currentWorktable.getGuiTabOffset()
+    );
 
     int yMin = (this.height - this.ySize) / 2 - TAB_HEIGHT;
     int yMax = yMin + TAB_HEIGHT;
@@ -107,6 +112,44 @@ public class GuiContainerWorktable
             pos.getY(),
             pos.getZ()
         ));
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1));
+      }
+    }
+
+    if (this.currentWorktable.getGuiTabOffset() > 0) {
+      // check for left button click
+      int xMin = this.guiLeft + TAB_LEFT_OFFSET + TAB_ITEM_HORZONTAL_OFFSET - 18;
+      int xMax = xMin + 8;
+
+      if (mouseX <= xMax
+          && mouseX >= xMin
+          && mouseY <= yMax
+          && mouseY >= yMin) {
+        this.currentWorktable.setGuiTabOffset(Math.max(0, this.currentWorktable.getGuiTabOffset() - TAB_VIEW_SIZE));
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1));
+      }
+    }
+
+    if (this.currentWorktable.getGuiTabOffset() + TAB_VIEW_SIZE < actualJoinedTables.size()) {
+      // check for right button click
+      int xMin = this.guiLeft + this.getXSize() - 12;
+      int xMax = xMin + 8;
+
+      if (mouseX <= xMax
+          && mouseX >= xMin
+          && mouseY <= yMax
+          && mouseY >= yMin) {
+        this.currentWorktable.setGuiTabOffset(Math.min(
+            actualJoinedTables.size() - TAB_VIEW_SIZE,
+            this.currentWorktable.getGuiTabOffset() + TAB_VIEW_SIZE
+        ));
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1));
       }
     }
   }
@@ -123,14 +166,45 @@ public class GuiContainerWorktable
     int tabX = x + TAB_LEFT_OFFSET;
     int tabY = y - TAB_HEIGHT;
 
-    List<TileEntityWorktableBase> joinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
+    List<TileEntityWorktableBase> actualJoinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
+    List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
+        actualJoinedTables,
+        this.currentWorktable.getGuiTabOffset()
+    );
 
-    while (joinedTables.size() > 6) { // for now, just limit to six joined tables
-      joinedTables.remove(joinedTables.size() - 1);
+    this.mc.getTextureManager().bindTexture(TEXTURE_TABS);
+
+    // draw arrows
+
+    if (this.currentWorktable.getGuiTabOffset() > 0) {
+      // draw left button
+      Gui.drawModalRectWithCustomSizedTexture(
+          this.guiLeft + TAB_LEFT_OFFSET + TAB_ITEM_HORZONTAL_OFFSET - 18,
+          tabY,
+          TAB_WIDTH,
+          this.currentWorktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
+          8,
+          TAB_HEIGHT,
+          56,
+          168
+      );
+    }
+
+    if (this.currentWorktable.getGuiTabOffset() + TAB_VIEW_SIZE < actualJoinedTables.size()) {
+      // draw right button
+      Gui.drawModalRectWithCustomSizedTexture(
+          this.guiLeft + this.getXSize() - 12,
+          tabY,
+          TAB_WIDTH + 8,
+          this.currentWorktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
+          8,
+          TAB_HEIGHT,
+          56,
+          168
+      );
     }
 
     // draw tabs
-    this.mc.getTextureManager().bindTexture(TEXTURE_TABS);
 
     for (TileEntityWorktableBase joinedTable : joinedTables) {
       int textureY = joinedTable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT;
@@ -144,13 +218,13 @@ public class GuiContainerWorktable
             textureY,
             TAB_WIDTH,
             TAB_HEIGHT,
-            24,
+            56,
             168
         );
 
       } else {
         //this.drawTexturedModalRect(tabX, tabY, 0, textureY, TAB_WIDTH, 21);
-        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 24, 168);
+        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 56, 168);
       }
 
       tabX += TAB_WIDTH + TAB_SPACING;
@@ -177,6 +251,23 @@ public class GuiContainerWorktable
       tabX += TAB_WIDTH + TAB_SPACING;
     }
 
+  }
+
+  public static List<TileEntityWorktableBase> getJoinedTableOffsetView(List<TileEntityWorktableBase> list, int offset) {
+
+    List<TileEntityWorktableBase> result = new ArrayList<>(TAB_VIEW_SIZE);
+
+    if (offset + TAB_VIEW_SIZE > list.size()) {
+      offset = list.size() - TAB_VIEW_SIZE;
+    }
+
+    int limit = Math.min(list.size(), offset + TAB_VIEW_SIZE);
+
+    for (int i = offset; i < limit; i++) {
+      result.add(list.get(i));
+    }
+
+    return result;
   }
 
   @Override
