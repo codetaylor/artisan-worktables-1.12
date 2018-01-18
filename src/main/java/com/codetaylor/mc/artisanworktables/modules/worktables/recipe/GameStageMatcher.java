@@ -40,9 +40,9 @@ public class GameStageMatcher
     }
 
     if (this.require == EnumGameStageRequire.ALL) {
-      return this.include.containsAll(unlockedStages);
+      return unlockedStages.containsAll(this.include);
 
-    } else {
+    } else { // ANY
 
       for (String includedStage : this.include) {
 
