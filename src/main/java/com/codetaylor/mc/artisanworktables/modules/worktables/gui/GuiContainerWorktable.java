@@ -89,7 +89,7 @@ public class GuiContainerWorktable
     }
 
     List<TileEntityWorktableBase> actualJoinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
-    List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
+    List<TileEntityWorktableBase> joinedTables = GuiContainerWorktable.getJoinedTableOffsetView(
         actualJoinedTables,
         this.currentWorktable.getGuiTabOffset()
     );
@@ -167,7 +167,7 @@ public class GuiContainerWorktable
     int tabY = y - TAB_HEIGHT;
 
     List<TileEntityWorktableBase> actualJoinedTables = this.currentWorktable.getJoinedTables(new ArrayList<>());
-    List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
+    List<TileEntityWorktableBase> joinedTables = GuiContainerWorktable.getJoinedTableOffsetView(
         actualJoinedTables,
         this.currentWorktable.getGuiTabOffset()
     );
@@ -259,6 +259,10 @@ public class GuiContainerWorktable
 
     if (offset + TAB_VIEW_SIZE > list.size()) {
       offset = list.size() - TAB_VIEW_SIZE;
+    }
+
+    if (offset < 0) {
+      offset = 0;
     }
 
     int limit = Math.min(list.size(), offset + TAB_VIEW_SIZE);

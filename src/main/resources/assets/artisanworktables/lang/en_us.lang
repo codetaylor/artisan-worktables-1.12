@@ -27,33 +27,6 @@ item.artisanworktables.masons.trowel.name=%s Mason's Trowel
 item.artisanworktables.tailors.needle.name=%s Tailor's Needle
 item.artisanworktables.tailors.shears.name=%s Tailor's Shears
 
-# Worktable Tool Material Names
-material.artisanworktables.wood=Wooden
-material.artisanworktables.flint=Flint
-material.artisanworktables.stone=Stone
-material.artisanworktables.iron=Iron
-material.artisanworktables.gold=Gold
-material.artisanworktables.diamond=Diamond
-
-# Extended Worktable Tool Material Names
-material.artisanworktables.aluminum=Aluminum
-material.artisanworktables.bronze=Bronze
-material.artisanworktables.constantan=Constantan
-material.artisanworktables.copper=Copper
-material.artisanworktables.electrum=Electrum
-material.artisanworktables.invar=Invar
-material.artisanworktables.lead=Lead
-material.artisanworktables.nickel=Nickel
-material.artisanworktables.platinum=Platinum
-material.artisanworktables.silver=Silver
-material.artisanworktables.steel=Steel
-material.artisanworktables.tin=Tin
-
-# Botania Worktable Tool Material Names
-material.artisanworktables.manasteel=Manasteel
-material.artisanworktables.elementium=Elementium
-material.artisanworktables.terrasteel=Terrasteel
-
 # JEI
 jei.tooltip.shapeless.recipe=Shapeless Recipe
 jei.tooltip.chance=%s%s%% chance to craft

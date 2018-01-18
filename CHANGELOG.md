@@ -1,5 +1,9 @@
 1.9.16:
 * Added: clicking worktable tabs now plays ui click sound
+* Added: can now page between more than six joined worktables with tab arrows
+* Added: bone tools
+* Note: don't forget to regenerate the config or manually add the new tool materials to the list
+* Requires: Athenaeum >= 1.5.3
 
 1.8.16:
 * Fixed: gamestage ALL logic not behaving as expected (#26)

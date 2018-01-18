@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.item;
 
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleTools;
-import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
+import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

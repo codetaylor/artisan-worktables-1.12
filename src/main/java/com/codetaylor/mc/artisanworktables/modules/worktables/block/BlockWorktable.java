@@ -111,7 +111,7 @@ public class BlockWorktable
 
         boolean tabInView = false;
 
-        while (!tabInView) {
+        while (!tabInView && !actualJoinedTables.isEmpty()) {
           List<TileEntityWorktableBase> joinedTables = GuiContainerWorktable.getJoinedTableOffsetView(
               actualJoinedTables,
               worktableBase.getGuiTabOffset()

@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
-import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
+import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import net.minecraftforge.common.config.Config;
 
