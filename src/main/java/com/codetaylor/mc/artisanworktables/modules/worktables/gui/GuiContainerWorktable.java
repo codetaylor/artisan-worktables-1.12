@@ -39,7 +39,7 @@ public class GuiContainerWorktable
   private static final int TAB_ITEM_HORZONTAL_OFFSET = 4;
   private static final int TAB_ITEM_VERTICAL_OFFSET = 4;
 
-  private static final int TAB_TEXTURE_HEIGHT = 189;
+  private static final int TAB_TEXTURE_HEIGHT = 210;
   private static final int TAB_TEXTURE_WIDTH = 56;
 
   private static final ResourceLocation TEXTURE_TABS = new ResourceLocation(

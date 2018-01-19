@@ -98,6 +98,7 @@ public class ModuleWorktables
         TileEntityWorktableBasic.class,
         TileEntityWorktableBlacksmith.class,
         TileEntityWorktableCarpenter.class,
+        TileEntityWorktableChemist.class,
         TileEntityWorktableEngineer.class,
         TileEntityWorktableJeweler.class,
         TileEntityWorktableMage.class,

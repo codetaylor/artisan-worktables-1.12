@@ -84,6 +84,14 @@
           "top": "artisanworktables:blocks/worktable_scribe_top",
           "particle": "artisanworktables:blocks/worktable_scribe_side"
         }
+      },
+      "chemist": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_chemist_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_chemist_top",
+          "particle": "artisanworktables:blocks/worktable_chemist_side"
+        }
       }
     }
   }
