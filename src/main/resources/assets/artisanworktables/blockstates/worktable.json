@@ -76,6 +76,14 @@
           "top": "artisanworktables:blocks/worktable_mage_top",
           "particle": "artisanworktables:blocks/worktable_mage_side"
         }
+      },
+      "scribe": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_scribe_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_scribe_top",
+          "particle": "artisanworktables:blocks/worktable_scribe_side"
+        }
       }
     }
   }

@@ -39,6 +39,9 @@ public class GuiContainerWorktable
   private static final int TAB_ITEM_HORZONTAL_OFFSET = 4;
   private static final int TAB_ITEM_VERTICAL_OFFSET = 4;
 
+  private static final int TAB_TEXTURE_HEIGHT = 189;
+  private static final int TAB_TEXTURE_WIDTH = 56;
+
   private static final ResourceLocation TEXTURE_TABS = new ResourceLocation(
       ModuleWorktables.MOD_ID,
       "textures/gui/tabs.png"
@@ -185,8 +188,8 @@ public class GuiContainerWorktable
           this.currentWorktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
           8,
           TAB_HEIGHT,
-          56,
-          168
+          TAB_TEXTURE_WIDTH,
+          TAB_TEXTURE_HEIGHT
       );
     }
 
@@ -199,8 +202,8 @@ public class GuiContainerWorktable
           this.currentWorktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
           8,
           TAB_HEIGHT,
-          56,
-          168
+          TAB_TEXTURE_WIDTH,
+          TAB_TEXTURE_HEIGHT
       );
     }
 
@@ -218,13 +221,22 @@ public class GuiContainerWorktable
             textureY,
             TAB_WIDTH,
             TAB_HEIGHT,
-            56,
-            168
+            TAB_TEXTURE_WIDTH,
+            TAB_TEXTURE_HEIGHT
         );
 
       } else {
         //this.drawTexturedModalRect(tabX, tabY, 0, textureY, TAB_WIDTH, 21);
-        Gui.drawModalRectWithCustomSizedTexture(tabX, tabY, 0, textureY, TAB_WIDTH, TAB_HEIGHT, 56, 168);
+        Gui.drawModalRectWithCustomSizedTexture(
+            tabX,
+            tabY,
+            0,
+            textureY,
+            TAB_WIDTH,
+            TAB_HEIGHT,
+            TAB_TEXTURE_WIDTH,
+            TAB_TEXTURE_HEIGHT
+        );
       }
 
       tabX += TAB_WIDTH + TAB_SPACING;

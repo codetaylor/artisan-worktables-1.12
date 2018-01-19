@@ -14,6 +14,8 @@ public enum EnumWorktableToolType {
   MAGES_GRIMOIRE("mages_grimoire"),
   MASONS_CHISEL("masons_chisel"),
   MASONS_TROWEL("masons_trowel"),
+  SCRIBES_COMPASS("scribes_compass"),
+  SCRIBES_QUILL("scribes_quill"),
   TAILORS_NEEDLE("tailors_needle"),
   TAILORS_SHEARS("tailors_shears");
 

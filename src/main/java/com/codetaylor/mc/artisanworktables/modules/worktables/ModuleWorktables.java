@@ -102,6 +102,7 @@ public class ModuleWorktables
         TileEntityWorktableJeweler.class,
         TileEntityWorktableMage.class,
         TileEntityWorktableMason.class,
+        TileEntityWorktableScribe.class,
         TileEntityWorktableTailor.class
     );
   }

@@ -189,6 +189,30 @@ public class ModuleToolsRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.SCRIBES_COMPASS,
+        new Object[]{
+            " s ",
+            "sxs",
+            ". .",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.SCRIBES_QUILL,
+        new Object[]{
+            "f b",
+            ". .",
+            'b', Items.GLASS_BOTTLE,
+            'f', Items.FEATHER,
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**

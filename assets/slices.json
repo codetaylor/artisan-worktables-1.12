@@ -61,7 +61,15 @@
 
         { "target": "mages_grimoire_base.png", "position": [4, 5] },
         { "target": "mages_grimoire_color.png", "position": [5, 5] },
-        { "target": "mages_grimoire_highlight.png", "position": [6, 5] }
+        { "target": "mages_grimoire_highlight.png", "position": [6, 5] },
+
+        { "target": "scribes_quill_base.png", "position": [4, 6] },
+        { "target": "scribes_quill_color.png", "position": [5, 6] },
+        { "target": "scribes_quill_highlight.png", "position": [6, 6] },
+
+        { "target": "scribes_compass_base.png", "position": [4, 7] },
+        { "target": "scribes_compass_color.png", "position": [5, 7] },
+        { "target": "scribes_compass_highlight.png", "position": [6, 7] }
 
       ]
     }
