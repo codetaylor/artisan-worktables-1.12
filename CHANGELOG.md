@@ -1,10 +1,11 @@
 1.9.16:
 * Added: clicking worktable tabs now plays ui click sound
 * Added: can now page between more than six joined worktables with tab arrows
-* Added: bone tools
+* Added: bone tool material
 * Added: Scribe's Worktable
 * Changed: Engineer's Worktable sound type to anvil
-* Note: don't forget to regenerate the config or manually add the new tool materials to the list
+* Changed: juxtaposed material name with profession name in all tool names
+* Note: don't forget to regenerate the config or manually add the new tools and materials to the lists
 * Requires: Athenaeum >= 1.5.3
 
 1.8.16:

@@ -13,20 +13,22 @@ tile.artisanworktables.worktable.scribe.name=Scribe's Worktable
 tile.artisanworktables.worktable.tailor.name=Tailor's Worktable
 
 # Worktable Tools
-item.artisanworktables.blacksmiths.cutters.name=%s Blacksmith's Cutters
-item.artisanworktables.blacksmiths.hammer.name=%s Blacksmith's Hammer
-item.artisanworktables.carpenters.hammer.name=%s Carpenter's Hammer
-item.artisanworktables.carpenters.handsaw.name=%s Carpenter's Handsaw
-item.artisanworktables.engineers.driver.name=%s Engineer's Driver
-item.artisanworktables.engineers.spanner.name=%s Engineer's Spanner
-item.artisanworktables.jewelers.gemcutter.name=%s Jeweler's Gemcutter
-item.artisanworktables.jewelers.pliers.name=%s Jeweler's Pliers
-item.artisanworktables.mages.athame.name=%s Mage's Athame
-item.artisanworktables.mages.grimoire.name=%s-Bound Mage's Grimoire
-item.artisanworktables.masons.chisel.name=%s Mason's Chisel
-item.artisanworktables.masons.trowel.name=%s Mason's Trowel
-item.artisanworktables.tailors.needle.name=%s Tailor's Needle
-item.artisanworktables.tailors.shears.name=%s Tailor's Shears
+item.artisanworktables.blacksmiths.cutters.name=Blacksmith's %s Cutters
+item.artisanworktables.blacksmiths.hammer.name=Blacksmith's %s Hammer
+item.artisanworktables.carpenters.hammer.name=Carpenter's %s Hammer
+item.artisanworktables.carpenters.handsaw.name=Carpenter's %s Handsaw
+item.artisanworktables.engineers.driver.name=Engineer's %s Driver
+item.artisanworktables.engineers.spanner.name=Engineer's %s Spanner
+item.artisanworktables.jewelers.gemcutter.name=Jeweler's %s Gemcutter
+item.artisanworktables.jewelers.pliers.name=Jeweler's %s Pliers
+item.artisanworktables.mages.athame.name=Mage's %s Athame
+item.artisanworktables.mages.grimoire.name=Mage's %s-Bound Grimoire
+item.artisanworktables.masons.chisel.name=Mason's %s Chisel
+item.artisanworktables.masons.trowel.name=Mason's %s Trowel
+item.artisanworktables.scribes.compass.name=Scribe's %s Compass
+item.artisanworktables.scribes.quill.name=Scribe's %s Quill
+item.artisanworktables.tailors.needle.name=Tailor's %s Needle
+item.artisanworktables.tailors.shears.name=Tailor's %s Shears
 
 # JEI
 jei.tooltip.shapeless.recipe=Shapeless Recipe

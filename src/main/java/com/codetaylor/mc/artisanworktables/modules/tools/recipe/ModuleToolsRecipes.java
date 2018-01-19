@@ -205,9 +205,10 @@ public class ModuleToolsRecipes {
     RECIPE_MAP.put(
         EnumWorktableToolType.SCRIBES_QUILL,
         new Object[]{
-            "f b",
-            ". .",
-            'b', Items.GLASS_BOTTLE,
+            "  f",
+            " .x",
+            ".  ",
+            'x', Items.STRING,
             'f', Items.FEATHER,
             '.', MATERIAL_ALIAS
         }
