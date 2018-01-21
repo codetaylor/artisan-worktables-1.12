@@ -42,6 +42,12 @@ public class ItemWorktableTool
     return this.material;
   }
 
+  @Override
+  public boolean isEnchantable(ItemStack stack) {
+
+    return false;
+  }
+
   @Nonnull
   @Override
   public String getItemStackDisplayName(@Nonnull ItemStack stack) {

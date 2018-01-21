@@ -6,6 +6,8 @@ public enum EnumWorktableToolType {
   BLACKSMITHS_HAMMER("blacksmiths_hammer"),
   CARPENTERS_HAMMER("carpenters_hammer"),
   CARPENTERS_HANDSAW("carpenters_handsaw"),
+  CHEMISTS_BEAKER("chemists_beaker"),
+  CHEMISTS_BURNER("chemists_burner"),
   ENGINEERS_DRIVER("engineers_driver"),
   ENGINEERS_SPANNER("engineers_spanner"),
   JEWELERS_GEMCUTTER("jewelers_gemcutter"),

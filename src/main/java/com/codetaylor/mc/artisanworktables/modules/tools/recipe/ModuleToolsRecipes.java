@@ -214,6 +214,27 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.CHEMISTS_BURNER,
+        new Object[]{
+            " . ",
+            " . ",
+            "ppp",
+            'p', "plankWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.CHEMISTS_BEAKER,
+        new Object[]{
+            ".g.",
+            " g ",
+            'g', "blockGlass",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**

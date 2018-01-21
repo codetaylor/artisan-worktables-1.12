@@ -3,8 +3,12 @@
 * Added: can now page between more than six joined worktables with tab arrows
 * Added: bone tool material
 * Added: Scribe's Worktable
+* Added: Scribe's Compass, Scribe's Quill
+* Added: Chemist's Worktable
+* Added: Chemist's Beaker, Chemist's Burner
 * Changed: Engineer's Worktable sound type to anvil
 * Changed: juxtaposed material name with profession name in all tool names
+* Changed: disabled tool enchantability
 * Note: don't forget to regenerate the config or manually add the new tools and materials to the lists
 * Requires: Athenaeum >= 1.5.3
 
