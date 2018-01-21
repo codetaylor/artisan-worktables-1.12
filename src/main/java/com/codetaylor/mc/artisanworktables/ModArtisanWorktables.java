@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables;
 
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleTools;
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
@@ -48,6 +50,10 @@ public class ModArtisanWorktables {
 
     if (ModuleToolsConfig.ENABLE_MODULE) {
       this.moduleManager.registerModules(ModuleTools.class);
+    }
+
+    if (ModuleToolboxConfig.ENABLE_MODULE) {
+      this.moduleManager.registerModules(ModuleToolbox.class);
     }
   }
 

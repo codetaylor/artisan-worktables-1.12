@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.block.BlockToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
