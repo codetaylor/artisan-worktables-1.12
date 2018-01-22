@@ -1,0 +1,8 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "artisanworktables:items/scribes_quill_base",
+    "layer1": "artisanworktables:items/scribes_quill_color",
+    "layer2": "artisanworktables:items/scribes_quill_highlight"
+  }
+}

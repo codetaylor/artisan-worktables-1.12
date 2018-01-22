@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
+import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
@@ -31,8 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -48,6 +47,8 @@ public abstract class TileEntityWorktableBase
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
   private ObservableStackHandler secondaryOutputHandler;
+
+  private static int GUI_TAB_OFFSET;
 
   public TileEntityWorktableBase(int width, int height) {
 
@@ -328,21 +329,21 @@ public abstract class TileEntityWorktableBase
     }
 
     result.addAll(joinedTableMap.values());
-    return result.size() < 2 ? Collections.emptyList() : result;
+    //return result.size() < 2 ? Collections.emptyList() : result;
+    return result;
   }
 
   /**
-   * Searches cardinal directions around all joined tables and returns an adjacent inventory.
+   * Searches cardinal directions around all joined tables and returns an adjacent toolbox.
    * <p>
-   * If more than one inventory is found, null is returned.
+   * If more than one toolbox is found, null is returned.
    *
-   * @return adjacent inventory or null
+   * @return adjacent toolbox or null
    */
   @Nullable
-  public IItemHandler getAdjacentInventory() {
+  public TileEntityToolbox getAdjacentToolbox() {
 
     List<TileEntityWorktableBase> joinedTables = this.getJoinedTables(new ArrayList<>());
-    IItemHandler result = null;
 
     for (TileEntityWorktableBase joinedTable : joinedTables) {
       BlockPos pos = joinedTable.getPos();
@@ -352,27 +353,15 @@ public abstract class TileEntityWorktableBase
 
         if ((tileEntity = this.world.getTileEntity(pos.offset(facing))) != null) {
 
-          if (!(tileEntity instanceof TileEntityWorktableBase)) {
+          if (tileEntity instanceof TileEntityToolbox) {
 
-            IItemHandler capability = tileEntity.getCapability(
-                CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-                facing.getOpposite()
-            );
-
-            if (capability != null) {
-
-              if (result != null) {
-                return null;
-              }
-
-              result = capability;
-            }
+            return (TileEntityToolbox) tileEntity;
           }
         }
       }
     }
 
-    return result;
+    return null;
   }
 
   public RegistryRecipeWorktable getWorktableRecipeRegistry() {
@@ -385,6 +374,16 @@ public abstract class TileEntityWorktableBase
     Block block = state.getBlock();
     Item item = Item.getItemFromBlock(block);
     return new ItemStack(item, 1, block.getMetaFromState(state));
+  }
+
+  public void setGuiTabOffset(int offset) {
+
+    GUI_TAB_OFFSET = offset;
+  }
+
+  public int getGuiTabOffset() {
+
+    return GUI_TAB_OFFSET;
   }
 
   @Override

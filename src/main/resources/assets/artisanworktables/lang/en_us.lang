@@ -5,54 +5,36 @@ itemGroup.artisanworktables=Artisan Worktables
 tile.artisanworktables.worktable.basic.name=Basic Worktable
 tile.artisanworktables.worktable.blacksmith.name=Blacksmith's Worktable
 tile.artisanworktables.worktable.carpenter.name=Carpenter's Worktable
+tile.artisanworktables.worktable.chemist.name=Chemist's Worktable
 tile.artisanworktables.worktable.engineer.name=Engineer's Worktable
 tile.artisanworktables.worktable.jeweler.name=Jeweler's Worktable
 tile.artisanworktables.worktable.mage.name=Mage's Worktable
 tile.artisanworktables.worktable.mason.name=Mason's Worktable
+tile.artisanworktables.worktable.scribe.name=Scribe's Worktable
 tile.artisanworktables.worktable.tailor.name=Tailor's Worktable
 
+# Toolbox
+tile.artisanworktables.toolbox.name=Toolbox
+
 # Worktable Tools
-item.artisanworktables.blacksmiths.cutters.name=%s Blacksmith's Cutters
-item.artisanworktables.blacksmiths.hammer.name=%s Blacksmith's Hammer
-item.artisanworktables.carpenters.hammer.name=%s Carpenter's Hammer
-item.artisanworktables.carpenters.handsaw.name=%s Carpenter's Handsaw
-item.artisanworktables.engineers.driver.name=%s Engineer's Driver
-item.artisanworktables.engineers.spanner.name=%s Engineer's Spanner
-item.artisanworktables.jewelers.gemcutter.name=%s Jeweler's Gemcutter
-item.artisanworktables.jewelers.pliers.name=%s Jeweler's Pliers
-item.artisanworktables.mages.athame.name=%s Mage's Athame
-item.artisanworktables.mages.grimoire.name=%s-Bound Mage's Grimoire
-item.artisanworktables.masons.chisel.name=%s Mason's Chisel
-item.artisanworktables.masons.trowel.name=%s Mason's Trowel
-item.artisanworktables.tailors.needle.name=%s Tailor's Needle
-item.artisanworktables.tailors.shears.name=%s Tailor's Shears
-
-# Worktable Tool Material Names
-material.artisanworktables.wood=Wooden
-material.artisanworktables.flint=Flint
-material.artisanworktables.stone=Stone
-material.artisanworktables.iron=Iron
-material.artisanworktables.gold=Gold
-material.artisanworktables.diamond=Diamond
-
-# Extended Worktable Tool Material Names
-material.artisanworktables.aluminum=Aluminum
-material.artisanworktables.bronze=Bronze
-material.artisanworktables.constantan=Constantan
-material.artisanworktables.copper=Copper
-material.artisanworktables.electrum=Electrum
-material.artisanworktables.invar=Invar
-material.artisanworktables.lead=Lead
-material.artisanworktables.nickel=Nickel
-material.artisanworktables.platinum=Platinum
-material.artisanworktables.silver=Silver
-material.artisanworktables.steel=Steel
-material.artisanworktables.tin=Tin
-
-# Botania Worktable Tool Material Names
-material.artisanworktables.manasteel=Manasteel
-material.artisanworktables.elementium=Elementium
-material.artisanworktables.terrasteel=Terrasteel
+item.artisanworktables.blacksmiths.cutters.name=Blacksmith's %s Cutters
+item.artisanworktables.blacksmiths.hammer.name=Blacksmith's %s Hammer
+item.artisanworktables.carpenters.hammer.name=Carpenter's %s Hammer
+item.artisanworktables.carpenters.handsaw.name=Carpenter's %s Handsaw
+item.artisanworktables.chemists.beaker.name=Chemist's %s Beaker
+item.artisanworktables.chemists.burner.name=Chemist's %s Burner
+item.artisanworktables.engineers.driver.name=Engineer's %s Driver
+item.artisanworktables.engineers.spanner.name=Engineer's %s Spanner
+item.artisanworktables.jewelers.gemcutter.name=Jeweler's %s Gemcutter
+item.artisanworktables.jewelers.pliers.name=Jeweler's %s Pliers
+item.artisanworktables.mages.athame.name=Mage's %s Athame
+item.artisanworktables.mages.grimoire.name=Mage's %s-Bound Grimoire
+item.artisanworktables.masons.chisel.name=Mason's %s Chisel
+item.artisanworktables.masons.trowel.name=Mason's %s Trowel
+item.artisanworktables.scribes.compass.name=Scribe's %s Compass
+item.artisanworktables.scribes.quill.name=Scribe's %s Quill
+item.artisanworktables.tailors.needle.name=Tailor's %s Needle
+item.artisanworktables.tailors.shears.name=Tailor's %s Shears
 
 # JEI
 jei.tooltip.shapeless.recipe=Shapeless Recipe

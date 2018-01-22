@@ -18,8 +18,10 @@ public enum BlockWorktableEnumType
   BLACKSMITH(3, "blacksmith", TileEntityWorktableBlacksmith.class, SoundType.ANVIL),
   JEWELER(4, "jeweler", TileEntityWorktableJeweler.class, SoundType.METAL),
   BASIC(5, "basic", TileEntityWorktableBasic.class, SoundType.WOOD),
-  ENGINEER(6, "engineer", TileEntityWorktableEngineer.class, SoundType.METAL),
-  MAGE(7, "mage", TileEntityWorktableMage.class, SoundType.CLOTH);
+  ENGINEER(6, "engineer", TileEntityWorktableEngineer.class, SoundType.ANVIL),
+  MAGE(7, "mage", TileEntityWorktableMage.class, SoundType.CLOTH),
+  SCRIBE(8, "scribe", TileEntityWorktableScribe.class, SoundType.WOOD),
+  CHEMIST(9, "chemist", TileEntityWorktableChemist.class, SoundType.METAL);
 
   private static final BlockWorktableEnumType[] META_LOOKUP = Stream.of(BlockWorktableEnumType.values())
       .sorted(Comparator.comparing(BlockWorktableEnumType::getMeta))

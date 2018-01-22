@@ -189,6 +189,52 @@ public class ModuleToolsRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.SCRIBES_COMPASS,
+        new Object[]{
+            " s ",
+            "sxs",
+            ". .",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.SCRIBES_QUILL,
+        new Object[]{
+            "  f",
+            " .x",
+            ".  ",
+            'x', Items.STRING,
+            'f', Items.FEATHER,
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.CHEMISTS_BURNER,
+        new Object[]{
+            " . ",
+            " . ",
+            "ppp",
+            'p', "plankWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.CHEMISTS_BEAKER,
+        new Object[]{
+            ".g.",
+            " g ",
+            'g', "blockGlass",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**

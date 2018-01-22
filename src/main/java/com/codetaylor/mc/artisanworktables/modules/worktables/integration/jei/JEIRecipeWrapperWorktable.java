@@ -60,6 +60,11 @@ public class JEIRecipeWrapperWorktable
     this.quaternaryOutput = recipe.getQuaternaryOutput();
   }
 
+  public List<List<ItemStack>> getInputs() {
+
+    return this.inputs;
+  }
+
   public List<OutputWeightPair> getWeightedOutput() {
 
     return this.recipe.getOutputWeightPairList();
@@ -107,7 +112,9 @@ public class JEIRecipeWrapperWorktable
   @Override
   public void getIngredients(IIngredients ingredients) {
 
-    ingredients.setInputLists(ItemStack.class, this.inputs);
+    List<List<ItemStack>> inputs = new ArrayList<>(this.inputs);
+    inputs.add(this.tools);
+    ingredients.setInputLists(ItemStack.class, inputs);
 
     List<ItemStack> output = new ArrayList<>();
     output.addAll(this.output);

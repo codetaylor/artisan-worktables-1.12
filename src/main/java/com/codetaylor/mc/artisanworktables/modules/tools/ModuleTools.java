@@ -3,9 +3,10 @@ package com.codetaylor.mc.artisanworktables.modules.tools;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
 import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleToolsRecipes;
-import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumMaterial;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
+import com.codetaylor.mc.athenaeum.ModAthenaeum;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
+import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -32,7 +33,7 @@ public class ModuleTools
 
   public static final class Lang {
 
-    public static final String MATERIAL_STRING = "material.artisanworktables.%s";
+    public static final String MATERIAL_STRING = "material." + ModAthenaeum.MOD_ID + ".%s";
   }
 
   private final List<ItemWorktableTool> registeredToolList = new ArrayList<>();
@@ -56,6 +57,7 @@ public class ModuleTools
     // Vanilla materials
     materialList.add(EnumMaterial.WOOD);
     materialList.add(EnumMaterial.FLINT);
+    materialList.add(EnumMaterial.BONE);
     materialList.add(EnumMaterial.STONE);
     materialList.add(EnumMaterial.IRON);
     materialList.add(EnumMaterial.GOLD);
