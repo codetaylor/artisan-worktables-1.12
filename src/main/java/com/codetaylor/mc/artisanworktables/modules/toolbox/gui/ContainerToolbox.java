@@ -6,7 +6,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerToolbox
@@ -21,7 +20,6 @@ public class ContainerToolbox
   ) {
 
     this.tile = tile;
-    this.tile.openInventory(playerInventory.player);
 
     int i = (NUM_ROWS - 4) * 18;
 
@@ -74,13 +72,6 @@ public class ContainerToolbox
     }
 
     return itemstack;
-  }
-
-  @Override
-  public void onContainerClosed(EntityPlayer playerIn) {
-
-    super.onContainerClosed(playerIn);
-    this.tile.closeInventory(playerIn);
   }
 
 }
