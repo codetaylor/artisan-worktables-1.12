@@ -14,7 +14,7 @@ tile.artisanworktables.worktable.scribe.name=Scribe's Worktable
 tile.artisanworktables.worktable.tailor.name=Tailor's Worktable
 
 # Toolbox
-tile.toolbox.name=Toolbox
+tile.artisanworktables.toolbox.name=Toolbox
 
 # Worktable Tools
 item.artisanworktables.blacksmiths.cutters.name=Blacksmith's %s Cutters

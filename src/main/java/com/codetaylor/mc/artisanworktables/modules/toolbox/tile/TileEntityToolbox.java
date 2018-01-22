@@ -1,8 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.ContainerToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.GuiContainerToolbox;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import net.minecraft.block.state.IBlockState;
@@ -20,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -27,6 +31,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class TileEntityToolbox
     extends TileEntity
@@ -34,7 +39,7 @@ public class TileEntityToolbox
     ITickable,
     IContainerProvider<ContainerToolbox, GuiContainerToolbox> {
 
-  private ItemStackHandler itemHandler;
+  private ToolboxItemStackHandler itemHandler;
   private int numPlayersUsing;
   private int ticksSinceSync = -1;
   private float previousLidAngle;
@@ -42,7 +47,18 @@ public class TileEntityToolbox
 
   public TileEntityToolbox() {
 
-    this.itemHandler = new ItemStackHandler(27);
+    Predicate<ItemStack> predicate = itemStack -> !ModuleToolboxConfig.RESTRICT_TOOLBOX_TO_TOOLS_ONLY
+        || WorktableAPI.containsRecipeWithTool(itemStack);
+
+    this.itemHandler = new ToolboxItemStackHandler(predicate, 27) {
+
+      @Override
+      protected void validateSlotIndex(int slot) {
+
+        super.validateSlotIndex(slot);
+      }
+    };
+    this.itemHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
   }
 
   @Nullable
@@ -172,10 +188,11 @@ public class TileEntityToolbox
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 
-    return new ContainerToolbox(inventoryPlayer, world, this);
+    return new ContainerToolbox(inventoryPlayer, this);
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public GuiContainerToolbox getGuiContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {

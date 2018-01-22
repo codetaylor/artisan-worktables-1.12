@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
@@ -45,6 +46,10 @@ public class GuiContainerWorktable
   private static final ResourceLocation TEXTURE_TABS = new ResourceLocation(
       ModuleWorktables.MOD_ID,
       "textures/gui/tabs.png"
+  );
+  private static final ResourceLocation TEXTURE_TOOLBOX = new ResourceLocation(
+      ModuleWorktables.MOD_ID,
+      "textures/gui/toolbox.png"
   );
 
   private static final double TWO_PI = Math.PI * 2;
@@ -174,6 +179,16 @@ public class GuiContainerWorktable
         actualJoinedTables,
         this.currentWorktable.getGuiTabOffset()
     );
+
+    // draw toolbox
+
+    TileEntityToolbox toolbox = this.container.getToolbox();
+
+    if (toolbox != null
+        && !toolbox.isInvalid()) {
+      this.mc.getTextureManager().bindTexture(TEXTURE_TOOLBOX);
+      this.drawTexturedModalRect(this.guiLeft - 70,(this.height - this.ySize) / 2,176,0,68,176);
+    }
 
     this.mc.getTextureManager().bindTexture(TEXTURE_TABS);
 

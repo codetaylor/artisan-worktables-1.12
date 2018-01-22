@@ -1,44 +1,39 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.block;
 
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.athenaeum.tile.IContainer;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.Random;
 
 public class BlockToolbox
     extends Block {
 
   public static final String NAME = "toolbox";
-  public static final PropertyDirection FACING = BlockHorizontal.FACING;
   private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375);
 
   public BlockToolbox() {
 
     super(Material.WOOD);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    this.setHardness(4);
   }
 
   @Override
@@ -62,73 +57,11 @@ public class BlockToolbox
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public boolean hasCustomBreakingProgress(IBlockState state) {
-
-    return true;
-  }
-
-  @Override
-  public EnumBlockRenderType getRenderType(IBlockState state) {
-
-    return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-  }
-
-  @Override
   public AxisAlignedBB getBoundingBox(
       IBlockState state, IBlockAccess source, BlockPos pos
   ) {
 
     return AABB;
-  }
-
-  public IBlockState getStateForPlacement(
-      World worldIn,
-      BlockPos pos,
-      EnumFacing facing,
-      float hitX,
-      float hitY,
-      float hitZ,
-      int meta,
-      EntityLivingBase placer
-  ) {
-
-    return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-  }
-
-  @Override
-  public void onBlockPlacedBy(
-      World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack
-  ) {
-
-    EnumFacing enumfacing = EnumFacing.getHorizontal(MathHelper.floor((double) (placer.rotationYaw * 4f / 360f) + 0.5) & 3)
-        .getOpposite();
-    state = state.withProperty(FACING, enumfacing);
-    worldIn.setBlockState(pos, state, 3);
-
-    if (stack.hasDisplayName()) {
-      TileEntity tileentity = worldIn.getTileEntity(pos);
-
-      if (tileentity instanceof TileEntityChest) {
-        ((TileEntityChest) tileentity).setCustomName(stack.getDisplayName());
-      }
-    }
-  }
-
-  @Override
-  public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-
-    TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-    if (tileEntity instanceof IContainer) {
-      List<ItemStack> drops = ((IContainer) tileEntity).getBlockBreakDrops();
-
-      for (ItemStack drop : drops) {
-        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), drop);
-      }
-    }
-
-    super.breakBlock(worldIn, pos, state);
   }
 
   @Override
@@ -166,38 +99,57 @@ public class BlockToolbox
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public boolean removedByPlayer(
+      IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest
+  ) {
 
-    EnumFacing enumfacing = EnumFacing.getFront(meta);
+    // Delay the destruction of the TE until after BlockMortar#getDrops is called. We need
+    // access to the TE while creating the dropped item in order to serialize it.
+    return willHarvest || super.removedByPlayer(state, world, pos, player, false);
+  }
 
-    if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
-      enumfacing = EnumFacing.NORTH;
+  @Override
+  public void getDrops(
+      NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune
+  ) {
+
+    drops.clear();
+
+    TileEntity tileEntity = world.getTileEntity(pos);
+
+    if (tileEntity != null
+        && tileEntity instanceof TileEntityToolbox) {
+
+      boolean dropAllItems = !ModuleToolboxConfig.KEEP_CONTENTS_WHEN_BROKEN;
+
+      if (dropAllItems) {
+        drops.addAll(((TileEntityToolbox) tileEntity).getBlockBreakDrops());
+
+      } else {
+        ItemStack itemStack = new ItemStack(Item.getItemFromBlock(ModuleToolbox.Blocks.TOOLBOX), 1, 0);
+        NBTTagCompound compound = new NBTTagCompound();
+        NBTTagCompound teCompound = new NBTTagCompound();
+        tileEntity.writeToNBT(teCompound);
+        compound.setTag("BlockEntityTag", teCompound);
+        itemStack.setTagCompound(compound);
+        drops.clear();
+        drops.add(itemStack);
+      }
     }
-
-    return this.getDefaultState().withProperty(FACING, enumfacing);
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 
-    return state.getValue(FACING).getIndex();
+    return null;
   }
 
   @Override
-  public IBlockState withRotation(IBlockState state, Rotation rot) {
+  public void harvestBlock(
+      World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack
+  ) {
 
-    return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
-  }
-
-  @Override
-  public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-
-    return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
-  }
-
-  @Override
-  protected BlockStateContainer createBlockState() {
-
-    return new BlockStateContainer(this, FACING);
+    super.harvestBlock(worldIn, player, pos, state, te, stack);
+    worldIn.setBlockToAir(pos);
   }
 }

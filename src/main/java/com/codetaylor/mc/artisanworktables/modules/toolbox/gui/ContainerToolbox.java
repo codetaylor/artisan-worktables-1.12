@@ -17,7 +17,6 @@ public class ContainerToolbox
 
   public ContainerToolbox(
       InventoryPlayer playerInventory,
-      World world,
       TileEntityToolbox tile
   ) {
 

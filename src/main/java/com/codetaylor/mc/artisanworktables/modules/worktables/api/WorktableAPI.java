@@ -49,6 +49,18 @@ public class WorktableAPI {
     return ItemStack.EMPTY;
   }
 
+  public static boolean containsRecipeWithTool(ItemStack itemStack) {
+
+    for (RegistryRecipeWorktable registry : RECIPE_REGISTRY_MAP.values()) {
+
+      if (registry.containsRecipeWithTool(itemStack)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   private WorktableAPI() {
     //
   }

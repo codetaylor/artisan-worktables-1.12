@@ -2,15 +2,11 @@ package com.codetaylor.mc.artisanworktables.modules.toolbox;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.block.BlockToolbox;
-import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TESRToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
+import com.codetaylor.mc.athenaeum.helper.ModelRegistrationHelper;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModuleToolbox
     extends ModuleBase {
@@ -20,7 +16,7 @@ public class ModuleToolbox
 
   public static class Lang {
 
-    public static final String TOOLBOX_TITLE = "tile.toolbox.name";
+    public static final String TOOLBOX_TITLE = "tile." + MOD_ID + ".toolbox.name";
   }
 
   public static class Blocks {
@@ -51,14 +47,13 @@ public class ModuleToolbox
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void onClientRegisterModelsEvent(ModelRegistryEvent event) {
+  public void onClientRegister(Registry registry) {
 
-    super.onClientRegisterModelsEvent(event);
+    super.onClientRegister(registry);
 
-    ClientRegistry.bindTileEntitySpecialRenderer(
-        TileEntityToolbox.class,
-        new TESRToolbox()
-    );
+    registry.registerItemModelStrategy(() -> {
+      ModelRegistrationHelper.registerBlockItemModel(Blocks.TOOLBOX.getDefaultState());
+    });
   }
+
 }
