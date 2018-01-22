@@ -1,11 +1,23 @@
 1.9.16:
-* Added: clicking worktable tabs now plays ui click sound
-* Added: can now page between more than six joined worktables with tab arrows
-* Added: bone tool material
-* Added: Scribe's Worktable
-* Added: Scribe's Compass, Scribe's Quill
-* Added: Chemist's Worktable
-* Added: Chemist's Beaker, Chemist's Burner
+* Added: Worktable tab paging arrows!
+  * You can now page between more than six joined worktables with tab arrows
+* Added: Bone tools!
+* Added: New worktables!
+  * Scribe's Worktable
+  * Chemist's Worktable
+* Added: New tools!
+  * Scribe's Compass
+  * Scribe's Quill
+  * Chemist's Beaker
+  * Chemist's Burner
+* Added: Toolbox!
+  * Stores only tools used in recipes by default (configurable)
+  * Keeps its inventory when broken (configurable)
+  * Accessible from any joined worktable when placed adjacent
+  * Shift-click tools in toolbox to swap with tool in worktable
+  * Shift-click tool in worktable to place in toolbox
+* Added: Tools used in recipes are now searchable in JEI (hover tool and press 'u')
+* Changed: clicking worktable tabs now plays ui click sound
 * Changed: Engineer's Worktable sound type to anvil
 * Changed: juxtaposed material name with profession name in all tool names
 * Changed: disabled tool enchantability

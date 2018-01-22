@@ -66,7 +66,7 @@ public class JEICategoryWorktable
 
     JEIRecipeWrapperWorktable wrapperWorktable = (JEIRecipeWrapperWorktable) recipeWrapper;
     List<ItemStack> tools = wrapperWorktable.getTools();
-    List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
+    List<List<ItemStack>> inputs = wrapperWorktable.getInputs();
     List<ItemStack> outputs = wrapperWorktable.getOutput();
 
     stacks.init(0, false, 108 - 3, 34 - 3);
