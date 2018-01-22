@@ -90,7 +90,9 @@ public class ContainerWorktable
       this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146, 17 + i * 18));
     }
 
-    Runnable toolboxSlotChangeListener = this::detectAndSendChanges;
+    Runnable toolboxSlotChangeListener = () -> {
+      //
+    };
 
     if (this.toolbox != null && !this.toolbox.isInvalid()) {
       ItemStackHandler itemHandler = this.toolbox.getItemHandler();
@@ -139,8 +141,6 @@ public class ContainerWorktable
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
     }
-
-    this.detectAndSendChanges();
   }
 
   @Override
@@ -175,8 +175,6 @@ public class ContainerWorktable
         originSlot.putStack(targetStack);
       }
 
-      targetSlot.onSlotChanged();
-      originSlot.onSlotChanged();
       return true;
     }
 
@@ -231,8 +229,7 @@ public class ContainerWorktable
           return ItemStack.EMPTY; // Swapped tools
         }
 
-        if (!this.mergeItemStack(itemstack1, 46, 47, false)
-            && !this.mergeItemStack(itemstack1, 1, 10, false)
+        if (!this.mergeItemStack(itemstack1, 1, 10, false)
             && !this.mergeItemStack(itemstack1, 37, 46, false)) {
           return ItemStack.EMPTY;
         }
@@ -244,8 +241,7 @@ public class ContainerWorktable
           return ItemStack.EMPTY; // Swapped tools
         }
 
-        if (!this.mergeItemStack(itemstack1, 46, 47, false)
-            && !this.mergeItemStack(itemstack1, 1, 10, false)
+        if (!this.mergeItemStack(itemstack1, 1, 10, false)
             && !this.mergeItemStack(itemstack1, 10, 37, false)) {
           return ItemStack.EMPTY;
         }
@@ -254,17 +250,31 @@ public class ContainerWorktable
         // Toolbox clicked, try to move to tool slot first, then crafting matrix, then inventory
 
         if (this.swapItemStack(slotIndex, 46)) {
+          //return this.inventorySlots.get(slotIndex).getStack();
           return ItemStack.EMPTY; // Swapped tools
         }
 
-        if (!this.mergeItemStack(itemstack1, 46, 47, false)
-            && !this.mergeItemStack(itemstack1, 1, 10, false)
+        if (!this.mergeItemStack(itemstack1, 1, 10, false)
             && !this.mergeItemStack(itemstack1, 10, 37, false)) {
           return ItemStack.EMPTY;
         }
 
+      } else if (slotIndex == 46) {
+        // Tool slot clicked, try to move to toolbox first, then player inventory
+
+        if (this.toolbox != null) {
+
+          if (!this.mergeItemStack(itemstack1, 50, 77, false)
+              && !this.mergeItemStack(itemstack1, 10, 46, false)) {
+            return ItemStack.EMPTY;
+          }
+
+        } else if (!this.mergeItemStack(itemstack1, 10, 46, false)) {
+          return ItemStack.EMPTY;
+        }
+
       } else if (!this.mergeItemStack(itemstack1, 10, 46, false)) {
-        // All others: tool slot and crafting matrix
+        // All others: crafting matrix
         return ItemStack.EMPTY;
       }
 

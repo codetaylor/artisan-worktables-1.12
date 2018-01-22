@@ -47,7 +47,8 @@ public class TileEntityToolbox
 
   public TileEntityToolbox() {
 
-    Predicate<ItemStack> predicate = itemStack -> !ModuleToolboxConfig.RESTRICT_TOOLBOX_TO_TOOLS_ONLY
+    Predicate<ItemStack> predicate = itemStack -> itemStack.isEmpty()
+        || !ModuleToolboxConfig.RESTRICT_TOOLBOX_TO_TOOLS_ONLY
         || WorktableAPI.containsRecipeWithTool(itemStack);
 
     this.itemHandler = new ToolboxItemStackHandler(predicate, 27) {
