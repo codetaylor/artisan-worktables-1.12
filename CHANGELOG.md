@@ -21,6 +21,7 @@
 * Changed: Engineer's Worktable sound type to anvil
 * Changed: juxtaposed material name with profession name in all tool names
 * Changed: disabled tool enchantability
+* Fixed: many z-fighting issues with the generated tool models
 * Note: don't forget to regenerate the config or manually add the new tools and materials to the lists
 * Requires: Athenaeum >= 1.5.3
 
