@@ -1,0 +1,42 @@
+# Creative Tab
+itemGroup.artisanworktables=Arbeitstisch der Handwerker
+
+# Worktables
+tile.artisanworktables.worktable.basic.name=Normaler Arbeitstisch
+tile.artisanworktables.worktable.blacksmith.name=Arbeitstisch des Schmieds
+tile.artisanworktables.worktable.carpenter.name=Arbeitstisch des Zimmermanns
+tile.artisanworktables.worktable.chemist.name=Arbeitstisch des Handwerkers
+tile.artisanworktables.worktable.engineer.name=Arbeitstisch des Ingenieurs
+tile.artisanworktables.worktable.jeweler.name=Arbeitstisch des Juweliers
+tile.artisanworktables.worktable.mage.name=Arbeitstisch des Magiers
+tile.artisanworktables.worktable.mason.name=Arbeitstisch des Steinmetzes
+tile.artisanworktables.worktable.scribe.name=Arbeitstisch des Schreibers
+tile.artisanworktables.worktable.tailor.name=Arbeitstisch des Schneiders
+
+# Toolbox
+tile.artisanworktables.toolbox.name=Werkzeugkasten
+
+# Worktable Tools
+
+item.artisanworktables.blacksmiths.cutters.name=%s Messer des Schmieds
+item.artisanworktables.blacksmiths.hammer.name=%s Hammer des Schmieds
+item.artisanworktables.carpenters.hammer.name=%s Hammer des Zimmermanns
+item.artisanworktables.carpenters.handsaw.name=%s Handsäge des Zimmermanns
+item.artisanworktables.chemists.beaker.name=%s Becher des Chemikers
+item.artisanworktables.chemists.burner.name=%s Bunsenbrenner des Chemikers
+item.artisanworktables.engineers.driver.name=%s Schraubenschlüssel des Ingenieurs
+item.artisanworktables.engineers.spanner.name=%s Schraubendrehereinsatz des Ingenieurs
+item.artisanworktables.jewelers.gemcutter.name=%s Edelsteinschneider des Juweliers
+item.artisanworktables.jewelers.pliers.name=%s Zange des Juweliers
+item.artisanworktables.mages.athame.name=%s Athame des Magiers
+item.artisanworktables.mages.grimoire.name=%s-gebundenes Grimoire des Magiers
+item.artisanworktables.masons.chisel.name=%s Meißel des Steinmetzes
+item.artisanworktables.masons.trowel.name=%s Kelle des Steinmetzes
+item.artisanworktables.scribes.compass.name=%s Kompass des Schreibers
+item.artisanworktables.scribes.quill.name=%s Schreibfeder des Schreibers
+item.artisanworktables.tailors.needle.name=%s Nadel des Schneiders
+item.artisanworktables.tailors.shears.name=%s Schere des Schneiders
+
+# JEI
+jei.tooltip.shapeless.recipe=Formloses Rezept
+jei.tooltip.chance=%s%s%% Chance zum erfolgreichen basteln

@@ -1,3 +1,7 @@
+1.9.17:
+* Added: de_de.lang (#33 Xaikii)
+* Changed: updated zh_cn.lang (PR#32 DYColdWind)
+
 1.9.16:
 * Added: Worktable tab paging arrows!
   * You can now page between more than six joined worktables with tab arrows
