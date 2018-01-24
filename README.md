@@ -15,7 +15,7 @@ Depends on the library mod Athenaeum.
 
 #### Tables
 
-![Tables](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/tables.png)
+![Tables](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/tapestry.png)
 
 ![TableGuis](https://raw.githubusercontent.com/codetaylor/artisan-worktables/master/assets/tabs01.gif)
 
