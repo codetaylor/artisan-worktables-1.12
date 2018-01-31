@@ -49,15 +49,15 @@ public class GuiContainerWorktable
   private static final int TAB_ITEM_HORZONTAL_OFFSET = 4;
   private static final int TAB_ITEM_VERTICAL_OFFSET = 4;
 
-  private static final int TAB_TEXTURE_HEIGHT = 210;
-  private static final int TAB_TEXTURE_WIDTH = 56;
+  private static final int GUI_ELEMENTS_TEXTURE_HEIGHT = 256;
+  private static final int GUI_ELEMENTS_TEXTURE_WIDTH = 256;
 
   private static final int FLUID_WIDTH = 6;
   private static final int FLUID_HEIGHT = 52;
 
-  private static final ResourceLocation TEXTURE_TABS = new ResourceLocation(
+  private static final ResourceLocation TEXTURE_GUI_ELEMENTS = new ResourceLocation(
       ModuleWorktables.MOD_ID,
-      "textures/gui/tabs.png"
+      "textures/gui/gui_elements.png"
   );
   private static final ResourceLocation TEXTURE_TOOLBOX = new ResourceLocation(
       ModuleWorktables.MOD_ID,
@@ -221,7 +221,7 @@ public class GuiContainerWorktable
       this.drawTexturedModalRect(this.guiLeft - 70, (this.height - this.ySize) / 2, 176, 0, 68, 176);
     }
 
-    this.mc.getTextureManager().bindTexture(TEXTURE_TABS);
+    this.mc.getTextureManager().bindTexture(TEXTURE_GUI_ELEMENTS);
 
     // draw arrows
 
@@ -234,8 +234,8 @@ public class GuiContainerWorktable
           this.currentWorktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
           8,
           TAB_HEIGHT,
-          TAB_TEXTURE_WIDTH,
-          TAB_TEXTURE_HEIGHT
+          GUI_ELEMENTS_TEXTURE_WIDTH,
+          GUI_ELEMENTS_TEXTURE_HEIGHT
       );
     }
 
@@ -248,8 +248,8 @@ public class GuiContainerWorktable
           this.currentWorktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
           8,
           TAB_HEIGHT,
-          TAB_TEXTURE_WIDTH,
-          TAB_TEXTURE_HEIGHT
+          GUI_ELEMENTS_TEXTURE_WIDTH,
+          GUI_ELEMENTS_TEXTURE_HEIGHT
       );
     }
 
@@ -267,8 +267,8 @@ public class GuiContainerWorktable
             textureY,
             TAB_WIDTH,
             TAB_HEIGHT,
-            TAB_TEXTURE_WIDTH,
-            TAB_TEXTURE_HEIGHT
+            GUI_ELEMENTS_TEXTURE_WIDTH,
+            GUI_ELEMENTS_TEXTURE_HEIGHT
         );
 
       } else {
@@ -280,8 +280,8 @@ public class GuiContainerWorktable
             textureY,
             TAB_WIDTH,
             TAB_HEIGHT,
-            TAB_TEXTURE_WIDTH,
-            TAB_TEXTURE_HEIGHT
+            GUI_ELEMENTS_TEXTURE_WIDTH,
+            GUI_ELEMENTS_TEXTURE_HEIGHT
         );
       }
 
@@ -437,6 +437,30 @@ public class GuiContainerWorktable
           mouseX - this.guiLeft,
           mouseY - this.guiTop,
           this.mc.fontRenderer
+      );
+    }
+
+    if (this.currentWorktable instanceof TileEntityWorktableFluidBase) {
+
+      this.mc.getTextureManager().bindTexture(TEXTURE_GUI_ELEMENTS);
+      RenderHelper.enableStandardItemLighting();
+      GlStateManager.enableBlend();
+      GlStateManager.color(
+          ((this.textShadowColor >> 16) & 0xFF) / 255f,
+          ((this.textShadowColor >> 8) & 0xFF) / 255f,
+          (this.textShadowColor & 0xFF) / 255f,
+          1f
+      );
+
+      Gui.drawModalRectWithCustomSizedTexture(
+          8,
+          17,
+          57,
+          1,
+          6,
+          52,
+          GUI_ELEMENTS_TEXTURE_WIDTH,
+          GUI_ELEMENTS_TEXTURE_HEIGHT
       );
     }
   }
