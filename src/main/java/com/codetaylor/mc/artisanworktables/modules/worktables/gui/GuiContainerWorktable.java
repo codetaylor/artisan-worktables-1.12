@@ -326,7 +326,7 @@ public class GuiContainerWorktable
 
       this.mc.getTextureManager().bindTexture(TEXTURE_ATLAS);
 
-      GuiHelper.drawScaledTexturedModalRectFromIconAnchorBottomLeft(
+      GuiHelper.drawVerticalScaledTexturedModalRectFromIconAnchorBottomLeft(
           this.guiLeft + 8,
           this.getFluidY(tank, (this.height - this.ySize) / 2 + 17),
           0,
@@ -347,7 +347,7 @@ public class GuiContainerWorktable
   private float getFluidHeightScalar(FluidTank fluidTank) {
 
     if (fluidTank.getFluidAmount() > 0) {
-      return Math.max((float) fluidTank.getFluidAmount() / (float) fluidTank.getCapacity(), 0.125f);
+      return Math.max((float) fluidTank.getFluidAmount() / (float) fluidTank.getCapacity(), 0.01923f);
 
     } else {
       return 0;
