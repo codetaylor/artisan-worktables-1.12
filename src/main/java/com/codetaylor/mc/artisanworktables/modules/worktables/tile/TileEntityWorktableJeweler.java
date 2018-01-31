@@ -1,13 +1,14 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableEnumType;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
 public class TileEntityWorktableJeweler
-    extends TileEntityWorktableBase {
+    extends TileEntityWorktableFluidBase {
 
   private static final int TEXT_SHADOW_COLOR = new Color(105, 89, 133).getRGB();
   private static final BlockWorktableEnumType TYPE = BlockWorktableEnumType.JEWELER;
@@ -49,5 +50,11 @@ public class TileEntityWorktableJeweler
   public boolean canHandleJEIRecipeTransfer(String name) {
 
     return TYPE.getName().equals(name);
+  }
+
+  @Override
+  protected int getFluidCapacity() {
+
+    return ModuleWorktablesConfig.FLUID_CAPACITY.JEWELER;
   }
 }

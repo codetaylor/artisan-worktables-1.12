@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
@@ -34,6 +35,12 @@ public class ContainerWorktable
     this.tile = tile;
     this.toolbox = this.getToolbox(this.tile);
 
+    int offsetX = 0;
+
+    if (this.tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+      offsetX = 6;
+    }
+
     Runnable slotChangeListener = () -> this.updateRecipeOutput(playerInventory.player);
 
     // Result Slot 0
@@ -43,7 +50,7 @@ public class ContainerWorktable
         this.tile,
         resultHandler,
         0,
-        109,
+        109 + offsetX,
         35
     );
     this.addSlotToContainer(this.craftingResultSlot);
@@ -57,7 +64,7 @@ public class ContainerWorktable
             slotChangeListener,
             craftingMatrixHandler,
             x + y * 3,
-            14 + x * 18,
+            14 + x * 18 + offsetX,
             17 + y * 18
         ));
       }
@@ -81,13 +88,13 @@ public class ContainerWorktable
         itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithTool(itemStack),
         this.tile.getToolHandler(),
         0,
-        72,
+        72 + offsetX,
         35
     ));
 
     // Secondary output 47 - 49, inclusive
     for (int i = 0; i < 3; i++) {
-      this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146, 17 + i * 18));
+      this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146 + offsetX, 17 + i * 18));
     }
 
     Runnable toolboxSlotChangeListener = () -> {

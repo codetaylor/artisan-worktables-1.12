@@ -26,6 +26,7 @@ import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -384,6 +385,22 @@ public abstract class TileEntityWorktableBase
   public int getGuiTabOffset() {
 
     return GUI_TAB_OFFSET;
+  }
+
+  public boolean onBlockActivated(
+      World worldIn,
+      BlockPos pos,
+      IBlockState state,
+      EntityPlayer playerIn,
+      EnumHand hand,
+      EnumFacing facing,
+      float hitX,
+      float hitY,
+      float hitZ
+  ) {
+
+    playerIn.openGui(ModuleWorktables.MOD_INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+    return true;
   }
 
   @Override

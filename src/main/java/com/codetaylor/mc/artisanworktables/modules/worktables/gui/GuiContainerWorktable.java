@@ -308,13 +308,13 @@ public class GuiContainerWorktable
     this.drawString("container.inventory", 8, this.ySize - 96 + 3);
 
     if (this.currentWorktable instanceof TileEntityWorktableMage
-        && mouseX >= this.guiLeft + 108
-        && mouseX <= this.guiLeft + 125
+        && mouseX >= this.guiLeft + 108 + 6
+        && mouseX <= this.guiLeft + 125 + 6
         && mouseY >= this.guiTop + 34
         && mouseY <= this.guiTop + 51
         && !this.container.inventorySlots.get(0).getStack().isEmpty()) {
 
-      int originX = 115;
+      int originX = 115 + 6;
       int originY = 40;
       int radius = 21;
       int count = 12;
