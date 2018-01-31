@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrix
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +20,7 @@ public class RecipeWorktable
   private int toolDamage;
   private List<OutputWeightPair> output;
   private List<Ingredient> ingredients;
+  private FluidStack fluidIngredient;
   private ExtraOutputChancePair[] extraOutputs;
   private IRecipeMatcher recipeMatcher;
   private boolean mirrored;
@@ -31,6 +33,7 @@ public class RecipeWorktable
       ItemStack[] tools,
       int toolDamage,
       List<Ingredient> ingredients,
+      FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,
       IRecipeMatcher recipeMatcher,
       boolean mirrored,
@@ -43,6 +46,7 @@ public class RecipeWorktable
     this.tools = tools;
     this.toolDamage = toolDamage;
     this.ingredients = ingredients;
+    this.fluidIngredient = fluidIngredient;
     this.extraOutputs = extraOutputs;
     this.recipeMatcher = recipeMatcher;
     this.mirrored = mirrored;
@@ -135,6 +139,12 @@ public class RecipeWorktable
   }
 
   @Override
+  public FluidStack getFluidIngredient() {
+
+    return this.fluidIngredient.copy();
+  }
+
+  @Override
   public List<OutputWeightPair> getOutputWeightPairList() {
 
     return Collections.unmodifiableList(this.output);
@@ -203,7 +213,8 @@ public class RecipeWorktable
   public boolean matches(
       Collection<String> unlockedStages,
       ItemStack tool,
-      CraftingMatrixStackHandler craftingMatrix
+      CraftingMatrixStackHandler craftingMatrix,
+      FluidStack fluidStack
   ) {
 
     // Do we have the correct tool?
@@ -223,7 +234,7 @@ public class RecipeWorktable
       }
     }
 
-    return this.recipeMatcher.matches(this, craftingMatrix);
+    return this.recipeMatcher.matches(this, craftingMatrix, fluidStack);
   }
 
 }

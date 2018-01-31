@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableEnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;

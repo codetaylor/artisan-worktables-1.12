@@ -3,7 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -135,11 +137,22 @@ public class ContainerWorktable
 
   private void updateRecipeOutput(EntityPlayer player) {
 
+    FluidStack fluidStack = null;
+
+    if (this.tile instanceof TileEntityWorktableFluidBase) {
+      fluidStack = ((TileEntityWorktableFluidBase) this.tile).getTank().getFluid();
+
+      if (fluidStack != null) {
+        fluidStack = fluidStack.copy();
+      }
+    }
+
     RegistryRecipeWorktable registry = this.tile.getWorktableRecipeRegistry();
     IRecipeWorktable recipe = registry.findRecipe(
         player,
         this.tile.getToolHandler().getStackInSlot(0),
-        this.tile.getCraftingMatrixHandler()
+        this.tile.getCraftingMatrixHandler(),
+        fluidStack
     );
 
     if (recipe != null) {

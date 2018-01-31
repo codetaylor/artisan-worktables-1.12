@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
+package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import com.codetaylor.mc.athenaeum.util.BottleHelper;
@@ -10,6 +10,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -108,6 +109,13 @@ public abstract class TileEntityWorktableFluidBase
   protected void notifyBlockUpdate() {
 
     BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
+  }
+
+  @Override
+  protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
+
+    super.onCraftReduceIngredients(fluidIngredient);
+    this.tank.drain(fluidIngredient, true);
   }
 
   protected abstract int getFluidCapacity();

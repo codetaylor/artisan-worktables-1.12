@@ -15,6 +15,10 @@ public class ModuleWorktablesConfig {
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
     @Config.RequiresWorldRestart
+    public int BASIC = 4000;
+
+    @Config.Comment("Worktable fluid capacity (milli-buckets).")
+    @Config.RequiresWorldRestart
     public int BLACKSMITH = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")

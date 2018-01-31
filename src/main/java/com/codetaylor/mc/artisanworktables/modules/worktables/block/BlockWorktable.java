@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;

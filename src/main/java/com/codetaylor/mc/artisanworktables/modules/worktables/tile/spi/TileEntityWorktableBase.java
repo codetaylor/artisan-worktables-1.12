@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
+package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
@@ -31,6 +31,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -162,22 +163,7 @@ public abstract class TileEntityWorktableBase
 
     // Decrease stacks in crafting matrix
 
-    int slotCount = this.craftingMatrixHandler.getSlots();
-
-    for (int i = 0; i < slotCount; i++) {
-      ItemStack itemStack = this.craftingMatrixHandler.getStackInSlot(i);
-
-      if (!itemStack.isEmpty()) {
-
-        if (itemStack.getItem().hasContainerItem(itemStack)
-            && itemStack.getCount() == 1) {
-          this.craftingMatrixHandler.setStackInSlot(i, itemStack.getItem().getContainerItem(itemStack));
-
-        } else {
-          this.craftingMatrixHandler.setStackInSlot(i, StackHelper.decrease(itemStack.copy(), 1, false));
-        }
-      }
-    }
+    this.onCraftReduceIngredients(recipe.getFluidIngredient());
 
     // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
 
@@ -254,13 +240,44 @@ public abstract class TileEntityWorktableBase
     this.markDirty();
   }
 
+  protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
+
+    int slotCount = this.craftingMatrixHandler.getSlots();
+
+    for (int i = 0; i < slotCount; i++) {
+      ItemStack itemStack = this.craftingMatrixHandler.getStackInSlot(i);
+
+      if (!itemStack.isEmpty()) {
+
+        if (itemStack.getItem().hasContainerItem(itemStack)
+            && itemStack.getCount() == 1) {
+          this.craftingMatrixHandler.setStackInSlot(i, itemStack.getItem().getContainerItem(itemStack));
+
+        } else {
+          this.craftingMatrixHandler.setStackInSlot(i, StackHelper.decrease(itemStack.copy(), 1, false));
+        }
+      }
+    }
+  }
+
   public IRecipeWorktable getRecipe(EntityPlayer player) {
+
+    FluidStack fluidStack = null;
+
+    if (this instanceof TileEntityWorktableFluidBase) {
+      fluidStack = ((TileEntityWorktableFluidBase) this).getTank().getFluid();
+
+      if (fluidStack != null) {
+        fluidStack = fluidStack.copy();
+      }
+    }
 
     RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
     return registry.findRecipe(
         player,
         this.toolHandler.getStackInSlot(0),
-        this.craftingMatrixHandler
+        this.craftingMatrixHandler,
+        fluidStack
     );
   }
 

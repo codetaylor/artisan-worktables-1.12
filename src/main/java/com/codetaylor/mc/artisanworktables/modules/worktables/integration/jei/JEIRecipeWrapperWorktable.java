@@ -181,6 +181,7 @@ public class JEIRecipeWrapperWorktable
 
     GlStateManager.popMatrix();
 
+    // TODO: attempt to move the following tooltip to IRecipeCategory#getTooltipStrings
     GlStateManager.pushMatrix();
     GlStateManager.translate(0, -8, 0);
 

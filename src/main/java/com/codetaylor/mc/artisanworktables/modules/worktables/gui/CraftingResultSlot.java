@@ -1,12 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-
-import javax.annotation.Nonnull;
 
 public class CraftingResultSlot
     extends ResultSlot {

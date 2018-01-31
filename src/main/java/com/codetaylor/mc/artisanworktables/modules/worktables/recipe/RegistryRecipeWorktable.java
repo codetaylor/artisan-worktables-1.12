@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrix
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class RegistryRecipeWorktable {
   public IRecipeWorktable findRecipe(
       EntityPlayer player,
       ItemStack tool,
-      CraftingMatrixStackHandler craftingMatrix
+      CraftingMatrixStackHandler craftingMatrix,
+      @Nullable FluidStack fluidStack
   ) {
 
     Collection<String> unlockedStages;
@@ -52,7 +54,7 @@ public class RegistryRecipeWorktable {
 
     for (IRecipeWorktable recipe : this.recipeList) {
 
-      if (recipe.matches(unlockedStages, tool, craftingMatrix)) {
+      if (recipe.matches(unlockedStages, tool, craftingMatrix, fluidStack)) {
         return recipe;
       }
     }
