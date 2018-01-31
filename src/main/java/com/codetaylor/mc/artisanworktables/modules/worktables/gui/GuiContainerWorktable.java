@@ -53,7 +53,7 @@ public class GuiContainerWorktable
   private static final int GUI_ELEMENTS_TEXTURE_WIDTH = 256;
 
   private static final int FLUID_WIDTH = 6;
-  private static final int FLUID_HEIGHT = 52;
+  public static final int FLUID_HEIGHT = 52;
 
   private static final ResourceLocation TEXTURE_GUI_ELEMENTS = new ResourceLocation(
       ModuleWorktables.MOD_ID,
@@ -63,7 +63,7 @@ public class GuiContainerWorktable
       ModuleWorktables.MOD_ID,
       "textures/gui/toolbox.png"
   );
-  private static final ResourceLocation TEXTURE_ATLAS = new ResourceLocation("textures/atlas/blocks.png");
+  public static final ResourceLocation TEXTURE_ATLAS = new ResourceLocation("textures/atlas/blocks.png");
 
   private static final double TWO_PI = Math.PI * 2;
   private static final String[] LETTERS = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
@@ -328,36 +328,19 @@ public class GuiContainerWorktable
 
       GuiHelper.drawVerticalScaledTexturedModalRectFromIconAnchorBottomLeft(
           this.guiLeft + 8,
-          this.getFluidY(tank, (this.height - this.ySize) / 2 + 17),
+          GuiHelper.getFluidY(
+              tank.getFluidAmount(),
+              tank.getCapacity(),
+              FLUID_HEIGHT,
+              (this.height - this.ySize) / 2 + 17
+          ),
           0,
           this.fluidSprite,
           6,
-          this.getFluidHeight(tank)
+          GuiHelper.getFluidHeight(tank.getFluidAmount(), tank.getCapacity(), FLUID_HEIGHT)
       );
     }
 
-  }
-
-  private int getFluidHeight(FluidTank fluidTank) {
-
-    int elementHeightModified = (int) (this.getFluidHeightScalar(fluidTank) * FLUID_HEIGHT);
-    return Math.max(0, Math.min(elementHeightModified, FLUID_HEIGHT));
-  }
-
-  private float getFluidHeightScalar(FluidTank fluidTank) {
-
-    if (fluidTank.getFluidAmount() > 0) {
-      return Math.max((float) fluidTank.getFluidAmount() / (float) fluidTank.getCapacity(), 0.01923f);
-
-    } else {
-      return 0;
-    }
-  }
-
-  private int getFluidY(FluidTank fluidTank, int offsetY) {
-
-    int elementHeightModified = (int) (this.getFluidHeightScalar(fluidTank) * FLUID_HEIGHT);
-    return FLUID_HEIGHT - Math.max(0, Math.min(elementHeightModified, FLUID_HEIGHT)) + offsetY;
   }
 
   public static List<TileEntityWorktableBase> getJoinedTableOffsetView(List<TileEntityWorktableBase> list, int offset) {
@@ -429,7 +412,7 @@ public class GuiContainerWorktable
         tooltip.add(I18n.format(
             ModuleWorktables.Lang.GUI_TOOLTIP_FLUID_DESTROY,
             TextFormatting.DARK_GRAY,
-            TextFormatting.DARK_AQUA
+            TextFormatting.DARK_GRAY
         ));
       }
       this.drawHoveringText(

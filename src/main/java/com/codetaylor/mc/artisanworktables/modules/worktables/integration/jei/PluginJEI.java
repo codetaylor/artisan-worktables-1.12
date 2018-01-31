@@ -43,7 +43,7 @@ public class PluginJEI
     for (String name : WorktableAPI.getWorktableNames()) {
       registry.handleRecipes(
           RecipeWorktable.class,
-          JEIRecipeWrapperWorktable::new,
+          recipe -> new JEIRecipeWrapperWorktable(recipe, this.jeiHelpers.getGuiHelper()),
           PluginJEI.createUID(name)
       );
     }
