@@ -3,15 +3,17 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -22,6 +24,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import yalter.mousetweaks.api.MouseTweaksDisableWheelTweak;
@@ -104,6 +108,22 @@ public class GuiContainerWorktable
     super.mouseClicked(mouseX, mouseY, mouseButton);
 
     if (mouseButton != 0) {
+      return;
+    }
+
+    if (this.currentWorktable instanceof TileEntityWorktableFluidBase
+        && GuiScreen.isShiftKeyDown()
+        && mouseX >= this.guiLeft + 8
+        && mouseX <= this.guiLeft + 8 + FLUID_WIDTH - 1
+        && mouseY >= (this.height - this.ySize) / 2 + 17
+        && mouseY <= (this.height - this.ySize) / 2 + 17 + FLUID_HEIGHT - 1) {
+
+      BlockPos pos = this.currentWorktable.getPos();
+      ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTankDestroyFluid(
+          pos.getX(),
+          pos.getY(),
+          pos.getZ()
+      ));
       return;
     }
 
@@ -387,6 +407,37 @@ public class GuiContainerWorktable
         this.drawString(LETTERS[i], x, y);
       }
 
+    }
+
+    if (this.currentWorktable instanceof TileEntityWorktableFluidBase
+        && mouseX >= this.guiLeft + 8
+        && mouseX <= this.guiLeft + 8 + FLUID_WIDTH - 1
+        && mouseY >= (this.height - this.ySize) / 2 + 17
+        && mouseY <= (this.height - this.ySize) / 2 + 17 + FLUID_HEIGHT - 1) {
+
+      FluidTank tank = ((TileEntityWorktableFluidBase) this.currentWorktable).getTank();
+
+      List<String> tooltip = new ArrayList<>();
+
+      if (tank.getFluid() == null || tank.getFluidAmount() == 0) {
+        tooltip.add(I18n.format(ModuleWorktables.Lang.GUI_TOOLTIP_FLUID_EMPTY));
+
+      } else {
+        Fluid fluid = tank.getFluid().getFluid();
+        tooltip.add(fluid.getLocalizedName(tank.getFluid()));
+        tooltip.add("" + TextFormatting.GRAY + tank.getFluidAmount() + " / " + tank.getCapacity() + " mB");
+        tooltip.add(I18n.format(
+            ModuleWorktables.Lang.GUI_TOOLTIP_FLUID_DESTROY,
+            TextFormatting.DARK_GRAY,
+            TextFormatting.DARK_AQUA
+        ));
+      }
+      this.drawHoveringText(
+          tooltip,
+          mouseX - this.guiLeft,
+          mouseY - this.guiTop,
+          this.mc.fontRenderer
+      );
     }
   }
 

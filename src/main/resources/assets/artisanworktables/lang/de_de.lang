@@ -38,5 +38,5 @@ item.artisanworktables.tailors.needle.name=%s Nadel des Schneiders
 item.artisanworktables.tailors.shears.name=%s Schere des Schneiders
 
 # JEI
-jei.tooltip.shapeless.recipe=Formloses Rezept
-jei.tooltip.chance=%s%s%% Chance zum erfolgreichen basteln
+jei.artisanworktables.tooltip.shapeless.recipe=Formloses Rezept
+jei.artisanworktables.tooltip.chance=%s%s%% Chance zum erfolgreichen basteln

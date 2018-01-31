@@ -123,7 +123,7 @@ public class PluginJEI
 
   private String createTitleTranslateKey(String name) {
 
-    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, name);
+    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, name);
   }
 
   public static String createUID(String name) {

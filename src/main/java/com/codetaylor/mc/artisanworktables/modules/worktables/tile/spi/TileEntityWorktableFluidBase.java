@@ -106,11 +106,6 @@ public abstract class TileEntityWorktableFluidBase
     return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
   }
 
-  protected void notifyBlockUpdate() {
-
-    BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
-  }
-
   @Override
   protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
 

@@ -12,6 +12,7 @@ import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
+import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -238,6 +239,15 @@ public abstract class TileEntityWorktableBase
     }
 
     this.markDirty();
+
+    if (!this.world.isRemote) {
+      this.notifyBlockUpdate();
+    }
+  }
+
+  public void notifyBlockUpdate() {
+
+    BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
   }
 
   protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
@@ -445,7 +455,7 @@ public abstract class TileEntityWorktableBase
 
   private String getTableTitleKey() {
 
-    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, this.getWorktableName());
+    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, this.getWorktableName());
   }
 
   public abstract int getWorktableGuiTabTextureYOffset();

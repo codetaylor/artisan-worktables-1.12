@@ -13,6 +13,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -26,6 +27,8 @@ public class ContainerWorktable
   private TileEntityWorktableBase tile;
   private TileEntityToolbox toolbox;
   private final ItemStackHandler resultHandler;
+  private FluidStack lastFluidStack;
+  private final EntityPlayer player;
 
   public ContainerWorktable(
       InventoryPlayer playerInventory,
@@ -43,7 +46,8 @@ public class ContainerWorktable
       offsetX = 6;
     }
 
-    Runnable slotChangeListener = () -> this.updateRecipeOutput(playerInventory.player);
+    this.player = playerInventory.player;
+    Runnable slotChangeListener = () -> this.updateRecipeOutput(this.player);
 
     // Result Slot 0
     this.resultHandler = new ItemStackHandler(1);
@@ -122,7 +126,7 @@ public class ContainerWorktable
       }
     }
 
-    this.updateRecipeOutput(playerInventory.player);
+    this.updateRecipeOutput(this.player);
   }
 
   private TileEntityToolbox getToolbox(TileEntityWorktableBase tile) {
@@ -356,5 +360,37 @@ public class ContainerWorktable
   public boolean canHandleJEIRecipeTransfer(String name) {
 
     return this.tile.canHandleJEIRecipeTransfer(name);
+  }
+
+  @Override
+  public void detectAndSendChanges() {
+
+    super.detectAndSendChanges();
+
+    if (!(this.tile instanceof TileEntityWorktableFluidBase)
+        || this.tile.getWorld().isRemote) {
+      return;
+    }
+
+    FluidTank tank = ((TileEntityWorktableFluidBase) this.tile).getTank();
+    FluidStack fluidStack = tank.getFluid();
+
+    if (this.lastFluidStack != null
+        && fluidStack == null) {
+      this.lastFluidStack = null;
+      this.updateRecipeOutput(this.player);
+
+    } else if (this.lastFluidStack == null
+        && fluidStack != null) {
+      this.lastFluidStack = fluidStack.copy();
+      this.updateRecipeOutput(this.player);
+
+    } else if (this.lastFluidStack != null) {
+
+      if (!this.lastFluidStack.isFluidStackIdentical(fluidStack)) {
+        this.lastFluidStack = fluidStack.copy();
+        this.updateRecipeOutput(this.player);
+      }
+    }
   }
 }

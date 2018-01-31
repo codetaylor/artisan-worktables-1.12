@@ -37,5 +37,5 @@ item.artisanworktables.tailors.needle.name=%s 裁缝针
 item.artisanworktables.tailors.shears.name=%s 裁缝剪
 
 # JEI
-jei.tooltip.shapeless.recipe=无序合成
-jei.tooltip.chance=%s%s%%概率合成
+jei.artisanworktables.tooltip.shapeless.recipe=无序合成
+jei.artisanworktables.tooltip.chance=%s%s%%概率合成
