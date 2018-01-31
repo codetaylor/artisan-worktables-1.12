@@ -4,7 +4,9 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableFluidBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
+import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -13,12 +15,15 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import yalter.mousetweaks.api.MouseTweaksDisableWheelTweak;
 
 import java.awt.*;
@@ -43,6 +48,9 @@ public class GuiContainerWorktable
   private static final int TAB_TEXTURE_HEIGHT = 210;
   private static final int TAB_TEXTURE_WIDTH = 56;
 
+  private static final int FLUID_WIDTH = 6;
+  private static final int FLUID_HEIGHT = 52;
+
   private static final ResourceLocation TEXTURE_TABS = new ResourceLocation(
       ModuleWorktables.MOD_ID,
       "textures/gui/tabs.png"
@@ -51,6 +59,7 @@ public class GuiContainerWorktable
       ModuleWorktables.MOD_ID,
       "textures/gui/toolbox.png"
   );
+  private static final ResourceLocation TEXTURE_ATLAS = new ResourceLocation("textures/atlas/blocks.png");
 
   private static final double TWO_PI = Math.PI * 2;
   private static final String[] LETTERS = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
@@ -60,6 +69,8 @@ public class GuiContainerWorktable
   private final String titleKey;
   private final int textShadowColor;
   private final TileEntityWorktableBase currentWorktable;
+
+  private TextureAtlasSprite fluidSprite;
 
   public GuiContainerWorktable(
       ContainerWorktable container,
@@ -187,7 +198,7 @@ public class GuiContainerWorktable
     if (toolbox != null
         && !toolbox.isInvalid()) {
       this.mc.getTextureManager().bindTexture(TEXTURE_TOOLBOX);
-      this.drawTexturedModalRect(this.guiLeft - 70,(this.height - this.ySize) / 2,176,0,68,176);
+      this.drawTexturedModalRect(this.guiLeft - 70, (this.height - this.ySize) / 2, 176, 0, 68, 176);
     }
 
     this.mc.getTextureManager().bindTexture(TEXTURE_TABS);
@@ -278,6 +289,55 @@ public class GuiContainerWorktable
       tabX += TAB_WIDTH + TAB_SPACING;
     }
 
+    // draw fluid
+
+    if (this.currentWorktable instanceof TileEntityWorktableFluidBase) {
+      FluidTank tank = ((TileEntityWorktableFluidBase) this.currentWorktable).getTank();
+      FluidStack fluidStack = tank.getFluid();
+
+      if (fluidStack == null) {
+        this.fluidSprite = null;
+        return;
+
+      } else if (this.fluidSprite == null) {
+        ResourceLocation resourceLocation = fluidStack.getFluid().getStill();
+        this.fluidSprite = this.mc.getTextureMapBlocks().getAtlasSprite(resourceLocation.toString());
+      }
+
+      this.mc.getTextureManager().bindTexture(TEXTURE_ATLAS);
+
+      GuiHelper.drawScaledTexturedModalRectFromIconAnchorBottomLeft(
+          this.guiLeft + 8,
+          this.getFluidY(tank, (this.height - this.ySize) / 2 + 17),
+          0,
+          this.fluidSprite,
+          6,
+          this.getFluidHeight(tank)
+      );
+    }
+
+  }
+
+  private int getFluidHeight(FluidTank fluidTank) {
+
+    int elementHeightModified = (int) (this.getFluidHeightScalar(fluidTank) * FLUID_HEIGHT);
+    return Math.max(0, Math.min(elementHeightModified, FLUID_HEIGHT));
+  }
+
+  private float getFluidHeightScalar(FluidTank fluidTank) {
+
+    if (fluidTank.getFluidAmount() > 0) {
+      return Math.max((float) fluidTank.getFluidAmount() / (float) fluidTank.getCapacity(), 0.125f);
+
+    } else {
+      return 0;
+    }
+  }
+
+  private int getFluidY(FluidTank fluidTank, int offsetY) {
+
+    int elementHeightModified = (int) (this.getFluidHeightScalar(fluidTank) * FLUID_HEIGHT);
+    return FLUID_HEIGHT - Math.max(0, Math.min(elementHeightModified, FLUID_HEIGHT)) + offsetY;
   }
 
   public static List<TileEntityWorktableBase> getJoinedTableOffsetView(List<TileEntityWorktableBase> list, int offset) {

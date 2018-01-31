@@ -29,6 +29,11 @@ public abstract class TileEntityWorktableFluidBase
     this.tank = new FluidTank(this.getFluidCapacity());
   }
 
+  public FluidTank getTank() {
+
+    return this.tank;
+  }
+
   @Override
   public boolean hasCapability(
       @Nonnull Capability<?> capability, @Nullable EnumFacing facing
