@@ -1,5 +1,6 @@
 1.10.19:
 * Fixed: GUI fluid tank render bug (#40)
+* Fixed: Non-interactive fluid display in JEI (#42)
 * Changed: updated de_de.lang (PR#43 Xaikii)
 
 1.10.18:
