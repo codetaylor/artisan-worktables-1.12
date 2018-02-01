@@ -1,13 +1,13 @@
-## Advanced ZenScript
+# Advanced ZenScript
 
-### Import
+## Import
 
 ```
 import mods.artisanworktables.Worktable;
 import mods.artisanworktables.IRecipeBuilder;
 ```
 
-### Example
+## Example
 
 The bare minimum:
 
@@ -30,6 +30,7 @@ Worktable.createRecipeBuilder("carpenter")
         [<minecraft:planks>],
         [<minecraft:planks>],
         [<minecraft:planks>]])
+    .setFluid(<liquid:water> * 250)
     .setTool(<ore:carpenters_hammer>, 3)
     .addOutput(<minecraft:planks> * 10, 10)
     .addOutput(<minecraft:planks:1> * 20, 10)
@@ -43,7 +44,7 @@ Worktable.createRecipeBuilder("carpenter")
     .create();
 ```
 
-### Recipe Builder
+## Recipe Builder
 
 ```
 val builder = Worktable.createRecipeBuilder("carpenter") as IRecipeBuilder;
@@ -53,9 +54,9 @@ It's a good idea to create a new builder for each recipe. If you don't create a 
 
 Chain your method calls as shown in the examples above: it's cleaner.
 
-### Recipe Builder Methods
+## Recipe Builder Methods
 
-#### setShaped
+### setShaped
 
 Either `setShaped` or `setShapeless` must be called.
 
@@ -63,7 +64,7 @@ Either `setShaped` or `setShapeless` must be called.
 IRecipeBuilder setShaped(IIngredient[][] ingredients);
 ```
 
-#### setShapeless
+### setShapeless
 
 Either `setShaped` or `setShapeless` must be called.
 
@@ -71,7 +72,15 @@ Either `setShaped` or `setShapeless` must be called.
 IRecipeBuilder setShapeless(IIngredient[] ingredients);
 ```
 
-#### setMirrored
+### setFluid
+
+&#x1F539;*Optional* - if omitted, no fluid will be required to complete the recipe
+
+```java
+IRecipeBuilder setFluid(IFluidStack fluid);
+```
+
+### setMirrored
 
 &#x1F539;*Optional* - if omitted, defaults to false
  
@@ -81,7 +90,7 @@ Mirror a shaped recipe.
 IRecipeBuilder setMirrored();
 ```
 
-#### setTool
+### setTool
 
 Set the tool required for this recipe. May be an OreDict entry.
 
@@ -89,7 +98,7 @@ Set the tool required for this recipe. May be an OreDict entry.
 IRecipeBuilder setTool(IIngredient tool, int damage);
 ```
 
-#### addOutput
+### addOutput
 
 This method can be called more than once to add multiple, weighted, exclusive outputs to a recipe, but must be called at least once. The `weight` parameter is optional and if omitted, defaults to `1`.
 
@@ -97,7 +106,7 @@ This method can be called more than once to add multiple, weighted, exclusive ou
 IRecipeBuilder addOutput(IItemStack output, @Optional int weight);
 ```
 
-#### setExtraOutput[One, Two, Three]
+### setExtraOutput[One, Two, Three]
 
 &#x1F539;*Optional*
 
@@ -109,7 +118,7 @@ IRecipeBuilder setExtraOutputTwo(IItemStack output, float chance);
 IRecipeBuilder setExtraOutputThree(IItemStack output, float chance);
 ```
 
-#### requireGameStages
+### requireGameStages
 
 &#x1F539;*Optional*
 
@@ -121,7 +130,7 @@ Valid enum values for `require` are: `ALL`, `ANY`.
 IRecipeBuilder requireGameStages(String require, String[] stages);
 ```
 
-#### excludeGameStages
+### excludeGameStages
 
 &#x1F539;*Optional*
 
@@ -131,7 +140,7 @@ If the player has unlocked any of the listed stages, this recipe will not be ava
 IRecipeBuilder excludeGameStages(String[] stages);
 ```
 
-#### create
+### create
 
 This method must be called last to register the defined recipe with the system.
 
