@@ -17,7 +17,6 @@ tile.artisanworktables.worktable.tailor.name=Arbeitstisch des Schneiders
 tile.artisanworktables.toolbox.name=Werkzeugkasten
 
 # Worktable Tools
-
 item.artisanworktables.blacksmiths.cutters.name=%s Messer des Schmieds
 item.artisanworktables.blacksmiths.hammer.name=%s Hammer des Schmieds
 item.artisanworktables.carpenters.hammer.name=%s Hammer des Zimmermanns
@@ -40,3 +39,7 @@ item.artisanworktables.tailors.shears.name=%s Schere des Schneiders
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Formloses Rezept
 jei.artisanworktables.tooltip.chance=%s%s%% Chance zum erfolgreichen basteln
+
+# GUI
+gui.artisanworktables.tooltip.fluid.empty=Leer
+gui.artisanworktables.tooltip.fluid.destroy=%sFlüssigkeiten entleeren: %sUMSCHALTTASTE + LINKSKLICK
