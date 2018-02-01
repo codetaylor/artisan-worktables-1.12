@@ -1,32 +1,40 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.ICraftingGridHelper;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiItemStackGroup;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JEICategoryWorktable
     implements IRecipeCategory {
 
+  private String tableName;
   private String uid;
   private String titleTranslateKey;
   private IDrawable background;
   private ICraftingGridHelper craftingGridHelper;
 
-  public JEICategoryWorktable(String uid, String titleTranslateKey, IDrawable background, IGuiHelper guiHelper) {
+  public JEICategoryWorktable(
+      String name,
+      String uid,
+      String titleTranslateKey,
+      IDrawable background,
+      IGuiHelper guiHelper
+  ) {
 
+    this.tableName = name;
     this.uid = uid;
     this.titleTranslateKey = titleTranslateKey;
     this.background = background;
@@ -63,6 +71,7 @@ public class JEICategoryWorktable
   ) {
 
     IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
+    IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
 
     JEIRecipeWrapperWorktable wrapperWorktable = (JEIRecipeWrapperWorktable) recipeWrapper;
     List<ItemStack> tools = wrapperWorktable.getTools();
@@ -112,6 +121,19 @@ public class JEICategoryWorktable
     if (!extraOutput.isEmpty()) {
       stacks.set(13, extraOutput);
     }
+
+    int capacity = 4000;
+
+    try {
+      Field field = ReflectionHelper.findField(ModuleWorktablesConfig.FluidCapacity.class, this.tableName.toUpperCase());
+      capacity = (int) field.get(ModuleWorktablesConfig.FLUID_CAPACITY);
+
+    } catch (IllegalAccessException e) {
+      //
+    }
+
+    fluidStacks.init(14, true, 5, 14, 6, 52, capacity, true, null);
+    fluidStacks.set(14, wrapperWorktable.getFluidStack());
 
     recipeLayout.setRecipeTransferButton(157, 67);
   }

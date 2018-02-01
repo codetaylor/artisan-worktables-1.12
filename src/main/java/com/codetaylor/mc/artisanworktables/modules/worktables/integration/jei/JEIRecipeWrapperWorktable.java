@@ -5,13 +5,10 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWo
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
-import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.ITickTimer;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -39,11 +36,10 @@ public class JEIRecipeWrapperWorktable
   private ItemStack secondaryOutput;
   private ItemStack tertiaryOutput;
   private ItemStack quaternaryOutput;
-  private final ITickTimer fluidTickTimer;
+  private FluidStack fluidStack;
 
   public JEIRecipeWrapperWorktable(
-      RecipeWorktable recipe,
-      IGuiHelper guiHelper
+      RecipeWorktable recipe
   ) {
 
     this.recipe = recipe;
@@ -67,12 +63,17 @@ public class JEIRecipeWrapperWorktable
     this.tertiaryOutput = recipe.getTertiaryOutput();
     this.quaternaryOutput = recipe.getQuaternaryOutput();
 
-    this.fluidTickTimer = guiHelper.createTickTimer(80, GuiContainerWorktable.FLUID_HEIGHT, true);
+    this.fluidStack = recipe.getFluidIngredient();
   }
 
   public List<List<ItemStack>> getInputs() {
 
     return this.inputs;
+  }
+
+  public FluidStack getFluidStack() {
+
+    return this.fluidStack;
   }
 
   public List<OutputWeightPair> getWeightedOutput() {
@@ -165,27 +166,6 @@ public class JEIRecipeWrapperWorktable
       Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY
   ) {
 
-    FluidStack fluidStack = this.recipe.getFluidIngredient();
-
-    if (fluidStack != null
-        && fluidStack.amount > 0) {
-
-      ResourceLocation resourceLocation = fluidStack.getFluid().getStill();
-      TextureAtlasSprite fluidSprite = minecraft.getTextureMapBlocks().getAtlasSprite(resourceLocation.toString());
-
-      minecraft.getTextureManager().bindTexture(GuiContainerWorktable.TEXTURE_ATLAS);
-
-      int value = this.fluidTickTimer.getValue();
-      GuiHelper.drawVerticalScaledTexturedModalRectFromIconAnchorBottomLeft(
-          5,
-          GuiHelper.getFluidY(value, GuiContainerWorktable.FLUID_HEIGHT, GuiContainerWorktable.FLUID_HEIGHT, 14),
-          0,
-          fluidSprite,
-          6,
-          GuiHelper.getFluidHeight(value, GuiContainerWorktable.FLUID_HEIGHT, GuiContainerWorktable.FLUID_HEIGHT)
-      );
-    }
-
     String label = "-" + this.recipe.getToolDamage();
     minecraft.fontRenderer.drawString(
         label,
@@ -197,7 +177,7 @@ public class JEIRecipeWrapperWorktable
 
     GlStateManager.pushMatrix();
     GlStateManager.scale(0.5, 0.5, 1);
-    GlStateManager.translate(0,0,1000);
+    GlStateManager.translate(0, 0, 1000);
     GlStateManager.enableDepth();
     GlStateManager.pushMatrix();
     int xPos = 334;

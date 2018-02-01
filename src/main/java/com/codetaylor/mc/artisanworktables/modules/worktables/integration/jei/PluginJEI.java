@@ -43,7 +43,7 @@ public class PluginJEI
     for (String name : WorktableAPI.getWorktableNames()) {
       registry.handleRecipes(
           RecipeWorktable.class,
-          recipe -> new JEIRecipeWrapperWorktable(recipe, this.jeiHelpers.getGuiHelper()),
+          JEIRecipeWrapperWorktable::new,
           PluginJEI.createUID(name)
       );
     }
@@ -104,6 +104,7 @@ public class PluginJEI
   private JEICategoryWorktable createWorkbenchCategory(String name, IGuiHelper guiHelper) {
 
     return new JEICategoryWorktable(
+        name,
         PluginJEI.createUID(name),
         this.createTitleTranslateKey(name),
         this.createBackground(name),

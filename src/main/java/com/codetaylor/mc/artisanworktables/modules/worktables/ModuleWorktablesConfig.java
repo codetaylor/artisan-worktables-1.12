@@ -14,43 +14,43 @@ public class ModuleWorktablesConfig {
   public static class FluidCapacity {
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int BASIC = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int BLACKSMITH = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int CARPENTER = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int CHEMIST = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int ENGINEER = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int JEWELER = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int MAGE = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int MASON = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int SCRIBE = 4000;
 
     @Config.Comment("Worktable fluid capacity (milli-buckets).")
-    @Config.RequiresWorldRestart
+    @Config.RequiresMcRestart
     public int TAILOR = 4000;
 
   }
