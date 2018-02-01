@@ -1,10 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
-import com.codetaylor.mc.artisanworktables.modules.toolbox.block.BlockToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
@@ -25,9 +25,11 @@ public class ModuleWorktables
 
   public static class Lang {
 
-    public static final String WORKTABLE_TITLE = "tile.%s.worktable.%s.name";
-    public static final String JEI_TOOLTIP_SHAPELESS_RECIPE = "jei.tooltip.shapeless.recipe";
-    public static final String JEI_TOOLTIP_CHANCE = "jei.tooltip.chance";
+    public static final String WORKTABLE_TITLE = "tile." + MOD_ID + ".worktable.%s.name";
+    public static final String JEI_TOOLTIP_SHAPELESS_RECIPE = "jei." + MOD_ID + ".tooltip.shapeless.recipe";
+    public static final String JEI_TOOLTIP_CHANCE = "jei." + MOD_ID + ".tooltip.chance";
+    public static final String GUI_TOOLTIP_FLUID_DESTROY = "gui." + MOD_ID + ".tooltip.fluid.destroy";
+    public static final String GUI_TOOLTIP_FLUID_EMPTY = "gui." + MOD_ID + ".tooltip.fluid.empty";
   }
 
   public static class Textures {
@@ -85,6 +87,7 @@ public class ModuleWorktables
   public void onNetworkRegister(IPacketRegistry registry) {
 
     registry.register(SPacketWorktableTab.class, SPacketWorktableTab.class, Side.SERVER);
+    registry.register(SPacketWorktableTankDestroyFluid.class, SPacketWorktableTankDestroyFluid.class, Side.SERVER);
   }
 
   @Override

@@ -37,5 +37,9 @@ item.artisanworktables.tailors.needle.name=Tailor's %s Needle
 item.artisanworktables.tailors.shears.name=Tailor's %s Shears
 
 # JEI
-jei.tooltip.shapeless.recipe=Shapeless Recipe
-jei.tooltip.chance=%s%s%% chance to craft
+jei.artisanworktables.tooltip.shapeless.recipe=Shapeless Recipe
+jei.artisanworktables.tooltip.chance=%s%s%% chance to craft
+
+# GUI
+gui.artisanworktables.tooltip.fluid.empty=Empty
+gui.artisanworktables.tooltip.fluid.destroy=%sDestroy fluid: %sSHIFT + LEFT-CLICK

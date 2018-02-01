@@ -1,17 +1,23 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
+import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.gui.ITickTimer;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 import java.util.ArrayList;
@@ -33,9 +39,11 @@ public class JEIRecipeWrapperWorktable
   private ItemStack secondaryOutput;
   private ItemStack tertiaryOutput;
   private ItemStack quaternaryOutput;
+  private final ITickTimer fluidTickTimer;
 
   public JEIRecipeWrapperWorktable(
-      RecipeWorktable recipe
+      RecipeWorktable recipe,
+      IGuiHelper guiHelper
   ) {
 
     this.recipe = recipe;
@@ -58,6 +66,8 @@ public class JEIRecipeWrapperWorktable
     this.secondaryOutput = recipe.getSecondaryOutput();
     this.tertiaryOutput = recipe.getTertiaryOutput();
     this.quaternaryOutput = recipe.getQuaternaryOutput();
+
+    this.fluidTickTimer = guiHelper.createTickTimer(80, GuiContainerWorktable.FLUID_HEIGHT, true);
   }
 
   public List<List<ItemStack>> getInputs() {
@@ -71,6 +81,7 @@ public class JEIRecipeWrapperWorktable
   }
 
   public List<ItemStack> getOutput() {
+
     return this.output;
   }
 
@@ -116,6 +127,8 @@ public class JEIRecipeWrapperWorktable
     inputs.add(this.tools);
     ingredients.setInputLists(ItemStack.class, inputs);
 
+    ingredients.setInput(FluidStack.class, this.recipe.getFluidIngredient());
+
     List<ItemStack> output = new ArrayList<>();
     output.addAll(this.output);
     output.add(this.secondaryOutput);
@@ -125,14 +138,54 @@ public class JEIRecipeWrapperWorktable
   }
 
   @Override
+  public List<String> getTooltipStrings(int mouseX, int mouseY) {
+
+    FluidStack fluidStack = this.recipe.getFluidIngredient();
+
+    if (fluidStack != null
+        && mouseX >= 5
+        && mouseX < 5 + 6
+        && mouseY >= 14
+        && mouseY < GuiContainerWorktable.FLUID_HEIGHT + 14) {
+      List<String> tooltip = new ArrayList<>();
+      tooltip.add(fluidStack.getFluid().getLocalizedName(fluidStack));
+      tooltip.add("" + TextFormatting.GRAY + fluidStack.amount + " mB");
+      return tooltip;
+    }
+
+    return null;
+  }
+
+  @Override
   public void drawInfo(
       Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY
   ) {
 
+    FluidStack fluidStack = this.recipe.getFluidIngredient();
+
+    if (fluidStack != null
+        && fluidStack.amount > 0) {
+
+      ResourceLocation resourceLocation = fluidStack.getFluid().getStill();
+      TextureAtlasSprite fluidSprite = minecraft.getTextureMapBlocks().getAtlasSprite(resourceLocation.toString());
+
+      minecraft.getTextureManager().bindTexture(GuiContainerWorktable.TEXTURE_ATLAS);
+
+      int value = this.fluidTickTimer.getValue();
+      GuiHelper.drawVerticalScaledTexturedModalRectFromIconAnchorBottomLeft(
+          5,
+          GuiHelper.getFluidY(value, GuiContainerWorktable.FLUID_HEIGHT, GuiContainerWorktable.FLUID_HEIGHT, 14),
+          0,
+          fluidSprite,
+          6,
+          GuiHelper.getFluidHeight(value, GuiContainerWorktable.FLUID_HEIGHT, GuiContainerWorktable.FLUID_HEIGHT)
+      );
+    }
+
     String label = "-" + this.recipe.getToolDamage();
     minecraft.fontRenderer.drawString(
         label,
-        (80 - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+        (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
         (55 - 3),
         0xFFFFFFFF,
         true
@@ -140,6 +193,9 @@ public class JEIRecipeWrapperWorktable
 
     GlStateManager.pushMatrix();
     GlStateManager.scale(0.5, 0.5, 1);
+    GlStateManager.translate(0,0,1000);
+    GlStateManager.enableDepth();
+    GlStateManager.pushMatrix();
     int xPos = 334;
 
     if (!this.recipe.getSecondaryOutput().isEmpty()) {
@@ -175,12 +231,15 @@ public class JEIRecipeWrapperWorktable
       );
     }
 
+    GlStateManager.popMatrix();
+
     if (!this.recipe.isShaped()) {
       GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 221, 8, 18, 17, 100, 0, 0, 1, 1);
     }
 
     GlStateManager.popMatrix();
 
+    // TODO: attempt to move the following tooltip to IRecipeCategory#getTooltipStrings
     GlStateManager.pushMatrix();
     GlStateManager.translate(0, -8, 0);
 

@@ -8,6 +8,7 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInpu
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 
 import java.util.Arrays;
 
@@ -34,6 +35,13 @@ public class ZenRecipeBuilder
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
 
     this.recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(ingredients));
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient) {
+
+    this.recipeBuilder.setFluidIngredient(CTInputHelper.toFluid(fluidIngredient));
     return this;
   }
 

@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 
 public class ZenRecipeBuilderNoOp
     implements IZenRecipeBuilder {
@@ -20,6 +21,12 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient) {
 
     return this;
   }

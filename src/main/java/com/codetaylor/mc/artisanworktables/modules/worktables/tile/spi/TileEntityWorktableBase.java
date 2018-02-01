@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
+package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
@@ -12,6 +12,7 @@ import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
+import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,10 +27,12 @@ import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
@@ -161,22 +164,7 @@ public abstract class TileEntityWorktableBase
 
     // Decrease stacks in crafting matrix
 
-    int slotCount = this.craftingMatrixHandler.getSlots();
-
-    for (int i = 0; i < slotCount; i++) {
-      ItemStack itemStack = this.craftingMatrixHandler.getStackInSlot(i);
-
-      if (!itemStack.isEmpty()) {
-
-        if (itemStack.getItem().hasContainerItem(itemStack)
-            && itemStack.getCount() == 1) {
-          this.craftingMatrixHandler.setStackInSlot(i, itemStack.getItem().getContainerItem(itemStack));
-
-        } else {
-          this.craftingMatrixHandler.setStackInSlot(i, StackHelper.decrease(itemStack.copy(), 1, false));
-        }
-      }
-    }
+    this.onCraftReduceIngredients(recipe.getFluidIngredient());
 
     // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
 
@@ -251,15 +239,55 @@ public abstract class TileEntityWorktableBase
     }
 
     this.markDirty();
+
+    if (!this.world.isRemote) {
+      this.notifyBlockUpdate();
+    }
+  }
+
+  public void notifyBlockUpdate() {
+
+    BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
+  }
+
+  protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
+
+    int slotCount = this.craftingMatrixHandler.getSlots();
+
+    for (int i = 0; i < slotCount; i++) {
+      ItemStack itemStack = this.craftingMatrixHandler.getStackInSlot(i);
+
+      if (!itemStack.isEmpty()) {
+
+        if (itemStack.getItem().hasContainerItem(itemStack)
+            && itemStack.getCount() == 1) {
+          this.craftingMatrixHandler.setStackInSlot(i, itemStack.getItem().getContainerItem(itemStack));
+
+        } else {
+          this.craftingMatrixHandler.setStackInSlot(i, StackHelper.decrease(itemStack.copy(), 1, false));
+        }
+      }
+    }
   }
 
   public IRecipeWorktable getRecipe(EntityPlayer player) {
+
+    FluidStack fluidStack = null;
+
+    if (this instanceof TileEntityWorktableFluidBase) {
+      fluidStack = ((TileEntityWorktableFluidBase) this).getTank().getFluid();
+
+      if (fluidStack != null) {
+        fluidStack = fluidStack.copy();
+      }
+    }
 
     RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
     return registry.findRecipe(
         player,
         this.toolHandler.getStackInSlot(0),
-        this.craftingMatrixHandler
+        this.craftingMatrixHandler,
+        fluidStack
     );
   }
 
@@ -386,6 +414,22 @@ public abstract class TileEntityWorktableBase
     return GUI_TAB_OFFSET;
   }
 
+  public boolean onBlockActivated(
+      World worldIn,
+      BlockPos pos,
+      IBlockState state,
+      EntityPlayer playerIn,
+      EnumHand hand,
+      EnumFacing facing,
+      float hitX,
+      float hitY,
+      float hitZ
+  ) {
+
+    playerIn.openGui(ModuleWorktables.MOD_INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+    return true;
+  }
+
   @Override
   public ContainerWorktable getContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
@@ -411,7 +455,7 @@ public abstract class TileEntityWorktableBase
 
   private String getTableTitleKey() {
 
-    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, ModuleWorktables.MOD_ID, this.getWorktableName());
+    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, this.getWorktableName());
   }
 
   public abstract int getWorktableGuiTabTextureYOffset();

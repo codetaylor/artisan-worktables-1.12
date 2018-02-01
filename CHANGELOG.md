@@ -1,3 +1,6 @@
+1.10.17:
+* Added: support for fluid ingredients in recipes (#35)
+
 1.9.17:
 * Added: de_de.lang (#33 Xaikii)
 * Changed: updated zh_cn.lang (PR#32 DYColdWind)

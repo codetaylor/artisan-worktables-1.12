@@ -1,8 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.particle.ParticleWorktableMage;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableEnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.particle.ParticleWorktableMage;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -20,7 +22,7 @@ import java.awt.*;
 import java.util.Random;
 
 public class TileEntityWorktableMage
-    extends TileEntityWorktableBase
+    extends TileEntityWorktableFluidBase
     implements ITickable {
 
   private static final int TEXT_SHADOW_COLOR = new Color(172, 81, 227).getRGB();
@@ -102,16 +104,10 @@ public class TileEntityWorktableMage
     this.notifyBlockUpdate();
   }
 
-  private void notifyBlockUpdate() {
-
-    IBlockState blockState = this.getWorld().getBlockState(this.getPos());
-    this.getWorld().notifyBlockUpdate(this.getPos(), blockState, blockState, 3);
-  }
-
   @Override
   public boolean canHandleJEIRecipeTransfer(String name) {
 
-    return "mage".equals(name);
+    return TYPE.getName().equals(name);
   }
 
   public ItemStack getItemStackForTabDisplay(IBlockState state) {
@@ -125,6 +121,12 @@ public class TileEntityWorktableMage
     } else {
       return new ItemStack(item, 1, block.getMetaFromState(state));
     }
+  }
+
+  @Override
+  protected int getFluidCapacity() {
+
+    return ModuleWorktablesConfig.FLUID_CAPACITY.MAGE;
   }
 
   @SideOnly(Side.CLIENT)

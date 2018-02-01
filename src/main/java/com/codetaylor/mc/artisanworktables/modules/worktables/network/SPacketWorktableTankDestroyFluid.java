@@ -1,35 +1,33 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.network;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
- * Sent from the client to the server to signal a worktable tab change.
+ * Sent from the client to the server to signal a fluid destroy.
  */
-public class SPacketWorktableTab
+public class SPacketWorktableTankDestroyFluid
     implements IMessage,
-    IMessageHandler<SPacketWorktableTab, IMessage> {
+    IMessageHandler<SPacketWorktableTankDestroyFluid, IMessage> {
 
   private int posX;
   private int posY;
   private int posZ;
 
   @SuppressWarnings("unused")
-  public SPacketWorktableTab() {
+  public SPacketWorktableTankDestroyFluid() {
     // Serialization
   }
 
-  public SPacketWorktableTab(int posX, int posY, int posZ) {
+  public SPacketWorktableTankDestroyFluid(int posX, int posY, int posZ) {
 
     this.posX = posX;
     this.posY = posY;
@@ -54,37 +52,18 @@ public class SPacketWorktableTab
 
   @Override
   public IMessage onMessage(
-      SPacketWorktableTab message, MessageContext ctx
+      SPacketWorktableTankDestroyFluid message, MessageContext ctx
   ) {
-
-    // Reference:
-    // https://github.com/SlimeKnights/TinkersConstruct/blob/master/src/main/java/slimeknights/tconstruct/tools/common/network/TinkerStationTabPacket.java
 
     NetHandlerPlayServer serverHandler = ctx.getServerHandler();
     EntityPlayerMP player = serverHandler.player;
-    ItemStack heldStack = player.inventory.getItemStack();
-
-    if (!heldStack.isEmpty()) {
-      player.inventory.setItemStack(ItemStack.EMPTY);
-    }
-
     BlockPos pos = new BlockPos(message.posX, message.posY, message.posZ);
     TileEntity tileEntity = player.getEntityWorld().getTileEntity(pos);
 
-    if (tileEntity instanceof TileEntityWorktableBase) {
-      player.openGui(
-          ModuleWorktables.MOD_INSTANCE,
-          1,
-          player.getEntityWorld(),
-          message.posX,
-          message.posY,
-          message.posZ
-      );
-    }
-
-    if (!heldStack.isEmpty()) {
-      player.inventory.setItemStack(heldStack);
-      serverHandler.sendPacket(new SPacketSetSlot(-1, -1, heldStack));
+    if (tileEntity instanceof TileEntityWorktableFluidBase) {
+      FluidTank tank = ((TileEntityWorktableFluidBase) tileEntity).getTank();
+      tank.drain(tank.getCapacity(), true);
+      ((TileEntityWorktableFluidBase) tileEntity).notifyBlockUpdate();
     }
 
     return null;

@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ public class RecipeBuilder {
   private int height;
   private boolean mirrored;
   private List<Ingredient> ingredients;
+  private FluidStack fluidIngredient;
   private Ingredient tool;
   private int toolDamage;
   private List<OutputWeightPair> outputWeightPairList;
@@ -26,6 +28,7 @@ public class RecipeBuilder {
   public RecipeBuilder() {
 
     this.ingredients = Collections.emptyList();
+    this.fluidIngredient = null;
     this.outputWeightPairList = new ArrayList<>();
     this.extraOutputs = new ExtraOutputChancePair[3];
     Arrays.fill(this.extraOutputs, new ExtraOutputChancePair(ItemStack.EMPTY, 0));
@@ -56,6 +59,12 @@ public class RecipeBuilder {
 
     this.ingredients = new ArrayList<>();
     Collections.addAll(this.ingredients, ingredients);
+    return this;
+  }
+
+  public RecipeBuilder setFluidIngredient(FluidStack fluidIngredient) {
+
+    this.fluidIngredient = fluidIngredient;
     return this;
   }
 
@@ -145,6 +154,7 @@ public class RecipeBuilder {
         this.tool.getMatchingStacks(),
         this.toolDamage,
         this.ingredients,
+        this.fluidIngredient,
         this.extraOutputs,
         recipeMatcher,
         this.mirrored,

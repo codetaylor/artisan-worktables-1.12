@@ -1,8 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
@@ -137,8 +136,19 @@ public class BlockWorktable
       return true;
     }
 
-    playerIn.openGui(ModuleWorktables.MOD_INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
-    return true;
+    TileEntity tileEntity = worldIn.getTileEntity(pos);
+
+    return !(tileEntity instanceof TileEntityWorktableBase) || ((TileEntityWorktableBase) tileEntity).onBlockActivated(
+        worldIn,
+        pos,
+        state,
+        playerIn,
+        hand,
+        facing,
+        hitX,
+        hitY,
+        hitZ
+    );
   }
 
   @Override

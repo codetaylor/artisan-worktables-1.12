@@ -3,7 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,6 +12,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
@@ -23,6 +27,8 @@ public class ContainerWorktable
   private TileEntityWorktableBase tile;
   private TileEntityToolbox toolbox;
   private final ItemStackHandler resultHandler;
+  private FluidStack lastFluidStack;
+  private final EntityPlayer player;
 
   public ContainerWorktable(
       InventoryPlayer playerInventory,
@@ -34,7 +40,14 @@ public class ContainerWorktable
     this.tile = tile;
     this.toolbox = this.getToolbox(this.tile);
 
-    Runnable slotChangeListener = () -> this.updateRecipeOutput(playerInventory.player);
+    int offsetX = 0;
+
+    if (this.tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+      offsetX = 6;
+    }
+
+    this.player = playerInventory.player;
+    Runnable slotChangeListener = () -> this.updateRecipeOutput(this.player);
 
     // Result Slot 0
     this.resultHandler = new ItemStackHandler(1);
@@ -43,7 +56,7 @@ public class ContainerWorktable
         this.tile,
         resultHandler,
         0,
-        109,
+        109 + offsetX,
         35
     );
     this.addSlotToContainer(this.craftingResultSlot);
@@ -57,7 +70,7 @@ public class ContainerWorktable
             slotChangeListener,
             craftingMatrixHandler,
             x + y * 3,
-            14 + x * 18,
+            14 + x * 18 + offsetX,
             17 + y * 18
         ));
       }
@@ -81,13 +94,13 @@ public class ContainerWorktable
         itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithTool(itemStack),
         this.tile.getToolHandler(),
         0,
-        72,
+        72 + offsetX,
         35
     ));
 
     // Secondary output 47 - 49, inclusive
     for (int i = 0; i < 3; i++) {
-      this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146, 17 + i * 18));
+      this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146 + offsetX, 17 + i * 18));
     }
 
     Runnable toolboxSlotChangeListener = () -> {
@@ -113,7 +126,7 @@ public class ContainerWorktable
       }
     }
 
-    this.updateRecipeOutput(playerInventory.player);
+    this.updateRecipeOutput(this.player);
   }
 
   private TileEntityToolbox getToolbox(TileEntityWorktableBase tile) {
@@ -128,11 +141,22 @@ public class ContainerWorktable
 
   private void updateRecipeOutput(EntityPlayer player) {
 
+    FluidStack fluidStack = null;
+
+    if (this.tile instanceof TileEntityWorktableFluidBase) {
+      fluidStack = ((TileEntityWorktableFluidBase) this.tile).getTank().getFluid();
+
+      if (fluidStack != null) {
+        fluidStack = fluidStack.copy();
+      }
+    }
+
     RegistryRecipeWorktable registry = this.tile.getWorktableRecipeRegistry();
     IRecipeWorktable recipe = registry.findRecipe(
         player,
         this.tile.getToolHandler().getStackInSlot(0),
-        this.tile.getCraftingMatrixHandler()
+        this.tile.getCraftingMatrixHandler(),
+        fluidStack
     );
 
     if (recipe != null) {
@@ -336,5 +360,37 @@ public class ContainerWorktable
   public boolean canHandleJEIRecipeTransfer(String name) {
 
     return this.tile.canHandleJEIRecipeTransfer(name);
+  }
+
+  @Override
+  public void detectAndSendChanges() {
+
+    super.detectAndSendChanges();
+
+    if (!(this.tile instanceof TileEntityWorktableFluidBase)
+        || this.tile.getWorld().isRemote) {
+      return;
+    }
+
+    FluidTank tank = ((TileEntityWorktableFluidBase) this.tile).getTank();
+    FluidStack fluidStack = tank.getFluid();
+
+    if (this.lastFluidStack != null
+        && fluidStack == null) {
+      this.lastFluidStack = null;
+      this.updateRecipeOutput(this.player);
+
+    } else if (this.lastFluidStack == null
+        && fluidStack != null) {
+      this.lastFluidStack = fluidStack.copy();
+      this.updateRecipeOutput(this.player);
+
+    } else if (this.lastFluidStack != null) {
+
+      if (!this.lastFluidStack.isFluidStackIdentical(fluidStack)) {
+        this.lastFluidStack = fluidStack.copy();
+        this.updateRecipeOutput(this.player);
+      }
+    }
   }
 }

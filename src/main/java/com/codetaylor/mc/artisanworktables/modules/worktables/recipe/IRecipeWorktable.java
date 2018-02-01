@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +14,8 @@ public interface IRecipeWorktable {
   boolean matches(
       Collection<String> unlockedStages,
       ItemStack tool,
-      CraftingMatrixStackHandler craftingMatrix
+      CraftingMatrixStackHandler craftingMatrix,
+      FluidStack fluidStack
   );
 
   int getWidth();
@@ -45,6 +47,8 @@ public interface IRecipeWorktable {
   ItemStack[] getTools();
 
   List<Ingredient> getIngredientList();
+
+  FluidStack getFluidIngredient();
 
   List<OutputWeightPair> getOutputWeightPairList();
 
