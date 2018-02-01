@@ -1,3 +1,7 @@
+1.10.19:
+* Fixed: GUI fluid tank render bug (#40)
+* Changed: updated de_de.lang (PR#43 Xaikii)
+
 1.10.18:
 * Fixed: NPE crash when using any recipe without a fluid ingredient (#41)
 * Changed: updated zh_cn.lang (PR#39 DYColdWind)

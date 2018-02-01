@@ -426,13 +426,13 @@ public class GuiContainerWorktable
     if (this.currentWorktable instanceof TileEntityWorktableFluidBase) {
 
       this.mc.getTextureManager().bindTexture(TEXTURE_GUI_ELEMENTS);
-      RenderHelper.enableStandardItemLighting();
+      RenderHelper.disableStandardItemLighting();
       GlStateManager.enableBlend();
       GlStateManager.color(
           ((this.textShadowColor >> 16) & 0xFF) / 255f,
           ((this.textShadowColor >> 8) & 0xFF) / 255f,
           (this.textShadowColor & 0xFF) / 255f,
-          1f
+          0.5f
       );
 
       Gui.drawModalRectWithCustomSizedTexture(
