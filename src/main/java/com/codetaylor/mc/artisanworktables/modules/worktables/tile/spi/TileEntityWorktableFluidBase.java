@@ -110,7 +110,10 @@ public abstract class TileEntityWorktableFluidBase
   protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
 
     super.onCraftReduceIngredients(fluidIngredient);
-    this.tank.drain(fluidIngredient, true);
+
+    if (fluidIngredient != null) {
+      this.tank.drain(fluidIngredient, true);
+    }
   }
 
   protected abstract int getFluidCapacity();

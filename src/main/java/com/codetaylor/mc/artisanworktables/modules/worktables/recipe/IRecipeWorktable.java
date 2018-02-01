@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -48,6 +49,7 @@ public interface IRecipeWorktable {
 
   List<Ingredient> getIngredientList();
 
+  @Nullable
   FluidStack getFluidIngredient();
 
   List<OutputWeightPair> getOutputWeightPairList();

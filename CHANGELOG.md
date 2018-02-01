@@ -1,3 +1,7 @@
+1.10.18:
+* Fixed: NPE crash when using any recipe without a fluid ingredient (#41)
+* Changed: updated zh_cn.lang (PR#39 DYColdWind)
+
 1.10.17:
 * Added: support for fluid ingredients in recipes (#35)
 

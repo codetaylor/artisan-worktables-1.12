@@ -127,7 +127,11 @@ public class JEIRecipeWrapperWorktable
     inputs.add(this.tools);
     ingredients.setInputLists(ItemStack.class, inputs);
 
-    ingredients.setInput(FluidStack.class, this.recipe.getFluidIngredient());
+    FluidStack fluidIngredient = this.recipe.getFluidIngredient();
+
+    if (fluidIngredient != null) {
+      ingredients.setInput(FluidStack.class, fluidIngredient);
+    }
 
     List<ItemStack> output = new ArrayList<>();
     output.addAll(this.output);

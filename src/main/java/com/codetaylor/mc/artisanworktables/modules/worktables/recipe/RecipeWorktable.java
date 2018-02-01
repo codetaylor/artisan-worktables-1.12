@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,7 @@ public class RecipeWorktable
       ItemStack[] tools,
       int toolDamage,
       List<Ingredient> ingredients,
-      FluidStack fluidIngredient,
+      @Nullable FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,
       IRecipeMatcher recipeMatcher,
       boolean mirrored,
@@ -139,9 +140,14 @@ public class RecipeWorktable
   }
 
   @Override
+  @Nullable
   public FluidStack getFluidIngredient() {
 
-    return this.fluidIngredient.copy();
+    if (this.fluidIngredient != null) {
+      return this.fluidIngredient.copy();
+    }
+
+    return null;
   }
 
   @Override
