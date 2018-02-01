@@ -193,6 +193,9 @@ public class JEIRecipeWrapperWorktable
 
     GlStateManager.pushMatrix();
     GlStateManager.scale(0.5, 0.5, 1);
+    GlStateManager.translate(0,0,1000);
+    GlStateManager.enableDepth();
+    GlStateManager.pushMatrix();
     int xPos = 334;
 
     if (!this.recipe.getSecondaryOutput().isEmpty()) {
@@ -227,6 +230,8 @@ public class JEIRecipeWrapperWorktable
           true
       );
     }
+
+    GlStateManager.popMatrix();
 
     if (!this.recipe.isShaped()) {
       GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 221, 8, 18, 17, 100, 0, 0, 1, 1);
