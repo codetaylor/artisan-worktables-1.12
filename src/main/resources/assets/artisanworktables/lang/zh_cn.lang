@@ -39,3 +39,7 @@ item.artisanworktables.tailors.shears.name=%s 裁缝剪
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=无序合成
 jei.artisanworktables.tooltip.chance=%s%s%%概率合成
+
+# GUI
+gui.artisanworktables.tooltip.fluid.empty=空
+gui.artisanworktables.tooltip.fluid.destroy=%s销毁流体： %s Shift + 左击
