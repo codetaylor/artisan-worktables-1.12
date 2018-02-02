@@ -1,7 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.gui;
 
-import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,15 +11,19 @@ import java.awt.*;
 public class GuiContainerToolbox
     extends GuiContainer {
 
-  private static final int TEXT_SHADOW_COLOR = new Color(89, 57, 27).getRGB();
-  private static final ResourceLocation TEXTURE = new ResourceLocation(
-      ModuleWorktables.MOD_ID,
-      "textures/gui/toolbox.png"
-  );
+  private static final int TEXT_SHADOW_COLOR = new Color(103, 69, 29).getRGB();
+  private final String guiContainerTitleKey;
+  private final ResourceLocation texture;
 
-  public GuiContainerToolbox(ContainerToolbox container) {
+  public GuiContainerToolbox(
+      ContainerToolbox container,
+      String guiContainerTitleKey,
+      ResourceLocation texture
+  ) {
 
     super(container);
+    this.guiContainerTitleKey = guiContainerTitleKey;
+    this.texture = texture;
   }
 
   @Override
@@ -36,7 +38,7 @@ public class GuiContainerToolbox
   protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    this.mc.getTextureManager().bindTexture(TEXTURE);
+    this.mc.getTextureManager().bindTexture(this.texture);
     int x = this.guiLeft;
     int y = (this.height - this.ySize) / 2;
     this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
@@ -45,7 +47,7 @@ public class GuiContainerToolbox
   @Override
   protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 
-    this.drawString(ModuleToolbox.Lang.TOOLBOX_TITLE, 8, 6);
+    this.drawString(this.guiContainerTitleKey, 8, 6);
     this.drawString("container.inventory", 8, this.ySize - 96 + 3);
   }
 

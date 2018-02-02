@@ -53,7 +53,7 @@ public class WorktableAPI {
 
     for (RegistryRecipeWorktable registry : RECIPE_REGISTRY_MAP.values()) {
 
-      if (registry.containsRecipeWithTool(itemStack)) {
+      if (registry.containsRecipeWithToolInAnySlot(itemStack)) {
         return true;
       }
     }

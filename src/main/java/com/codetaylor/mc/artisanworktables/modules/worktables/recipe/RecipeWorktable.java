@@ -111,7 +111,7 @@ public class RecipeWorktable
   }
 
   @Override
-  public boolean isValidTool(ItemStack tool) {
+  public boolean isValidTool(ItemStack tool, int toolIndex) {
 
     for (ItemStack itemStack : this.tools) {
 
@@ -126,6 +126,25 @@ public class RecipeWorktable
     }
 
     return false;
+  }
+
+  @Override
+  public boolean isValidToolDurability(ItemStack tool, int toolIndex) {
+
+    if (tool.isEmpty()) {
+      return false;
+    }
+
+    if (ModuleWorktablesConfig.RESTRICT_CRAFT_MINIUMUM_DURABILITY) {
+
+      // Note: this may fail with tinker's tools because as far as I know,
+      // tinker's tools don't have a max damage value set
+      if (tool.getItemDamage() + this.toolDamage > tool.getMaxDamage()) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   @Override
@@ -224,17 +243,14 @@ public class RecipeWorktable
       FluidStack fluidStack
   ) {
 
-    // Do we have the correct tool?
-    if (!this.isValidTool(tool)) {
+    // Do we have the correct tools?
+    if (!this.isValidTool(tool, 0)) {
       return false;
     }
 
-    // Does the tool have enough durability for this recipe?
-    if (ModuleWorktablesConfig.RESTRICT_CRAFT_MINIUMUM_DURABILITY) {
-
-      if (tool.getItemDamage() + this.toolDamage > tool.getMaxDamage()) {
-        return false;
-      }
+    // Do the tools have enough durability for this recipe?
+    if (!this.isValidToolDurability(tool, 0)) {
+      return false;
     }
 
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {

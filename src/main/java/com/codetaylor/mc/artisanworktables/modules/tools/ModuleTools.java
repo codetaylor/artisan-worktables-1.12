@@ -34,6 +34,7 @@ public class ModuleTools
   public static final class Lang {
 
     public static final String MATERIAL_STRING = "material." + ModAthenaeum.MOD_ID + ".%s";
+    public static final String TOOLTIP_DURABILITY = "item." + MOD_ID + ".tooltip.durability";
   }
 
   private final List<ItemWorktableTool> registeredToolList = new ArrayList<>();

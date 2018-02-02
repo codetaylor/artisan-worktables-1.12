@@ -7,6 +7,17 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = ModuleTools.MOD_ID, name = ModuleTools.MOD_ID + ".module.Tools")
 public class ModuleToolsConfig {
 
+  public static Client CLIENT = new Client();
+
+  public static class Client {
+
+    @Config.Comment({
+        "Set to false to disable the durability tooltip on tools from this mod."
+    })
+    public boolean ENABLE_DURABILITY_TOOLTIP = true;
+
+  }
+
   @Config.Comment({
       "Set to false to disable all tools.",
       "This supersedes all other tool settings."

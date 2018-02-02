@@ -1,11 +1,14 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.tile;
 
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.ContainerToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.GuiContainerToolbox;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
+import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,6 +18,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -35,10 +39,15 @@ public class TileEntityToolbox
 
   private ToolboxItemStackHandler itemHandler;
 
+  private static final ResourceLocation TEXTURE = new ResourceLocation(
+      ModuleWorktables.MOD_ID,
+      "textures/gui/toolbox.png"
+  );
+
   public TileEntityToolbox() {
 
     Predicate<ItemStack> predicate = itemStack -> itemStack.isEmpty()
-        || !ModuleToolboxConfig.RESTRICT_TOOLBOX_TO_TOOLS_ONLY
+        || !this.restrictToToolsOnly()
         || WorktableAPI.containsRecipeWithTool(itemStack);
 
     this.itemHandler = new ToolboxItemStackHandler(predicate, 27) {
@@ -50,6 +59,11 @@ public class TileEntityToolbox
       }
     };
     this.itemHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+  }
+
+  protected boolean restrictToToolsOnly() {
+
+    return ModuleToolboxConfig.TOOLBOX.RESTRICT_TO_TOOLS_ONLY;
   }
 
   @Nullable
@@ -142,6 +156,21 @@ public class TileEntityToolbox
     return result;
   }
 
+  public void notifyBlockUpdate() {
+
+    BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
+  }
+
+  protected String getGuiContainerTitleKey() {
+
+    return ModuleToolbox.Lang.TOOLBOX_TITLE;
+  }
+
+  public ResourceLocation getGuiTexture() {
+
+    return TEXTURE;
+  }
+
   @Override
   public ContainerToolbox getContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
@@ -156,7 +185,11 @@ public class TileEntityToolbox
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 
-    return new GuiContainerToolbox(this.getContainer(inventoryPlayer, world, state, pos));
+    return new GuiContainerToolbox(
+        this.getContainer(inventoryPlayer, world, state, pos),
+        this.getGuiContainerTitleKey(),
+        this.getGuiTexture()
+    );
   }
 
 }

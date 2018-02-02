@@ -43,7 +43,9 @@ public interface IRecipeWorktable {
 
   float getQuaternaryOutputChance();
 
-  boolean isValidTool(ItemStack tool);
+  boolean isValidTool(ItemStack tool, int toolIndex);
+
+  boolean isValidToolDurability(ItemStack tool, int toolIndex);
 
   ItemStack[] getTools();
 

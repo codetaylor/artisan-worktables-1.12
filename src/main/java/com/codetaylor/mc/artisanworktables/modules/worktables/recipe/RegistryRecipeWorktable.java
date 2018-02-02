@@ -62,11 +62,23 @@ public class RegistryRecipeWorktable {
     return null;
   }
 
-  public boolean containsRecipeWithTool(ItemStack tool) {
+  public boolean containsRecipeWithToolInSlot(ItemStack tool, int toolIndex) {
 
     for (IRecipeWorktable recipe : this.recipeList) {
 
-      if (recipe.isValidTool(tool)) {
+      if (recipe.isValidTool(tool, toolIndex)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public boolean containsRecipeWithToolInAnySlot(ItemStack tool) {
+
+    for (IRecipeWorktable recipe : this.recipeList) {
+
+      if (recipe.isValidTool(tool, 0)) {
         return true;
       }
     }

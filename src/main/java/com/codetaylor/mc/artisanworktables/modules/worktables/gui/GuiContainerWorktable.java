@@ -59,10 +59,6 @@ public class GuiContainerWorktable
       ModuleWorktables.MOD_ID,
       "textures/gui/gui_elements.png"
   );
-  private static final ResourceLocation TEXTURE_TOOLBOX = new ResourceLocation(
-      ModuleWorktables.MOD_ID,
-      "textures/gui/toolbox.png"
-  );
   public static final ResourceLocation TEXTURE_ATLAS = new ResourceLocation("textures/atlas/blocks.png");
 
   private static final double TWO_PI = Math.PI * 2;
@@ -217,7 +213,7 @@ public class GuiContainerWorktable
 
     if (toolbox != null
         && !toolbox.isInvalid()) {
-      this.mc.getTextureManager().bindTexture(TEXTURE_TOOLBOX);
+      this.mc.getTextureManager().bindTexture(toolbox.getGuiTexture());
       this.drawTexturedModalRect(this.guiLeft - 70, (this.height - this.ySize) / 2, 176, 0, 68, 176);
     }
 

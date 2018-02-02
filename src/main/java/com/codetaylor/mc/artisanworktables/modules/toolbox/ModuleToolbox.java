@@ -1,7 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.block.BlockMechanicalToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.block.BlockToolbox;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechanicalToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.athenaeum.helper.ModelRegistrationHelper;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
@@ -17,11 +19,13 @@ public class ModuleToolbox
   public static class Lang {
 
     public static final String TOOLBOX_TITLE = "tile." + MOD_ID + ".toolbox.name";
+    public static final String MECHANICAL_TOOLBOX_TITLE = "tile." + MOD_ID + ".mechanical_toolbox.name";
   }
 
   public static class Blocks {
 
     public static final BlockToolbox TOOLBOX = new BlockToolbox();
+    public static final BlockMechanicalToolbox MECHANICAL_TOOLBOX = new BlockMechanicalToolbox();
   }
 
   public ModuleToolbox() {
@@ -37,13 +41,25 @@ public class ModuleToolbox
 
     super.onRegister(registry);
 
-    registry.registerBlock(
-        Blocks.TOOLBOX,
-        BlockToolbox.NAME
-    );
-    registry.registerTileEntities(
-        TileEntityToolbox.class
-    );
+    if (ModuleToolboxConfig.TOOLBOX.ENABLED) {
+      registry.registerBlock(
+          Blocks.TOOLBOX,
+          BlockToolbox.NAME
+      );
+      registry.registerTileEntities(
+          TileEntityToolbox.class
+      );
+    }
+
+    if (ModuleToolboxConfig.MECHANICAL_TOOLBOX.ENABLED) {
+      registry.registerBlock(
+          Blocks.MECHANICAL_TOOLBOX,
+          BlockMechanicalToolbox.NAME
+      );
+      registry.registerTileEntities(
+          TileEntityMechanicalToolbox.class
+      );
+    }
   }
 
   @Override
@@ -53,6 +69,10 @@ public class ModuleToolbox
 
     registry.registerItemModelStrategy(() -> {
       ModelRegistrationHelper.registerBlockItemModel(Blocks.TOOLBOX.getDefaultState());
+    });
+
+    registry.registerItemModelStrategy(() -> {
+      ModelRegistrationHelper.registerBlockItemModel(Blocks.MECHANICAL_TOOLBOX.getDefaultState());
     });
   }
 
