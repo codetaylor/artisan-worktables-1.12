@@ -1,5 +1,8 @@
-1.11.19:
+1.11.20:
 * Added: config option to require sufficient tool durability (#44)
+
+1.10.20:
+* Fixed: shift-click tool swap eats tools of the same type (#45)
 
 1.10.19:
 * Fixed: GUI fluid tank render bug (#40)
