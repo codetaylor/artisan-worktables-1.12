@@ -15,6 +15,7 @@ tile.artisanworktables.worktable.tailor.name=Tailor's Worktable
 
 # Toolbox
 tile.artisanworktables.toolbox.name=Toolbox
+tile.artisanworktables.mechanical_toolbox.name=Mechanical Toolbox
 
 # Worktable Tools
 item.artisanworktables.blacksmiths.cutters.name=Blacksmith's %s Cutters
@@ -43,3 +44,6 @@ jei.artisanworktables.tooltip.chance=%s%s%% chance to craft
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Empty
 gui.artisanworktables.tooltip.fluid.destroy=%sDestroy fluid: %sSHIFT + LEFT-CLICK
+
+# Tooltip
+item.artisanworktables.tooltip.durability=Durability: %d / %d

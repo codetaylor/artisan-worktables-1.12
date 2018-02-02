@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
+import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechanicalToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
@@ -35,6 +36,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -155,7 +158,6 @@ public abstract class TileEntityWorktableBase
   public void onTakeResult(EntityPlayer player) {
 
     // Find the recipe
-
     IRecipeWorktable recipe = this.getRecipe(player);
 
     if (recipe == null) {
@@ -163,10 +165,31 @@ public abstract class TileEntityWorktableBase
     }
 
     // Decrease stacks in crafting matrix
-
     this.onCraftReduceIngredients(recipe.getFluidIngredient());
 
     // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
+    this.onCraftCheckAndSwapWeightedOutput(player, recipe);
+
+    // Check for and populate secondary, tertiary and quaternary outputs
+    this.onCraftProcessExtraOutput(recipe);
+
+    // Damage or destroy tool
+    this.onCraftDamageTool(player, 0, recipe);
+
+    // Check for replacement tool
+    this.onCraftCheckAndReplaceTool(recipe, 0);
+
+    this.markDirty();
+
+    if (!this.world.isRemote) {
+      this.notifyBlockUpdate();
+    }
+  }
+
+  private void onCraftCheckAndSwapWeightedOutput(
+      EntityPlayer player,
+      IRecipeWorktable recipe
+  ) {
 
     if (!this.world.isRemote && !player.inventory.getItemStack().isEmpty()) {
 
@@ -176,8 +199,9 @@ public abstract class TileEntityWorktableBase
         ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
       }
     }
+  }
 
-    // Check for and populate secondary, tertiary and quaternary outputs
+  private void onCraftProcessExtraOutput(IRecipeWorktable recipe) {
 
     if (!this.world.isRemote) {
       ItemStack extraOutput = recipe.getSecondaryOutput();
@@ -207,16 +231,17 @@ public abstract class TileEntityWorktableBase
         }
       }
     }
+  }
 
-    // Damage or destroy tool
+  private void onCraftDamageTool(EntityPlayer player, int toolSlot, IRecipeWorktable recipe) {
 
-    ItemStack itemStack = this.toolHandler.getStackInSlot(0);
+    ItemStack itemStack = this.toolHandler.getStackInSlot(toolSlot);
 
-    if (!itemStack.isEmpty()) {
+    if (!itemStack.isEmpty() && recipe.isValidTool(itemStack, toolSlot)) {
       int itemDamage = itemStack.getMetadata() + recipe.getToolDamage();
 
       if (itemDamage >= itemStack.getItem().getMaxDamage(itemStack)) {
-        this.toolHandler.setStackInSlot(0, ItemStack.EMPTY);
+        this.toolHandler.setStackInSlot(toolSlot, ItemStack.EMPTY);
 
         if (!this.world.isRemote) {
           this.world.playSound(
@@ -234,14 +259,50 @@ public abstract class TileEntityWorktableBase
       } else {
         ItemStack copy = itemStack.copy();
         copy.setItemDamage(itemDamage);
-        this.toolHandler.setStackInSlot(0, copy);
+        this.toolHandler.setStackInSlot(toolSlot, copy);
       }
     }
+  }
 
-    this.markDirty();
+  private void onCraftCheckAndReplaceTool(IRecipeWorktable recipe, int toolSlot) {
 
-    if (!this.world.isRemote) {
-      this.notifyBlockUpdate();
+    ItemStack itemStack = this.toolHandler.getStackInSlot(toolSlot);
+
+    if (!recipe.isValidToolDurability(itemStack, toolSlot)) {
+      // Tool needs to be replaced
+      TileEntityToolbox adjacentToolbox = this.getAdjacentToolbox();
+
+      if (adjacentToolbox == null
+          || !(adjacentToolbox instanceof TileEntityMechanicalToolbox)) {
+        return;
+      }
+
+      IItemHandler capability = adjacentToolbox.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+      if (capability == null) {
+        return;
+      }
+
+      int slotCount = capability.getSlots();
+
+      for (int i = 0; i < slotCount; i++) {
+        ItemStack potentialTool = capability.getStackInSlot(i);
+
+        if (potentialTool.isEmpty()) {
+          continue;
+        }
+
+        if (recipe.isValidTool(potentialTool, toolSlot)
+            && recipe.isValidToolDurability(potentialTool, toolSlot)) {
+          // Found an acceptable tool
+          potentialTool = capability.extractItem(i, 1, false);
+          capability.insertItem(i, this.toolHandler.getStackInSlot(toolSlot), false);
+          this.toolHandler.setStackInSlot(toolSlot, potentialTool);
+
+          this.notifyBlockUpdate();
+          adjacentToolbox.notifyBlockUpdate();
+        }
+      }
     }
   }
 
@@ -364,7 +425,9 @@ public abstract class TileEntityWorktableBase
   /**
    * Searches cardinal directions around all joined tables and returns an adjacent toolbox.
    * <p>
-   * If more than one toolbox is found, null is returned.
+   * If more than one toolbox is found, the first toolbox found is returned.
+   * <p>
+   * If no toolbox is found, null is returned.
    *
    * @return adjacent toolbox or null
    */

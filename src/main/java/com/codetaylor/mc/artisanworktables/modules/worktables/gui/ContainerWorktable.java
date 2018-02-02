@@ -91,7 +91,7 @@ public class ContainerWorktable
     // Tool Slot 46
     this.addSlotToContainer(new CraftingToolSlot(
         slotChangeListener,
-        itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithTool(itemStack),
+        itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithToolInSlot(itemStack, 0),
         this.tile.getToolHandler(),
         0,
         72 + offsetX,

@@ -1,3 +1,13 @@
+1.11.20:
+* Added: Mechanical Toolbox!
+  * This new toolbox will automatically swap old tools for new tools. When a tool is broken,
+    or lacks sufficient durability to complete the last successful craft, the Mechanical
+    Toolbox will swap a new, appropriate tool into the worktable's tool slot.
+* Added: config option to require sufficient tool durability (#44)
+* Added: durability tooltip to all tools from this mod
+* Added: config option to disable the durability tooltip
+* Note: you will probably need to refresh the config for the tools and the toolbox
+
 1.10.20:
 * Fixed: shift-click tool swap eats tools of the same type (#45)
 
