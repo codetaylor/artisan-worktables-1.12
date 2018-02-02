@@ -1,3 +1,6 @@
+1.10.20:
+* Fixed: shift-click tool swap eats tools of the same type (#45)
+
 1.10.19:
 * Fixed: GUI fluid tank render bug (#40)
 * Fixed: Non-interactive fluid display in JEI (#42)

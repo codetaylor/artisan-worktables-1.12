@@ -187,6 +187,10 @@ public class ContainerWorktable
     ItemStack originStack = originSlot.getStack();
     ItemStack targetStack = targetSlot.getStack();
 
+    if (originStack.isItemEqual(targetStack)) {
+      return true;
+    }
+
     if (!originStack.isEmpty()
         && targetSlot.isItemValid(originStack)) {
 
