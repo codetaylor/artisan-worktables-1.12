@@ -9,6 +9,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = ModuleWorktables.MOD_ID, name = ModuleWorktables.MOD_ID + ".module.Worktables")
 public class ModuleWorktablesConfig {
 
+  @Config.Comment({
+      "If set to true, crafting tools must have sufficient durability remaining to perform the craft.",
+      "If set to false, this restriction is ignored."
+  })
+  public static boolean RESTRICT_CRAFT_MINIUMUM_DURABILITY = true;
+
   public static FluidCapacity FLUID_CAPACITY = new FluidCapacity();
 
   public static class FluidCapacity {

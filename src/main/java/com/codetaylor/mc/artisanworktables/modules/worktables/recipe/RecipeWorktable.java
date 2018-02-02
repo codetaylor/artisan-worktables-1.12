@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import net.minecraft.item.ItemStack;
@@ -229,9 +230,12 @@ public class RecipeWorktable
     }
 
     // Does the tool have enough durability for this recipe?
-    /*if (tool.getItemDamage() + this.toolDamage > tool.getMaxDamage()) {
-      return false;
-    }*/
+    if (ModuleWorktablesConfig.RESTRICT_CRAFT_MINIUMUM_DURABILITY) {
+
+      if (tool.getItemDamage() + this.toolDamage > tool.getMaxDamage()) {
+        return false;
+      }
+    }
 
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
 

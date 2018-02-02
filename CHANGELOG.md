@@ -1,3 +1,6 @@
+1.11.19:
+* Added: config option to require sufficient tool durability (#44)
+
 1.10.19:
 * Fixed: GUI fluid tank render bug (#40)
 * Fixed: Non-interactive fluid display in JEI (#42)

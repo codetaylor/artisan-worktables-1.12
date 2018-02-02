@@ -1,3 +1,21 @@
+`artisanworktables.module.Toolbox.cfg`:
+
+```
+# Configuration file
+
+general {
+    # Set to false to disable the toolbox.
+    B:ENABLE_MODULE=true
+
+    # Set to false to prevent the toolbox from keeping its contents when broken.
+    B:KEEP_CONTENTS_WHEN_BROKEN=true
+
+    # Set to false to allow any item to be placed into the toolbox.
+    # If set to true, only tools that are part of any worktable recipe may be stored in the toolbox.
+    B:RESTRICT_TOOLBOX_TO_TOOLS_ONLY=true
+}
+```
+
 `artisanworktables.module.Tools.cfg`:
 
 ```
@@ -14,6 +32,7 @@ general {
         gold
         diamond
         flint
+        bone
         aluminum
         bronze
         constantan
@@ -39,6 +58,8 @@ general {
         blacksmiths_hammer
         carpenters_hammer
         carpenters_handsaw
+        chemists_beaker
+        chemists_burner
         engineers_driver
         engineers_spanner
         jewelers_gemcutter
@@ -47,6 +68,8 @@ general {
         mages_grimoire
         masons_chisel
         masons_trowel
+        scribes_compass
+        scribes_quill
         tailors_needle
         tailors_shears
      >
@@ -57,5 +80,50 @@ general {
 
     # Set to false to disable all tool recipes.
     B:ENABLE_TOOL_RECIPES=true
+}
+```
+
+`artisanworktables.module.Worktables.cfg`:
+
+```
+# Configuration file
+
+general {
+    # If set to true, crafting tools must have sufficient durability remaining to perform the craft.
+    # If set to false, this restriction is ignored.
+    B:RESTRICT_CRAFT_MINIUMUM_DURABILITY=true
+
+    fluid_capacity {
+        # Worktable fluid capacity (milli-buckets).
+        I:BASIC=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:BLACKSMITH=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:CARPENTER=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:CHEMIST=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:ENGINEER=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:JEWELER=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:MAGE=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:MASON=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:SCRIBE=4000
+
+        # Worktable fluid capacity (milli-buckets).
+        I:TAILOR=4000
+    }
+
 }
 ```
