@@ -15,6 +15,7 @@ tile.artisanworktables.worktable.tailor.name=Arbeitstisch des Schneiders
 
 # Toolbox
 tile.artisanworktables.toolbox.name=Werkzeugkasten
+tile.artisanworktables.mechanical_toolbox.name=Mechanischer Werkzeugkasten
 
 # Worktable Tools
 item.artisanworktables.blacksmiths.cutters.name=%s Messer des Schmieds
@@ -43,3 +44,6 @@ jei.artisanworktables.tooltip.chance=%s%s%% Chance zum erfolgreichen basteln
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Leer
 gui.artisanworktables.tooltip.fluid.destroy=%sFlüssigkeiten entleeren: %sUMSCHALTTASTE + LINKSKLICK
+
+# Tooltip
+item.artisanworktables.tooltip.durability=Haltbarkeit: %d / %d
