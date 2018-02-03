@@ -103,10 +103,6 @@ public class ContainerWorktable
       this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146 + offsetX, 17 + i * 18));
     }
 
-    Runnable toolboxSlotChangeListener = () -> {
-      //
-    };
-
     if (this.toolbox != null && !this.toolbox.isInvalid()) {
       ItemStackHandler itemHandler = this.toolbox.getItemHandler();
 
@@ -116,7 +112,6 @@ public class ContainerWorktable
         for (int y = 0; y < 9; y++) {
           this.addSlotToContainer(new ToolboxSlot(
               this.toolbox,
-              toolboxSlotChangeListener,
               itemHandler,
               y + x * 9,
               x * -18 - 26,
