@@ -1,3 +1,6 @@
+1.11.21:
+* Changed: updated de_de.lang (PR#46 Xaikii) 
+
 1.11.20:
 * Added: Mechanical Toolbox!
   * This new toolbox will automatically swap old tools for new tools. When a tool is broken,
