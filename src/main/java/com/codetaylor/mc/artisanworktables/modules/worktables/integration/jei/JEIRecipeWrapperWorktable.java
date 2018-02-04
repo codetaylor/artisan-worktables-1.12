@@ -143,25 +143,6 @@ public class JEIRecipeWrapperWorktable
   }
 
   @Override
-  public List<String> getTooltipStrings(int mouseX, int mouseY) {
-
-    FluidStack fluidStack = this.recipe.getFluidIngredient();
-
-    if (fluidStack != null
-        && mouseX >= 5
-        && mouseX < 5 + 6
-        && mouseY >= 14
-        && mouseY < GuiContainerWorktable.FLUID_HEIGHT + 14) {
-      List<String> tooltip = new ArrayList<>();
-      tooltip.add(fluidStack.getFluid().getLocalizedName(fluidStack));
-      tooltip.add("" + TextFormatting.GRAY + fluidStack.amount + " mB");
-      return tooltip;
-    }
-
-    return null;
-  }
-
-  @Override
   public void drawInfo(
       Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY
   ) {

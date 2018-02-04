@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWork
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
+import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -20,7 +21,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.List;
 
 public class ContainerWorktable
-    extends Container {
+    extends ContainerBase {
 
   private final CraftingResultSlot craftingResultSlot;
   private World world;
@@ -36,15 +37,11 @@ public class ContainerWorktable
       TileEntityWorktableBase tile
   ) {
 
+    super(playerInventory);
+
     this.world = world;
     this.tile = tile;
     this.toolbox = this.getToolbox(this.tile);
-
-    int offsetX = 0;
-
-    if (this.tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-      offsetX = 6;
-    }
 
     this.player = playerInventory.player;
     Runnable slotChangeListener = () -> this.updateRecipeOutput(this.player);
@@ -56,51 +53,53 @@ public class ContainerWorktable
         this.tile,
         resultHandler,
         0,
-        109 + offsetX,
+        115,
         35
     );
-    this.addSlotToContainer(this.craftingResultSlot);
+    this.containerSlotAdd(this.craftingResultSlot);
 
     // Crafting Matrix 1 - 9, inclusive
     CraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
 
     for (int y = 0; y < craftingMatrixHandler.getHeight(); ++y) {
       for (int x = 0; x < craftingMatrixHandler.getWidth(); ++x) {
-        this.addSlotToContainer(new CraftingIngredientSlot(
+        this.containerSlotAdd(new CraftingIngredientSlot(
             slotChangeListener,
             craftingMatrixHandler,
             x + y * 3,
-            14 + x * 18 + offsetX,
+            20 + x * 18,
             17 + y * 18
         ));
       }
     }
 
     // Player Inventory 10 - 36, inclusive
-    for (int y = 0; y < 3; ++y) {
+    this.containerPlayerInventoryAdd();
+    /*for (int y = 0; y < 3; ++y) {
       for (int x = 0; x < 9; ++x) {
         this.addSlotToContainer(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
       }
-    }
+    }*/
 
     // Player HotBar 37 - 46, inclusive
-    for (int x = 0; x < 9; ++x) {
+    this.containerPlayerHotbarAdd();
+    /*for (int x = 0; x < 9; ++x) {
       this.addSlotToContainer(new Slot(playerInventory, x, 8 + x * 18, 142));
-    }
+    }*/
 
     // Tool Slot 46
-    this.addSlotToContainer(new CraftingToolSlot(
+    this.containerSlotAdd(new CraftingToolSlot(
         slotChangeListener,
         itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithToolInSlot(itemStack, 0),
         this.tile.getToolHandler(),
         0,
-        72 + offsetX,
+        78,
         35
     ));
 
     // Secondary output 47 - 49, inclusive
     for (int i = 0; i < 3; i++) {
-      this.addSlotToContainer(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 146 + offsetX, 17 + i * 18));
+      this.containerSlotAdd(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 152, 17 + i * 18));
     }
 
     if (this.toolbox != null && !this.toolbox.isInvalid()) {
@@ -110,7 +109,7 @@ public class ContainerWorktable
       for (int x = 0; x < 3; x++) {
 
         for (int y = 0; y < 9; y++) {
-          this.addSlotToContainer(new ToolboxSlot(
+          this.containerSlotAdd(new ToolboxSlot(
               this.toolbox,
               itemHandler,
               y + x * 9,
@@ -122,6 +121,18 @@ public class ContainerWorktable
     }
 
     this.updateRecipeOutput(this.player);
+  }
+
+  @Override
+  protected int containerInventoryPositionGetX() {
+
+    return super.containerInventoryPositionGetX();
+  }
+
+  @Override
+  protected int containerHotbarPositionGetX() {
+
+    return super.containerHotbarPositionGetX();
   }
 
   private TileEntityToolbox getToolbox(TileEntityWorktableBase tile) {
