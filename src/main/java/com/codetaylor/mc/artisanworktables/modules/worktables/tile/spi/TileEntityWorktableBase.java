@@ -308,6 +308,7 @@ public abstract class TileEntityWorktableBase
 
   public void notifyBlockUpdate() {
 
+    this.markDirty();
     BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
   }
 

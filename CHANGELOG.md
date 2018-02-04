@@ -1,4 +1,5 @@
 1.11.21:
+* Fixed: fluid cleared via GUI remains after re-load (#49)
 * Changed: updated de_de.lang (PR#46 Xaikii) 
 
 1.11.20:
