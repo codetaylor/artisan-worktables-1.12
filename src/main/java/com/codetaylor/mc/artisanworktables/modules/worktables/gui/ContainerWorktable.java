@@ -75,17 +75,9 @@ public class ContainerWorktable
 
     // Player Inventory 10 - 36, inclusive
     this.containerPlayerInventoryAdd();
-    /*for (int y = 0; y < 3; ++y) {
-      for (int x = 0; x < 9; ++x) {
-        this.addSlotToContainer(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
-      }
-    }*/
 
     // Player HotBar 37 - 46, inclusive
     this.containerPlayerHotbarAdd();
-    /*for (int x = 0; x < 9; ++x) {
-      this.addSlotToContainer(new Slot(playerInventory, x, 8 + x * 18, 142));
-    }*/
 
     // Tool Slot 46
     this.containerSlotAdd(new CraftingToolSlot(
@@ -160,7 +152,7 @@ public class ContainerWorktable
     RegistryRecipeWorktable registry = this.tile.getWorktableRecipeRegistry();
     IRecipeWorktable recipe = registry.findRecipe(
         player,
-        this.tile.getToolHandler().getStackInSlot(0),
+        this.tile.getTools(),
         this.tile.getCraftingMatrixHandler(),
         fluidStack
     );

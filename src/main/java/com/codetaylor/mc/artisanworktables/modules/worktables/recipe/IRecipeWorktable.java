@@ -14,7 +14,7 @@ public interface IRecipeWorktable {
 
   boolean matches(
       Collection<String> unlockedStages,
-      ItemStack tool,
+      ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack
   );

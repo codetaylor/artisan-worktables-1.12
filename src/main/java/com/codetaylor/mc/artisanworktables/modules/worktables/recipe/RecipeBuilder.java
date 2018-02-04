@@ -150,13 +150,13 @@ public class RecipeBuilder {
       );
     }
 
-    IRecipeMatcher recipeMatcher;
+    IRecipeMatrixMatcher recipeMatcher;
 
     if (this.width > 0 && this.height > 0) {
-      recipeMatcher = IRecipeMatcher.SHAPED;
+      recipeMatcher = IRecipeMatrixMatcher.SHAPED;
 
     } else {
-      recipeMatcher = IRecipeMatcher.SHAPELESS;
+      recipeMatcher = IRecipeMatrixMatcher.SHAPELESS;
     }
 
     ToolEntry[] tools = new ToolEntry[toolCount];

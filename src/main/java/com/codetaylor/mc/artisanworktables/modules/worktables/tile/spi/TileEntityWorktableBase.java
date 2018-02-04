@@ -171,12 +171,11 @@ public abstract class TileEntityWorktableBase
     this.onCraftProcessExtraOutput(recipe);
 
     // Damage or destroy tools
+    // Check for replacement tool
     for (int i = 0; i < recipe.getToolCount(); i++) {
       this.onCraftDamageTool(player, i, recipe);
+      this.onCraftCheckAndReplaceTool(recipe, i);
     }
-
-    // Check for replacement tool
-    this.onCraftCheckAndReplaceTool(recipe, 0);
 
     this.markDirty();
 
@@ -263,11 +262,11 @@ public abstract class TileEntityWorktableBase
     }
   }
 
-  private void onCraftCheckAndReplaceTool(IRecipeWorktable recipe, int toolSlot) {
+  private void onCraftCheckAndReplaceTool(IRecipeWorktable recipe, int toolIndex) {
 
-    ItemStack itemStack = this.toolHandler.getStackInSlot(toolSlot);
+    ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
-    if (!recipe.hasSufficientToolDurability(itemStack, toolSlot)) {
+    if (!recipe.hasSufficientToolDurability(itemStack, toolIndex)) {
       // Tool needs to be replaced
       TileEntityToolbox adjacentToolbox = this.getAdjacentToolbox();
 
@@ -291,12 +290,12 @@ public abstract class TileEntityWorktableBase
           continue;
         }
 
-        if (recipe.isValidTool(potentialTool, toolSlot)
-            && recipe.hasSufficientToolDurability(potentialTool, toolSlot)) {
+        if (recipe.isValidTool(potentialTool, toolIndex)
+            && recipe.hasSufficientToolDurability(potentialTool, toolIndex)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
-          capability.insertItem(i, this.toolHandler.getStackInSlot(toolSlot), false);
-          this.toolHandler.setStackInSlot(toolSlot, potentialTool);
+          capability.insertItem(i, this.toolHandler.getStackInSlot(toolIndex), false);
+          this.toolHandler.setStackInSlot(toolIndex, potentialTool);
 
           this.notifyBlockUpdate();
           adjacentToolbox.notifyBlockUpdate();
@@ -346,10 +345,22 @@ public abstract class TileEntityWorktableBase
     RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
     return registry.findRecipe(
         player,
-        this.toolHandler.getStackInSlot(0),
+        this.getTools(),
         this.craftingMatrixHandler,
         fluidStack
     );
+  }
+
+  public ItemStack[] getTools() {
+
+    int slotCount = this.toolHandler.getSlots();
+    ItemStack[] tools = new ItemStack[slotCount];
+
+    for (int i = 0; i < slotCount; i++) {
+      tools[i] = this.toolHandler.getStackInSlot(i);
+    }
+
+    return tools;
   }
 
   private void generateExtraOutput(ItemStack extraOutput) {

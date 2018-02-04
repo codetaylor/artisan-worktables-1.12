@@ -23,7 +23,7 @@ public class RecipeWorktable
   private List<Ingredient> ingredients;
   private FluidStack fluidIngredient;
   private ExtraOutputChancePair[] extraOutputs;
-  private IRecipeMatcher recipeMatcher;
+  private IRecipeMatrixMatcher recipeMatrixMatcher;
   private boolean mirrored;
   private int width;
   private int height;
@@ -35,7 +35,7 @@ public class RecipeWorktable
       List<Ingredient> ingredients,
       @Nullable FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,
-      IRecipeMatcher recipeMatcher,
+      IRecipeMatrixMatcher recipeMatrixMatcher,
       boolean mirrored,
       int width,
       int height
@@ -47,7 +47,7 @@ public class RecipeWorktable
     this.ingredients = ingredients;
     this.fluidIngredient = fluidIngredient;
     this.extraOutputs = extraOutputs;
-    this.recipeMatcher = recipeMatcher;
+    this.recipeMatrixMatcher = recipeMatrixMatcher;
     this.mirrored = mirrored;
     this.width = width;
     this.height = height;
@@ -257,19 +257,24 @@ public class RecipeWorktable
   @Override
   public boolean matches(
       Collection<String> unlockedStages,
-      ItemStack tool,
+      ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack
   ) {
 
-    // Do we have the correct tools?
-    if (!this.isValidTool(tool, 0)) {
+    if (this.getToolCount() > tools.length) {
+      // this recipe requires more tools than the tools in the table
       return false;
     }
 
+    // Do we have the correct tools?
     // Do the tools have enough durability for this recipe?
-    if (!this.hasSufficientToolDurability(tool, 0)) {
-      return false;
+    for (int i = 0; i < this.getToolCount(); i++) {
+
+      if (!this.isValidTool(tools[i], i)
+          || !this.hasSufficientToolDurability(tools[i], i)) {
+        return false;
+      }
     }
 
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
@@ -279,7 +284,7 @@ public class RecipeWorktable
       }
     }
 
-    return this.recipeMatcher.matches(this, craftingMatrix, fluidStack);
+    return this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack);
   }
 
 }

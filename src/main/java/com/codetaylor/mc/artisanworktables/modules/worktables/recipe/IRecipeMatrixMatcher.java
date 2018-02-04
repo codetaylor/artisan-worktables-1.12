@@ -9,9 +9,9 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IRecipeMatcher {
+public interface IRecipeMatrixMatcher {
 
-  IRecipeMatcher SHAPED = new IRecipeMatcher() {
+  IRecipeMatrixMatcher SHAPED = new IRecipeMatrixMatcher() {
 
     @Override
     public boolean matches(
@@ -88,7 +88,7 @@ public interface IRecipeMatcher {
     }
   };
 
-  IRecipeMatcher SHAPELESS = (recipe, craftingMatrix, fluidStack) -> {
+  IRecipeMatrixMatcher SHAPELESS = (recipe, craftingMatrix, fluidStack) -> {
 
     int count = 0;
     List<ItemStack> itemList = new ArrayList<>();
