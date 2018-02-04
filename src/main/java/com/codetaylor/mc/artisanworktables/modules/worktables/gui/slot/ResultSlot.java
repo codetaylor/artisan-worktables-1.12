@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
+package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;

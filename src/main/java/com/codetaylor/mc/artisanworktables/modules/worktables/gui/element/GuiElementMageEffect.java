@@ -1,10 +1,11 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
+package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiElementBase;
 import net.minecraft.util.math.MathHelper;
 
-public class GuiElementMageHover
+public class GuiElementMageEffect
     extends GuiElementBase {
 
   private static final double TWO_PI = Math.PI * 2;
@@ -12,7 +13,7 @@ public class GuiElementMageHover
 
   private final ContainerWorktable container;
 
-  public GuiElementMageHover(
+  public GuiElementMageEffect(
       GuiContainerBase guiBase,
       ContainerWorktable container,
       int elementX,

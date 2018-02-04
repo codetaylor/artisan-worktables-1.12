@@ -1,5 +1,6 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
+package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
+import com.codetaylor.mc.artisanworktables.ReferenceTexture;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
@@ -48,7 +49,7 @@ public class GuiElementWorktableFluidTank
 
     super.drawForegroundLayer(mouseX, mouseY);
 
-    this.textureBind(GuiReference.TEXTURE_FLUID_OVERLAY);
+    this.textureBind(ReferenceTexture.TEXTURE_FLUID_OVERLAY);
 
     RenderHelper.disableStandardItemLighting();
     GlStateManager.enableBlend();
@@ -62,12 +63,12 @@ public class GuiElementWorktableFluidTank
     Gui.drawModalRectWithCustomSizedTexture(
         this.elementX,
         this.elementY,
-        GuiReference.TEXTURE_FLUID_OVERLAY.getPositionX(),
-        GuiReference.TEXTURE_FLUID_OVERLAY.getPositionY(),
+        ReferenceTexture.TEXTURE_FLUID_OVERLAY.getPositionX(),
+        ReferenceTexture.TEXTURE_FLUID_OVERLAY.getPositionY(),
         this.elementWidth,
         this.elementHeight,
-        GuiReference.TEXTURE_FLUID_OVERLAY.getWidth(),
-        GuiReference.TEXTURE_FLUID_OVERLAY.getHeight()
+        ReferenceTexture.TEXTURE_FLUID_OVERLAY.getWidth(),
+        ReferenceTexture.TEXTURE_FLUID_OVERLAY.getHeight()
     );
   }
 

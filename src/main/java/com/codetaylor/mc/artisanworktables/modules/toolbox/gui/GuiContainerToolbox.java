@@ -1,29 +1,36 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.gui;
 
+import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
+import com.codetaylor.mc.athenaeum.gui.GuiElementTextureRectangle;
+import com.codetaylor.mc.athenaeum.gui.Texture;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
 public class GuiContainerToolbox
-    extends GuiContainer {
+    extends GuiContainerBase {
 
   private static final int TEXT_SHADOW_COLOR = new Color(103, 69, 29).getRGB();
   private final String guiContainerTitleKey;
-  private final ResourceLocation texture;
 
   public GuiContainerToolbox(
       ContainerToolbox container,
       String guiContainerTitleKey,
-      ResourceLocation texture
+      Texture texture
   ) {
 
-    super(container);
+    super(container, 176, 166);
     this.guiContainerTitleKey = guiContainerTitleKey;
-    this.texture = texture;
+
+    this.guiContainerElementAdd(new GuiElementTextureRectangle(
+        this,
+        texture,
+        0,
+        0,
+        176,
+        166
+    ));
   }
 
   @Override
@@ -35,23 +42,16 @@ public class GuiContainerToolbox
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-
-    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    this.mc.getTextureManager().bindTexture(this.texture);
-    int x = this.guiLeft;
-    int y = (this.height - this.ySize) / 2;
-    this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-  }
-
-  @Override
   protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 
     this.drawString(this.guiContainerTitleKey, 8, 6);
     this.drawString("container.inventory", 8, this.ySize - 96 + 3);
+
+    super.drawGuiContainerForegroundLayer(mouseX, mouseY);
   }
 
-  private void drawString(String translateKey, int x, int y) {
+  @Override
+  public void drawString(String translateKey, int x, int y) {
 
     String displayText = I18n.format(translateKey);
     FontRenderer fontRenderer = this.fontRenderer;

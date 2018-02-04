@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
@@ -33,8 +33,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable.TAB_VIEW_SIZE;
 
 public class BlockWorktable
     extends Block
@@ -103,6 +101,7 @@ public class BlockWorktable
       TileEntity tileEntity = worldIn.getTileEntity(pos);
 
       if (tileEntity instanceof TileEntityWorktableBase) {
+        int maximumDisplayedTabCount = ((TileEntityWorktableBase) tileEntity).getMaximumDisplayedTabCount();
         TileEntityWorktableBase worktableBase = (TileEntityWorktableBase) tileEntity;
         worktableBase.setGuiTabOffset(0);
 
@@ -113,7 +112,8 @@ public class BlockWorktable
         while (!tabInView && !actualJoinedTables.isEmpty()) {
           List<TileEntityWorktableBase> joinedTables = GuiContainerWorktable.getJoinedTableOffsetView(
               actualJoinedTables,
-              worktableBase.getGuiTabOffset()
+              worktableBase.getGuiTabOffset(),
+              worktableBase.getMaximumDisplayedTabCount()
           );
 
           for (TileEntityWorktableBase joinedTable : joinedTables) {
@@ -126,8 +126,8 @@ public class BlockWorktable
 
           if (!tabInView) {
             worktableBase.setGuiTabOffset(Math.min(
-                actualJoinedTables.size() - TAB_VIEW_SIZE,
-                worktableBase.getGuiTabOffset() + TAB_VIEW_SIZE
+                actualJoinedTables.size() - maximumDisplayedTabCount,
+                worktableBase.getGuiTabOffset() + maximumDisplayedTabCount
             ));
           }
         }

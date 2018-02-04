@@ -5,7 +5,6 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
@@ -515,6 +514,11 @@ public abstract class TileEntityWorktableBase
         this.getWorktableGuiTextShadowColor(),
         this
     );
+  }
+
+  public int getMaximumDisplayedTabCount() {
+
+    return 6;
   }
 
   private String getTableTitleKey() {
