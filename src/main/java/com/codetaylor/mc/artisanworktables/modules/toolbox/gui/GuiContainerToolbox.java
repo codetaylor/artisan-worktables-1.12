@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.gui;
 
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
-import com.codetaylor.mc.athenaeum.gui.GuiElementTextureRectangle;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;

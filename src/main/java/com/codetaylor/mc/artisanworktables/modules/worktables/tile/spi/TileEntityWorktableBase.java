@@ -53,8 +53,6 @@ public abstract class TileEntityWorktableBase
   private CraftingMatrixStackHandler craftingMatrixHandler;
   private ObservableStackHandler secondaryOutputHandler;
 
-  private static int GUI_TAB_OFFSET;
-
   public TileEntityWorktableBase(int width, int height) {
 
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);
@@ -465,16 +463,6 @@ public abstract class TileEntityWorktableBase
     Block block = state.getBlock();
     Item item = Item.getItemFromBlock(block);
     return new ItemStack(item, 1, block.getMetaFromState(state));
-  }
-
-  public void setGuiTabOffset(int offset) {
-
-    GUI_TAB_OFFSET = offset;
-  }
-
-  public int getGuiTabOffset() {
-
-    return GUI_TAB_OFFSET;
   }
 
   public boolean onBlockActivated(

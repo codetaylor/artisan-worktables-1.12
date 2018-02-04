@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
-import com.codetaylor.mc.athenaeum.gui.GuiElementBase;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementBase;
 import net.minecraft.util.math.MathHelper;
 
 public class GuiElementMageEffect

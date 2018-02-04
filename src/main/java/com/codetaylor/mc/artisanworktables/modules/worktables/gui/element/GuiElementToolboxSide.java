@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
-import com.codetaylor.mc.athenaeum.gui.GuiElementTextureRectangle;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 
 public class GuiElementToolboxSide

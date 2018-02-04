@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
@@ -31,7 +30,6 @@ import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BlockWorktable
@@ -98,41 +96,6 @@ public class BlockWorktable
   ) {
 
     if (worldIn.isRemote) {
-      TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-      if (tileEntity instanceof TileEntityWorktableBase) {
-        int maximumDisplayedTabCount = ((TileEntityWorktableBase) tileEntity).getMaximumDisplayedTabCount();
-        TileEntityWorktableBase worktableBase = (TileEntityWorktableBase) tileEntity;
-        worktableBase.setGuiTabOffset(0);
-
-        List<TileEntityWorktableBase> actualJoinedTables = worktableBase.getJoinedTables(new ArrayList<>());
-
-        boolean tabInView = false;
-
-        while (!tabInView && !actualJoinedTables.isEmpty()) {
-          List<TileEntityWorktableBase> joinedTables = GuiContainerWorktable.getJoinedTableOffsetView(
-              actualJoinedTables,
-              worktableBase.getGuiTabOffset(),
-              worktableBase.getMaximumDisplayedTabCount()
-          );
-
-          for (TileEntityWorktableBase joinedTable : joinedTables) {
-
-            if (joinedTable == worktableBase) {
-              tabInView = true;
-              break;
-            }
-          }
-
-          if (!tabInView) {
-            worktableBase.setGuiTabOffset(Math.min(
-                actualJoinedTables.size() - maximumDisplayedTabCount,
-                worktableBase.getGuiTabOffset() + maximumDisplayedTabCount
-            ));
-          }
-        }
-
-      }
       return true;
     }
 
