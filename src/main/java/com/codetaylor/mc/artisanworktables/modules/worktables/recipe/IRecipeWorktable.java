@@ -27,8 +27,6 @@ public interface IRecipeWorktable {
 
   boolean isMirrored();
 
-  int getToolDamage();
-
   boolean matchGameStages(Collection<String> unlockedStages);
 
   ItemStack getSecondaryOutput();
@@ -45,9 +43,13 @@ public interface IRecipeWorktable {
 
   boolean isValidTool(ItemStack tool, int toolIndex);
 
-  boolean isValidToolDurability(ItemStack tool, int toolIndex);
+  boolean hasSufficientToolDurability(ItemStack tool, int toolIndex);
 
-  ItemStack[] getTools();
+  ItemStack[] getTools(int toolIndex);
+
+  int getToolDamage(int toolIndex);
+
+  int getToolCount();
 
   List<Ingredient> getIngredientList();
 

@@ -12,13 +12,13 @@ import java.util.List;
 
 public class RecipeBuilder {
 
+  public static final int MAX_TOOL_COUNT = 4;
   private int width;
   private int height;
   private boolean mirrored;
   private List<Ingredient> ingredients;
   private FluidStack fluidIngredient;
-  private Ingredient tool;
-  private int toolDamage;
+  private ToolIngredientEntry[] tools;
   private List<OutputWeightPair> outputWeightPairList;
   private ExtraOutputChancePair[] extraOutputs;
   private EnumGameStageRequire gameStageRequire;
@@ -35,6 +35,7 @@ public class RecipeBuilder {
     this.gameStageRequire = EnumGameStageRequire.ANY;
     this.includeGamestages = new String[0];
     this.excludeGamestages = new String[0];
+    this.tools = new ToolIngredientEntry[MAX_TOOL_COUNT];
   }
 
   public RecipeBuilder setIngredients(Ingredient[][] ingredients) {
@@ -74,10 +75,9 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setTool(Ingredient tool, int toolDamage) {
+  public RecipeBuilder setTool(int index, Ingredient tool, int toolDamage) {
 
-    this.tool = tool;
-    this.toolDamage = toolDamage;
+    this.tools[index] = new ToolIngredientEntry(tool, toolDamage);
     return this;
   }
 
@@ -118,7 +118,18 @@ public class RecipeBuilder {
       throw new RecipeBuilderException("No outputs defined for recipe");
     }
 
-    if (this.tool == null) {
+    int toolCount = 0;
+
+    for (int i = 0; i < MAX_TOOL_COUNT; i++) {
+
+      if (this.tools[i] == null) {
+        break;
+      }
+
+      toolCount += 1;
+    }
+
+    if (toolCount == 0) {
       throw new RecipeBuilderException("No tools defined for recipe");
     }
 
@@ -148,11 +159,16 @@ public class RecipeBuilder {
       recipeMatcher = IRecipeMatcher.SHAPELESS;
     }
 
+    ToolEntry[] tools = new ToolEntry[toolCount];
+
+    for (int i = 0; i < toolCount; i++) {
+      tools[i] = new ToolEntry(this.tools[i]);
+    }
+
     return new RecipeWorktable(
         gameStageMatcher,
         this.outputWeightPairList,
-        this.tool.getMatchingStacks(),
-        this.toolDamage,
+        tools,
         this.ingredients,
         this.fluidIngredient,
         this.extraOutputs,

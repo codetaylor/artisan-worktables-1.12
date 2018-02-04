@@ -1,7 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -13,7 +12,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
@@ -50,7 +48,7 @@ public class JEIRecipeWrapperWorktable
       this.inputs.add(Arrays.asList(input.getMatchingStacks()));
     }
 
-    this.tools = Arrays.asList(this.recipe.getTools());
+    this.tools = Arrays.asList(this.recipe.getTools(0));
 
     List<OutputWeightPair> output = this.recipe.getOutputWeightPairList();
     this.output = new ArrayList<>(output.size());
@@ -147,7 +145,7 @@ public class JEIRecipeWrapperWorktable
       Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY
   ) {
 
-    String label = "-" + this.recipe.getToolDamage();
+    String label = "-" + this.recipe.getToolDamage(0);
     minecraft.fontRenderer.drawString(
         label,
         (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,

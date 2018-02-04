@@ -170,8 +170,10 @@ public abstract class TileEntityWorktableBase
     // Check for and populate secondary, tertiary and quaternary outputs
     this.onCraftProcessExtraOutput(recipe);
 
-    // Damage or destroy tool
-    this.onCraftDamageTool(player, 0, recipe);
+    // Damage or destroy tools
+    for (int i = 0; i < recipe.getToolCount(); i++) {
+      this.onCraftDamageTool(player, i, recipe);
+    }
 
     // Check for replacement tool
     this.onCraftCheckAndReplaceTool(recipe, 0);
@@ -230,15 +232,15 @@ public abstract class TileEntityWorktableBase
     }
   }
 
-  private void onCraftDamageTool(EntityPlayer player, int toolSlot, IRecipeWorktable recipe) {
+  private void onCraftDamageTool(EntityPlayer player, int toolIndex, IRecipeWorktable recipe) {
 
-    ItemStack itemStack = this.toolHandler.getStackInSlot(toolSlot);
+    ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
-    if (!itemStack.isEmpty() && recipe.isValidTool(itemStack, toolSlot)) {
-      int itemDamage = itemStack.getMetadata() + recipe.getToolDamage();
+    if (!itemStack.isEmpty() && recipe.isValidTool(itemStack, toolIndex)) {
+      int itemDamage = itemStack.getMetadata() + recipe.getToolDamage(toolIndex);
 
       if (itemDamage >= itemStack.getItem().getMaxDamage(itemStack)) {
-        this.toolHandler.setStackInSlot(toolSlot, ItemStack.EMPTY);
+        this.toolHandler.setStackInSlot(toolIndex, ItemStack.EMPTY);
 
         if (!this.world.isRemote) {
           this.world.playSound(
@@ -256,7 +258,7 @@ public abstract class TileEntityWorktableBase
       } else {
         ItemStack copy = itemStack.copy();
         copy.setItemDamage(itemDamage);
-        this.toolHandler.setStackInSlot(toolSlot, copy);
+        this.toolHandler.setStackInSlot(toolIndex, copy);
       }
     }
   }
@@ -265,7 +267,7 @@ public abstract class TileEntityWorktableBase
 
     ItemStack itemStack = this.toolHandler.getStackInSlot(toolSlot);
 
-    if (!recipe.isValidToolDurability(itemStack, toolSlot)) {
+    if (!recipe.hasSufficientToolDurability(itemStack, toolSlot)) {
       // Tool needs to be replaced
       TileEntityToolbox adjacentToolbox = this.getAdjacentToolbox();
 
@@ -290,7 +292,7 @@ public abstract class TileEntityWorktableBase
         }
 
         if (recipe.isValidTool(potentialTool, toolSlot)
-            && recipe.isValidToolDurability(potentialTool, toolSlot)) {
+            && recipe.hasSufficientToolDurability(potentialTool, toolSlot)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
           capability.insertItem(i, this.toolHandler.getStackInSlot(toolSlot), false);

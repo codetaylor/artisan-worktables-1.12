@@ -55,7 +55,7 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setTool(IIngredient tool, int damage) {
 
-    this.recipeBuilder.setTool(CTInputHelper.toIngredient(tool), damage);
+    this.recipeBuilder.setTool(0, CTInputHelper.toIngredient(tool), damage);
     return this;
   }
 

@@ -18,8 +18,7 @@ public class RecipeWorktable
     implements IRecipeWorktable {
 
   private IGameStageMatcher gameStageMatcher;
-  private ItemStack[] tools;
-  private int toolDamage;
+  private ToolEntry[] tools;
   private List<OutputWeightPair> output;
   private List<Ingredient> ingredients;
   private FluidStack fluidIngredient;
@@ -32,8 +31,7 @@ public class RecipeWorktable
   public RecipeWorktable(
       IGameStageMatcher gameStageMatcher,
       List<OutputWeightPair> output,
-      ItemStack[] tools,
-      int toolDamage,
+      ToolEntry[] tools,
       List<Ingredient> ingredients,
       @Nullable FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,
@@ -46,7 +44,6 @@ public class RecipeWorktable
     this.gameStageMatcher = gameStageMatcher;
     this.output = output;
     this.tools = tools;
-    this.toolDamage = toolDamage;
     this.ingredients = ingredients;
     this.fluidIngredient = fluidIngredient;
     this.extraOutputs = extraOutputs;
@@ -113,7 +110,11 @@ public class RecipeWorktable
   @Override
   public boolean isValidTool(ItemStack tool, int toolIndex) {
 
-    for (ItemStack itemStack : this.tools) {
+    if (toolIndex >= this.tools.length) {
+      return false;
+    }
+
+    for (ItemStack itemStack : this.tools[toolIndex].getTool()) {
 
       // We can't use itemStack.isItemEqualIgnoreDurability(tool) here because
       // apparently Tinker's tools don't set the max durability on the tool
@@ -129,9 +130,13 @@ public class RecipeWorktable
   }
 
   @Override
-  public boolean isValidToolDurability(ItemStack tool, int toolIndex) {
+  public boolean hasSufficientToolDurability(ItemStack tool, int toolIndex) {
 
     if (tool.isEmpty()) {
+      return false;
+    }
+
+    if (toolIndex >= this.tools.length) {
       return false;
     }
 
@@ -139,7 +144,7 @@ public class RecipeWorktable
 
       // Note: this may fail with tinker's tools because as far as I know,
       // tinker's tools don't have a max damage value set
-      if (tool.getItemDamage() + this.toolDamage > tool.getMaxDamage()) {
+      if (tool.getItemDamage() + this.tools[toolIndex].getDamage() > tool.getMaxDamage()) {
         return false;
       }
     }
@@ -148,9 +153,13 @@ public class RecipeWorktable
   }
 
   @Override
-  public ItemStack[] getTools() {
+  public ItemStack[] getTools(int toolIndex) {
 
-    return this.tools;
+    if (toolIndex >= this.tools.length) {
+      return new ItemStack[0];
+    }
+
+    return this.tools[toolIndex].getTool();
   }
 
   @Override
@@ -206,9 +215,13 @@ public class RecipeWorktable
   }
 
   @Override
-  public int getToolDamage() {
+  public int getToolDamage(int toolIndex) {
 
-    return this.toolDamage;
+    if (toolIndex >= this.tools.length) {
+      return 0;
+    }
+
+    return this.tools[toolIndex].getDamage();
   }
 
   @Override
@@ -236,6 +249,12 @@ public class RecipeWorktable
   }
 
   @Override
+  public int getToolCount() {
+
+    return this.tools.length;
+  }
+
+  @Override
   public boolean matches(
       Collection<String> unlockedStages,
       ItemStack tool,
@@ -249,7 +268,7 @@ public class RecipeWorktable
     }
 
     // Do the tools have enough durability for this recipe?
-    if (!this.isValidToolDurability(tool, 0)) {
+    if (!this.hasSufficientToolDurability(tool, 0)) {
       return false;
     }
 
