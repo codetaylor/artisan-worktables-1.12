@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
@@ -96,6 +97,7 @@ public class BlockWorktable
   ) {
 
     if (worldIn.isRemote) {
+      GuiElementTabs.RECALCULATE_TAB_OFFSETS = true;
       return true;
     }
 

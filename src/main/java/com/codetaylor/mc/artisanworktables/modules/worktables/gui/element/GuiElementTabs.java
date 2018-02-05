@@ -33,8 +33,10 @@ public class GuiElementTabs
   private static final int TAB_ITEM_HORIZONTAL_OFFSET = 4;
   private static final int TAB_ITEM_VERTICAL_OFFSET = 4;
 
+  public static boolean RECALCULATE_TAB_OFFSETS = false;
+  private static final GuiTabOffset GUI_TAB_OFFSET = new GuiTabOffset(0);
+
   private final TileEntityWorktableBase worktable;
-  private final GuiTabOffset guiTabOffset;
 
   public GuiElementTabs(
       GuiContainerBase guiBase,
@@ -45,8 +47,10 @@ public class GuiElementTabs
     super(guiBase, 0, -TAB_HEIGHT, elementWidth, TAB_HEIGHT);
     this.worktable = worktable;
 
-    this.guiTabOffset = new GuiTabOffset(0);
-    this.calculateInitialTabOffset(worktable, this.guiTabOffset);
+    if (RECALCULATE_TAB_OFFSETS) {
+      RECALCULATE_TAB_OFFSETS = false;
+      this.calculateInitialTabOffset(worktable, GUI_TAB_OFFSET);
+    }
   }
 
   @Override
@@ -62,7 +66,7 @@ public class GuiElementTabs
     List<TileEntityWorktableBase> actualJoinedTables = this.worktable.getJoinedTables(new ArrayList<>());
     List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
         actualJoinedTables,
-        this.guiTabOffset.getOffset(),
+        GUI_TAB_OFFSET.getOffset(),
         this.worktable.getMaximumDisplayedTabCount()
     );
 
@@ -70,7 +74,7 @@ public class GuiElementTabs
 
     // draw arrows
 
-    if (this.guiTabOffset.getOffset() > 0) {
+    if (GUI_TAB_OFFSET.getOffset() > 0) {
       // draw left button
       Gui.drawModalRectWithCustomSizedTexture(
           this.elementXModifiedGet() + TAB_LEFT_OFFSET + TAB_ITEM_HORIZONTAL_OFFSET - 18,
@@ -86,7 +90,7 @@ public class GuiElementTabs
 
     int maximumDisplayedTabCount = this.worktable.getMaximumDisplayedTabCount();
 
-    if (this.guiTabOffset.getOffset() + maximumDisplayedTabCount < actualJoinedTables.size()) {
+    if (GUI_TAB_OFFSET.getOffset() + maximumDisplayedTabCount < actualJoinedTables.size()) {
       // draw right button
       Gui.drawModalRectWithCustomSizedTexture(
           this.elementXModifiedGet() + this.elementWidthModifiedGet() - 12,
@@ -172,7 +176,7 @@ public class GuiElementTabs
     List<TileEntityWorktableBase> actualJoinedTables = this.worktable.getJoinedTables(new ArrayList<>());
     List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
         actualJoinedTables,
-        this.guiTabOffset.getOffset(),
+        GUI_TAB_OFFSET.getOffset(),
         this.worktable.getMaximumDisplayedTabCount()
     );
 
@@ -202,7 +206,7 @@ public class GuiElementTabs
 
     int maximumDisplayedTabCount = this.worktable.getMaximumDisplayedTabCount();
 
-    if (this.guiTabOffset.getOffset() > 0) {
+    if (GUI_TAB_OFFSET.getOffset() > 0) {
       // check for left button click
       int xMin = this.elementXModifiedGet() + TAB_LEFT_OFFSET + TAB_ITEM_HORIZONTAL_OFFSET - 18;
       int xMax = xMin + 8;
@@ -211,15 +215,15 @@ public class GuiElementTabs
           && mouseX >= xMin
           && mouseY <= yMax
           && mouseY >= yMin) {
-        int tabOffset = this.guiTabOffset.getOffset() - maximumDisplayedTabCount;
-        this.guiTabOffset.setOffset(Math.max(0, tabOffset));
+        int tabOffset = GUI_TAB_OFFSET.getOffset() - maximumDisplayedTabCount;
+        GUI_TAB_OFFSET.setOffset(Math.max(0, tabOffset));
         Minecraft.getMinecraft()
             .getSoundHandler()
             .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1));
       }
     }
 
-    if (this.guiTabOffset.getOffset() + maximumDisplayedTabCount < actualJoinedTables.size()) {
+    if (GUI_TAB_OFFSET.getOffset() + maximumDisplayedTabCount < actualJoinedTables.size()) {
       // check for right button click
       int xMin = this.elementXModifiedGet() + this.elementWidthModifiedGet() - 12;
       int xMax = xMin + 8;
@@ -228,9 +232,9 @@ public class GuiElementTabs
           && mouseX >= xMin
           && mouseY <= yMax
           && mouseY >= yMin) {
-        this.guiTabOffset.setOffset(Math.min(
+        GUI_TAB_OFFSET.setOffset(Math.min(
             actualJoinedTables.size() - maximumDisplayedTabCount,
-            this.guiTabOffset.getOffset() + maximumDisplayedTabCount
+            GUI_TAB_OFFSET.getOffset() + maximumDisplayedTabCount
         ));
         Minecraft.getMinecraft()
             .getSoundHandler()
