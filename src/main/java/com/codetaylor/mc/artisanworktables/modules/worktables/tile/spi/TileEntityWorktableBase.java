@@ -329,6 +329,8 @@ public abstract class TileEntityWorktableBase
         }
       }
     }
+
+    // TODO: reduce secondary ingredients
   }
 
   public IRecipeWorktable getRecipe(EntityPlayer player) {
