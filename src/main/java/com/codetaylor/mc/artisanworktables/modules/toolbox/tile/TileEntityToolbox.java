@@ -1,11 +1,12 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.tile;
 
+import com.codetaylor.mc.artisanworktables.ReferenceTexture;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.ContainerToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.GuiContainerToolbox;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
+import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
@@ -18,7 +19,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -38,11 +38,6 @@ public class TileEntityToolbox
     IContainerProvider<ContainerToolbox, GuiContainerToolbox> {
 
   private ToolboxItemStackHandler itemHandler;
-
-  private static final ResourceLocation TEXTURE = new ResourceLocation(
-      ModuleWorktables.MOD_ID,
-      "textures/gui/toolbox.png"
-  );
 
   public TileEntityToolbox() {
 
@@ -166,11 +161,6 @@ public class TileEntityToolbox
     return ModuleToolbox.Lang.TOOLBOX_TITLE;
   }
 
-  public ResourceLocation getGuiTexture() {
-
-    return TEXTURE;
-  }
-
   @Override
   public ContainerToolbox getContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
@@ -188,8 +178,18 @@ public class TileEntityToolbox
     return new GuiContainerToolbox(
         this.getContainer(inventoryPlayer, world, state, pos),
         this.getGuiContainerTitleKey(),
-        this.getGuiTexture()
+        this.getTexture()
     );
+  }
+
+  public Texture getTexture() {
+
+    return ReferenceTexture.TEXTURE_TOOLBOX;
+  }
+
+  public Texture getTextureSide() {
+
+    return ReferenceTexture.TEXTURE_TOOLBOX_SIDE;
   }
 
 }

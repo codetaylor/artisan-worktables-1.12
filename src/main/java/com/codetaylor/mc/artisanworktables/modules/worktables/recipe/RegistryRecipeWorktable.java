@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,9 +37,10 @@ public class RegistryRecipeWorktable {
   @Nullable
   public IRecipeWorktable findRecipe(
       EntityPlayer player,
-      ItemStack tool,
+      ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
-      @Nullable FluidStack fluidStack
+      @Nullable FluidStack fluidStack,
+      ISecondaryIngredientMatcher secondaryIngredientMatcher
   ) {
 
     Collection<String> unlockedStages;
@@ -54,7 +55,7 @@ public class RegistryRecipeWorktable {
 
     for (IRecipeWorktable recipe : this.recipeList) {
 
-      if (recipe.matches(unlockedStages, tool, craftingMatrix, fluidStack)) {
+      if (recipe.matches(unlockedStages, tools, craftingMatrix, fluidStack, secondaryIngredientMatcher)) {
         return recipe;
       }
     }

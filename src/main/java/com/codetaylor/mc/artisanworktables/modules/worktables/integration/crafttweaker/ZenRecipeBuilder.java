@@ -17,11 +17,13 @@ public class ZenRecipeBuilder
 
   private String tableName;
   private RecipeBuilder recipeBuilder;
+  private int nextToolIndex;
 
   /* package */ ZenRecipeBuilder(String tableName) {
 
     this.tableName = tableName;
     this.recipeBuilder = new RecipeBuilder();
+    this.nextToolIndex = 0;
   }
 
   @Override
@@ -46,6 +48,13 @@ public class ZenRecipeBuilder
   }
 
   @Override
+  public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) {
+
+    this.recipeBuilder.setSecondaryIngredients(secondaryIngredients);
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setMirrored() {
 
     this.recipeBuilder.setMirrored();
@@ -55,7 +64,20 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setTool(IIngredient tool, int damage) {
 
-    this.recipeBuilder.setTool(CTInputHelper.toIngredient(tool), damage);
+    this.addTool(tool, damage);
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder addTool(IIngredient tool, int damage) {
+
+    if (this.nextToolIndex >= 4) {
+      CTLogHelper.logErrorFromZenMethod("Recipes are restricted to a maximum of 4 tools!");
+      return this;
+    }
+
+    this.recipeBuilder.setTool(this.nextToolIndex, CTInputHelper.toIngredient(tool), damage);
+    this.nextToolIndex += 1;
     return this;
   }
 

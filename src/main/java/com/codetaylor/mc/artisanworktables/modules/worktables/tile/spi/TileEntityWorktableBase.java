@@ -5,9 +5,9 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -53,8 +53,6 @@ public abstract class TileEntityWorktableBase
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
   private ObservableStackHandler secondaryOutputHandler;
-
-  private static int GUI_TAB_OFFSET;
 
   public TileEntityWorktableBase(int width, int height) {
 
@@ -173,11 +171,12 @@ public abstract class TileEntityWorktableBase
     // Check for and populate secondary, tertiary and quaternary outputs
     this.onCraftProcessExtraOutput(recipe);
 
-    // Damage or destroy tool
-    this.onCraftDamageTool(player, 0, recipe);
-
+    // Damage or destroy tools
     // Check for replacement tool
-    this.onCraftCheckAndReplaceTool(recipe, 0);
+    for (int i = 0; i < recipe.getToolCount(); i++) {
+      this.onCraftDamageTool(player, i, recipe);
+      this.onCraftCheckAndReplaceTool(recipe, i);
+    }
 
     this.markDirty();
 
@@ -238,7 +237,7 @@ public abstract class TileEntityWorktableBase
     ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
     if (!itemStack.isEmpty() && recipe.isValidTool(itemStack, toolIndex)) {
-      int itemDamage = itemStack.getMetadata() + recipe.getToolDamage();
+      int itemDamage = itemStack.getMetadata() + recipe.getToolDamage(toolIndex);
 
       if (itemDamage >= itemStack.getItem().getMaxDamage(itemStack)) {
         this.toolHandler.setStackInSlot(toolIndex, ItemStack.EMPTY);
@@ -268,7 +267,7 @@ public abstract class TileEntityWorktableBase
 
     ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
-    if (!recipe.isValidToolDurability(itemStack, toolIndex)) {
+    if (!recipe.hasSufficientToolDurability(itemStack, toolIndex)) {
       // Tool needs to be replaced
       TileEntityToolbox adjacentToolbox = this.getAdjacentToolbox();
 
@@ -293,7 +292,7 @@ public abstract class TileEntityWorktableBase
         }
 
         if (recipe.isValidTool(potentialTool, toolIndex)
-            && recipe.isValidToolDurability(potentialTool, toolIndex)) {
+            && recipe.hasSufficientToolDurability(potentialTool, toolIndex)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
           capability.insertItem(i, this.toolHandler.getStackInSlot(toolIndex), false);
@@ -349,10 +348,23 @@ public abstract class TileEntityWorktableBase
     RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
     return registry.findRecipe(
         player,
-        this.toolHandler.getStackInSlot(0),
+        this.getTools(),
         this.craftingMatrixHandler,
-        fluidStack
+        fluidStack,
+        ISecondaryIngredientMatcher.FALSE // TODO
     );
+  }
+
+  public ItemStack[] getTools() {
+
+    int slotCount = this.toolHandler.getSlots();
+    ItemStack[] tools = new ItemStack[slotCount];
+
+    for (int i = 0; i < slotCount; i++) {
+      tools[i] = this.toolHandler.getStackInSlot(i);
+    }
+
+    return tools;
   }
 
   private void generateExtraOutput(ItemStack extraOutput) {
@@ -470,16 +482,6 @@ public abstract class TileEntityWorktableBase
     return new ItemStack(item, 1, block.getMetaFromState(state));
   }
 
-  public void setGuiTabOffset(int offset) {
-
-    GUI_TAB_OFFSET = offset;
-  }
-
-  public int getGuiTabOffset() {
-
-    return GUI_TAB_OFFSET;
-  }
-
   public boolean onBlockActivated(
       World worldIn,
       BlockPos pos,
@@ -517,6 +519,11 @@ public abstract class TileEntityWorktableBase
         this.getWorktableGuiTextShadowColor(),
         this
     );
+  }
+
+  public int getMaximumDisplayedTabCount() {
+
+    return 6;
   }
 
   private String getTableTitleKey() {

@@ -1,17 +1,18 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
+import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerToolbox
-    extends Container {
+    extends ContainerBase {
 
   private static final int NUM_ROWS = 3;
+
   private final TileEntityToolbox tile;
 
   public ContainerToolbox(
@@ -19,25 +20,18 @@ public class ContainerToolbox
       TileEntityToolbox tile
   ) {
 
-    this.tile = tile;
+    super(playerInventory);
 
-    int i = (NUM_ROWS - 4) * 18;
+    this.tile = tile;
 
     for (int j = 0; j < NUM_ROWS; ++j) {
       for (int k = 0; k < 9; ++k) {
-        this.addSlotToContainer(new SlotItemHandler(this.tile.getItemHandler(), k + j * 9, 8 + k * 18, 17 + j * 18));
+        this.containerSlotAdd(new SlotItemHandler(this.tile.getItemHandler(), k + j * 9, 8 + k * 18, 17 + j * 18));
       }
     }
 
-    for (int l = 0; l < 3; ++l) {
-      for (int j1 = 0; j1 < 9; ++j1) {
-        this.addSlotToContainer(new Slot(playerInventory, j1 + l * 9 + 9, 8 + j1 * 18, 102 + l * 18 + i));
-      }
-    }
-
-    for (int i1 = 0; i1 < 9; ++i1) {
-      this.addSlotToContainer(new Slot(playerInventory, i1, 8 + i1 * 18, 160 + i));
-    }
+    this.containerPlayerInventoryAdd();
+    this.containerPlayerHotbarAdd();
   }
 
   @Override

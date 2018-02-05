@@ -1,17 +1,12 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.tile;
 
+import com.codetaylor.mc.artisanworktables.ReferenceTexture;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import net.minecraft.util.ResourceLocation;
+import com.codetaylor.mc.athenaeum.gui.Texture;
 
 public class TileEntityMechanicalToolbox
     extends TileEntityToolbox {
-
-  private static final ResourceLocation TEXTURE = new ResourceLocation(
-      ModuleWorktables.MOD_ID,
-      "textures/gui/mechanical_toolbox.png"
-  );
 
   @Override
   protected boolean restrictToToolsOnly() {
@@ -26,8 +21,14 @@ public class TileEntityMechanicalToolbox
   }
 
   @Override
-  public ResourceLocation getGuiTexture() {
+  public Texture getTexture() {
 
-    return TEXTURE;
+    return ReferenceTexture.TEXTURE_TOOLBOX_MECHANICAL;
+  }
+
+  @Override
+  public Texture getTextureSide() {
+
+    return ReferenceTexture.TEXTURE_TOOLBOX_MECHANICAL_SIDE;
   }
 }

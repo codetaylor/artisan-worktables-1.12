@@ -1,8 +1,16 @@
-1.11.21:
+1.12.21
+* Fixed: crash with liquid in GUI (or invisible items w/ optifine) (#52)
+* Fixed: tertiary and quaternary chanced outputs not set properly with legacy zen methods
+* Changed: refactor of the gui / container code (internal prep)
+* Changed: changed recipes to handle multiple tools (internal prep)
+* Note: This is being released as an alpha because it changes several internal systems. New features will be built using the new changes and it is important to quickly catch and eliminate any bugs that have been introduced by the refactoring. If you would like to help speed the development process and ensure a stable product, please report any issues you find with this version. Thank you!
+* Requires: Athenaeum >= 1.7.4
+
+1.11.21
 * Fixed: fluid cleared via GUI remains after re-load (#49)
 * Changed: updated de_de.lang (PR#46 Xaikii) 
 
-1.11.20:
+1.11.20
 * Added: Mechanical Toolbox!
   * This new toolbox will automatically swap old tools for new tools. When a tool is broken,
     or lacks sufficient durability to complete the last successful craft, the Mechanical
@@ -12,26 +20,26 @@
 * Added: config option to disable the durability tooltip
 * Note: you will probably need to refresh the config for the tools and the toolbox
 
-1.10.20:
+1.10.20
 * Fixed: shift-click tool swap eats tools of the same type (#45)
 
-1.10.19:
+1.10.19
 * Fixed: GUI fluid tank render bug (#40)
 * Fixed: Non-interactive fluid display in JEI (#42)
 * Changed: updated de_de.lang (PR#43 Xaikii)
 
-1.10.18:
+1.10.18
 * Fixed: NPE crash when using any recipe without a fluid ingredient (#41)
 * Changed: updated zh_cn.lang (PR#39 DYColdWind)
 
-1.10.17:
+1.10.17
 * Added: support for fluid ingredients in recipes (#35)
 
-1.9.17:
+1.9.17
 * Added: de_de.lang (#33 Xaikii)
 * Changed: updated zh_cn.lang (PR#32 DYColdWind)
 
-1.9.16:
+1.9.16
 * Added: Worktable tab paging arrows!
   * You can now page between more than six joined worktables with tab arrows
 * Added: Bone tools!
@@ -58,43 +66,43 @@
 * Note: don't forget to regenerate the config or manually add the new tools and materials to the lists
 * Requires: Athenaeum >= 1.5.3
 
-1.8.16:
+1.8.16
 * Fixed: gamestage ALL logic not behaving as expected (#26)
 
-1.8.15:
+1.8.15
 * Fixed: server crash (#25)
 
-1.8.14:
+1.8.14
 * Added: exposed advanced recipe builder syntax to ZenScript, exposes more recipe features - see ZENSCRIPT_ADVANCED.md for syntax
 * Added: new recipe option - unlimited, exclusive (only one will be crafted) weighted outputs 
 * Added: new recipe option - greater flexibility in defining matching gamestages
 * Changed: disabled MouseTweaks wheel in tables
 * Changed: disabled shift-click recipe crafting for the new, multi-output recipes
 
-1.7.14:
+1.7.14
 * Fixed: worktables not saving contents properly (#23)
 
-1.7.13:
+1.7.13
 * Fixed: staged recipes using stage names with capital letters not showing in JEI (#24) 
 
-1.7.12:
+1.7.12
 * Fixed: JEI recipe category name for the Mage's Worktable using wrong translation key
 
-1.7.11:
+1.7.11
 * Changed: code refactor / cleanup
 * Changed: updated zh_cn.lang (PR#20 DYColdWind)
 
-1.7.10:
+1.7.10
 * Added: new tables: engineers worktable, mages worktable
 * Added: new tools: engineers spanner, engineers driver, mages athame, mages grimoire
 * Changed: lightened the wood tool color slightly
 * Note: don't forget to regenerate the config or manually add the new tool types to the list
 
-1.6.10:
+1.6.10
 * Fixed: extra chance drops are now properly linked in JEI; when searching for recipes to make the extra chance drop, it will show the worktable recipe (#14)
 * Fixed: double-click same item as craft result will not cause a craft to happen (#15) 
 
-1.6.9:
+1.6.9
 * Added: support for up to three optional outputs with chance
 * Added: shapeless recipe indicator with tooltip in JEI
 * Changed: updated zh_cn.lang (PR#10 DYColdWind)

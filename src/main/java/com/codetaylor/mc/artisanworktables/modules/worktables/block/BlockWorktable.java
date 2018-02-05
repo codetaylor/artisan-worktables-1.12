@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityWorktableMage;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
@@ -31,10 +31,7 @@ import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable.TAB_VIEW_SIZE;
 
 public class BlockWorktable
     extends Block
@@ -100,39 +97,7 @@ public class BlockWorktable
   ) {
 
     if (worldIn.isRemote) {
-      TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-      if (tileEntity instanceof TileEntityWorktableBase) {
-        TileEntityWorktableBase worktableBase = (TileEntityWorktableBase) tileEntity;
-        worktableBase.setGuiTabOffset(0);
-
-        List<TileEntityWorktableBase> actualJoinedTables = worktableBase.getJoinedTables(new ArrayList<>());
-
-        boolean tabInView = false;
-
-        while (!tabInView && !actualJoinedTables.isEmpty()) {
-          List<TileEntityWorktableBase> joinedTables = GuiContainerWorktable.getJoinedTableOffsetView(
-              actualJoinedTables,
-              worktableBase.getGuiTabOffset()
-          );
-
-          for (TileEntityWorktableBase joinedTable : joinedTables) {
-
-            if (joinedTable == worktableBase) {
-              tabInView = true;
-              break;
-            }
-          }
-
-          if (!tabInView) {
-            worktableBase.setGuiTabOffset(Math.min(
-                actualJoinedTables.size() - TAB_VIEW_SIZE,
-                worktableBase.getGuiTabOffset() + TAB_VIEW_SIZE
-            ));
-          }
-        }
-
-      }
+      GuiElementTabs.RECALCULATE_TAB_OFFSETS = true;
       return true;
     }
 

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
+package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,11 +13,9 @@ public class ToolboxSlot
     extends SlotItemHandler {
 
   private final TileEntityToolbox tile;
-  private final Runnable slotChangeListener;
 
   public ToolboxSlot(
       TileEntityToolbox tile,
-      Runnable slotChangeListener,
       IItemHandler itemHandler,
       int index,
       int xPosition,
@@ -26,7 +24,6 @@ public class ToolboxSlot
 
     super(itemHandler, index, xPosition, yPosition);
     this.tile = tile;
-    this.slotChangeListener = slotChangeListener;
   }
 
   @Nonnull
@@ -111,13 +108,5 @@ public class ToolboxSlot
   public boolean isEnabled() {
 
     return !this.tile.isInvalid();
-  }
-
-  @Override
-  public void onSlotChanged() {
-
-    super.onSlotChanged();
-
-    this.slotChangeListener.run();
   }
 }

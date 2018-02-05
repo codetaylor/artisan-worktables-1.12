@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,9 +15,10 @@ public interface IRecipeWorktable {
 
   boolean matches(
       Collection<String> unlockedStages,
-      ItemStack tool,
+      ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
-      FluidStack fluidStack
+      FluidStack fluidStack,
+      ISecondaryIngredientMatcher secondaryIngredientMatcher
   );
 
   int getWidth();
@@ -26,8 +28,6 @@ public interface IRecipeWorktable {
   boolean isShaped();
 
   boolean isMirrored();
-
-  int getToolDamage();
 
   boolean matchGameStages(Collection<String> unlockedStages);
 
@@ -45,9 +45,13 @@ public interface IRecipeWorktable {
 
   boolean isValidTool(ItemStack tool, int toolIndex);
 
-  boolean isValidToolDurability(ItemStack tool, int toolIndex);
+  boolean hasSufficientToolDurability(ItemStack tool, int toolIndex);
 
-  ItemStack[] getTools();
+  ItemStack[] getTools(int toolIndex);
+
+  int getToolDamage(int toolIndex);
+
+  int getToolCount();
 
   List<Ingredient> getIngredientList();
 

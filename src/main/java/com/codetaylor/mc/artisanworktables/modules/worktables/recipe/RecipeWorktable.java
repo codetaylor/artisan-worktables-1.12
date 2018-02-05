@@ -2,8 +2,9 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
+import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,13 +19,13 @@ public class RecipeWorktable
     implements IRecipeWorktable {
 
   private IGameStageMatcher gameStageMatcher;
-  private ItemStack[] tools;
-  private int toolDamage;
+  private ToolEntry[] tools;
   private List<OutputWeightPair> output;
   private List<Ingredient> ingredients;
+  private List<IIngredient> secondaryIngredients;
   private FluidStack fluidIngredient;
   private ExtraOutputChancePair[] extraOutputs;
-  private IRecipeMatcher recipeMatcher;
+  private IRecipeMatrixMatcher recipeMatrixMatcher;
   private boolean mirrored;
   private int width;
   private int height;
@@ -32,12 +33,12 @@ public class RecipeWorktable
   public RecipeWorktable(
       IGameStageMatcher gameStageMatcher,
       List<OutputWeightPair> output,
-      ItemStack[] tools,
-      int toolDamage,
+      ToolEntry[] tools,
       List<Ingredient> ingredients,
+      List<IIngredient> secondaryIngredients,
       @Nullable FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,
-      IRecipeMatcher recipeMatcher,
+      IRecipeMatrixMatcher recipeMatrixMatcher,
       boolean mirrored,
       int width,
       int height
@@ -46,11 +47,11 @@ public class RecipeWorktable
     this.gameStageMatcher = gameStageMatcher;
     this.output = output;
     this.tools = tools;
-    this.toolDamage = toolDamage;
     this.ingredients = ingredients;
+    this.secondaryIngredients = secondaryIngredients;
     this.fluidIngredient = fluidIngredient;
     this.extraOutputs = extraOutputs;
-    this.recipeMatcher = recipeMatcher;
+    this.recipeMatrixMatcher = recipeMatrixMatcher;
     this.mirrored = mirrored;
     this.width = width;
     this.height = height;
@@ -113,7 +114,11 @@ public class RecipeWorktable
   @Override
   public boolean isValidTool(ItemStack tool, int toolIndex) {
 
-    for (ItemStack itemStack : this.tools) {
+    if (toolIndex >= this.tools.length) {
+      return false;
+    }
+
+    for (ItemStack itemStack : this.tools[toolIndex].getTool()) {
 
       // We can't use itemStack.isItemEqualIgnoreDurability(tool) here because
       // apparently Tinker's tools don't set the max durability on the tool
@@ -129,9 +134,13 @@ public class RecipeWorktable
   }
 
   @Override
-  public boolean isValidToolDurability(ItemStack tool, int toolIndex) {
+  public boolean hasSufficientToolDurability(ItemStack tool, int toolIndex) {
 
     if (tool.isEmpty()) {
+      return false;
+    }
+
+    if (toolIndex >= this.tools.length) {
       return false;
     }
 
@@ -139,7 +148,7 @@ public class RecipeWorktable
 
       // Note: this may fail with tinker's tools because as far as I know,
       // tinker's tools don't have a max damage value set
-      if (tool.getItemDamage() + this.toolDamage > tool.getMaxDamage()) {
+      if (tool.getItemDamage() + this.tools[toolIndex].getDamage() > tool.getMaxDamage()) {
         return false;
       }
     }
@@ -148,9 +157,13 @@ public class RecipeWorktable
   }
 
   @Override
-  public ItemStack[] getTools() {
+  public ItemStack[] getTools(int toolIndex) {
 
-    return this.tools;
+    if (toolIndex >= this.tools.length) {
+      return new ItemStack[0];
+    }
+
+    return this.tools[toolIndex].getTool();
   }
 
   @Override
@@ -206,9 +219,13 @@ public class RecipeWorktable
   }
 
   @Override
-  public int getToolDamage() {
+  public int getToolDamage(int toolIndex) {
 
-    return this.toolDamage;
+    if (toolIndex >= this.tools.length) {
+      return 0;
+    }
+
+    return this.tools[toolIndex].getDamage();
   }
 
   @Override
@@ -236,23 +253,36 @@ public class RecipeWorktable
   }
 
   @Override
+  public int getToolCount() {
+
+    return this.tools.length;
+  }
+
+  @Override
   public boolean matches(
       Collection<String> unlockedStages,
-      ItemStack tool,
+      ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
-      FluidStack fluidStack
+      FluidStack fluidStack,
+      ISecondaryIngredientMatcher secondaryIngredientMatcher
   ) {
 
+    if (this.getToolCount() > tools.length) {
+      // this recipe requires more tools than the tools in the table
+      return false;
+    }
+
     // Do we have the correct tools?
-    if (!this.isValidTool(tool, 0)) {
-      return false;
-    }
-
     // Do the tools have enough durability for this recipe?
-    if (!this.isValidToolDurability(tool, 0)) {
-      return false;
+    for (int i = 0; i < this.getToolCount(); i++) {
+
+      if (!this.isValidTool(tools[i], i)
+          || !this.hasSufficientToolDurability(tools[i], i)) {
+        return false;
+      }
     }
 
+    // match gamestages
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
 
       if (!this.gameStageMatcher.matches(unlockedStages)) {
@@ -260,7 +290,15 @@ public class RecipeWorktable
       }
     }
 
-    return this.recipeMatcher.matches(this, craftingMatrix, fluidStack);
+    if (!this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack)) {
+      return false;
+    }
+
+    if (!this.secondaryIngredients.isEmpty()) {
+      return secondaryIngredientMatcher.matches(this.secondaryIngredients);
+    }
+
+    return true;
   }
 
 }

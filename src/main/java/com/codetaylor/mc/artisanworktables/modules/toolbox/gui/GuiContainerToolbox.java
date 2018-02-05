@@ -1,29 +1,50 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.gui;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
+import com.codetaylor.mc.athenaeum.gui.GuiHelper;
+import com.codetaylor.mc.athenaeum.gui.Texture;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 
 import java.awt.*;
 
 public class GuiContainerToolbox
-    extends GuiContainer {
+    extends GuiContainerBase {
 
   private static final int TEXT_SHADOW_COLOR = new Color(103, 69, 29).getRGB();
-  private final String guiContainerTitleKey;
-  private final ResourceLocation texture;
 
   public GuiContainerToolbox(
       ContainerToolbox container,
-      String guiContainerTitleKey,
-      ResourceLocation texture
+      String titleKey,
+      Texture texture
   ) {
 
-    super(container);
-    this.guiContainerTitleKey = guiContainerTitleKey;
-    this.texture = texture;
+    super(container, 176, 166);
+
+    // toolbox title
+    this.guiContainerElementAdd(new GuiElementTitle(
+        this,
+        titleKey,
+        8,
+        6
+    ));
+
+    // inventory title
+    this.guiContainerElementAdd(new GuiElementTitle(
+        this,
+        "container.inventory",
+        8,
+        this.ySize - 93
+    ));
+
+    this.guiContainerElementAdd(new GuiElementTextureRectangle(
+        this,
+        texture,
+        0,
+        0,
+        176,
+        166
+    ));
   }
 
   @Override
@@ -35,37 +56,8 @@ public class GuiContainerToolbox
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+  public void drawString(String translateKey, int x, int y) {
 
-    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    this.mc.getTextureManager().bindTexture(this.texture);
-    int x = this.guiLeft;
-    int y = (this.height - this.ySize) / 2;
-    this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-  }
-
-  @Override
-  protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-
-    this.drawString(this.guiContainerTitleKey, 8, 6);
-    this.drawString("container.inventory", 8, this.ySize - 96 + 3);
-  }
-
-  private void drawString(String translateKey, int x, int y) {
-
-    String displayText = I18n.format(translateKey);
-    FontRenderer fontRenderer = this.fontRenderer;
-
-    fontRenderer.drawString(displayText, x + 0, y + 1, TEXT_SHADOW_COLOR);
-    fontRenderer.drawString(displayText, x + 1, y + 1, TEXT_SHADOW_COLOR);
-    fontRenderer.drawString(displayText, x + 1, y - 1, TEXT_SHADOW_COLOR);
-    fontRenderer.drawString(displayText, x + 1, y + 0, TEXT_SHADOW_COLOR);
-
-    fontRenderer.drawString(displayText, x - 0, y - 1, TEXT_SHADOW_COLOR);
-    fontRenderer.drawString(displayText, x - 1, y - 1, TEXT_SHADOW_COLOR);
-    fontRenderer.drawString(displayText, x - 1, y + 1, TEXT_SHADOW_COLOR);
-    fontRenderer.drawString(displayText, x - 1, y - 0, TEXT_SHADOW_COLOR);
-
-    fontRenderer.drawString(displayText, x, y, Color.BLACK.getRGB());
+    GuiHelper.drawStringOutlined(translateKey, x, y, this.fontRenderer, TEXT_SHADOW_COLOR);
   }
 }

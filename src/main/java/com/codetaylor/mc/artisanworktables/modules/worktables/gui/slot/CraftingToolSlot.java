@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
+package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
 import com.codetaylor.mc.athenaeum.inventory.PredicateSlotItemHandler;
 import net.minecraft.item.ItemStack;
