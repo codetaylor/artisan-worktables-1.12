@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
+import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,6 +22,7 @@ public class RecipeWorktable
   private ToolEntry[] tools;
   private List<OutputWeightPair> output;
   private List<Ingredient> ingredients;
+  private List<IIngredient> secondaryIngredients;
   private FluidStack fluidIngredient;
   private ExtraOutputChancePair[] extraOutputs;
   private IRecipeMatrixMatcher recipeMatrixMatcher;
@@ -33,6 +35,7 @@ public class RecipeWorktable
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<Ingredient> ingredients,
+      List<IIngredient> secondaryIngredients,
       @Nullable FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,
       IRecipeMatrixMatcher recipeMatrixMatcher,
@@ -45,6 +48,7 @@ public class RecipeWorktable
     this.output = output;
     this.tools = tools;
     this.ingredients = ingredients;
+    this.secondaryIngredients = secondaryIngredients;
     this.fluidIngredient = fluidIngredient;
     this.extraOutputs = extraOutputs;
     this.recipeMatrixMatcher = recipeMatrixMatcher;
@@ -259,7 +263,8 @@ public class RecipeWorktable
       Collection<String> unlockedStages,
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
-      FluidStack fluidStack
+      FluidStack fluidStack,
+      ISecondaryIngredientMatcher secondaryIngredientMatcher
   ) {
 
     if (this.getToolCount() > tools.length) {
@@ -277,6 +282,7 @@ public class RecipeWorktable
       }
     }
 
+    // match gamestages
     if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
 
       if (!this.gameStageMatcher.matches(unlockedStages)) {
@@ -284,7 +290,15 @@ public class RecipeWorktable
       }
     }
 
-    return this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack);
+    if (!this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack)) {
+      return false;
+    }
+
+    if (!this.secondaryIngredients.isEmpty()) {
+      return secondaryIngredientMatcher.matches(this.secondaryIngredients);
+    }
+
+    return true;
   }
 
 }

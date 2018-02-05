@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.MathHelper;
@@ -17,6 +18,7 @@ public class RecipeBuilder {
   private int height;
   private boolean mirrored;
   private List<Ingredient> ingredients;
+  private List<IIngredient> secondaryIngredients;
   private FluidStack fluidIngredient;
   private ToolIngredientEntry[] tools;
   private List<OutputWeightPair> outputWeightPairList;
@@ -28,6 +30,7 @@ public class RecipeBuilder {
   public RecipeBuilder() {
 
     this.ingredients = Collections.emptyList();
+    this.secondaryIngredients = Collections.emptyList();
     this.fluidIngredient = null;
     this.outputWeightPairList = new ArrayList<>();
     this.extraOutputs = new ExtraOutputChancePair[3];
@@ -66,6 +69,13 @@ public class RecipeBuilder {
   public RecipeBuilder setFluidIngredient(FluidStack fluidIngredient) {
 
     this.fluidIngredient = fluidIngredient;
+    return this;
+  }
+
+  public RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) {
+
+    this.secondaryIngredients = new ArrayList<>();
+    Collections.addAll(this.secondaryIngredients, secondaryIngredients);
     return this;
   }
 
@@ -170,6 +180,7 @@ public class RecipeBuilder {
         this.outputWeightPairList,
         tools,
         this.ingredients,
+        this.secondaryIngredients,
         this.fluidIngredient,
         this.extraOutputs,
         recipeMatcher,

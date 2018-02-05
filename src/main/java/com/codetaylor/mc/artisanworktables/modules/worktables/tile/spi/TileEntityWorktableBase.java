@@ -7,6 +7,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -347,7 +348,8 @@ public abstract class TileEntityWorktableBase
         player,
         this.getTools(),
         this.craftingMatrixHandler,
-        fluidStack
+        fluidStack,
+        ISecondaryIngredientMatcher.FALSE // TODO
     );
   }
 

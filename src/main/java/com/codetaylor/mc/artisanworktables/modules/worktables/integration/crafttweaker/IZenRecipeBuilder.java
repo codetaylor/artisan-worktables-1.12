@@ -20,10 +20,17 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient);
 
   @ZenMethod
-  IZenRecipeBuilder setMirrored();
+  IZenRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
 
   @ZenMethod
+  IZenRecipeBuilder setMirrored();
+
+  @Deprecated
+  @ZenMethod
   IZenRecipeBuilder setTool(IIngredient tool, int damage);
+
+  @ZenMethod
+  IZenRecipeBuilder addTool(IIngredient tool, int damage);
 
   @ZenMethod
   IZenRecipeBuilder addOutput(IItemStack output, @Optional int weight);

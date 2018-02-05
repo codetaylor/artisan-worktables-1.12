@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +17,8 @@ public interface IRecipeWorktable {
       Collection<String> unlockedStages,
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
-      FluidStack fluidStack
+      FluidStack fluidStack,
+      ISecondaryIngredientMatcher secondaryIngredientMatcher
   );
 
   int getWidth();

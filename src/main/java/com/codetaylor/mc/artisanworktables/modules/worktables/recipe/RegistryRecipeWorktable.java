@@ -39,7 +39,8 @@ public class RegistryRecipeWorktable {
       EntityPlayer player,
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
-      @Nullable FluidStack fluidStack
+      @Nullable FluidStack fluidStack,
+      ISecondaryIngredientMatcher secondaryIngredientMatcher
   ) {
 
     Collection<String> unlockedStages;
@@ -54,7 +55,7 @@ public class RegistryRecipeWorktable {
 
     for (IRecipeWorktable recipe : this.recipeList) {
 
-      if (recipe.matches(unlockedStages, tools, craftingMatrix, fluidStack)) {
+      if (recipe.matches(unlockedStages, tools, craftingMatrix, fluidStack, secondaryIngredientMatcher)) {
         return recipe;
       }
     }

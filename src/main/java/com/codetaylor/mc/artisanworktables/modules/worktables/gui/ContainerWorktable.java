@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
@@ -154,7 +155,8 @@ public class ContainerWorktable
         player,
         this.tile.getTools(),
         this.tile.getCraftingMatrixHandler(),
-        fluidStack
+        fluidStack,
+        ISecondaryIngredientMatcher.FALSE // TODO
     );
 
     if (recipe != null) {
