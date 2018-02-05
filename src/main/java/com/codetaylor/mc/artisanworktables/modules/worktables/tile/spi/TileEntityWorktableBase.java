@@ -233,15 +233,15 @@ public abstract class TileEntityWorktableBase
     }
   }
 
-  private void onCraftDamageTool(EntityPlayer player, int toolSlot, IRecipeWorktable recipe) {
+  private void onCraftDamageTool(EntityPlayer player, int toolIndex, IRecipeWorktable recipe) {
 
-    ItemStack itemStack = this.toolHandler.getStackInSlot(toolSlot);
+    ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
-    if (!itemStack.isEmpty() && recipe.isValidTool(itemStack, toolSlot)) {
+    if (!itemStack.isEmpty() && recipe.isValidTool(itemStack, toolIndex)) {
       int itemDamage = itemStack.getMetadata() + recipe.getToolDamage();
 
       if (itemDamage >= itemStack.getItem().getMaxDamage(itemStack)) {
-        this.toolHandler.setStackInSlot(toolSlot, ItemStack.EMPTY);
+        this.toolHandler.setStackInSlot(toolIndex, ItemStack.EMPTY);
 
         if (!this.world.isRemote) {
           this.world.playSound(
@@ -259,16 +259,16 @@ public abstract class TileEntityWorktableBase
       } else {
         ItemStack copy = itemStack.copy();
         copy.setItemDamage(itemDamage);
-        this.toolHandler.setStackInSlot(toolSlot, copy);
+        this.toolHandler.setStackInSlot(toolIndex, copy);
       }
     }
   }
 
-  private void onCraftCheckAndReplaceTool(IRecipeWorktable recipe, int toolSlot) {
+  private void onCraftCheckAndReplaceTool(IRecipeWorktable recipe, int toolIndex) {
 
-    ItemStack itemStack = this.toolHandler.getStackInSlot(toolSlot);
+    ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
-    if (!recipe.isValidToolDurability(itemStack, toolSlot)) {
+    if (!recipe.isValidToolDurability(itemStack, toolIndex)) {
       // Tool needs to be replaced
       TileEntityToolbox adjacentToolbox = this.getAdjacentToolbox();
 
@@ -292,12 +292,12 @@ public abstract class TileEntityWorktableBase
           continue;
         }
 
-        if (recipe.isValidTool(potentialTool, toolSlot)
-            && recipe.isValidToolDurability(potentialTool, toolSlot)) {
+        if (recipe.isValidTool(potentialTool, toolIndex)
+            && recipe.isValidToolDurability(potentialTool, toolIndex)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
-          capability.insertItem(i, this.toolHandler.getStackInSlot(toolSlot), false);
-          this.toolHandler.setStackInSlot(toolSlot, potentialTool);
+          capability.insertItem(i, this.toolHandler.getStackInSlot(toolIndex), false);
+          this.toolHandler.setStackInSlot(toolIndex, potentialTool);
 
           this.notifyBlockUpdate();
           adjacentToolbox.notifyBlockUpdate();
@@ -330,6 +330,8 @@ public abstract class TileEntityWorktableBase
         }
       }
     }
+
+    // TODO: reduce secondary ingredients
   }
 
   public IRecipeWorktable getRecipe(EntityPlayer player) {
