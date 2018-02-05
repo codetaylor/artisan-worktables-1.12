@@ -1,7 +1,10 @@
 1.12.21
+* Fixed: crash with liquid in GUI (or invisible items w/ optifine) (#52)
 * Fixed: tertiary and quaternary chanced outputs not set properly with legacy zen methods
 * Changed: refactor of the gui / container code (internal prep)
 * Changed: changed recipes to handle multiple tools (internal prep)
+* Note: This is being released as an alpha because it changes several internal systems. New features will be built using the new changes and it is important to quickly catch and eliminate any bugs that have been introduced by the refactoring. If you would like to help speed the development process and ensure a stable product, please report any issues you find with this version. Thank you!
+* Requires: Athenaeum >= 1.7.4
 
 1.11.21
 * Fixed: fluid cleared via GUI remains after re-load (#49)
