@@ -1,3 +1,6 @@
+1.13.21
+* Note: you will need to refresh the config for the worktable module
+
 1.12.21
 * Fixed: crash with liquid in GUI (or invisible items w/ optifine) (#52)
 * Fixed: tertiary and quaternary chanced outputs not set properly with legacy zen methods

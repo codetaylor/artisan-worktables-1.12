@@ -11,9 +11,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,15 +120,7 @@ public class JEICategoryWorktable
       stacks.set(13, extraOutput);
     }
 
-    int capacity = 4000;
-
-    try {
-      Field field = ReflectionHelper.findField(ModuleWorktablesConfig.FluidCapacity.class, this.tableName.toUpperCase());
-      capacity = (int) field.get(ModuleWorktablesConfig.FLUID_CAPACITY);
-
-    } catch (IllegalAccessException e) {
-      //
-    }
+    int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(this.tableName.toLowerCase());
 
     fluidStacks.init(14, true, 5, 14, 6, 52, capacity, true, null);
     fluidStacks.set(14, wrapperWorktable.getFluidStack());

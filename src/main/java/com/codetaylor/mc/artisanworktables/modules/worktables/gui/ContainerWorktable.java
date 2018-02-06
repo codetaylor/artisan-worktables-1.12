@@ -3,11 +3,12 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityFluidBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorkstationBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationScribe;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,16 +27,30 @@ public class ContainerWorktable
 
   private final CraftingResultSlot craftingResultSlot;
   private World world;
-  private TileEntityWorktableBase tile;
+  private TileEntityBase tile;
   private TileEntityToolbox toolbox;
   private final ItemStackHandler resultHandler;
   private FluidStack lastFluidStack;
   private final EntityPlayer player;
 
+  private final int slotIndexResult;
+  private final int slotIndexCraftingMatrixStart;
+  private final int slotIndexCraftingMatrixEnd;
+  private final int slotIndexInventoryStart;
+  private final int slotIndexInventoryEnd;
+  private final int slotIndexHotbarStart;
+  private final int slotIndexHotbarEnd;
+  private final int slotIndexToolsStart;
+  private final int slotIndexToolsEnd;
+  private final int slotIndexSecondaryOutputStart;
+  private final int slotIndexSecondaryOutputEnd;
+  private final int slotIndexToolboxStart;
+  private final int slotIndexToolboxEnd;
+
   public ContainerWorktable(
       InventoryPlayer playerInventory,
       World world,
-      TileEntityWorktableBase tile
+      TileEntityBase tile
   ) {
 
     super(playerInventory);
@@ -47,7 +62,9 @@ public class ContainerWorktable
     this.player = playerInventory.player;
     Runnable slotChangeListener = () -> this.updateRecipeOutput(this.player);
 
-    // Result Slot 0
+    // ------------------------------------------------------------------------
+    // Result
+    this.slotIndexResult = this.nextSlotIndex;
     this.resultHandler = new ItemStackHandler(1);
     this.craftingResultSlot = new CraftingResultSlot(
         slotChangeListener,
@@ -59,8 +76,10 @@ public class ContainerWorktable
     );
     this.containerSlotAdd(this.craftingResultSlot);
 
-    // Crafting Matrix 1 - 9, inclusive
+    // ------------------------------------------------------------------------
+    // Crafting Matrix
     CraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
+    this.slotIndexCraftingMatrixStart = this.nextSlotIndex;
 
     for (int y = 0; y < craftingMatrixHandler.getHeight(); ++y) {
       for (int x = 0; x < craftingMatrixHandler.getWidth(); ++x) {
@@ -73,32 +92,64 @@ public class ContainerWorktable
         ));
       }
     }
+    this.slotIndexCraftingMatrixEnd = this.nextSlotIndex - 1;
 
-    // Player Inventory 10 - 36, inclusive
+    // ------------------------------------------------------------------------
+    // Player Inventory
+    this.slotIndexInventoryStart = this.nextSlotIndex;
     this.containerPlayerInventoryAdd();
+    this.slotIndexInventoryEnd = this.nextSlotIndex - 1;
 
-    // Player HotBar 37 - 46, inclusive
+    // ------------------------------------------------------------------------
+    // Player HotBar
+    this.slotIndexHotbarStart = this.nextSlotIndex;
     this.containerPlayerHotbarAdd();
+    this.slotIndexHotbarEnd = this.nextSlotIndex - 1;
 
-    // Tool Slot 46
-    this.containerSlotAdd(new CraftingToolSlot(
-        slotChangeListener,
-        itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithToolInSlot(itemStack, 0),
-        this.tile.getToolHandler(),
-        0,
-        78,
-        35
-    ));
+    // ------------------------------------------------------------------------
+    // Tool Slots
+    {
+      this.slotIndexToolsStart = this.nextSlotIndex;
+      ItemStackHandler toolHandler = this.tile.getToolHandler();
 
-    // Secondary output 47 - 49, inclusive
+      int offsetY = 0;
+
+      if (this.tile instanceof TileEntityWorkstationBase) {
+        offsetY = -11;
+      }
+
+      for (int i = 0; i < toolHandler.getSlots(); i++) {
+        final int slotIndex = i;
+        this.containerSlotAdd(new CraftingToolSlot(
+            slotChangeListener,
+            itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithToolInSlot(itemStack, slotIndex),
+            toolHandler,
+            i,
+            78,
+            35 + 22 * i + offsetY
+        ));
+      }
+      this.slotIndexToolsEnd = this.nextSlotIndex - 1;
+    }
+
+    // ------------------------------------------------------------------------
+    // Secondary output
+    this.slotIndexSecondaryOutputStart = this.nextSlotIndex;
     for (int i = 0; i < 3; i++) {
       this.containerSlotAdd(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 152, 17 + i * 18));
     }
+    this.slotIndexSecondaryOutputEnd = this.nextSlotIndex - 1;
 
+    // ------------------------------------------------------------------------
+    // Secondary input
+    // TODO
+
+    // ------------------------------------------------------------------------
+    // Side Toolbox
+    this.slotIndexToolboxStart = this.nextSlotIndex;
     if (this.toolbox != null && !this.toolbox.isInvalid()) {
       ItemStackHandler itemHandler = this.toolbox.getItemHandler();
 
-      // Side Toolbox 50 - 76, inclusive
       for (int x = 0; x < 3; x++) {
 
         for (int y = 0; y < 9; y++) {
@@ -112,8 +163,29 @@ public class ContainerWorktable
         }
       }
     }
+    this.slotIndexToolboxEnd = this.nextSlotIndex - 1;
 
     this.updateRecipeOutput(this.player);
+  }
+
+  @Override
+  protected int containerHotbarPositionGetY() {
+
+    if (this.tile instanceof TileEntityWorkstationBase) {
+      return super.containerHotbarPositionGetY() + 23;
+    }
+
+    return super.containerHotbarPositionGetY();
+  }
+
+  @Override
+  protected int containerInventoryPositionGetY() {
+
+    if (this.tile instanceof TileEntityWorkstationBase) {
+      return super.containerInventoryPositionGetY() + 23;
+    }
+
+    return super.containerInventoryPositionGetY();
   }
 
   @Override
@@ -128,7 +200,7 @@ public class ContainerWorktable
     return super.containerHotbarPositionGetX();
   }
 
-  private TileEntityToolbox getToolbox(TileEntityWorktableBase tile) {
+  private TileEntityToolbox getToolbox(TileEntityBase tile) {
 
     return tile.getAdjacentToolbox();
   }
@@ -142,8 +214,8 @@ public class ContainerWorktable
 
     FluidStack fluidStack = null;
 
-    if (this.tile instanceof TileEntityWorktableFluidBase) {
-      fluidStack = ((TileEntityWorktableFluidBase) this.tile).getTank().getFluid();
+    if (this.tile instanceof TileEntityFluidBase) {
+      fluidStack = ((TileEntityFluidBase) this.tile).getTank().getFluid();
 
       if (fluidStack != null) {
         fluidStack = fluidStack.copy();
@@ -156,7 +228,7 @@ public class ContainerWorktable
         this.tile.getTools(),
         this.tile.getCraftingMatrixHandler(),
         fluidStack,
-        ISecondaryIngredientMatcher.FALSE // TODO
+        this.tile.getSecondaryIngredientMatcher()
     );
 
     if (recipe != null) {
@@ -215,17 +287,79 @@ public class ContainerWorktable
     return slotIn != this.craftingResultSlot && super.canMergeSlot(stack, slotIn);
   }
 
+  private boolean isSlotIndexResult(int slotIndex) {
+
+    return slotIndex == this.slotIndexResult;
+  }
+
+  private boolean isSlotIndexInventory(int slotIndex) {
+
+    return slotIndex >= this.slotIndexInventoryStart && slotIndex <= this.slotIndexInventoryEnd;
+  }
+
+  private boolean isSlotIndexHotbar(int slotIndex) {
+
+    return slotIndex >= this.slotIndexHotbarStart && slotIndex <= this.slotIndexHotbarEnd;
+  }
+
+  private boolean isSlotIndexToolbox(int slotIndex) {
+
+    return slotIndex >= this.slotIndexToolboxStart && slotIndex <= this.slotIndexToolboxEnd;
+  }
+
+  private boolean isSlotIndexTool(int slotIndex) {
+
+    return slotIndex >= this.slotIndexToolsStart && slotIndex <= this.slotIndexToolsEnd;
+  }
+
+  private boolean mergeInventory(ItemStack itemStack, boolean reverse) {
+
+    return this.mergeItemStack(itemStack, this.slotIndexInventoryStart, this.slotIndexInventoryEnd + 1, reverse);
+  }
+
+  private boolean mergeHotbar(ItemStack itemStack, boolean reverse) {
+
+    return this.mergeItemStack(itemStack, this.slotIndexHotbarStart, this.slotIndexHotbarEnd + 1, reverse);
+  }
+
+  private boolean mergeCraftingMatrix(ItemStack itemStack, boolean reverse) {
+
+    return this.mergeItemStack(
+        itemStack,
+        this.slotIndexCraftingMatrixStart,
+        this.slotIndexCraftingMatrixEnd + 1,
+        reverse
+    );
+  }
+
+  private boolean mergeToolbox(ItemStack itemStack, boolean reverse) {
+
+    return this.mergeItemStack(itemStack, this.slotIndexToolboxStart, this.slotIndexToolboxEnd + 1, reverse);
+  }
+
+  private boolean swapTools(int slotIndex) {
+
+    for (int i = this.slotIndexToolsStart; i <= this.slotIndexToolsEnd; i++) {
+
+      if (this.swapItemStack(slotIndex, i)) {
+        return true; // Swapped tools
+      }
+    }
+
+    return false;
+  }
+
   @Override
   public ItemStack transferStackInSlot(EntityPlayer playerIn, int slotIndex) {
 
-    ItemStack itemstack = ItemStack.EMPTY;
+    ItemStack itemStackCopy = ItemStack.EMPTY;
     Slot slot = this.inventorySlots.get(slotIndex);
 
     if (slot != null && slot.getHasStack()) {
-      ItemStack itemstack1 = slot.getStack();
-      itemstack = itemstack1.copy();
+      ItemStack itemStack = slot.getStack();
+      itemStackCopy = itemStack.copy();
 
-      if (slotIndex == 0) {
+      if (this.isSlotIndexResult(slotIndex)) {
         // Result
 
         // This is executed on both the client and server for each craft. If the crafting
@@ -239,92 +373,97 @@ public class ContainerWorktable
         }
 
         if (recipe.hasMultipleWeightedOutputs()) {
+          // Restrict the player from shift-clicking items out of the result slot when the recipe has
+          // multiple weighted outputs. This allows us to replace the item the player picks up after
+          // it has been retrieved.
           return ItemStack.EMPTY;
         }
 
-        if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
-          // Can't merge the craft result into any inventory slot.
+        if (!this.mergeInventory(itemStack, false)
+            && !this.mergeHotbar(itemStack, false)) {
+          // Can't merge the craft result into any inventory or hotbar slot.
           return ItemStack.EMPTY;
         }
 
-        itemstack1.getItem().onCreated(itemstack1, this.world, playerIn);
-        slot.onSlotChange(itemstack1, itemstack);
+        itemStack.getItem().onCreated(itemStack, this.world, playerIn);
+        slot.onSlotChange(itemStack, itemStackCopy);
 
-      } else if (slotIndex >= 10 && slotIndex <= 36) {
+      } else if (this.isSlotIndexInventory(slotIndex)) {
         // Inventory clicked, try to move to tool slot first, then crafting matrix, then hotbar
 
-        if (this.swapItemStack(slotIndex, 46)) {
-          return ItemStack.EMPTY; // Swapped tools
+        if (this.swapTools(slotIndex)) {
+          return ItemStack.EMPTY; // swapped tools
         }
 
-        if (!this.mergeItemStack(itemstack1, 1, 10, false)
-            && !this.mergeItemStack(itemstack1, 37, 46, false)) {
+        if (!this.mergeCraftingMatrix(itemStack, false)
+            && !this.mergeHotbar(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
-      } else if (slotIndex >= 37 && slotIndex <= 45) {
+      } else if (this.isSlotIndexHotbar(slotIndex)) {
         // HotBar clicked, try to move to tool slot first, then crafting matrix, then inventory
 
-        if (this.swapItemStack(slotIndex, 46)) {
-          return ItemStack.EMPTY; // Swapped tools
+        if (this.swapTools(slotIndex)) {
+          return ItemStack.EMPTY; // swapped tools
         }
 
-        if (!this.mergeItemStack(itemstack1, 1, 10, false)
-            && !this.mergeItemStack(itemstack1, 10, 37, false)) {
+        if (!this.mergeCraftingMatrix(itemStack, false)
+            && !this.mergeInventory(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
-      } else if (slotIndex >= 50 && slotIndex <= 76) {
+      } else if (this.isSlotIndexToolbox(slotIndex)) {
         // Toolbox clicked, try to move to tool slot first, then crafting matrix, then inventory
 
-        if (this.swapItemStack(slotIndex, 46)) {
-          //return this.inventorySlots.get(slotIndex).getStack();
-          return ItemStack.EMPTY; // Swapped tools
+        if (this.swapTools(slotIndex)) {
+          return ItemStack.EMPTY; // swapped tools
         }
 
-        if (!this.mergeItemStack(itemstack1, 1, 10, false)
-            && !this.mergeItemStack(itemstack1, 10, 37, false)) {
+        if (!this.mergeCraftingMatrix(itemStack, false)
+            && !this.mergeInventory(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
-      } else if (slotIndex == 46) {
+      } else if (this.isSlotIndexTool(slotIndex)) {
         // Tool slot clicked, try to move to toolbox first, then player inventory
 
         if (this.toolbox != null) {
 
-          if (!this.mergeItemStack(itemstack1, 50, 77, false)
-              && !this.mergeItemStack(itemstack1, 10, 46, false)) {
+          if (!this.mergeToolbox(itemStack, false)
+              && !this.mergeInventory(itemStack, false)) {
             return ItemStack.EMPTY;
           }
 
-        } else if (!this.mergeItemStack(itemstack1, 10, 46, false)) {
+        } else if (!this.mergeInventory(itemStack, false)
+            && !this.mergeHotbar(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
-      } else if (!this.mergeItemStack(itemstack1, 10, 46, false)) {
+      } else if (!this.mergeInventory(itemStack, false)
+          && !this.mergeHotbar(itemStack, false)) {
         // All others: crafting matrix
         return ItemStack.EMPTY;
       }
 
-      if (itemstack1.isEmpty()) {
+      if (itemStack.isEmpty()) {
         slot.putStack(ItemStack.EMPTY);
 
       } else {
         slot.onSlotChanged();
       }
 
-      if (itemstack1.getCount() == itemstack.getCount()) {
+      if (itemStack.getCount() == itemStackCopy.getCount()) {
         return ItemStack.EMPTY;
       }
 
-      ItemStack itemstack2 = slot.onTake(playerIn, itemstack1);
+      ItemStack itemStack2 = slot.onTake(playerIn, itemStack);
 
       if (slotIndex == 0) {
-        playerIn.dropItem(itemstack2, false);
+        playerIn.dropItem(itemStack2, false);
       }
     }
 
-    return itemstack;
+    return itemStackCopy;
   }
 
   public List<Slot> getRecipeSlots(List<Slot> result) {
@@ -356,7 +495,7 @@ public class ContainerWorktable
     return result;
   }
 
-  public TileEntityWorktableBase getTile() {
+  public TileEntityBase getTile() {
 
     return this.tile;
   }
@@ -371,12 +510,12 @@ public class ContainerWorktable
 
     super.detectAndSendChanges();
 
-    if (!(this.tile instanceof TileEntityWorktableFluidBase)
+    if (!(this.tile instanceof TileEntityFluidBase)
         || this.tile.getWorld().isRemote) {
       return;
     }
 
-    FluidTank tank = ((TileEntityWorktableFluidBase) this.tile).getTank();
+    FluidTank tank = ((TileEntityFluidBase) this.tile).getTank();
     FluidStack fluidStack = tank.getFluid();
 
     if (this.lastFluidStack != null

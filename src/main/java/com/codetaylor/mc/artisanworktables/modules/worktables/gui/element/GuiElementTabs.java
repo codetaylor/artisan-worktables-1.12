@@ -4,7 +4,7 @@ import com.codetaylor.mc.artisanworktables.ReferenceTexture;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiTabOffset;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementBase;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementClickable;
@@ -36,11 +36,11 @@ public class GuiElementTabs
   public static boolean RECALCULATE_TAB_OFFSETS = false;
   private static final GuiTabOffset GUI_TAB_OFFSET = new GuiTabOffset(0);
 
-  private final TileEntityWorktableBase worktable;
+  private final TileEntityBase worktable;
 
   public GuiElementTabs(
       GuiContainerBase guiBase,
-      TileEntityWorktableBase worktable,
+      TileEntityBase worktable,
       int elementWidth
   ) {
 
@@ -63,8 +63,8 @@ public class GuiElementTabs
     int tabX = x + TAB_LEFT_OFFSET;
     int tabY = y;
 
-    List<TileEntityWorktableBase> actualJoinedTables = this.worktable.getJoinedTables(new ArrayList<>());
-    List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
+    List<TileEntityBase> actualJoinedTables = this.worktable.getJoinedTables(new ArrayList<>());
+    List<TileEntityBase> joinedTables = this.getJoinedTableOffsetView(
         actualJoinedTables,
         GUI_TAB_OFFSET.getOffset(),
         this.worktable.getMaximumDisplayedTabCount()
@@ -106,7 +106,7 @@ public class GuiElementTabs
 
     // draw tabs
 
-    for (TileEntityWorktableBase joinedTable : joinedTables) {
+    for (TileEntityBase joinedTable : joinedTables) {
       int textureY = joinedTable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT;
 
       if (joinedTable == this.worktable) {
@@ -145,7 +145,7 @@ public class GuiElementTabs
 
     RenderHelper.enableGUIStandardItemLighting();
 
-    for (TileEntityWorktableBase joinedTable : joinedTables) {
+    for (TileEntityBase joinedTable : joinedTables) {
       IBlockState blockState = joinedTable.getWorld().getBlockState(joinedTable.getPos());
       blockState = blockState.getBlock().getActualState(blockState, this.worktable.getWorld(), joinedTable.getPos());
       ItemStack itemStack = joinedTable.getItemStackForTabDisplay(blockState);
@@ -173,8 +173,8 @@ public class GuiElementTabs
       return;
     }
 
-    List<TileEntityWorktableBase> actualJoinedTables = this.worktable.getJoinedTables(new ArrayList<>());
-    List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
+    List<TileEntityBase> actualJoinedTables = this.worktable.getJoinedTables(new ArrayList<>());
+    List<TileEntityBase> joinedTables = this.getJoinedTableOffsetView(
         actualJoinedTables,
         GUI_TAB_OFFSET.getOffset(),
         this.worktable.getMaximumDisplayedTabCount()
@@ -191,7 +191,7 @@ public class GuiElementTabs
           && mouseX >= xMin
           && mouseY <= yMax
           && mouseY >= yMin) {
-        TileEntityWorktableBase table = joinedTables.get(i);
+        TileEntityBase table = joinedTables.get(i);
         BlockPos pos = table.getPos();
         ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTab(
             pos.getX(),
@@ -249,23 +249,23 @@ public class GuiElementTabs
    * @param worktableBase the worktable
    * @param guiTabOffset  the offset
    */
-  private void calculateInitialTabOffset(TileEntityWorktableBase worktableBase, GuiTabOffset guiTabOffset) {
+  private void calculateInitialTabOffset(TileEntityBase worktableBase, GuiTabOffset guiTabOffset) {
 
     int maximumDisplayedTabCount = worktableBase.getMaximumDisplayedTabCount();
     guiTabOffset.setOffset(0);
 
-    List<TileEntityWorktableBase> actualJoinedTables = worktableBase.getJoinedTables(new ArrayList<>());
+    List<TileEntityBase> actualJoinedTables = worktableBase.getJoinedTables(new ArrayList<>());
 
     boolean tabInView = false;
 
     while (!tabInView && !actualJoinedTables.isEmpty()) {
-      List<TileEntityWorktableBase> joinedTables = this.getJoinedTableOffsetView(
+      List<TileEntityBase> joinedTables = this.getJoinedTableOffsetView(
           actualJoinedTables,
           guiTabOffset.getOffset(),
           worktableBase.getMaximumDisplayedTabCount()
       );
 
-      for (TileEntityWorktableBase joinedTable : joinedTables) {
+      for (TileEntityBase joinedTable : joinedTables) {
 
         if (joinedTable == worktableBase) {
           tabInView = true;
@@ -282,13 +282,13 @@ public class GuiElementTabs
     }
   }
 
-  private List<TileEntityWorktableBase> getJoinedTableOffsetView(
-      List<TileEntityWorktableBase> list,
+  private List<TileEntityBase> getJoinedTableOffsetView(
+      List<TileEntityBase> list,
       int offset,
       int maximumDisplayedTabCount
   ) {
 
-    List<TileEntityWorktableBase> result = new ArrayList<>(maximumDisplayedTabCount);
+    List<TileEntityBase> result = new ArrayList<>(maximumDisplayedTabCount);
 
     if (offset + maximumDisplayedTabCount > list.size()) {
       offset = list.size() - maximumDisplayedTabCount;

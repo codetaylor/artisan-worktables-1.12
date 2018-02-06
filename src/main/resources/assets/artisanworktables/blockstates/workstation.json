@@ -1,0 +1,98 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "artisanworktables:workstation"
+  },
+  "variants": {
+    "variant": {
+      "blacksmith": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_blacksmith_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_blacksmith_top",
+          "particle": "artisanworktables:blocks/worktable_blacksmith_side"
+        }
+      },
+      "carpenter": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_carpenter_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_carpenter_top",
+          "particle": "artisanworktables:blocks/worktable_carpenter_side"
+        }
+      },
+      "jeweler": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_jeweler_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_jeweler_top",
+          "particle": "artisanworktables:blocks/worktable_jeweler_side"
+        }
+      },
+      "mason": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_mason_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_mason_top",
+          "particle": "artisanworktables:blocks/worktable_mason_side"
+        }
+      },
+      "tailor": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_tailor_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_tailor_top",
+          "particle": "artisanworktables:blocks/worktable_tailor_side"
+        }
+      },
+      "basic": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_basic_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_basic_top",
+          "particle": "artisanworktables:blocks/worktable_basic_side"
+        }
+      },
+      "engineer": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_engineer_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_engineer_top",
+          "particle": "artisanworktables:blocks/worktable_engineer_side"
+        }
+      },
+      "mage": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_mage_side_inactive",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_mage_top_inactive",
+          "particle": "artisanworktables:blocks/worktable_mage_side_inactive"
+        }
+      },
+      "mage_active": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_mage_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_mage_top",
+          "particle": "artisanworktables:blocks/worktable_mage_side"
+        }
+      },
+      "scribe": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_scribe_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_scribe_top",
+          "particle": "artisanworktables:blocks/worktable_scribe_side"
+        }
+      },
+      "chemist": {
+        "textures": {
+          "side": "artisanworktables:blocks/worktable_chemist_side",
+          "bottom": "artisanworktables:blocks/worktable_bottom",
+          "top": "artisanworktables:blocks/worktable_chemist_top",
+          "particle": "artisanworktables:blocks/worktable_chemist_side"
+        }
+      }
+    }
+  }
+}

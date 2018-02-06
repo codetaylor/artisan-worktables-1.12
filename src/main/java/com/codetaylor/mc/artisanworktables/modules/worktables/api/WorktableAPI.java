@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.api;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktableEnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
 import net.minecraft.item.ItemStack;
 
@@ -14,7 +14,7 @@ public class WorktableAPI {
   private static final List<String> WORKTABLE_NAME_LIST = new ArrayList<>();
 
   static {
-    WORKTABLE_NAME_LIST.addAll(Arrays.asList(BlockWorktableEnumType.NAMES));
+    WORKTABLE_NAME_LIST.addAll(Arrays.asList(EnumType.NAMES));
 
     for (String name : WorktableAPI.getWorktableNames()) {
       RECIPE_REGISTRY_MAP.put(name, new RegistryRecipeWorktable());
@@ -39,7 +39,7 @@ public class WorktableAPI {
   public static ItemStack getWorktableAsItemStack(String name) {
 
     try {
-      BlockWorktableEnumType type = BlockWorktableEnumType.fromName(name);
+      EnumType type = EnumType.fromName(name);
       return new ItemStack(ModuleWorktables.Blocks.WORKTABLE, 1, type.getMeta());
 
     } catch (Exception e) {

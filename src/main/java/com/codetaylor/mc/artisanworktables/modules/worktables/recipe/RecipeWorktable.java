@@ -144,7 +144,7 @@ public class RecipeWorktable
       return false;
     }
 
-    if (ModuleWorktablesConfig.RESTRICT_CRAFT_MINIUMUM_DURABILITY) {
+    if (ModuleWorktablesConfig.RESTRICT_CRAFT_MINIMUM_DURABILITY) {
 
       // Note: this may fail with tinker's tools because as far as I know,
       // tinker's tools don't have a max damage value set
