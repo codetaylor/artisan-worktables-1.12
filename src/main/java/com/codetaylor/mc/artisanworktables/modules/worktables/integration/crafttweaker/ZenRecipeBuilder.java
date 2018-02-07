@@ -29,12 +29,31 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setShaped(IIngredient[][] ingredients) {
 
+    for (IIngredient[] ingredientArray : ingredients) {
+
+      for (IIngredient ingredient : ingredientArray) {
+
+        if (ingredient instanceof ILiquidStack) {
+          CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+          return this;
+        }
+      }
+    }
+
     this.recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(ingredients));
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
+
+    for (IIngredient ingredient : ingredients) {
+
+      if (ingredient instanceof ILiquidStack) {
+        CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+        return this;
+      }
+    }
 
     this.recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(ingredients));
     return this;
@@ -48,17 +67,25 @@ public class ZenRecipeBuilder
   }
 
   @Override
-  public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) {
+  public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] ingredients) {
 
-    if (secondaryIngredients == null || secondaryIngredients.length == 0) {
+    if (ingredients == null || ingredients.length == 0) {
       return this;
 
-    } else if (secondaryIngredients.length > 11) {
-      CTLogHelper.logErrorFromZenMethod("Exceeded max allowed 11 secondary ingredients: " + secondaryIngredients.length);
+    } else if (ingredients.length > 11) {
+      CTLogHelper.logErrorFromZenMethod("Exceeded max allowed 11 secondary ingredients: " + ingredients.length);
       return this;
     }
 
-    this.recipeBuilder.setSecondaryIngredients(secondaryIngredients);
+    for (IIngredient ingredient : ingredients) {
+
+      if (ingredient instanceof ILiquidStack) {
+        CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+        return this;
+      }
+    }
+
+    this.recipeBuilder.setSecondaryIngredients(ingredients);
     return this;
   }
 
@@ -81,6 +108,11 @@ public class ZenRecipeBuilder
 
     if (this.nextToolIndex >= 4) {
       CTLogHelper.logErrorFromZenMethod("Recipes are restricted to a maximum of 4 tools!");
+      return this;
+    }
+
+    if (tool instanceof ILiquidStack) {
+      CTLogHelper.logErrorFromZenMethod("Tools can't be liquids");
       return this;
     }
 
