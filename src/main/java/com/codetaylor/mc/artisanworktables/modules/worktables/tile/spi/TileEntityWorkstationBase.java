@@ -5,22 +5,20 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesCo
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorkstation;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TileEntityWorkstationBase
-    extends TileEntityTypedBase {
+    extends TileEntitySecondaryInputBase {
 
   public TileEntityWorkstationBase(EnumType type) {
 
-    super(3, 3, ModuleWorktablesConfig.FLUID_CAPACITY_WORKSTATION.get(type.getName()), type);
+    super(3, 3, ModuleWorktablesConfig.FLUID_CAPACITY_WORKSTATION.get(type.getName()), 9, type);
   }
 
   @Override
@@ -30,14 +28,6 @@ public abstract class TileEntityWorkstationBase
         ModuleWorktables.MOD_ID,
         String.format(ModuleWorktables.Textures.WORKSTATION_GUI, this.type.getName())
     );
-  }
-
-  @Override
-  protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
-
-    super.onCraftReduceIngredients(fluidIngredient);
-
-    // TODO: reduce secondary ingredients
   }
 
   @Override

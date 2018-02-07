@@ -50,6 +50,14 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) {
 
+    if (secondaryIngredients == null || secondaryIngredients.length == 0) {
+      return this;
+
+    } else if (secondaryIngredients.length > 11) {
+      CTLogHelper.logErrorFromZenMethod("Exceeded max allowed 11 secondary ingredients: " + secondaryIngredients.length);
+      return this;
+    }
+
     this.recipeBuilder.setSecondaryIngredients(secondaryIngredients);
     return this;
   }

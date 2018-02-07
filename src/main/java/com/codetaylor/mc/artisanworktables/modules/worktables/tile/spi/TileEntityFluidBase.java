@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import com.codetaylor.mc.athenaeum.util.BottleHelper;
 import net.minecraft.block.state.IBlockState;
@@ -107,12 +108,16 @@ public abstract class TileEntityFluidBase
   }
 
   @Override
-  protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
+  protected void onCraftReduceIngredients(IRecipeWorktable recipe) {
 
-    super.onCraftReduceIngredients(fluidIngredient);
+    super.onCraftReduceIngredients(recipe);
 
-    if (fluidIngredient != null) {
-      this.tank.drain(fluidIngredient, true);
+    if (recipe != null) {
+      FluidStack fluidIngredient = recipe.getFluidIngredient();
+
+      if (fluidIngredient != null) {
+        this.tank.drain(fluidIngredient, true);
+      }
     }
   }
 

@@ -20,20 +20,20 @@ public abstract class GuiContainerBase
     extends com.codetaylor.mc.athenaeum.gui.GuiContainerBase {
 
   protected final int textShadowColor;
-  protected final TileEntityBase currentWorktable;
+  protected final TileEntityBase tileEntity;
 
   public GuiContainerBase(
-      ContainerWorktable container,
+      Container container,
       ResourceLocation backgroundTexture,
       String titleKey,
       int textShadowColor,
-      TileEntityBase currentWorktable,
+      TileEntityBase tileEntity,
       int width,
       int height
   ) {
 
     super(container, width, height);
-    this.currentWorktable = currentWorktable;
+    this.tileEntity = tileEntity;
     this.textShadowColor = textShadowColor;
 
     // worktable title
@@ -49,7 +49,7 @@ public abstract class GuiContainerBase
         this,
         "container.inventory",
         8,
-        this.ySize - 93 + this.getInventoryTitleOffsetY()
+        this.ySize - 93
     ));
 
     // background texture
@@ -63,8 +63,8 @@ public abstract class GuiContainerBase
     ));
 
     // mage special effect
-    if (this.currentWorktable instanceof TileEntityTypedBase
-        && ((TileEntityTypedBase) this.currentWorktable).getType() == EnumType.MAGE) {
+    if (this.tileEntity instanceof TileEntityTypedBase
+        && ((TileEntityTypedBase) this.tileEntity).getType() == EnumType.MAGE) {
       this.guiContainerElementAdd(new GuiElementMageEffect(
           this,
           container,
@@ -74,11 +74,11 @@ public abstract class GuiContainerBase
     }
 
     // fluid tank
-    if (this.currentWorktable instanceof TileEntityFluidBase) {
+    if (this.tileEntity instanceof TileEntityFluidBase) {
       this.guiContainerElementAdd(new GuiElementWorktableFluidTank(
           this,
-          ((TileEntityFluidBase) this.currentWorktable).getTank(),
-          this.currentWorktable.getPos(),
+          ((TileEntityFluidBase) this.tileEntity).getTank(),
+          this.tileEntity.getPos(),
           this.textShadowColor,
           8,
           17
@@ -101,7 +101,7 @@ public abstract class GuiContainerBase
     // tabs
     this.guiContainerElementAdd(new GuiElementTabs(
         this,
-        this.currentWorktable,
+        this.tileEntity,
         176
     ));
   }
@@ -119,13 +119,12 @@ public abstract class GuiContainerBase
 
     FontRenderer fontRenderer = this.fontRenderer;
 
-    if (this.currentWorktable instanceof TileEntityTypedBase
-        && ((TileEntityTypedBase) this.currentWorktable).getType() == EnumType.MAGE) {
+    if (this.tileEntity instanceof TileEntityTypedBase
+        && ((TileEntityTypedBase) this.tileEntity).getType() == EnumType.MAGE) {
       fontRenderer = this.mc.standardGalacticFontRenderer;
     }
 
     GuiHelper.drawStringOutlined(translateKey, x, y, fontRenderer, this.textShadowColor);
   }
 
-  protected abstract int getInventoryTitleOffsetY();
 }

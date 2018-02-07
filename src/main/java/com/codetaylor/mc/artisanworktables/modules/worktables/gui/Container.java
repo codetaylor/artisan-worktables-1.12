@@ -4,12 +4,9 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityFluidBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorkstationBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationScribe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.*;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
+import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,7 +19,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 
-public class ContainerWorktable
+public class Container
     extends ContainerBase {
 
   private final CraftingResultSlot craftingResultSlot;
@@ -46,8 +43,10 @@ public class ContainerWorktable
   private final int slotIndexSecondaryOutputEnd;
   private final int slotIndexToolboxStart;
   private final int slotIndexToolboxEnd;
+  private final int slotIndexSecondaryInputStart;
+  private final int slotIndexSecondaryIntputEnd;
 
-  public ContainerWorktable(
+  public Container(
       InventoryPlayer playerInventory,
       World world,
       TileEntityBase tile
@@ -142,7 +141,20 @@ public class ContainerWorktable
 
     // ------------------------------------------------------------------------
     // Secondary input
-    // TODO
+    if (this.tile instanceof TileEntitySecondaryInputBase) {
+      this.slotIndexSecondaryInputStart = this.nextSlotIndex;
+      ObservableStackHandler handler = ((TileEntitySecondaryInputBase) this.tile).getSecondaryIngredientHandler();
+      int slotCount = handler.getSlots();
+
+      for (int i = 0; i < slotCount; i++) {
+        this.containerSlotAdd(new CraftingSecondarySlot(slotChangeListener, handler, i, 8 + i * 18, 75));
+      }
+      this.slotIndexSecondaryIntputEnd = this.nextSlotIndex - 1;
+
+    } else {
+      this.slotIndexSecondaryInputStart = -1;
+      this.slotIndexSecondaryIntputEnd = -1;
+    }
 
     // ------------------------------------------------------------------------
     // Side Toolbox
@@ -251,13 +263,20 @@ public class ContainerWorktable
     return this.tile.canPlayerUse(playerIn);
   }
 
-  private boolean swapItemStack(int originSlotIndex, int targetSlotIndex) {
+  private boolean swapItemStack(int originSlotIndex, int targetSlotIndex, boolean swapOnlyEmtpyTarget) {
 
     Slot originSlot = this.inventorySlots.get(originSlotIndex);
     Slot targetSlot = this.inventorySlots.get(targetSlotIndex);
 
     ItemStack originStack = originSlot.getStack();
     ItemStack targetStack = targetSlot.getStack();
+
+    if (swapOnlyEmtpyTarget) {
+
+      if (!targetStack.isEmpty()) {
+        return false;
+      }
+    }
 
     if (originStack.isItemEqual(targetStack)) {
       return true;
@@ -285,6 +304,11 @@ public class ContainerWorktable
   public boolean canMergeSlot(ItemStack stack, Slot slotIn) {
 
     return slotIn != this.craftingResultSlot && super.canMergeSlot(stack, slotIn);
+  }
+
+  private boolean isSlotSecondaryInput(int slotIndex) {
+
+    return slotIndex >= this.slotIndexSecondaryInputStart && slotIndex <= this.slotIndexSecondaryIntputEnd;
   }
 
   private boolean isSlotIndexResult(int slotIndex) {
@@ -337,11 +361,31 @@ public class ContainerWorktable
     return this.mergeItemStack(itemStack, this.slotIndexToolboxStart, this.slotIndexToolboxEnd + 1, reverse);
   }
 
+  private boolean mergeSecondaryInput(ItemStack itemStack, boolean reverse) {
+
+    if (this.slotIndexSecondaryInputStart == -1) {
+      return false;
+    }
+
+    return this.mergeItemStack(
+        itemStack,
+        this.slotIndexSecondaryInputStart,
+        this.slotIndexSecondaryIntputEnd + 1,
+        reverse
+    );
+  }
+
   private boolean swapTools(int slotIndex) {
 
     for (int i = this.slotIndexToolsStart; i <= this.slotIndexToolsEnd; i++) {
 
-      if (this.swapItemStack(slotIndex, i)) {
+      // try to swap tool into empty slot first
+      if (this.swapItemStack(slotIndex, i, true)) {
+        return true; // Swapped tools
+      }
+
+      // swap tools into any valid slot
+      if (this.swapItemStack(slotIndex, i, false)) {
         return true; // Swapped tools
       }
     }
@@ -381,7 +425,6 @@ public class ContainerWorktable
 
         if (!this.mergeInventory(itemStack, false)
             && !this.mergeHotbar(itemStack, false)) {
-          // Can't merge the craft result into any inventory or hotbar slot.
           return ItemStack.EMPTY;
         }
 
@@ -389,48 +432,53 @@ public class ContainerWorktable
         slot.onSlotChange(itemStack, itemStackCopy);
 
       } else if (this.isSlotIndexInventory(slotIndex)) {
-        // Inventory clicked, try to move to tool slot first, then crafting matrix, then hotbar
+        // Inventory clicked, try to move to tool slot first, then crafting matrix, then secondary, then hotbar
 
         if (this.swapTools(slotIndex)) {
           return ItemStack.EMPTY; // swapped tools
         }
 
         if (!this.mergeCraftingMatrix(itemStack, false)
+            && !this.mergeSecondaryInput(itemStack, false)
             && !this.mergeHotbar(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
       } else if (this.isSlotIndexHotbar(slotIndex)) {
-        // HotBar clicked, try to move to tool slot first, then crafting matrix, then inventory
+        // HotBar clicked, try to move to tool slot first, then crafting matrix, then secondary, then inventory
 
         if (this.swapTools(slotIndex)) {
           return ItemStack.EMPTY; // swapped tools
         }
 
         if (!this.mergeCraftingMatrix(itemStack, false)
+            && !this.mergeSecondaryInput(itemStack, false)
             && !this.mergeInventory(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
       } else if (this.isSlotIndexToolbox(slotIndex)) {
-        // Toolbox clicked, try to move to tool slot first, then crafting matrix, then inventory
+        // Toolbox clicked, try to move to tool slot first, then crafting matrix, then secondary, then inventory, then hotbar
 
         if (this.swapTools(slotIndex)) {
           return ItemStack.EMPTY; // swapped tools
         }
 
         if (!this.mergeCraftingMatrix(itemStack, false)
-            && !this.mergeInventory(itemStack, false)) {
+            && !this.mergeSecondaryInput(itemStack, false)
+            && !this.mergeInventory(itemStack, false)
+            && !this.mergeHotbar(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
       } else if (this.isSlotIndexTool(slotIndex)) {
-        // Tool slot clicked, try to move to toolbox first, then player inventory
+        // Tool slot clicked, try to move to toolbox first, then inventory, then hotbar
 
         if (this.toolbox != null) {
 
           if (!this.mergeToolbox(itemStack, false)
-              && !this.mergeInventory(itemStack, false)) {
+              && !this.mergeInventory(itemStack, false)
+              && !this.mergeHotbar(itemStack, false)) {
             return ItemStack.EMPTY;
           }
 
@@ -441,7 +489,7 @@ public class ContainerWorktable
 
       } else if (!this.mergeInventory(itemStack, false)
           && !this.mergeHotbar(itemStack, false)) {
-        // All others: crafting matrix
+        // All others: crafting matrix, secondary output
         return ItemStack.EMPTY;
       }
 

@@ -4,7 +4,7 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechan
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
@@ -44,7 +44,7 @@ import java.util.*;
 public abstract class TileEntityBase
     extends TileEntity
     implements IContainer,
-    IContainerProvider<ContainerWorktable, GuiContainerBase> {
+    IContainerProvider<Container, GuiContainerBase> {
 
   private Random random = new Random();
 
@@ -161,7 +161,7 @@ public abstract class TileEntityBase
     }
 
     // Decrease stacks in crafting matrix
-    this.onCraftReduceIngredients(recipe.getFluidIngredient());
+    this.onCraftReduceIngredients(recipe);
 
     // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
     this.onCraftCheckAndSwapWeightedOutput(player, recipe);
@@ -309,7 +309,7 @@ public abstract class TileEntityBase
     BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
   }
 
-  protected void onCraftReduceIngredients(FluidStack fluidIngredient) {
+  protected void onCraftReduceIngredients(IRecipeWorktable recipe) {
 
     int slotCount = this.craftingMatrixHandler.getSlots();
 
@@ -516,11 +516,11 @@ public abstract class TileEntityBase
   }
 
   @Override
-  public ContainerWorktable getContainer(
+  public Container getContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 
-    return new ContainerWorktable(inventoryPlayer, world, this);
+    return new Container(inventoryPlayer, world, this);
   }
 
   public int getMaximumDisplayedTabCount() {

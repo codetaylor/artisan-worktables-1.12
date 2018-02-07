@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class RecipeWorktable
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<Ingredient> ingredients,
-      List<IIngredient> secondaryIngredients,
+      @Nonnull List<IIngredient> secondaryIngredients,
       @Nullable FluidStack fluidIngredient,
       ExtraOutputChancePair[] extraOutputs,
       IRecipeMatrixMatcher recipeMatrixMatcher,
@@ -109,6 +110,12 @@ public class RecipeWorktable
   public float getQuaternaryOutputChance() {
 
     return this.extraOutputs[2].getChance();
+  }
+
+  @Override
+  public List<IIngredient> getSecondaryIngredients() {
+
+    return this.secondaryIngredients;
   }
 
   @Override

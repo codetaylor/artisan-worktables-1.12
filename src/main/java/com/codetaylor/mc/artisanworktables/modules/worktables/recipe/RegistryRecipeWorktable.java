@@ -78,9 +78,13 @@ public class RegistryRecipeWorktable {
   public boolean containsRecipeWithToolInAnySlot(ItemStack tool) {
 
     for (IRecipeWorktable recipe : this.recipeList) {
+      int toolCount = recipe.getToolCount();
 
-      if (recipe.isValidTool(tool, 0)) {
-        return true;
+      for (int i = 0; i < toolCount; i++) {
+
+        if (recipe.isValidTool(tool, i)) {
+          return true;
+        }
       }
     }
 

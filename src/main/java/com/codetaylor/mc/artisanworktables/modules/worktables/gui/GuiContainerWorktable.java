@@ -9,22 +9,15 @@ public class GuiContainerWorktable
     extends com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase {
 
   public GuiContainerWorktable(
-      ContainerWorktable container,
+      Container container,
       ResourceLocation backgroundTexture,
       String titleKey,
       int textShadowColor,
-      TileEntityBase currentWorktable,
+      TileEntityBase tileEntity,
       int width,
       int height
   ) {
 
-    super(container, backgroundTexture, titleKey, textShadowColor, currentWorktable, width, height);
+    super(container, backgroundTexture, titleKey, textShadowColor, tileEntity, width, height);
   }
-
-  @Override
-  protected int getInventoryTitleOffsetY() {
-
-    return 0;
-  }
-
 }
