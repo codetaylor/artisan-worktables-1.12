@@ -1,6 +1,11 @@
 1.13.21
 * Added: Workstations!
   * Workstations are second tier worktables. They can support recipes that use up to two tools and nine secondary ingredients. All recipes share the same recipe pool, therefore, any recipe defined for a worktable will also work in a workstation. If a recipe is defined that uses two tools or one to nine secondary ingredients, it will only be craftable in the new workstations. 
+* Added: new ZenScript builder methods
+  * `addTool(IIngredient, int)`
+  * `setSecondaryIngredients(IIngredient[])`
+* Changed: deprecated ZenScript builder methods
+  * `setTool(IIngredient, int)` - use `addTool(IIngredient, int)` instead
 * Added: fr_fr.lang (PR#56 Okii35)
 * Note: you will need to refresh the config for the worktable module
 

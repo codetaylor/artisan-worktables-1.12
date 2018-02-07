@@ -17,7 +17,7 @@ Worktable.createRecipeBuilder("carpenter")
         [<minecraft:planks>],
         [<minecraft:planks>],
         [<minecraft:planks>]])
-    .setTool(<ore:carpenters_hammer>, 3)
+    .addTool(<ore:carpenters_hammer>, 3)
     .addOutput(<minecraft:planks>)
     .create();
 ```
@@ -31,7 +31,9 @@ Worktable.createRecipeBuilder("carpenter")
         [<minecraft:planks>],
         [<minecraft:planks>]])
     .setFluid(<liquid:water> * 250)
-    .setTool(<ore:carpenters_hammer>, 3)
+    .setSecondaryIngredients([<minecraft:clay_ball> * 4, <ore:logWood> * 2])
+    .addTool(<ore:carpenters_hammer>, 3)
+    .addTool(<ore:carpenters_handsaw>, 1)
     .addOutput(<minecraft:planks> * 10, 10)
     .addOutput(<minecraft:planks:1> * 20, 10)
     .addOutput(<minecraft:planks:2> * 30, 20)
@@ -80,6 +82,16 @@ IRecipeBuilder setShapeless(IIngredient[] ingredients);
 IRecipeBuilder setFluid(IFluidStack fluid);
 ```
 
+### setSecondaryIngredients
+
+&#x1F539;*Optional* - if omitted, no secondary ingredients will be required to complete the recipe
+
+Up to nine secondary ingredients may be defined for the workstation and up to eleven for the workshop.
+
+```
+IRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
+```
+
 ### setMirrored
 
 &#x1F539;*Optional* - if omitted, defaults to false
@@ -92,10 +104,22 @@ IRecipeBuilder setMirrored();
 
 ### setTool
 
+*Deprecated* - use `addTool(IIngredient, int)` instead
+
 Set the tool required for this recipe. May be an OreDict entry.
 
 ```java
 IRecipeBuilder setTool(IIngredient tool, int damage);
+```
+
+### addTool
+
+Add a tool required for this recipe. May be an OreDict entry.
+
+A minimum of one tool is required for each recipe. Two tools may be defined for workstation recipes and three or four tools may be defined for workshop recipes.
+
+```java
+IRecipeBuilder addTool(IIngredient tool, int damage);
 ```
 
 ### addOutput
