@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import net.minecraft.inventory.Slot;
 
@@ -12,11 +13,17 @@ public class JEIRecipeTransferInfoWorktable
 
   private String name;
   private String uid;
+  private EnumTier tier;
 
-  public JEIRecipeTransferInfoWorktable(String name, String uid) {
+  public JEIRecipeTransferInfoWorktable(
+      String name,
+      String uid,
+      EnumTier tier
+  ) {
 
     this.name = name;
     this.uid = uid;
+    this.tier = tier;
   }
 
   @Override
@@ -34,7 +41,7 @@ public class JEIRecipeTransferInfoWorktable
   @Override
   public boolean canHandle(Container container) {
 
-    return container.canHandleJEIRecipeTransfer(this.name);
+    return container.canHandleJEIRecipeTransfer(this.name, this.tier);
   }
 
   @Override

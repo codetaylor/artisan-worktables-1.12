@@ -9,6 +9,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBa
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
@@ -532,7 +533,10 @@ public abstract class TileEntityBase
 
   public abstract int getWorktableGuiTabTextureYOffset();
 
-  public abstract boolean canHandleJEIRecipeTransfer(String name);
+  public abstract boolean canHandleJEIRecipeTransfer(
+      String name,
+      EnumTier tier
+  );
 
   protected abstract int getGuiTextShadowColor();
 

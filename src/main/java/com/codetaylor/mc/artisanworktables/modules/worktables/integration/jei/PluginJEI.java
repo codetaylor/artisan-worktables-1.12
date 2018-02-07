@@ -5,8 +5,10 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.util.ResourceLocation;
@@ -21,49 +23,52 @@ public class PluginJEI
 
   public static IRecipeRegistry RECIPE_REGISTRY;
 
-  private IJeiHelpers jeiHelpers;
+  @Override
+  public void registerCategories(IRecipeCategoryRegistration registry) {
+
+    for (EnumTier tier : EnumTier.values()) {
+
+      for (String name : WorktableAPI.getWorktableNames()) {
+        registry.addRecipeCategories(this.createCategory(name, tier, registry.getJeiHelpers().getGuiHelper()));
+      }
+    }
+  }
 
   @Override
   public void register(IModRegistry registry) {
 
-    this.jeiHelpers = registry.getJeiHelpers();
+    for (EnumTier tier : EnumTier.values()) {
 
-    // Workbench
-    for (String name : WorktableAPI.getWorktableNames()) {
-      registry.addRecipeCategories(this.createWorkbenchCategory(name, registry.getJeiHelpers().getGuiHelper()));
-    }
+      for (String name : WorktableAPI.getWorktableNames()) {
+        registry.addRecipeCatalyst(
+            WorktableAPI.getWorktableAsItemStack(name, tier),
+            PluginJEI.createUID(name, tier)
+        );
+      }
 
-    for (String name : WorktableAPI.getWorktableNames()) {
-      registry.addRecipeCatalyst(
-          WorktableAPI.getWorktableAsItemStack(name),
-          PluginJEI.createUID(name)
-      );
-    }
+      for (String name : WorktableAPI.getWorktableNames()) {
+        registry.handleRecipes(
+            RecipeWorktable.class,
+            JEIRecipeWrapper::new,
+            PluginJEI.createUID(name, tier)
+        );
+      }
 
-    for (String name : WorktableAPI.getWorktableNames()) {
-      registry.handleRecipes(
-          RecipeWorktable.class,
-          JEIRecipeWrapperWorktable::new,
-          PluginJEI.createUID(name)
-      );
-    }
+      IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
+      for (String name : WorktableAPI.getWorktableNames()) {
+        transferRegistry.addRecipeTransferHandler(new JEIRecipeTransferInfoWorktable(
+            name,
+            PluginJEI.createUID(name, tier),
+            tier
+        ));
+      }
 
-    // TODO: recipe click area
-
-    // Transfer handlers
-    IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
-    for (String name : WorktableAPI.getWorktableNames()) {
-      transferRegistry.addRecipeTransferHandler(new JEIRecipeTransferInfoWorktable(
-          name,
-          PluginJEI.createUID(name)
-      ));
-    }
-
-    for (String name : WorktableAPI.getWorktableNames()) {
-      List<IRecipeWorktable> recipeList = new ArrayList<>();
-      RegistryRecipeWorktable recipeRegistry = WorktableAPI.getWorktableRecipeRegistry(name);
-      recipeRegistry.getRecipeList(recipeList);
-      registry.addRecipes(recipeList, PluginJEI.createUID(name));
+      for (String name : WorktableAPI.getWorktableNames()) {
+        List<IRecipeWorktable> recipeList = new ArrayList<>();
+        RegistryRecipeWorktable recipeRegistry = WorktableAPI.getWorktableRecipeRegistry(name);
+        recipeList = recipeRegistry.getRecipeListByTier(recipeList, tier);
+        registry.addRecipes(recipeList, PluginJEI.createUID(name, tier));
+      }
     }
   }
 
@@ -88,7 +93,7 @@ public class PluginJEI
             if (!recipe.matchGameStages(unlockedStages)) {
               IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
                   recipe,
-                  PluginJEI.createUID(name)
+                  PluginJEI.createUID(name, recipe.getTier())
               );
 
               if (recipeWrapper != null) {
@@ -101,34 +106,74 @@ public class PluginJEI
     }
   }
 
-  private JEICategoryWorktable createWorkbenchCategory(String name, IGuiHelper guiHelper) {
+  private JEICategoryBase createCategory(
+      String name,
+      EnumTier tier,
+      IGuiHelper guiHelper
+  ) {
 
-    return new JEICategoryWorktable(
-        name,
-        PluginJEI.createUID(name),
-        this.createTitleTranslateKey(name),
-        this.createBackground(name),
-        guiHelper
-    );
+    switch (tier) {
+
+      case WORKTABLE:
+        return new JEICategoryWorktable(
+            name,
+            tier,
+            PluginJEI.createUID(name, tier),
+            this.createTitleTranslateKey(name, tier),
+            this.createBackground(name, tier, guiHelper),
+            guiHelper
+        );
+
+      case WORKSTATION:
+        return new JEICategoryWorkstation(
+            name,
+            tier,
+            PluginJEI.createUID(name, tier),
+            this.createTitleTranslateKey(name, tier),
+            this.createBackground(name, tier, guiHelper),
+            guiHelper
+        );
+
+      default:
+        throw new IllegalArgumentException("Unknown tier: " + tier);
+    }
   }
 
-  private IDrawable createBackground(String name) {
+  private IDrawable createBackground(String name, EnumTier tier, IGuiHelper guiHelper) {
 
-    IGuiHelper guiHelper = this.jeiHelpers.getGuiHelper();
-    ResourceLocation resourceLocation = new ResourceLocation(
-        ModuleWorktables.MOD_ID,
-        String.format(ModuleWorktables.Textures.WORKTABLE_GUI, name)
-    );
-    return guiHelper.createDrawable(resourceLocation, 0 + 3, 0 + 3, 176 - 6, 80);
+    if (tier == EnumTier.WORKTABLE) {
+      ResourceLocation resourceLocation = new ResourceLocation(
+          ModuleWorktables.MOD_ID,
+          String.format(ModuleWorktables.Textures.WORKTABLE_GUI, name)
+      );
+      return guiHelper.createDrawable(resourceLocation, 3, 3, 170, 80);
+
+    } else if (tier == EnumTier.WORKSTATION) {
+      ResourceLocation resourceLocation = new ResourceLocation(
+          ModuleWorktables.MOD_ID,
+          String.format(ModuleWorktables.Textures.WORKSTATION_GUI, name)
+      );
+      return guiHelper.createDrawable(resourceLocation, 3, 3, 170, 102);
+
+    } else {
+      throw new IllegalArgumentException("Unknown tier: " + tier);
+    }
   }
 
-  private String createTitleTranslateKey(String name) {
+  private String createTitleTranslateKey(String name, EnumTier tier) {
 
-    return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, name);
+    switch (tier) {
+      case WORKTABLE:
+        return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, name);
+      case WORKSTATION:
+        return String.format(ModuleWorktables.Lang.WORKSTATION_TITLE, name);
+      default:
+        throw new IllegalArgumentException("Unknown tier: " + tier);
+    }
   }
 
-  public static String createUID(String name) {
+  public static String createUID(String name, EnumTier tier) {
 
-    return ModuleWorktables.MOD_ID + "_" + name;
+    return ModuleWorktables.MOD_ID + "_" + name + "_" + tier.getName();
   }
 }

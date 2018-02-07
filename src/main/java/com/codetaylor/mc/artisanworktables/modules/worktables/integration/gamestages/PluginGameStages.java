@@ -69,9 +69,9 @@ public class PluginGameStages {
 
       if (registry != null) {
         List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());
-        String uid = PluginJEI.createUID(name);
 
         for (IRecipeWorktable recipe : recipeList) {
+          String uid = PluginJEI.createUID(name, recipe.getTier());
           IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 
           if (recipeWrapper == null) {

@@ -3,7 +3,13 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
+import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.IngredientStack;
+import crafttweaker.api.oredict.IOreDictEntry;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -11,15 +17,17 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class JEIRecipeWrapperWorktable
+public class JEIRecipeWrapper
     implements IRecipeWrapper {
 
   private static final ResourceLocation RECIPE_BACKGROUND = new ResourceLocation(
@@ -27,28 +35,30 @@ public class JEIRecipeWrapperWorktable
       "textures/gui/recipe_background.png"
   );
 
+  public static EnumTier CATEGORY_TIER = EnumTier.WORKTABLE;
+
   private RecipeWorktable recipe;
   private List<List<ItemStack>> inputs;
-  private List<ItemStack> tools;
+  private List<List<ItemStack>> secondaryInputs;
+  private List<List<ItemStack>> tools;
   private List<ItemStack> output;
-  private ItemStack secondaryOutput;
-  private ItemStack tertiaryOutput;
-  private ItemStack quaternaryOutput;
-  private FluidStack fluidStack;
 
-  public JEIRecipeWrapperWorktable(
+  public JEIRecipeWrapper(
       RecipeWorktable recipe
   ) {
 
     this.recipe = recipe;
     this.inputs = new ArrayList<>();
+    this.secondaryInputs = new ArrayList<>();
     this.tools = new ArrayList<>();
 
     for (Ingredient input : this.recipe.getIngredientList()) {
       this.inputs.add(Arrays.asList(input.getMatchingStacks()));
     }
 
-    this.tools = Arrays.asList(this.recipe.getTools(0));
+    for (int i = 0; i < recipe.getToolCount(); i++) {
+      this.tools.add(Arrays.asList(this.recipe.getTools(i)));
+    }
 
     List<OutputWeightPair> output = this.recipe.getOutputWeightPairList();
     this.output = new ArrayList<>(output.size());
@@ -57,11 +67,26 @@ public class JEIRecipeWrapperWorktable
       this.output.add(pair.getOutput());
     }
 
-    this.secondaryOutput = recipe.getSecondaryOutput();
-    this.tertiaryOutput = recipe.getTertiaryOutput();
-    this.quaternaryOutput = recipe.getQuaternaryOutput();
+    for (IIngredient ingredient : this.recipe.getSecondaryIngredients()) {
+      List<ItemStack> list = new ArrayList<>();
 
-    this.fluidStack = recipe.getFluidIngredient();
+      if (ingredient instanceof IOreDictEntry) {
+        NonNullList<ItemStack> ores = OreDictionary.getOres(((IOreDictEntry) ingredient).getName());
+        list.addAll(ores);
+
+      } else if (ingredient instanceof IItemStack) {
+        list.add(CTInputHelper.toStack((IItemStack) ingredient));
+
+      } else if (ingredient instanceof IngredientStack) {
+        List<IItemStack> items = ingredient.getItems();
+
+        for (IItemStack item : items) {
+          list.add(CTInputHelper.toStack(item));
+        }
+      }
+
+      this.secondaryInputs.add(list);
+    }
   }
 
   public List<List<ItemStack>> getInputs() {
@@ -71,7 +96,7 @@ public class JEIRecipeWrapperWorktable
 
   public FluidStack getFluidStack() {
 
-    return this.fluidStack;
+    return this.recipe.getFluidIngredient();
   }
 
   public List<OutputWeightPair> getWeightedOutput() {
@@ -99,31 +124,38 @@ public class JEIRecipeWrapperWorktable
     return this.recipe.getHeight();
   }
 
-  public List<ItemStack> getTools() {
+  public List<List<ItemStack>> getTools() {
 
     return this.tools;
   }
 
+  public List<List<ItemStack>> getSecondaryInputs() {
+
+    return this.secondaryInputs;
+  }
+
   public ItemStack getSecondaryOutput() {
 
-    return this.secondaryOutput;
+    return this.recipe.getSecondaryOutput();
   }
 
   public ItemStack getTertiaryOutput() {
 
-    return this.tertiaryOutput;
+    return this.recipe.getTertiaryOutput();
   }
 
   public ItemStack getQuaternaryOutput() {
 
-    return this.quaternaryOutput;
+    return this.recipe.getQuaternaryOutput();
   }
 
   @Override
   public void getIngredients(IIngredients ingredients) {
 
-    List<List<ItemStack>> inputs = new ArrayList<>(this.inputs);
-    inputs.add(this.tools);
+    List<List<ItemStack>> inputs = new ArrayList<>();
+    inputs.addAll(this.inputs);
+    inputs.addAll(this.tools);
+    inputs.addAll(this.secondaryInputs);
     ingredients.setInputLists(ItemStack.class, inputs);
 
     FluidStack fluidIngredient = this.recipe.getFluidIngredient();
@@ -134,9 +166,9 @@ public class JEIRecipeWrapperWorktable
 
     List<ItemStack> output = new ArrayList<>();
     output.addAll(this.output);
-    output.add(this.secondaryOutput);
-    output.add(this.tertiaryOutput);
-    output.add(this.quaternaryOutput);
+    output.add(this.getSecondaryOutput());
+    output.add(this.getTertiaryOutput());
+    output.add(this.getQuaternaryOutput());
     ingredients.setOutputs(ItemStack.class, output);
   }
 
@@ -145,14 +177,34 @@ public class JEIRecipeWrapperWorktable
       Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY
   ) {
 
-    String label = "-" + this.recipe.getToolDamage(0);
-    minecraft.fontRenderer.drawString(
-        label,
-        (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-        (55 - 3),
-        0xFFFFFFFF,
-        true
-    );
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(0, 0, 1000);
+
+    if (CATEGORY_TIER == EnumTier.WORKTABLE) {
+
+      String label = "-" + this.recipe.getToolDamage(0);
+      minecraft.fontRenderer.drawString(
+          label,
+          (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+          (55 - 3),
+          0xFFFFFFFF,
+          true
+      );
+
+    } else if (CATEGORY_TIER == EnumTier.WORKSTATION) {
+
+      for (int i = 0; i < this.recipe.getToolCount(); i++) {
+        String label = "-" + this.recipe.getToolDamage(i);
+        minecraft.fontRenderer.drawString(
+            label,
+            (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            (55 - 3) - 19 + (22 * i),
+            0xFFFFFFFF,
+            true
+        );
+      }
+    }
+    GlStateManager.popMatrix();
 
     GlStateManager.pushMatrix();
     GlStateManager.scale(0.5, 0.5, 1);
@@ -162,7 +214,7 @@ public class JEIRecipeWrapperWorktable
     int xPos = 334;
 
     if (!this.recipe.getSecondaryOutput().isEmpty()) {
-      label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
+      String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
       minecraft.fontRenderer.drawString(
           label,
           (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -173,7 +225,7 @@ public class JEIRecipeWrapperWorktable
     }
 
     if (!this.recipe.getTertiaryOutput().isEmpty()) {
-      label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
+      String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
       minecraft.fontRenderer.drawString(
           label,
           (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -184,7 +236,7 @@ public class JEIRecipeWrapperWorktable
     }
 
     if (!this.recipe.getQuaternaryOutput().isEmpty()) {
-      label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
+      String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
       minecraft.fontRenderer.drawString(
           label,
           (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,

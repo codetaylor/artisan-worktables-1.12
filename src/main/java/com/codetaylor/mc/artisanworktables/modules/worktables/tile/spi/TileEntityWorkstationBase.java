@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesCo
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorkstation;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -59,4 +60,9 @@ public abstract class TileEntityWorkstationBase
     );
   }
 
+  @Override
+  protected EnumTier getTier() {
+
+    return EnumTier.WORKSTATION;
+  }
 }

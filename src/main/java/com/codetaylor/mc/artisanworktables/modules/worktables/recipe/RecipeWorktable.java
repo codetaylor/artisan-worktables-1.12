@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import crafttweaker.api.item.IIngredient;
@@ -30,6 +31,7 @@ public class RecipeWorktable
   private boolean mirrored;
   private int width;
   private int height;
+  private EnumTier tier;
 
   public RecipeWorktable(
       IGameStageMatcher gameStageMatcher,
@@ -56,6 +58,8 @@ public class RecipeWorktable
     this.mirrored = mirrored;
     this.width = width;
     this.height = height;
+
+    this.tier = this.calculateTier();
   }
 
   @Override
@@ -308,4 +312,38 @@ public class RecipeWorktable
     return true;
   }
 
+  @Override
+  public EnumTier getTier() {
+
+    return this.tier;
+  }
+
+  @Override
+  public boolean matchTier(EnumTier tier) {
+
+    return this.tier.getId() <= tier.getId();
+  }
+
+  private EnumTier calculateTier() {
+
+    // test for tier one requirements
+    if (this.width <= 3
+        && this.height <= 3
+        && this.tools.length == 1
+        && this.secondaryIngredients.isEmpty()) {
+      return EnumTier.WORKTABLE;
+    }
+
+    // test for tier two requirements
+    if (this.width <= 3
+        && this.height <= 3) {
+
+      if (this.tools.length <= 2
+          || (this.secondaryIngredients.size() > 0 && this.secondaryIngredients.size() <= 9)) {
+        return EnumTier.WORKSTATION;
+      }
+    }
+
+    throw new IllegalStateException("Can't calculate recipe tier");
+  }
 }

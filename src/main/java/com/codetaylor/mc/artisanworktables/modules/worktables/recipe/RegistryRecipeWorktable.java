@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +26,18 @@ public class RegistryRecipeWorktable {
   public List<IRecipeWorktable> getRecipeList(List<IRecipeWorktable> result) {
 
     result.addAll(this.recipeList);
+    return result;
+  }
+
+  public List<IRecipeWorktable> getRecipeListByTier(List<IRecipeWorktable> result, EnumTier tier) {
+
+    for (IRecipeWorktable recipe : this.recipeList) {
+
+      if (recipe.matchTier(tier)) {
+        result.add(recipe);
+      }
+    }
+
     return result;
   }
 

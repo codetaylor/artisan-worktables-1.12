@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.*;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -517,25 +518,39 @@ public class Container
   public List<Slot> getRecipeSlots(List<Slot> result) {
 
     // grid
-    for (int i = 1; i < 10; i++) {
+    for (int i = this.slotIndexCraftingMatrixStart; i <= this.slotIndexCraftingMatrixEnd; i++) {
       result.add(this.inventorySlots.get(i));
     }
 
     // tool
-    result.add(this.inventorySlots.get(46));
+    for (int i = this.slotIndexToolsStart; i <= this.slotIndexToolsEnd; i++) {
+      result.add(this.inventorySlots.get(i));
+    }
+
+    // secondary input
+    if (this.slotIndexSecondaryInputStart > -1) {
+
+      for (int i = this.slotIndexSecondaryInputStart; i <= this.slotIndexSecondaryIntputEnd; i++) {
+        result.add(this.inventorySlots.get(i));
+      }
+    }
 
     return result;
   }
 
   public List<Slot> getInventorySlots(List<Slot> result) {
 
-    for (int i = 10; i < 46; i++) {
+    for (int i = this.slotIndexInventoryStart; i <= this.slotIndexInventoryEnd; i++) {
+      result.add(this.inventorySlots.get(i));
+    }
+
+    for (int i = this.slotIndexHotbarStart; i <= this.slotIndexHotbarEnd; i++) {
       result.add(this.inventorySlots.get(i));
     }
 
     if (this.toolbox != null) {
 
-      for (int i = 50; i < 77; i++) {
+      for (int i = this.slotIndexToolboxStart; i <= this.slotIndexToolboxEnd; i++) {
         result.add(this.inventorySlots.get(i));
       }
     }
@@ -548,9 +563,12 @@ public class Container
     return this.tile;
   }
 
-  public boolean canHandleJEIRecipeTransfer(String name) {
+  public boolean canHandleJEIRecipeTransfer(
+      String name,
+      EnumTier tier
+  ) {
 
-    return this.tile.canHandleJEIRecipeTransfer(name);
+    return this.tile.canHandleJEIRecipeTransfer(name, tier);
   }
 
   @Override

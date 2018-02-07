@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -70,4 +71,8 @@ public interface IRecipeWorktable {
   ItemStack getBaseOutput();
 
   boolean hasMultipleWeightedOutputs();
+
+  EnumTier getTier();
+
+  boolean matchTier(EnumTier tier);
 }

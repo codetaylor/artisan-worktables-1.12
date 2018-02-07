@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 
 public abstract class TileEntityTypedBase
     extends TileEntityFluidBase {
@@ -26,9 +27,12 @@ public abstract class TileEntityTypedBase
   }
 
   @Override
-  public boolean canHandleJEIRecipeTransfer(String name) {
+  public boolean canHandleJEIRecipeTransfer(
+      String name,
+      EnumTier tier
+  ) {
 
-    return this.type.getName().equals(name);
+    return this.type.getName().equals(name) && tier.getId() <= this.getTier().getId();
   }
 
   @Override
@@ -41,4 +45,6 @@ public abstract class TileEntityTypedBase
 
     return this.type;
   }
+
+  protected abstract EnumTier getTier();
 }

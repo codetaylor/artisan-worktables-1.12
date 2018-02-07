@@ -10,12 +10,12 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class JEICategoryWorktable
+public class JEICategoryWorkstation
     extends JEICategoryBase {
 
   private final ICraftingGridHelper craftingGridHelper;
 
-  public JEICategoryWorktable(
+  public JEICategoryWorkstation(
       String name,
       EnumTier tier,
       String uid,
@@ -36,15 +36,16 @@ public class JEICategoryWorktable
     IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
     IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
 
-    JEIRecipeWrapper wrapperWorktable = (JEIRecipeWrapper) recipeWrapper;
-    List<List<ItemStack>> tools = wrapperWorktable.getTools();
-    List<List<ItemStack>> inputs = wrapperWorktable.getInputs();
-    List<ItemStack> outputs = wrapperWorktable.getOutput();
+    JEIRecipeWrapper wrapper = (JEIRecipeWrapper) recipeWrapper;
+    List<List<ItemStack>> tools = wrapper.getTools();
+    List<List<ItemStack>> inputs = wrapper.getInputs();
+    List<List<ItemStack>> secondaryInputs = wrapper.getSecondaryInputs();
+    List<ItemStack> outputs = wrapper.getOutput();
 
-    stacks.init(0, false, 111, 31);
+    stacks.init(0, false, 108 - 3 + 6, 34 - 3);
     stacks.set(0, outputs);
 
-    this.setupTooltip(stacks, wrapperWorktable.getWeightedOutput());
+    this.setupTooltip(stacks, wrapper.getWeightedOutput());
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {
@@ -53,33 +54,33 @@ public class JEICategoryWorktable
       }
     }
 
-    if (wrapperWorktable.isShaped()) {
-      this.craftingGridHelper.setInputs(stacks, inputs, wrapperWorktable.getWidth(), wrapperWorktable.getHeight());
+    if (wrapper.isShaped()) {
+      this.craftingGridHelper.setInputs(stacks, inputs, wrapper.getWidth(), wrapper.getHeight());
 
     } else {
       this.craftingGridHelper.setInputs(stacks, inputs);
     }
 
-    stacks.init(10, true, 74, 31);
+    stacks.init(10, true, 74, 20);
     stacks.set(10, tools.get(0));
 
     stacks.init(11, false, 148, 13);
-    stacks.init(12, false, 148, 31);
-    stacks.init(13, false, 148, 49);
+    stacks.init(12, false, 148, 18 + 13);
+    stacks.init(13, false, 148, 36 + 13);
 
-    ItemStack extraOutput = wrapperWorktable.getSecondaryOutput();
+    ItemStack extraOutput = wrapper.getSecondaryOutput();
 
     if (!extraOutput.isEmpty()) {
       stacks.set(11, extraOutput);
     }
 
-    extraOutput = wrapperWorktable.getTertiaryOutput();
+    extraOutput = wrapper.getTertiaryOutput();
 
     if (!extraOutput.isEmpty()) {
       stacks.set(12, extraOutput);
     }
 
-    extraOutput = wrapperWorktable.getQuaternaryOutput();
+    extraOutput = wrapper.getQuaternaryOutput();
 
     if (!extraOutput.isEmpty()) {
       stacks.set(13, extraOutput);
@@ -88,9 +89,23 @@ public class JEICategoryWorktable
     int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(this.tableName.toLowerCase());
 
     fluidStacks.init(14, true, 5, 14, 6, 52, capacity, true, null);
-    fluidStacks.set(14, wrapperWorktable.getFluidStack());
+    fluidStacks.set(14, wrapper.getFluidStack());
 
-    recipeLayout.setRecipeTransferButton(157, 67);
+    stacks.init(15, true, 74, 20 + 22);
+
+    if (tools.size() > 1) {
+      stacks.set(15, tools.get(1));
+    }
+
+    for (int i = 0; i < 9; i++) {
+      stacks.init(16 + i, true, 4 + (18 * i), 71);
+
+      if (i + 1 <= secondaryInputs.size()) {
+        stacks.set(16 + i, secondaryInputs.get(i));
+      }
+    }
+
+    recipeLayout.setRecipeTransferButton(157, 67 + 22);
   }
 
 }
