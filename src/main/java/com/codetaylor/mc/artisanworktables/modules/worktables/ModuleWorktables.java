@@ -98,49 +98,61 @@ public class ModuleWorktables
   @Override
   public void onRegister(Registry registry) {
 
-    registry.registerBlock(
-        Blocks.WORKTABLE,
-        new ItemWorktable(Blocks.WORKTABLE),
-        BlockWorktable.NAME
-    );
+    if (ModuleWorktablesConfig.ENABLE_WORKTABLES) {
 
-    registry.registerBlock(
-        Blocks.WORKSTATION,
-        new ItemWorktable(Blocks.WORKSTATION),
-        BlockWorkstation.NAME
-    );
+      registry.registerBlock(
+          Blocks.WORKTABLE,
+          new ItemWorktable(Blocks.WORKTABLE),
+          BlockWorktable.NAME
+      );
 
-    registry.registerTileEntities(
-        // worktable
-        TileEntityWorktableBasic.class,
-        TileEntityWorktableBlacksmith.class,
-        TileEntityWorktableCarpenter.class,
-        TileEntityWorktableChemist.class,
-        TileEntityWorktableEngineer.class,
-        TileEntityWorktableJeweler.class,
-        TileEntityWorktableMage.class,
-        TileEntityWorktableMason.class,
-        TileEntityWorktableScribe.class,
-        TileEntityWorktableTailor.class,
-        // workstation
-        TileEntityWorkstationBasic.class,
-        TileEntityWorkstationBlacksmith.class,
-        TileEntityWorkstationCarpenter.class,
-        TileEntityWorkstationChemist.class,
-        TileEntityWorkstationEngineer.class,
-        TileEntityWorkstationJeweler.class,
-        TileEntityWorkstationMage.class,
-        TileEntityWorkstationMason.class,
-        TileEntityWorkstationScribe.class,
-        TileEntityWorkstationTailor.class
-    );
+      registry.registerTileEntities(
+          TileEntityWorktableBasic.class,
+          TileEntityWorktableBlacksmith.class,
+          TileEntityWorktableCarpenter.class,
+          TileEntityWorktableChemist.class,
+          TileEntityWorktableEngineer.class,
+          TileEntityWorktableJeweler.class,
+          TileEntityWorktableMage.class,
+          TileEntityWorktableMason.class,
+          TileEntityWorktableScribe.class,
+          TileEntityWorktableTailor.class
+      );
+    }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSTATIONS) {
+
+      registry.registerBlock(
+          Blocks.WORKSTATION,
+          new ItemWorktable(Blocks.WORKSTATION),
+          BlockWorkstation.NAME
+      );
+
+      registry.registerTileEntities(
+          TileEntityWorkstationBasic.class,
+          TileEntityWorkstationBlacksmith.class,
+          TileEntityWorkstationCarpenter.class,
+          TileEntityWorkstationChemist.class,
+          TileEntityWorkstationEngineer.class,
+          TileEntityWorkstationJeweler.class,
+          TileEntityWorkstationMage.class,
+          TileEntityWorkstationMason.class,
+          TileEntityWorkstationScribe.class,
+          TileEntityWorkstationTailor.class
+      );
+    }
   }
 
   @Override
   public void onClientRegister(Registry registry) {
 
-    registry.registerItemModelStrategy(Blocks.WORKTABLE.getModelRegistrationStrategy());
-    registry.registerItemModelStrategy(Blocks.WORKSTATION.getModelRegistrationStrategy());
+    if (ModuleWorktablesConfig.ENABLE_WORKTABLES) {
+      registry.registerItemModelStrategy(Blocks.WORKTABLE.getModelRegistrationStrategy());
+    }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSTATIONS) {
+      registry.registerItemModelStrategy(Blocks.WORKSTATION.getModelRegistrationStrategy());
+    }
   }
 
 }

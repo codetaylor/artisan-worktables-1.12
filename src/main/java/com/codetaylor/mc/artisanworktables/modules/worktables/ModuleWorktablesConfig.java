@@ -14,6 +14,18 @@ import java.util.Map;
 public class ModuleWorktablesConfig {
 
   @Config.Comment({
+      "Set to false to disable worktables."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_WORKTABLES = true;
+
+  @Config.Comment({
+      "Set to false to disable workstations."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_WORKSTATIONS = true;
+
+  @Config.Comment({
       "If set to true, crafting tools must have sufficient durability remaining to perform the craft.",
       "If set to false, this restriction is ignored."
   })
