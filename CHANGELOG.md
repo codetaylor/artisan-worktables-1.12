@@ -4,9 +4,10 @@
 * Added: new ZenScript builder methods
   * `addTool(IIngredient, int)`
   * `setSecondaryIngredients(IIngredient[])`
+* Added: fr_fr.lang (PR#56 Okii35)
 * Changed: deprecated ZenScript builder methods
   * `setTool(IIngredient, int)` - use `addTool(IIngredient, int)` instead
-* Added: fr_fr.lang (PR#56 Okii35)
+* Changed: updated de_de.lang (PR#58 Xaikii)
 * Note: you will need to refresh the config for the worktable module
 
 1.12.21
