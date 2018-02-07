@@ -13,6 +13,18 @@ tile.artisanworktables.worktable.mason.name=Arbeitstisch des Steinmetzes
 tile.artisanworktables.worktable.scribe.name=Arbeitstisch des Schreibers
 tile.artisanworktables.worktable.tailor.name=Arbeitstisch des Schneiders
 
+# Workstations
+tile.artisanworktables.workstation.basic.name=Normaler Arbeitsplatz
+tile.artisanworktables.workstation.blacksmith.name=Arbeitsplatz des Schmieds
+tile.artisanworktables.workstation.carpenter.name=Arbeitsplatz des Zimmermanns
+tile.artisanworktables.workstation.chemist.name=Arbeitsplatz des Handwerkers
+tile.artisanworktables.workstation.engineer.name=Arbeitsplatz des Ingenieurs
+tile.artisanworktables.workstation.jeweler.name=Arbeitsplatz des Juweliers
+tile.artisanworktables.workstation.mage.name=Arbeitsplatz des Magiers
+tile.artisanworktables.workstation.mason.name=Arbeitsplatz des Steinmetzes
+tile.artisanworktables.workstation.scribe.name=Arbeitsplatz des Schreibers
+tile.artisanworktables.workstation.tailor.name=Arbeitsplatz des Schneiders
+
 # Toolbox
 tile.artisanworktables.toolbox.name=Werkzeugkasten
 tile.artisanworktables.mechanical_toolbox.name=Mechanischer Werkzeugkasten
