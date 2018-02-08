@@ -72,7 +72,9 @@ public class JEIRecipeWrapper
 
       if (ingredient instanceof IOreDictEntry) {
         NonNullList<ItemStack> ores = OreDictionary.getOres(((IOreDictEntry) ingredient).getName());
-        list.addAll(ores);
+        ItemStack[] array = ores.toArray(new ItemStack[ores.size()]);
+        Ingredient ing = Ingredient.fromStacks(array);
+        list.addAll(Arrays.asList(ing.getMatchingStacks()));
 
       } else if (ingredient instanceof IItemStack) {
         list.add(CTInputHelper.toStack((IItemStack) ingredient));
@@ -81,7 +83,8 @@ public class JEIRecipeWrapper
         List<IItemStack> items = ingredient.getItems();
 
         for (IItemStack item : items) {
-          list.add(CTInputHelper.toStack(item));
+          Ingredient ing = Ingredient.fromStacks(CTInputHelper.toStack(item));
+          list.addAll(Arrays.asList(ing.getMatchingStacks()));
         }
       }
 
