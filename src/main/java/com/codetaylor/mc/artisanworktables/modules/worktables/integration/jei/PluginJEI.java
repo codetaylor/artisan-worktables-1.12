@@ -86,18 +86,21 @@ public class PluginJEI
         RegistryRecipe registry = WorktableAPI.getWorktableRecipeRegistry(name);
 
         if (registry != null) {
-          List<IRecipe> recipeList = registry.getRecipeList(new ArrayList<>());
 
-          for (IRecipe recipe : recipeList) {
+          for (EnumTier tier : EnumTier.values()) {
+            List<IRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
 
-            if (!recipe.matchGameStages(unlockedStages)) {
-              IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
-                  recipe,
-                  PluginJEI.createUID(name, recipe.getTier())
-              );
+            for (IRecipe recipe : recipeList) {
 
-              if (recipeWrapper != null) {
-                RECIPE_REGISTRY.hideRecipe(recipeWrapper);
+              if (!recipe.matchGameStages(unlockedStages)) {
+                IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
+                    recipe,
+                    PluginJEI.createUID(name, tier)
+                );
+
+                if (recipeWrapper != null) {
+                  RECIPE_REGISTRY.hideRecipe(recipeWrapper);
+                }
               }
             }
           }
