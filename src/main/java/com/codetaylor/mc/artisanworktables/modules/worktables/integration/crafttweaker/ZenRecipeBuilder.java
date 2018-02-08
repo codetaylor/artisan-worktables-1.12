@@ -10,7 +10,9 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ZenRecipeBuilder
     implements IZenRecipeBuilder {
@@ -77,15 +79,21 @@ public class ZenRecipeBuilder
       return this;
     }
 
+    List<IIngredient> adjustedList = new ArrayList<>();
+
     for (IIngredient ingredient : ingredients) {
 
       if (ingredient instanceof ILiquidStack) {
         CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
         return this;
       }
+
+      if (ingredient != null) {
+        adjustedList.add(ingredient);
+      }
     }
 
-    this.recipeBuilder.setSecondaryIngredients(ingredients);
+    this.recipeBuilder.setSecondaryIngredients(adjustedList.toArray(new IIngredient[adjustedList.size()]));
     return this;
   }
 
