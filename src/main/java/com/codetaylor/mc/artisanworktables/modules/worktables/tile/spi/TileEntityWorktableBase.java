@@ -61,7 +61,7 @@ public abstract class TileEntityWorktableBase
   }
 
   @Override
-  protected EnumTier getTier() {
+  public EnumTier getTier() {
 
     return EnumTier.WORKTABLE;
   }

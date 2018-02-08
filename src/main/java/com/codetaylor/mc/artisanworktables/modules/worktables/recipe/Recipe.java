@@ -17,8 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class RecipeWorktable
-    implements IRecipeWorktable {
+public class Recipe
+    implements IRecipe {
 
   private IGameStageMatcher gameStageMatcher;
   private ToolEntry[] tools;
@@ -32,8 +32,9 @@ public class RecipeWorktable
   private int width;
   private int height;
   private EnumTier tier;
+  private int minimumTier;
 
-  public RecipeWorktable(
+  public Recipe(
       IGameStageMatcher gameStageMatcher,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
@@ -44,7 +45,8 @@ public class RecipeWorktable
       IRecipeMatrixMatcher recipeMatrixMatcher,
       boolean mirrored,
       int width,
-      int height
+      int height,
+      int minimumTier
   ) {
 
     this.gameStageMatcher = gameStageMatcher;
@@ -58,6 +60,7 @@ public class RecipeWorktable
     this.mirrored = mirrored;
     this.width = width;
     this.height = height;
+    this.minimumTier = minimumTier;
 
     this.tier = this.calculateTier();
   }
@@ -275,8 +278,13 @@ public class RecipeWorktable
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack,
-      ISecondaryIngredientMatcher secondaryIngredientMatcher
+      ISecondaryIngredientMatcher secondaryIngredientMatcher,
+      EnumTier tier
   ) {
+
+    if (!this.matchTier(tier)) {
+      return false;
+    }
 
     if (this.getToolCount() > tools.length) {
       // this recipe requires more tools than the tools in the table
@@ -321,7 +329,7 @@ public class RecipeWorktable
   @Override
   public boolean matchTier(EnumTier tier) {
 
-    return this.tier.getId() <= tier.getId();
+    return Math.max(this.tier.getId(), this.minimumTier) <= tier.getId();
   }
 
   private EnumTier calculateTier() {

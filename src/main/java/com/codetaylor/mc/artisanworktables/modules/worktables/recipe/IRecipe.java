@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,14 +13,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public interface IRecipeWorktable {
+public interface IRecipe {
 
   boolean matches(
       Collection<String> unlockedStages,
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack,
-      ISecondaryIngredientMatcher secondaryIngredientMatcher
+      ISecondaryIngredientMatcher secondaryIngredientMatcher,
+      EnumTier tier
   );
 
   int getWidth();

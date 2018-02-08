@@ -2,8 +2,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.*;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
@@ -235,13 +235,14 @@ public class Container
       }
     }
 
-    RegistryRecipeWorktable registry = this.tile.getWorktableRecipeRegistry();
-    IRecipeWorktable recipe = registry.findRecipe(
+    RegistryRecipe registry = this.tile.getWorktableRecipeRegistry();
+    IRecipe recipe = registry.findRecipe(
         player,
         this.tile.getTools(),
         this.tile.getCraftingMatrixHandler(),
         fluidStack,
-        this.tile.getSecondaryIngredientMatcher()
+        this.tile.getSecondaryIngredientMatcher(),
+        this.tile.getTier()
     );
 
     if (recipe != null) {
@@ -411,7 +412,7 @@ public class Container
         // grid has multiple, complete recipes, this will be executed for each complete
         // recipe.
 
-        IRecipeWorktable recipe = this.tile.getRecipe(playerIn);
+        IRecipe recipe = this.tile.getRecipe(playerIn);
 
         if (recipe == null) {
           return ItemStack.EMPTY;

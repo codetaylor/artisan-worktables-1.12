@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.api;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import net.minecraft.item.ItemStack;
 
@@ -10,7 +10,7 @@ import java.util.*;
 
 public class WorktableAPI {
 
-  private static final Map<String, RegistryRecipeWorktable> RECIPE_REGISTRY_MAP;
+  private static final Map<String, RegistryRecipe> RECIPE_REGISTRY_MAP;
 
   private static final List<String> WORKTABLE_NAME_LIST;
 
@@ -23,16 +23,16 @@ public class WorktableAPI {
     }
 
     {
-      Map<String, RegistryRecipeWorktable> map = new HashMap<>();
+      Map<String, RegistryRecipe> map = new HashMap<>();
 
       for (String name : WorktableAPI.getWorktableNames()) {
-        map.put(name, new RegistryRecipeWorktable());
+        map.put(name, new RegistryRecipe());
       }
       RECIPE_REGISTRY_MAP = Collections.unmodifiableMap(new HashMap<>(map));
     }
   }
 
-  public static RegistryRecipeWorktable getWorktableRecipeRegistry(String name) {
+  public static RegistryRecipe getWorktableRecipeRegistry(String name) {
 
     return RECIPE_REGISTRY_MAP.get(name);
   }
@@ -66,7 +66,7 @@ public class WorktableAPI {
 
   public static boolean containsRecipeWithTool(ItemStack itemStack) {
 
-    for (RegistryRecipeWorktable registry : RECIPE_REGISTRY_MAP.values()) {
+    for (RegistryRecipe registry : RECIPE_REGISTRY_MAP.values()) {
 
       if (registry.containsRecipeWithToolInAnySlot(itemStack)) {
         return true;

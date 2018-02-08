@@ -6,9 +6,9 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -155,7 +155,7 @@ public abstract class TileEntityBase
   public void onTakeResult(EntityPlayer player) {
 
     // Find the recipe
-    IRecipeWorktable recipe = this.getRecipe(player);
+    IRecipe recipe = this.getRecipe(player);
 
     if (recipe == null) {
       return;
@@ -186,7 +186,7 @@ public abstract class TileEntityBase
 
   private void onCraftCheckAndSwapWeightedOutput(
       EntityPlayer player,
-      IRecipeWorktable recipe
+      IRecipe recipe
   ) {
 
     if (!this.world.isRemote && !player.inventory.getItemStack().isEmpty()) {
@@ -199,7 +199,7 @@ public abstract class TileEntityBase
     }
   }
 
-  private void onCraftProcessExtraOutput(IRecipeWorktable recipe) {
+  private void onCraftProcessExtraOutput(IRecipe recipe) {
 
     if (!this.world.isRemote) {
       ItemStack extraOutput = recipe.getSecondaryOutput();
@@ -231,7 +231,7 @@ public abstract class TileEntityBase
     }
   }
 
-  private void onCraftDamageTool(EntityPlayer player, int toolIndex, IRecipeWorktable recipe) {
+  private void onCraftDamageTool(EntityPlayer player, int toolIndex, IRecipe recipe) {
 
     ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
@@ -262,7 +262,7 @@ public abstract class TileEntityBase
     }
   }
 
-  private void onCraftCheckAndReplaceTool(IRecipeWorktable recipe, int toolIndex) {
+  private void onCraftCheckAndReplaceTool(IRecipe recipe, int toolIndex) {
 
     ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
 
@@ -310,7 +310,7 @@ public abstract class TileEntityBase
     BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
   }
 
-  protected void onCraftReduceIngredients(IRecipeWorktable recipe) {
+  protected void onCraftReduceIngredients(IRecipe recipe) {
 
     int slotCount = this.craftingMatrixHandler.getSlots();
 
@@ -330,7 +330,7 @@ public abstract class TileEntityBase
     }
   }
 
-  public IRecipeWorktable getRecipe(EntityPlayer player) {
+  public IRecipe getRecipe(EntityPlayer player) {
 
     FluidStack fluidStack = null;
 
@@ -342,13 +342,14 @@ public abstract class TileEntityBase
       }
     }
 
-    RegistryRecipeWorktable registry = this.getWorktableRecipeRegistry();
+    RegistryRecipe registry = this.getWorktableRecipeRegistry();
     return registry.findRecipe(
         player,
         this.getTools(),
         this.craftingMatrixHandler,
         fluidStack,
-        this.getSecondaryIngredientMatcher()
+        this.getSecondaryIngredientMatcher(),
+        this.getTier()
     );
   }
 
@@ -488,7 +489,7 @@ public abstract class TileEntityBase
     return null;
   }
 
-  public RegistryRecipeWorktable getWorktableRecipeRegistry() {
+  public RegistryRecipe getWorktableRecipeRegistry() {
 
     return WorktableAPI.getWorktableRecipeRegistry(this.getWorktableName());
   }
@@ -545,5 +546,7 @@ public abstract class TileEntityBase
   protected abstract String getWorktableName();
 
   protected abstract int getToolSlotCount();
+
+  public abstract EnumTier getTier();
 
 }

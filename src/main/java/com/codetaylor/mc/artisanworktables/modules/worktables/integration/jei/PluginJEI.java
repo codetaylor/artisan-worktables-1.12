@@ -2,9 +2,9 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.Recipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IDrawable;
@@ -48,7 +48,7 @@ public class PluginJEI
 
       for (String name : WorktableAPI.getWorktableNames()) {
         registry.handleRecipes(
-            RecipeWorktable.class,
+            Recipe.class,
             JEIRecipeWrapper::new,
             PluginJEI.createUID(name, tier)
         );
@@ -64,8 +64,8 @@ public class PluginJEI
       }
 
       for (String name : WorktableAPI.getWorktableNames()) {
-        List<IRecipeWorktable> recipeList = new ArrayList<>();
-        RegistryRecipeWorktable recipeRegistry = WorktableAPI.getWorktableRecipeRegistry(name);
+        List<IRecipe> recipeList = new ArrayList<>();
+        RegistryRecipe recipeRegistry = WorktableAPI.getWorktableRecipeRegistry(name);
         recipeList = recipeRegistry.getRecipeListByTier(recipeList, tier);
         registry.addRecipes(recipeList, PluginJEI.createUID(name, tier));
       }
@@ -83,12 +83,12 @@ public class PluginJEI
       Set<String> unlockedStages = Collections.emptySet();
 
       for (String name : WorktableAPI.getWorktableNames()) {
-        RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(name);
+        RegistryRecipe registry = WorktableAPI.getWorktableRecipeRegistry(name);
 
         if (registry != null) {
-          List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());
+          List<IRecipe> recipeList = registry.getRecipeList(new ArrayList<>());
 
-          for (IRecipeWorktable recipe : recipeList) {
+          for (IRecipe recipe : recipeList) {
 
             if (!recipe.matchGameStages(unlockedStages)) {
               IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(

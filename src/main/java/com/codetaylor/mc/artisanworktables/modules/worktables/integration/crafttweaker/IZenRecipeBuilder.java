@@ -51,6 +51,9 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder excludeGameStages(String[] stages);
 
   @ZenMethod
+  IZenRecipeBuilder setMinimumTier(int minimumTier);
+
+  @ZenMethod
   void create();
 
 }

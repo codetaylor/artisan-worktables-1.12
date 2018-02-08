@@ -11,6 +11,7 @@
 * Changed: deprecated ZenScript builder methods
   * `setTool(IIngredient, int)` - use `addTool(IIngredient, int)` instead
 * Changed: updated de_de.lang (PR#58 Xaikii)
+* Fixed: JEI recipe transfer issue with some converted oreDict ingredients
 * Note: you will need to refresh the config for the worktable module
 
 1.12.21

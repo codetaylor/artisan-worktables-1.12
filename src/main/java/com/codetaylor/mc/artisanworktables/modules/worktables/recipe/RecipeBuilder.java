@@ -26,6 +26,7 @@ public class RecipeBuilder {
   private EnumGameStageRequire gameStageRequire;
   private String[] includeGamestages;
   private String[] excludeGamestages;
+  private int minimumTier;
 
   public RecipeBuilder() {
 
@@ -39,6 +40,7 @@ public class RecipeBuilder {
     this.includeGamestages = new String[0];
     this.excludeGamestages = new String[0];
     this.tools = new ToolIngredientEntry[MAX_TOOL_COUNT];
+    this.minimumTier = 0;
   }
 
   public RecipeBuilder setIngredients(Ingredient[][] ingredients) {
@@ -122,7 +124,13 @@ public class RecipeBuilder {
     return this;
   }
 
-  public IRecipeWorktable create() throws RecipeBuilderException {
+  public RecipeBuilder setMinimumTier(int minimumTier) {
+
+    this.minimumTier = minimumTier;
+    return this;
+  }
+
+  public IRecipe create() throws RecipeBuilderException {
 
     if (this.outputWeightPairList == null || this.outputWeightPairList.isEmpty()) {
       throw new RecipeBuilderException("No outputs defined for recipe");
@@ -175,7 +183,7 @@ public class RecipeBuilder {
       tools[i] = new ToolEntry(this.tools[i]);
     }
 
-    return new RecipeWorktable(
+    return new Recipe(
         gameStageMatcher,
         this.outputWeightPairList,
         tools,
@@ -186,7 +194,8 @@ public class RecipeBuilder {
         recipeMatcher,
         this.mirrored,
         this.width,
-        this.height
+        this.height,
+        this.minimumTier
     );
   }
 }

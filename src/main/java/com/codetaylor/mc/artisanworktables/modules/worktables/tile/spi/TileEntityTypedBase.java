@@ -46,5 +46,4 @@ public abstract class TileEntityTypedBase
     return this.type;
   }
 
-  protected abstract EnumTier getTier();
 }

@@ -175,6 +175,18 @@ public class ZenRecipeBuilder
   }
 
   @Override
+  public IZenRecipeBuilder setMinimumTier(int minimumTier) {
+
+    if (minimumTier < 0 || minimumTier > 2) {
+      CTLogHelper.logErrorFromZenMethod("Minimum tier out of bounds: 0 <= " + minimumTier + " <= 2");
+      return this;
+    }
+
+    this.recipeBuilder.setMinimumTier(minimumTier);
+    return this;
+  }
+
+  @Override
   public void create() {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new ZenWorktable.Add(this.tableName, this.recipeBuilder));

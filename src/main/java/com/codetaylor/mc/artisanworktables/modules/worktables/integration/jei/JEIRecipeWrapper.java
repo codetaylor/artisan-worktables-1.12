@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.Recipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
@@ -32,14 +32,14 @@ public class JEIRecipeWrapper
 
   public static EnumTier CATEGORY_TIER = EnumTier.WORKTABLE;
 
-  private RecipeWorktable recipe;
+  private Recipe recipe;
   private List<List<ItemStack>> inputs;
   private List<List<ItemStack>> secondaryInputs;
   private List<List<ItemStack>> tools;
   private List<ItemStack> output;
 
   public JEIRecipeWrapper(
-      RecipeWorktable recipe
+      Recipe recipe
   ) {
 
     this.recipe = recipe;

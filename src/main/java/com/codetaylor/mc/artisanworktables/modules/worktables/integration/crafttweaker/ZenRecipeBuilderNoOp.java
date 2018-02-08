@@ -92,6 +92,12 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder setMinimumTier(int minimumTier) {
+
+    return this;
+  }
+
+  @Override
   public void create() {
     //
   }

@@ -14,24 +14,24 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class RegistryRecipeWorktable {
+public class RegistryRecipe {
 
-  private List<IRecipeWorktable> recipeList;
+  private List<IRecipe> recipeList;
 
-  public RegistryRecipeWorktable() {
+  public RegistryRecipe() {
 
     this.recipeList = new ArrayList<>();
   }
 
-  public List<IRecipeWorktable> getRecipeList(List<IRecipeWorktable> result) {
+  public List<IRecipe> getRecipeList(List<IRecipe> result) {
 
     result.addAll(this.recipeList);
     return result;
   }
 
-  public List<IRecipeWorktable> getRecipeListByTier(List<IRecipeWorktable> result, EnumTier tier) {
+  public List<IRecipe> getRecipeListByTier(List<IRecipe> result, EnumTier tier) {
 
-    for (IRecipeWorktable recipe : this.recipeList) {
+    for (IRecipe recipe : this.recipeList) {
 
       if (recipe.matchTier(tier)) {
         result.add(recipe);
@@ -41,19 +41,20 @@ public class RegistryRecipeWorktable {
     return result;
   }
 
-  public IRecipeWorktable addRecipe(IRecipeWorktable recipe) {
+  public IRecipe addRecipe(IRecipe recipe) {
 
     this.recipeList.add(recipe);
     return recipe;
   }
 
   @Nullable
-  public IRecipeWorktable findRecipe(
+  public IRecipe findRecipe(
       EntityPlayer player,
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
       @Nullable FluidStack fluidStack,
-      ISecondaryIngredientMatcher secondaryIngredientMatcher
+      ISecondaryIngredientMatcher secondaryIngredientMatcher,
+      EnumTier tier
   ) {
 
     Collection<String> unlockedStages;
@@ -66,9 +67,9 @@ public class RegistryRecipeWorktable {
       unlockedStages = Collections.emptySet();
     }
 
-    for (IRecipeWorktable recipe : this.recipeList) {
+    for (IRecipe recipe : this.recipeList) {
 
-      if (recipe.matches(unlockedStages, tools, craftingMatrix, fluidStack, secondaryIngredientMatcher)) {
+      if (recipe.matches(unlockedStages, tools, craftingMatrix, fluidStack, secondaryIngredientMatcher, tier)) {
         return recipe;
       }
     }
@@ -78,7 +79,7 @@ public class RegistryRecipeWorktable {
 
   public boolean containsRecipeWithToolInSlot(ItemStack tool, int toolIndex) {
 
-    for (IRecipeWorktable recipe : this.recipeList) {
+    for (IRecipe recipe : this.recipeList) {
 
       if (recipe.isValidTool(tool, toolIndex)) {
         return true;
@@ -90,7 +91,7 @@ public class RegistryRecipeWorktable {
 
   public boolean containsRecipeWithToolInAnySlot(ItemStack tool) {
 
-    for (IRecipeWorktable recipe : this.recipeList) {
+    for (IRecipe recipe : this.recipeList) {
       int toolCount = recipe.getToolCount();
 
       for (int i = 0; i < toolCount; i++) {

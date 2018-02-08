@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.SecondaryIngredientMatcher;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
@@ -39,7 +39,7 @@ public abstract class TileEntitySecondaryInputBase
   }
 
   @Override
-  protected void onCraftReduceIngredients(IRecipeWorktable recipe) {
+  protected void onCraftReduceIngredients(IRecipe recipe) {
 
     super.onCraftReduceIngredients(recipe);
 
