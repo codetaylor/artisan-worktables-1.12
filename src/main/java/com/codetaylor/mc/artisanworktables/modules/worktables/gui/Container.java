@@ -527,14 +527,6 @@ public class Container
       result.add(this.inventorySlots.get(i));
     }
 
-    // secondary input
-    if (this.slotIndexSecondaryInputStart > -1) {
-
-      for (int i = this.slotIndexSecondaryInputStart; i <= this.slotIndexSecondaryIntputEnd; i++) {
-        result.add(this.inventorySlots.get(i));
-      }
-    }
-
     return result;
   }
 
