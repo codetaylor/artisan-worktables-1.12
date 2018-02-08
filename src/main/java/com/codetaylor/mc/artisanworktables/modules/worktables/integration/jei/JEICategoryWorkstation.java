@@ -98,7 +98,9 @@ public class JEICategoryWorkstation
     }
 
     for (int i = 0; i < 9; i++) {
-      stacks.init(16 + i, true, 4 + (18 * i), 71);
+      // The input flag is set to false here to prevent JEI from trying to transfer
+      // recipe items into these slots when the transfer button is clicked.
+      stacks.init(16 + i, false, 4 + (18 * i), 71);
 
       if (i + 1 <= secondaryInputs.size()) {
         stacks.set(16 + i, secondaryInputs.get(i));

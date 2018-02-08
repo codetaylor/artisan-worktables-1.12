@@ -7,9 +7,6 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
-import crafttweaker.api.item.IngredientStack;
-import crafttweaker.api.oredict.IOreDictEntry;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -17,11 +14,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.config.GuiUtils;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,27 +63,7 @@ public class JEIRecipeWrapper
     }
 
     for (IIngredient ingredient : this.recipe.getSecondaryIngredients()) {
-      List<ItemStack> list = new ArrayList<>();
-
-      if (ingredient instanceof IOreDictEntry) {
-        NonNullList<ItemStack> ores = OreDictionary.getOres(((IOreDictEntry) ingredient).getName());
-        ItemStack[] array = ores.toArray(new ItemStack[ores.size()]);
-        Ingredient ing = Ingredient.fromStacks(array);
-        list.addAll(Arrays.asList(ing.getMatchingStacks()));
-
-      } else if (ingredient instanceof IItemStack) {
-        list.add(CTInputHelper.toStack((IItemStack) ingredient));
-
-      } else if (ingredient instanceof IngredientStack) {
-        List<IItemStack> items = ingredient.getItems();
-
-        for (IItemStack item : items) {
-          Ingredient ing = Ingredient.fromStacks(CTInputHelper.toStack(item));
-          list.addAll(Arrays.asList(ing.getMatchingStacks()));
-        }
-      }
-
-      this.secondaryInputs.add(list);
+      this.secondaryInputs.add(CTInputHelper.getMatchingStacks(ingredient, new ArrayList<>()));
     }
   }
 

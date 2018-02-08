@@ -527,6 +527,9 @@ public class Container
       result.add(this.inventorySlots.get(i));
     }
 
+    // Intentionally left out the secondary ingredient slots to prevent JEI from
+    // transferring items to these slots when the transfer button is clicked.
+
     return result;
   }
 
