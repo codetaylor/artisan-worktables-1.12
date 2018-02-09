@@ -8,6 +8,7 @@
   * `addTool(IIngredient, int)`
   * `setSecondaryIngredients(IIngredient[])`
 * Added: fr_fr.lang (PR#56 Okii35)
+* Changed: new models and textures for the worktables
 * Changed: deprecated ZenScript builder methods
   * `setTool(IIngredient, int)` - use `addTool(IIngredient, int)` instead
 * Changed: updated de_de.lang (PR#58 Xaikii)
