@@ -86,7 +86,9 @@ public abstract class TileEntityBase
 
     List<ItemStack> result = new ArrayList<>();
 
-    result.add(this.toolHandler.getStackInSlot(0));
+    for (int i = 0; i < this.getToolSlotCount(); i++) {
+      result.add(this.toolHandler.getStackInSlot(i));
+    }
 
     int slotCount = this.craftingMatrixHandler.getSlots();
 
@@ -95,6 +97,13 @@ public abstract class TileEntityBase
 
       if (!itemStack.isEmpty()) {
         result.add(itemStack);
+      }
+    }
+
+    if (this.secondaryOutputHandler != null) {
+
+      for (int i = 0; i < this.secondaryOutputHandler.getSlots(); i++) {
+        result.add(this.secondaryOutputHandler.getStackInSlot(i));
       }
     }
 

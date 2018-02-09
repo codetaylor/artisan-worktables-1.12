@@ -107,6 +107,18 @@ public abstract class TileEntitySecondaryInputBase
   }
 
   @Override
+  public List<ItemStack> getBlockBreakDrops() {
+
+    List<ItemStack> drops = super.getBlockBreakDrops();
+
+    for (int i = 0; i < this.secondaryIngredientHandler.getSlots(); i++) {
+      drops.add(this.secondaryIngredientHandler.getStackInSlot(i));
+    }
+
+    return drops;
+  }
+
+  @Override
   public void readFromNBT(NBTTagCompound tag) {
 
     super.readFromNBT(tag);
