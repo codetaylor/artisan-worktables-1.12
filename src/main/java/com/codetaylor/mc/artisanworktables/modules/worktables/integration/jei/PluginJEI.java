@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.Recipe;
@@ -28,6 +29,10 @@ public class PluginJEI
 
     for (EnumTier tier : EnumTier.values()) {
 
+      if (!ModuleWorktablesConfig.isTierEnabled(tier)) {
+        continue;
+      }
+
       for (String name : WorktableAPI.getWorktableNames()) {
         registry.addRecipeCategories(this.createCategory(name, tier, registry.getJeiHelpers().getGuiHelper()));
       }
@@ -38,6 +43,10 @@ public class PluginJEI
   public void register(IModRegistry registry) {
 
     for (EnumTier tier : EnumTier.values()) {
+
+      if (!ModuleWorktablesConfig.isTierEnabled(tier)) {
+        continue;
+      }
 
       for (String name : WorktableAPI.getWorktableNames()) {
         registry.addRecipeCatalyst(

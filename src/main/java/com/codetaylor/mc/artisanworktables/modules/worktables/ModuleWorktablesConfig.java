@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -62,6 +63,18 @@ public class ModuleWorktablesConfig {
       if (event.getModID().equals(ModuleWorktables.MOD_ID)) {
         ConfigManager.sync(ModuleWorktables.MOD_ID, Config.Type.INSTANCE);
       }
+    }
+  }
+
+  public static boolean isTierEnabled(EnumTier tier) {
+
+    switch (tier) {
+      case WORKTABLE:
+        return ModuleWorktablesConfig.ENABLE_WORKTABLES;
+      case WORKSTATION:
+        return ModuleWorktablesConfig.ENABLE_WORKSTATIONS;
+      default:
+        throw new IllegalArgumentException("Unknown tier: " + tier);
     }
   }
 }
