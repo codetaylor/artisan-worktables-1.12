@@ -15,6 +15,7 @@
 * Fixed: JEI recipe transfer issue with some converted oreDict ingredients
 * Fixed: stacks in secondary output slots are not dropped when the block is broken
 * Note: you will need to refresh the config for the worktable module
+* Requires: Athenaeum >= 1.8.4
 
 1.12.21
 * Fixed: crash with liquid in GUI (or invisible items w/ optifine) (#52)
