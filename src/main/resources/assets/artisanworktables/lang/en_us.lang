@@ -13,6 +13,18 @@ tile.artisanworktables.worktable.mason.name=Mason's Worktable
 tile.artisanworktables.worktable.scribe.name=Scribe's Worktable
 tile.artisanworktables.worktable.tailor.name=Tailor's Worktable
 
+# Workstations
+tile.artisanworktables.workstation.basic.name=Basic Workstation
+tile.artisanworktables.workstation.blacksmith.name=Blacksmith's Workstation
+tile.artisanworktables.workstation.carpenter.name=Carpenter's Workstation
+tile.artisanworktables.workstation.chemist.name=Chemist's Workstation
+tile.artisanworktables.workstation.engineer.name=Engineer's Workstation
+tile.artisanworktables.workstation.jeweler.name=Jeweler's Workstation
+tile.artisanworktables.workstation.mage.name=Mage's Workstation
+tile.artisanworktables.workstation.mason.name=Mason's Workstation
+tile.artisanworktables.workstation.scribe.name=Scribe's Workstation
+tile.artisanworktables.workstation.tailor.name=Tailor's Workstation
+
 # Toolbox
 tile.artisanworktables.toolbox.name=Toolbox
 tile.artisanworktables.mechanical_toolbox.name=Mechanical Toolbox

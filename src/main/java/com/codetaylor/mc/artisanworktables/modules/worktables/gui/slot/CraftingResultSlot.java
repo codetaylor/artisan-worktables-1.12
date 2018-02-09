@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -9,11 +9,11 @@ public class CraftingResultSlot
     extends ResultSlot {
 
   private final Runnable slotChangeListener;
-  private final TileEntityWorktableBase tile;
+  private final TileEntityBase tile;
 
   public CraftingResultSlot(
       Runnable slotChangeListener,
-      TileEntityWorktableBase tile,
+      TileEntityBase tile,
       IItemHandler itemHandler,
       int index,
       int xPosition,

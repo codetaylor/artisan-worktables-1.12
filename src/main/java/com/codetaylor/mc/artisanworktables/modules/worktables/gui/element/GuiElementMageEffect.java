@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementBase;
 import net.minecraft.util.math.MathHelper;
@@ -11,11 +11,11 @@ public class GuiElementMageEffect
   private static final double TWO_PI = Math.PI * 2;
   private static final String[] LETTERS = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
-  private final ContainerWorktable container;
+  private final Container container;
 
   public GuiElementMageEffect(
       GuiContainerBase guiBase,
-      ContainerWorktable container,
+      Container container,
       int elementX,
       int elementY
   ) {

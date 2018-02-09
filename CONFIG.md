@@ -107,40 +107,52 @@ general {
 # Configuration file
 
 general {
+    # Set to false to disable workstations.
+    B:ENABLE_WORKSTATIONS=true
+
+    # Set to false to disable worktables.
+    B:ENABLE_WORKTABLES=true
+
     # If set to true, crafting tools must have sufficient durability remaining to perform the craft.
     # If set to false, this restriction is ignored.
-    B:RESTRICT_CRAFT_MINIUMUM_DURABILITY=true
+    B:RESTRICT_CRAFT_MINIMUM_DURABILITY=true
 
-    fluid_capacity {
-        # Worktable fluid capacity (milli-buckets).
-        I:BASIC=4000
+    ##########################################################################################################
+    # fluid_capacity_worktable
+    #--------------------------------------------------------------------------------------------------------#
+    # Worktable fluid capacity (milli-buckets).
+    ##########################################################################################################
 
-        # Worktable fluid capacity (milli-buckets).
-        I:BLACKSMITH=4000
+    fluid_capacity_worktable {
+        I:basic=4000
+        I:blacksmith=4000
+        I:carpenter=4000
+        I:chemist=4000
+        I:engineer=4000
+        I:jeweler=4000
+        I:mage=4000
+        I:mason=4000
+        I:scribe=4000
+        I:tailor=4000
+    }
 
-        # Worktable fluid capacity (milli-buckets).
-        I:CARPENTER=4000
+    ##########################################################################################################
+    # fluid_capacity_workstation
+    #--------------------------------------------------------------------------------------------------------#
+    # Workstation fluid capacity (milli-buckets).
+    ##########################################################################################################
 
-        # Worktable fluid capacity (milli-buckets).
-        I:CHEMIST=4000
-
-        # Worktable fluid capacity (milli-buckets).
-        I:ENGINEER=4000
-
-        # Worktable fluid capacity (milli-buckets).
-        I:JEWELER=4000
-
-        # Worktable fluid capacity (milli-buckets).
-        I:MAGE=4000
-
-        # Worktable fluid capacity (milli-buckets).
-        I:MASON=4000
-
-        # Worktable fluid capacity (milli-buckets).
-        I:SCRIBE=4000
-
-        # Worktable fluid capacity (milli-buckets).
-        I:TAILOR=4000
+    fluid_capacity_workstation {
+        I:basic=8000
+        I:blacksmith=8000
+        I:carpenter=8000
+        I:chemist=8000
+        I:engineer=8000
+        I:jeweler=8000
+        I:mage=8000
+        I:mason=8000
+        I:scribe=8000
+        I:tailor=8000
     }
 
 }

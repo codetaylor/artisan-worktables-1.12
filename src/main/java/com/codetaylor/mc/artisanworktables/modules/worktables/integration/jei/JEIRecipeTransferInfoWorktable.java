@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.ContainerWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import net.minecraft.inventory.Slot;
 
@@ -8,21 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JEIRecipeTransferInfoWorktable
-    implements IRecipeTransferInfo<ContainerWorktable> {
+    implements IRecipeTransferInfo<Container> {
 
   private String name;
   private String uid;
+  private EnumTier tier;
 
-  public JEIRecipeTransferInfoWorktable(String name, String uid) {
+  public JEIRecipeTransferInfoWorktable(
+      String name,
+      String uid,
+      EnumTier tier
+  ) {
 
     this.name = name;
     this.uid = uid;
+    this.tier = tier;
   }
 
   @Override
-  public Class<ContainerWorktable> getContainerClass() {
+  public Class<Container> getContainerClass() {
 
-    return ContainerWorktable.class;
+    return Container.class;
   }
 
   @Override
@@ -32,19 +39,19 @@ public class JEIRecipeTransferInfoWorktable
   }
 
   @Override
-  public boolean canHandle(ContainerWorktable container) {
+  public boolean canHandle(Container container) {
 
-    return container.canHandleJEIRecipeTransfer(this.name);
+    return container.canHandleJEIRecipeTransfer(this.name, this.tier);
   }
 
   @Override
-  public List<Slot> getRecipeSlots(ContainerWorktable container) {
+  public List<Slot> getRecipeSlots(Container container) {
 
     return container.getRecipeSlots(new ArrayList<>());
   }
 
   @Override
-  public List<Slot> getInventorySlots(ContainerWorktable container) {
+  public List<Slot> getInventorySlots(Container container) {
 
     return container.getInventorySlots(new ArrayList<>());
   }

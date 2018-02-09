@@ -2,7 +2,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.mc1120.item.MCItemStack;
+import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,16 +25,27 @@ public class SecondaryIngredientMatcher
   public boolean matches(Collection<IIngredient> requiredIngredients) {
 
     for (int i = 0; i < this.inputs.size(); i++) {
-      this.availableAmounts[i] = this.inputs.get(i).getAmount();
+      IItemStack iItemStack = this.inputs.get(i);
+      this.availableAmounts[i] = (iItemStack != null) ? iItemStack.getAmount() : 0;
     }
 
     for (IIngredient recipeInput : requiredIngredients) {
       int amountRequired = recipeInput.getAmount();
 
+      // Set the amount to 1 to avoid quantity discrepancies when matching
+      IIngredient toMatch = recipeInput.amount(1);
+
       for (int i = 0; i < this.inputs.size(); i++) {
         IItemStack input = this.inputs.get(i);
 
-        if (recipeInput.matches(input)) {
+        if (input == null) {
+          continue;
+        }
+
+        // Set the amount to 1 to avoid quantity discrepancies when matching
+        input = input.amount(1);
+
+        if (toMatch.matches(input)) {
 
           if (this.availableAmounts[i] >= amountRequired) {
             // more ingredients are available in this stack than are required

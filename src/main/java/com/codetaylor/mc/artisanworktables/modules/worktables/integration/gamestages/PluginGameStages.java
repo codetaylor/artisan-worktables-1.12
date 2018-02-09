@@ -2,8 +2,9 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.games
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.darkhax.gamestages.event.GameStageEvent;
@@ -65,24 +66,27 @@ public class PluginGameStages {
         .getUnlockedStages();
 
     for (String name : WorktableAPI.getWorktableNames()) {
-      RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(name);
+      RegistryRecipe registry = WorktableAPI.getWorktableRecipeRegistry(name);
 
       if (registry != null) {
-        List<IRecipeWorktable> recipeList = registry.getRecipeList(new ArrayList<>());
-        String uid = PluginJEI.createUID(name);
 
-        for (IRecipeWorktable recipe : recipeList) {
-          IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
+        for (EnumTier tier : EnumTier.values()) {
+          List<IRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
 
-          if (recipeWrapper == null) {
-            continue;
-          }
+          for (IRecipe recipe : recipeList) {
+            String uid = PluginJEI.createUID(name, tier);
+            IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 
-          if (recipe.matchGameStages(unlockedStages)) {
-            PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper);
+            if (recipeWrapper == null) {
+              continue;
+            }
 
-          } else {
-            PluginJEI.RECIPE_REGISTRY.hideRecipe(recipeWrapper);
+            if (recipe.matchGameStages(unlockedStages)) {
+              PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper);
+
+            } else {
+              PluginJEI.RECIPE_REGISTRY.hideRecipe(recipeWrapper);
+            }
           }
         }
       }

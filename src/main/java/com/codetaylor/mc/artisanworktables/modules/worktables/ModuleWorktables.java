@@ -1,11 +1,13 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.*;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
@@ -26,6 +28,7 @@ public class ModuleWorktables
   public static class Lang {
 
     public static final String WORKTABLE_TITLE = "tile." + MOD_ID + ".worktable.%s.name";
+    public static final String WORKSTATION_TITLE = "tile." + MOD_ID + ".workstation.%s.name";
     public static final String JEI_TOOLTIP_SHAPELESS_RECIPE = "jei." + MOD_ID + ".tooltip.shapeless.recipe";
     public static final String JEI_TOOLTIP_CHANCE = "jei." + MOD_ID + ".tooltip.chance";
     public static final String GUI_TOOLTIP_FLUID_DESTROY = "gui." + MOD_ID + ".tooltip.fluid.destroy";
@@ -35,11 +38,13 @@ public class ModuleWorktables
   public static class Textures {
 
     public static final String WORKTABLE_GUI = "textures/gui/worktable_%s.png";
+    public static final String WORKSTATION_GUI = "textures/gui/workstation_%s.png";
   }
 
   public static class Blocks {
 
     public static final BlockWorktable WORKTABLE = new BlockWorktable();
+    public static final BlockWorkstation WORKSTATION = new BlockWorkstation();
   }
 
   public static IPacketService PACKET_SERVICE;
@@ -93,28 +98,61 @@ public class ModuleWorktables
   @Override
   public void onRegister(Registry registry) {
 
-    registry.registerBlock(
-        Blocks.WORKTABLE,
-        new ItemWorktable(Blocks.WORKTABLE),
-        BlockWorktable.NAME
-    );
-    registry.registerTileEntities(
-        TileEntityWorktableBasic.class,
-        TileEntityWorktableBlacksmith.class,
-        TileEntityWorktableCarpenter.class,
-        TileEntityWorktableChemist.class,
-        TileEntityWorktableEngineer.class,
-        TileEntityWorktableJeweler.class,
-        TileEntityWorktableMage.class,
-        TileEntityWorktableMason.class,
-        TileEntityWorktableScribe.class,
-        TileEntityWorktableTailor.class
-    );
+    if (ModuleWorktablesConfig.ENABLE_WORKTABLES) {
+
+      registry.registerBlock(
+          Blocks.WORKTABLE,
+          new ItemWorktable(Blocks.WORKTABLE),
+          BlockWorktable.NAME
+      );
+
+      registry.registerTileEntities(
+          TileEntityWorktableBasic.class,
+          TileEntityWorktableBlacksmith.class,
+          TileEntityWorktableCarpenter.class,
+          TileEntityWorktableChemist.class,
+          TileEntityWorktableEngineer.class,
+          TileEntityWorktableJeweler.class,
+          TileEntityWorktableMage.class,
+          TileEntityWorktableMason.class,
+          TileEntityWorktableScribe.class,
+          TileEntityWorktableTailor.class
+      );
+    }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSTATIONS) {
+
+      registry.registerBlock(
+          Blocks.WORKSTATION,
+          new ItemWorktable(Blocks.WORKSTATION),
+          BlockWorkstation.NAME
+      );
+
+      registry.registerTileEntities(
+          TileEntityWorkstationBasic.class,
+          TileEntityWorkstationBlacksmith.class,
+          TileEntityWorkstationCarpenter.class,
+          TileEntityWorkstationChemist.class,
+          TileEntityWorkstationEngineer.class,
+          TileEntityWorkstationJeweler.class,
+          TileEntityWorkstationMage.class,
+          TileEntityWorkstationMason.class,
+          TileEntityWorkstationScribe.class,
+          TileEntityWorkstationTailor.class
+      );
+    }
   }
 
   @Override
   public void onClientRegister(Registry registry) {
 
-    registry.registerItemModelStrategy(Blocks.WORKTABLE.getModelRegistrationStrategy());
+    if (ModuleWorktablesConfig.ENABLE_WORKTABLES) {
+      registry.registerItemModelStrategy(Blocks.WORKTABLE.getModelRegistrationStrategy());
+    }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSTATIONS) {
+      registry.registerItemModelStrategy(Blocks.WORKSTATION.getModelRegistrationStrategy());
+    }
   }
+
 }

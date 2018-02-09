@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.network;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorktableFluidBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityFluidBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -60,10 +60,10 @@ public class SPacketWorktableTankDestroyFluid
     BlockPos pos = new BlockPos(message.posX, message.posY, message.posZ);
     TileEntity tileEntity = player.getEntityWorld().getTileEntity(pos);
 
-    if (tileEntity instanceof TileEntityWorktableFluidBase) {
-      FluidTank tank = ((TileEntityWorktableFluidBase) tileEntity).getTank();
+    if (tileEntity instanceof TileEntityFluidBase) {
+      FluidTank tank = ((TileEntityFluidBase) tileEntity).getTank();
       tank.drain(tank.getCapacity(), true);
-      ((TileEntityWorktableFluidBase) tileEntity).notifyBlockUpdate();
+      ((TileEntityFluidBase) tileEntity).notifyBlockUpdate();
     }
 
     return null;

@@ -3,9 +3,9 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipeWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
@@ -297,8 +297,8 @@ public class ZenWorktable {
     public void apply() {
 
       try {
-        RegistryRecipeWorktable registry = WorktableAPI.getWorktableRecipeRegistry(this.tableName);
-        IRecipeWorktable recipeWorktable = this.recipeBuilder.create();
+        RegistryRecipe registry = WorktableAPI.getWorktableRecipeRegistry(this.tableName);
+        IRecipe recipeWorktable = this.recipeBuilder.create();
         registry.addRecipe(recipeWorktable);
 
       } catch (Exception e) {

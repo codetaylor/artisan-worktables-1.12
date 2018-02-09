@@ -1,3 +1,21 @@
+1.13.21
+* Added: Workstations!
+  * Workstations are second tier worktables. They can support recipes that use up to two tools and nine secondary ingredients. 
+  * All recipes share the same recipe pool, therefore, any recipe defined for a worktable will also work in a workstation. If a recipe is defined that uses two tools or one to nine secondary ingredients, it will only be craftable in the new workstations.
+  * Recipes can be defined to require multiple secondary ingredients of the same type. For example, `<minecraft:clay_ball> * 8`, would require consuming 8 clay balls to complete the recipe.
+  * JEI recipe transfer will transfer items to the 3x3 crafting grid and tools to the two tool slots, however, it will not transfer items to the secondary ingredient slots. This is intentional. Firstly, JEI has a limitation in that it will only transfer one of each item unless shift is held while clicking the transfer button. The second drawback is that when JEI does the recipe transfer, it will clear all other slots that are not used in the recipe. This means that any secondary ingredients that you have stored in the slots will be returned to your inventory. This is inconvenient. 
+* Added: new ZenScript builder methods
+  * `addTool(IIngredient, int)`
+  * `setSecondaryIngredients(IIngredient[])`
+* Added: fr_fr.lang (PR#56 Okii35)
+* Changed: new models and textures for the worktables
+* Changed: deprecated ZenScript builder methods
+  * `setTool(IIngredient, int)` - use `addTool(IIngredient, int)` instead
+* Changed: updated de_de.lang (PR#58 Xaikii)
+* Fixed: JEI recipe transfer issue with some converted oreDict ingredients
+* Fixed: stacks in secondary output slots are not dropped when the block is broken
+* Note: you will need to refresh the config for the worktable module
+
 1.12.21
 * Fixed: crash with liquid in GUI (or invisible items w/ optifine) (#52)
 * Fixed: tertiary and quaternary chanced outputs not set properly with legacy zen methods

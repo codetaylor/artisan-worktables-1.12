@@ -35,6 +35,8 @@ All tools are grouped in OreDict entries based on their tool type for easy recip
 
 #### Basic Syntax
 
+*Deprecated* - The syntax defined on this page is deprecated, please use the [builder syntax](https://github.com/codetaylor/artisan-worktables/blob/master/ZENSCRIPT_ADVANCED.md) instead.
+
 ```
 // Normal recipes
 

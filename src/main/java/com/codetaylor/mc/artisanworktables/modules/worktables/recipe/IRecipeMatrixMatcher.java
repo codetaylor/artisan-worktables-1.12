@@ -15,7 +15,7 @@ public interface IRecipeMatrixMatcher {
 
     @Override
     public boolean matches(
-        IRecipeWorktable recipe,
+        IRecipe recipe,
         CraftingMatrixStackHandler craftingMatrix,
         FluidStack fluidStack
     ) {
@@ -119,7 +119,7 @@ public interface IRecipeMatrixMatcher {
   };
 
   boolean matches(
-      IRecipeWorktable recipe,
+      IRecipe recipe,
       CraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack
   );

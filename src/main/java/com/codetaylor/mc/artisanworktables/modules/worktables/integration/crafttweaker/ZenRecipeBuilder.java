@@ -10,7 +10,9 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ZenRecipeBuilder
     implements IZenRecipeBuilder {
@@ -29,12 +31,31 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setShaped(IIngredient[][] ingredients) {
 
+    for (IIngredient[] ingredientArray : ingredients) {
+
+      for (IIngredient ingredient : ingredientArray) {
+
+        if (ingredient instanceof ILiquidStack) {
+          CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+          return this;
+        }
+      }
+    }
+
     this.recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(ingredients));
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
+
+    for (IIngredient ingredient : ingredients) {
+
+      if (ingredient instanceof ILiquidStack) {
+        CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+        return this;
+      }
+    }
 
     this.recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(ingredients));
     return this;
@@ -48,9 +69,31 @@ public class ZenRecipeBuilder
   }
 
   @Override
-  public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) {
+  public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] ingredients) {
 
-    this.recipeBuilder.setSecondaryIngredients(secondaryIngredients);
+    if (ingredients == null || ingredients.length == 0) {
+      return this;
+
+    } else if (ingredients.length > 11) {
+      CTLogHelper.logErrorFromZenMethod("Exceeded max allowed 11 secondary ingredients: " + ingredients.length);
+      return this;
+    }
+
+    List<IIngredient> adjustedList = new ArrayList<>();
+
+    for (IIngredient ingredient : ingredients) {
+
+      if (ingredient instanceof ILiquidStack) {
+        CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+        return this;
+      }
+
+      if (ingredient != null) {
+        adjustedList.add(ingredient);
+      }
+    }
+
+    this.recipeBuilder.setSecondaryIngredients(adjustedList.toArray(new IIngredient[adjustedList.size()]));
     return this;
   }
 
@@ -73,6 +116,11 @@ public class ZenRecipeBuilder
 
     if (this.nextToolIndex >= 4) {
       CTLogHelper.logErrorFromZenMethod("Recipes are restricted to a maximum of 4 tools!");
+      return this;
+    }
+
+    if (tool instanceof ILiquidStack) {
+      CTLogHelper.logErrorFromZenMethod("Tools can't be liquids");
       return this;
     }
 
@@ -131,6 +179,18 @@ public class ZenRecipeBuilder
   public IZenRecipeBuilder excludeGameStages(String[] stages) {
 
     this.recipeBuilder.excludeGamestages(stages);
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setMinimumTier(int minimumTier) {
+
+    if (minimumTier < 0 || minimumTier > 2) {
+      CTLogHelper.logErrorFromZenMethod("Minimum tier out of bounds: 0 <= " + minimumTier + " <= 2");
+      return this;
+    }
+
+    this.recipeBuilder.setMinimumTier(minimumTier);
     return this;
   }
 
