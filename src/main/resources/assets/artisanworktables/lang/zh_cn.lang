@@ -13,8 +13,21 @@ tile.artisanworktables.worktable.mason.name=石匠工作台
 tile.artisanworktables.worktable.scribe.name=翻印工工作台
 tile.artisanworktables.worktable.tailor.name=裁缝工作台
 
+# Workstations
+tile.artisanworktables.workstation.basic.name=基础工作站
+tile.artisanworktables.workstation.blacksmith.name=铁匠工作站
+tile.artisanworktables.workstation.carpenter.name=木匠工作站
+tile.artisanworktables.workstation.chemist.name=药剂师工作站
+tile.artisanworktables.workstation.engineer.name=工程师工作站
+tile.artisanworktables.workstation.jeweler.name=珠宝工作站
+tile.artisanworktables.workstation.mage.name=法师工作站
+tile.artisanworktables.workstation.mason.name=石匠工作站
+tile.artisanworktables.workstation.scribe.name=翻印工工作站
+tile.artisanworktables.workstation.tailor.name=裁缝工作站
+
 # Toolbox
 tile.artisanworktables.toolbox.name=工具箱
+tile.artisanworktables.mechanical_toolbox.name=机械工具箱
 
 # Worktable Tools
 item.artisanworktables.blacksmiths.cutters.name=%s 铁匠剪
@@ -43,3 +56,6 @@ jei.artisanworktables.tooltip.chance=%s%s%%概率合成
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=空
 gui.artisanworktables.tooltip.fluid.destroy=%s销毁流体： %s Shift + 左击
+
+# Tooltip
+item.artisanworktables.tooltip.durability=耐久： %d / %d
