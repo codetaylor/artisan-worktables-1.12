@@ -1,3 +1,6 @@
+1.13.22
+* Changed: updated zh_cn.lang (PR#60 DYColdWind)
+
 1.13.21
 * Added: Workstations!
   * Workstations are second tier worktables. They can support recipes that use up to two tools and nine secondary ingredients. 
