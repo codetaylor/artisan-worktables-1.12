@@ -33,6 +33,9 @@ public class Recipe
   private int height;
   private EnumTier tier;
   private int minimumTier;
+  private int experienceRequired;
+  private int levelRequired;
+  private boolean consumeExperience;
 
   public Recipe(
       IGameStageMatcher gameStageMatcher,
@@ -41,6 +44,9 @@ public class Recipe
       List<Ingredient> ingredients,
       @Nonnull List<IIngredient> secondaryIngredients,
       @Nullable FluidStack fluidIngredient,
+      int experienceRequired,
+      int levelRequired,
+      boolean consumeExperience,
       ExtraOutputChancePair[] extraOutputs,
       IRecipeMatrixMatcher recipeMatrixMatcher,
       boolean mirrored,
@@ -55,6 +61,9 @@ public class Recipe
     this.ingredients = ingredients;
     this.secondaryIngredients = secondaryIngredients;
     this.fluidIngredient = fluidIngredient;
+    this.experienceRequired = experienceRequired;
+    this.levelRequired = levelRequired;
+    this.consumeExperience = consumeExperience;
     this.extraOutputs = extraOutputs;
     this.recipeMatrixMatcher = recipeMatrixMatcher;
     this.mirrored = mirrored;
@@ -63,6 +72,24 @@ public class Recipe
     this.minimumTier = minimumTier;
 
     this.tier = this.calculateTier();
+  }
+
+  @Override
+  public int getExperienceRequired() {
+
+    return this.experienceRequired;
+  }
+
+  @Override
+  public int getLevelRequired() {
+
+    return this.levelRequired;
+  }
+
+  @Override
+  public boolean consumeExperience() {
+
+    return this.consumeExperience;
   }
 
   @Override
@@ -275,6 +302,9 @@ public class Recipe
   @Override
   public boolean matches(
       Collection<String> unlockedStages,
+      int playerExperienceTotal,
+      int playerLevels,
+      boolean isPlayerCreative,
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack,
@@ -284,6 +314,17 @@ public class Recipe
 
     if (!this.matchTier(tier)) {
       return false;
+    }
+
+    if (!isPlayerCreative) {
+
+      if (playerExperienceTotal < this.experienceRequired) {
+        return false;
+      }
+
+      if (playerLevels < this.levelRequired) {
+        return false;
+      }
     }
 
     if (this.getToolCount() > tools.length) {

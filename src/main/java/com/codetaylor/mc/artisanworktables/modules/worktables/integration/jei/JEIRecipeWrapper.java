@@ -158,6 +158,27 @@ public class JEIRecipeWrapper
     GlStateManager.pushMatrix();
     GlStateManager.translate(0, 0, 1000);
 
+    String experienceString = null;
+
+    if (this.recipe.getExperienceRequired() > 0) {
+
+      if (this.recipe.consumeExperience()) {
+        experienceString = I18n.format(ModuleWorktables.Lang.JEI_XP_COST, this.recipe.getExperienceRequired());
+
+      } else {
+        experienceString = I18n.format(ModuleWorktables.Lang.JEI_XP_REQUIRED, this.recipe.getExperienceRequired());
+      }
+
+    } else if (this.recipe.getLevelRequired() > 0) {
+
+      if (this.recipe.consumeExperience()) {
+        experienceString = I18n.format(ModuleWorktables.Lang.JEI_LEVEL_COST, this.recipe.getLevelRequired());
+
+      } else {
+        experienceString = I18n.format(ModuleWorktables.Lang.JEI_LEVEL_REQUIRED, this.recipe.getLevelRequired());
+      }
+    }
+
     if (CATEGORY_TIER == EnumTier.WORKTABLE) {
 
       String label = "-" + this.recipe.getToolDamage(0);
@@ -169,6 +190,16 @@ public class JEIRecipeWrapper
           true
       );
 
+      if (experienceString != null) {
+        minecraft.fontRenderer.drawString(
+            experienceString,
+            5,
+            recipeHeight - 10,
+            0xFF80FF20,
+            true
+        );
+      }
+
     } else if (CATEGORY_TIER == EnumTier.WORKSTATION) {
 
       for (int i = 0; i < this.recipe.getToolCount(); i++) {
@@ -178,6 +209,16 @@ public class JEIRecipeWrapper
             (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
             (55 - 3) - 19 + (22 * i),
             0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (experienceString != null) {
+        minecraft.fontRenderer.drawString(
+            experienceString,
+            5,
+            recipeHeight - 10,
+            0xFF80FF20,
             true
         );
       }

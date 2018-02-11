@@ -66,6 +66,8 @@ IRecipeBuilder setShaped(IIngredient[][] ingredients);
 
 Either `setShaped` or `setShapeless` must be called.
 
+This method is mutually exclusive with `setShapeless`.
+
 ### setShapeless
 
 ```java
@@ -73,6 +75,8 @@ IRecipeBuilder setShapeless(IIngredient[] ingredients);
 ```
 
 Either `setShaped` or `setShapeless` must be called.
+
+This method is mutually exclusive with `setShaped`.
 
 ### setFluid
 
@@ -178,6 +182,40 @@ Allowed values:
 * `2`: Workshop
 
 This can be used to restrict a recipe to a higher tier that would otherwise be craftable in a lower tier table.
+
+### setExperienceRequired
+
+```java
+IRecipeBuilder setExperienceRequired(int value);
+```
+
+&#x1F539;*Optional*
+
+Sets a minimum amount of experience required to craft the recipe.
+
+This method is mutually exclusive with `setLevelRequired`.
+
+### setLevelRequired
+
+```java
+IRecipeBuilder setLevelRequired(int value);
+```
+
+&#x1F539;*Optional*
+
+Sets a minimum level required to craft the recipe.
+
+This method is mutually exclusive with `setExperienceRequired`.
+
+### setConsumeExperience
+
+```java
+IRecipeBuilder setConsumeExperience(boolean value);
+```
+
+&#x1F539;*Optional* - if omitted, defaults to `true`.
+
+If set to `true`, crafting the recipe will consume an amount of experience or levels set with `setExperienceRequired` or `setLevelRequired`. If set to false, crafting the recipe will not consume any experience.
 
 ### create
 

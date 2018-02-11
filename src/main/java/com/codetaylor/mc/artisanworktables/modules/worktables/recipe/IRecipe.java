@@ -17,6 +17,9 @@ public interface IRecipe {
 
   boolean matches(
       Collection<String> unlockedStages,
+      int playerExperienceTotal,
+      int playerLevels,
+      boolean isPlayerCreative,
       ItemStack[] tools,
       CraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack,
@@ -75,4 +78,10 @@ public interface IRecipe {
   EnumTier getTier();
 
   boolean matchTier(EnumTier tier);
+
+  int getExperienceRequired();
+
+  int getLevelRequired();
+
+  boolean consumeExperience();
 }

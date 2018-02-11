@@ -54,6 +54,15 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setMinimumTier(int minimumTier);
 
   @ZenMethod
+  IZenRecipeBuilder setExperienceRequired(int experienceRequired);
+
+  @ZenMethod
+  IZenRecipeBuilder setLevelRequired(int levelRequired);
+
+  @ZenMethod
+  IZenRecipeBuilder setConsumeExperience(boolean consumeExperience);
+
+  @ZenMethod
   void create();
 
 }

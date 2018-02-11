@@ -98,6 +98,24 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder setExperienceRequired(int experienceRequired) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setLevelRequired(int levelRequired) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setConsumeExperience(boolean consumeExperience) {
+
+    return this;
+  }
+
+  @Override
   public void create() {
     //
   }
