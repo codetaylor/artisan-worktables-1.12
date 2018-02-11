@@ -52,6 +52,10 @@ item.artisanworktables.tailors.shears.name=Tailor's %s Shears
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Shapeless Recipe
 jei.artisanworktables.tooltip.chance=%s%s%% chance to craft
+jei.artisanworktables.cost.xp=Experience cost: %d
+jei.artisanworktables.cost.level=Level cost: %d
+jei.artisanworktables.required.xp=Experience required: %d
+jei.artisanworktables.required.level=Level required: %d
 
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Empty

@@ -27,6 +27,9 @@ public class RecipeBuilder {
   private String[] includeGamestages;
   private String[] excludeGamestages;
   private int minimumTier;
+  private int experienceRequired;
+  private int levelRequired;
+  private boolean consumeExperience;
 
   public RecipeBuilder() {
 
@@ -41,6 +44,9 @@ public class RecipeBuilder {
     this.excludeGamestages = new String[0];
     this.tools = new ToolIngredientEntry[MAX_TOOL_COUNT];
     this.minimumTier = 0;
+    this.experienceRequired = 0;
+    this.levelRequired = 0;
+    this.consumeExperience = true;
   }
 
   public RecipeBuilder setIngredients(Ingredient[][] ingredients) {
@@ -130,6 +136,26 @@ public class RecipeBuilder {
     return this;
   }
 
+  public RecipeBuilder setExperienceRequired(int cost) {
+
+    this.levelRequired = 0;
+    this.experienceRequired = cost;
+    return this;
+  }
+
+  public RecipeBuilder setLevelRequired(int cost) {
+
+    this.experienceRequired = 0;
+    this.levelRequired = cost;
+    return this;
+  }
+
+  public RecipeBuilder setConsumeExperience(boolean consumeExperience) {
+
+    this.consumeExperience = consumeExperience;
+    return this;
+  }
+
   public IRecipe create() throws RecipeBuilderException {
 
     if (this.outputWeightPairList == null || this.outputWeightPairList.isEmpty()) {
@@ -190,6 +216,9 @@ public class RecipeBuilder {
         this.ingredients,
         this.secondaryIngredients,
         this.fluidIngredient,
+        this.experienceRequired,
+        this.levelRequired,
+        this.consumeExperience,
         this.extraOutputs,
         recipeMatcher,
         this.mirrored,

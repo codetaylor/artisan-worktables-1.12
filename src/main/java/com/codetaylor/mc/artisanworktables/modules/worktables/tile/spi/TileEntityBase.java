@@ -15,6 +15,7 @@ import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
+import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -170,6 +171,9 @@ public abstract class TileEntityBase
       return;
     }
 
+    // Reduce player experience
+    this.onCraftReduceExperience(player, recipe);
+
     // Decrease stacks in crafting matrix
     this.onCraftReduceIngredients(recipe);
 
@@ -190,6 +194,28 @@ public abstract class TileEntityBase
 
     if (!this.world.isRemote) {
       this.notifyBlockUpdate();
+    }
+  }
+
+  private void onCraftReduceExperience(EntityPlayer player, IRecipe recipe) {
+
+    if (player.isCreative()) {
+      // Don't consume experience when the player is in creative mode.
+      return;
+    }
+
+    if (recipe.consumeExperience()) {
+
+      if (recipe.getExperienceRequired() > 0) {
+        EnchantmentHelper.adjustPlayerExperience(player, -recipe.getExperienceRequired());
+
+      } else if (recipe.getLevelRequired() > 0) {
+        int experience = EnchantmentHelper.getExperienceToLevel(
+            player.experienceLevel - recipe.getLevelRequired(),
+            player.experienceLevel
+        );
+        EnchantmentHelper.adjustPlayerExperience(player, -experience);
+      }
     }
   }
 

@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -67,9 +68,31 @@ public class RegistryRecipe {
       unlockedStages = Collections.emptySet();
     }
 
+    int xp = 0;
+    int levels = 0;
+    boolean isCreative = false;
+
+    if (player != null) {
+      xp = EnchantmentHelper.getPlayerExperienceTotal(player);
+      levels = player.experienceLevel;
+      isCreative = player.isCreative();
+    }
+
     for (IRecipe recipe : this.recipeList) {
 
-      if (recipe.matches(unlockedStages, tools, craftingMatrix, fluidStack, secondaryIngredientMatcher, tier)) {
+      boolean matches = recipe.matches(
+          unlockedStages,
+          xp,
+          levels,
+          isCreative,
+          tools,
+          craftingMatrix,
+          fluidStack,
+          secondaryIngredientMatcher,
+          tier
+      );
+
+      if (matches) {
         return recipe;
       }
     }

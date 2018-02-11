@@ -195,6 +195,37 @@ public class ZenRecipeBuilder
   }
 
   @Override
+  public IZenRecipeBuilder setExperienceRequired(int experienceRequired) {
+
+    if (experienceRequired < 0) {
+      CTLogHelper.logErrorFromZenMethod("Experience can't be < 0");
+      return this;
+    }
+
+    this.recipeBuilder.setExperienceRequired(experienceRequired);
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setLevelRequired(int levelRequired) {
+
+    if (levelRequired < 0) {
+      CTLogHelper.logErrorFromZenMethod("Level can't be < 0");
+      return this;
+    }
+
+    this.recipeBuilder.setLevelRequired(levelRequired);
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setConsumeExperience(boolean consumeExperience) {
+
+    this.recipeBuilder.setConsumeExperience(consumeExperience);
+    return this;
+  }
+
+  @Override
   public void create() {
 
     PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new ZenWorktable.Add(this.tableName, this.recipeBuilder));
