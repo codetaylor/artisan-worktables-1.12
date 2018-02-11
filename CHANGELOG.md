@@ -1,3 +1,6 @@
+1.14.22
+* Changed: JEI will now consider items in the secondary ingredient slots as part of the player inventory. This means that, when transferring items, JEI will take into account items in these slots.
+
 1.13.22
 * Changed: updated zh_cn.lang (PR#60 DYColdWind)
 

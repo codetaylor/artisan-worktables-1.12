@@ -29,8 +29,14 @@ public class ModuleWorktables
 
     public static final String WORKTABLE_TITLE = "tile." + MOD_ID + ".worktable.%s.name";
     public static final String WORKSTATION_TITLE = "tile." + MOD_ID + ".workstation.%s.name";
+
     public static final String JEI_TOOLTIP_SHAPELESS_RECIPE = "jei." + MOD_ID + ".tooltip.shapeless.recipe";
     public static final String JEI_TOOLTIP_CHANCE = "jei." + MOD_ID + ".tooltip.chance";
+    public static final String JEI_XP_COST = "jei." + MOD_ID + ".xp.cost";
+    public static final String JEI_XP_REQUIRED = "jei." + MOD_ID + ".xp.required";
+    public static final String JEI_LEVEL_COST = "jei." + MOD_ID + ".level.cost";
+    public static final String JEI_LEVEL_REQUIRED = "jei." + MOD_ID + ".level.required";
+
     public static final String GUI_TOOLTIP_FLUID_DESTROY = "gui." + MOD_ID + ".tooltip.fluid.destroy";
     public static final String GUI_TOOLTIP_FLUID_EMPTY = "gui." + MOD_ID + ".tooltip.fluid.empty";
   }

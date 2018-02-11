@@ -551,6 +551,10 @@ public class Container
       }
     }
 
+    for (int i = this.slotIndexSecondaryInputStart; i < this.slotIndexSecondaryIntputEnd; i++) {
+      result.add(this.inventorySlots.get(i));
+    }
+
     return result;
   }
 
