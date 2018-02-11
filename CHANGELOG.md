@@ -1,5 +1,11 @@
 1.14.22
+* Added: experience and level requirement / cost to recipes
+* Added: new ZenScript builder methods
+  * `setExperienceRequired(int)` - set experience requirement for the recipe (optional)
+  * `setLevelRequired(int)` - set level requirement for the recipe (optional)
+  * `setConsumeExperience(boolean)` - recipe will consume / not consume experience (optional, default: true)
 * Changed: JEI will now consider items in the secondary ingredient slots as part of the player inventory. This means that, when transferring items, JEI will take into account items in these slots.
+* Requires: Athenaeum >= 1.9.5
 
 1.13.22
 * Changed: updated zh_cn.lang (PR#60 DYColdWind)
