@@ -19,7 +19,7 @@ def getVersionName = { String workTree ->
 }
 
 project.ext.mcversion = "1.12.2"
-project.ext.forgeversion = "14.23.1.2601" // req 2556
+project.ext.forgeversion = "14.23.2.2613" // req 2556
 version = project.ext.mcversion + "-" + getVersionName("${project.projectDir}")
 group = "com.sudoplay.mc"
 archivesBaseName = "artisanworktables"
