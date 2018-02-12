@@ -86,7 +86,7 @@ public class JEICategoryWorkstation
       stacks.set(13, extraOutput);
     }
 
-    int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(this.tableName.toLowerCase());
+    int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKSTATION.get(this.tableName.toLowerCase());
 
     fluidStacks.init(14, true, 5, 14, 6, 52, capacity, true, null);
     fluidStacks.set(14, wrapper.getFluidStack());

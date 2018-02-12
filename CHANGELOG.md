@@ -1,3 +1,6 @@
+1.14.23
+* Fixed: Workstation shows wrong internal tank capacity in JEI (#62)
+
 1.14.22
 * Added: experience and level requirement / cost to recipes
 * Added: new ZenScript builder methods
