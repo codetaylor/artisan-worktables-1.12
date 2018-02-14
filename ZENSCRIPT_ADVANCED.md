@@ -48,7 +48,7 @@ Worktable.createRecipeBuilder("carpenter")
 
 ## Recipe Builder
 
-```
+```js
 val builder = Worktable.createRecipeBuilder("carpenter") as IRecipeBuilder;
 ```
 
