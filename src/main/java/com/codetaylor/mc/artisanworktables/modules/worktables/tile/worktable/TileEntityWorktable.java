@@ -18,6 +18,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityWorktable
     extends TileEntityTypedBase {
 
+  public TileEntityWorktable() {
+    // serialization
+  }
+
   public TileEntityWorktable(EnumType type) {
 
     super(3, 3, ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(type.getName()), type);

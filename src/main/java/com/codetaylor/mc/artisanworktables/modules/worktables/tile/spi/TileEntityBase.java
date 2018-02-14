@@ -54,6 +54,10 @@ public abstract class TileEntityBase
   private CraftingMatrixStackHandler craftingMatrixHandler;
   private ObservableStackHandler secondaryOutputHandler;
 
+  protected TileEntityBase() {
+    // serialization
+  }
+
   public TileEntityBase(int width, int height) {
 
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);

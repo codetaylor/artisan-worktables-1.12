@@ -18,6 +18,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityWorkstation
     extends TileEntitySecondaryInputBase {
 
+  public TileEntityWorkstation() {
+    // serialization
+  }
+
   public TileEntityWorkstation(EnumType type) {
 
     super(3, 3, ModuleWorktablesConfig.FLUID_CAPACITY_WORKSTATION.get(type.getName()), 9, type);

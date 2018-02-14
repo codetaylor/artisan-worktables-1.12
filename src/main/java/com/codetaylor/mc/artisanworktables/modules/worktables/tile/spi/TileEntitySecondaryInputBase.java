@@ -20,6 +20,10 @@ public abstract class TileEntitySecondaryInputBase
 
   protected ObservableStackHandler secondaryIngredientHandler;
 
+  protected TileEntitySecondaryInputBase() {
+    // serialization
+  }
+
   public TileEntitySecondaryInputBase(
       int width,
       int height,

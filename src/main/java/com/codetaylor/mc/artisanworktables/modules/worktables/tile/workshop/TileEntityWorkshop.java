@@ -5,7 +5,6 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesCo
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorkshop;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import net.minecraft.block.state.IBlockState;
@@ -16,6 +15,10 @@ import net.minecraft.world.World;
 
 public class TileEntityWorkshop
     extends TileEntitySecondaryInputBase {
+
+  public TileEntityWorkshop() {
+    // serialization
+  }
 
   public TileEntityWorkshop(
       EnumType type

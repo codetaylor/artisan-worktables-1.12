@@ -9,6 +9,10 @@ public abstract class TileEntityTypedBase
 
   protected EnumType type;
 
+  public TileEntityTypedBase() {
+    // serialization
+  }
+
   public TileEntityTypedBase(int width, int height, int fluidCapacity, EnumType type) {
 
     super(width, height, fluidCapacity);

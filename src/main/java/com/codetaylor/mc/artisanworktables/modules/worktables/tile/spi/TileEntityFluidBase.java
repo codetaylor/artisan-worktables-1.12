@@ -25,6 +25,10 @@ public abstract class TileEntityFluidBase
 
   private FluidTank tank;
 
+  protected TileEntityFluidBase() {
+    // serialization
+  }
+
   public TileEntityFluidBase(int width, int height, int fluidCapacity) {
 
     super(width, height);
