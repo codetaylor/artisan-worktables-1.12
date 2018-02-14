@@ -1,11 +1,14 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshopMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktable;
@@ -55,6 +58,7 @@ public class ModuleWorktables
 
     public static final BlockWorktable WORKTABLE = new BlockWorktable();
     public static final BlockWorkstation WORKSTATION = new BlockWorkstation();
+    public static final BlockWorkshop WORKSHOP = new BlockWorkshop();
   }
 
   public static IPacketService PACKET_SERVICE;
@@ -135,6 +139,20 @@ public class ModuleWorktables
           TileEntityWorkstationMage.class
       );
     }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSHOPS) {
+
+      registry.registerBlock(
+          Blocks.WORKSHOP,
+          new ItemWorktable(Blocks.WORKSHOP),
+          BlockWorkshop.NAME
+      );
+
+      registry.registerTileEntities(
+          TileEntityWorkshop.class,
+          TileEntityWorkshopMage.class
+      );
+    }
   }
 
   @Override
@@ -146,6 +164,10 @@ public class ModuleWorktables
 
     if (ModuleWorktablesConfig.ENABLE_WORKSTATIONS) {
       registry.registerItemModelStrategy(Blocks.WORKSTATION.getModelRegistrationStrategy());
+    }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSHOPS) {
+      registry.registerItemModelStrategy(Blocks.WORKSHOP.getModelRegistrationStrategy());
     }
   }
 
