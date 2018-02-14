@@ -31,6 +31,7 @@ public class ModuleWorktables
 
     public static final String WORKTABLE_TITLE = "tile." + MOD_ID + ".worktable.%s.name";
     public static final String WORKSTATION_TITLE = "tile." + MOD_ID + ".workstation.%s.name";
+    public static final String WORKSHOP_TITLE = "tile." + MOD_ID + ".workshop.%s.name";
 
     public static final String JEI_TOOLTIP_SHAPELESS_RECIPE = "jei." + MOD_ID + ".tooltip.shapeless.recipe";
     public static final String JEI_TOOLTIP_CHANCE = "jei." + MOD_ID + ".tooltip.chance";
@@ -47,6 +48,7 @@ public class ModuleWorktables
 
     public static final String WORKTABLE_GUI = "textures/gui/worktable_%s.png";
     public static final String WORKSTATION_GUI = "textures/gui/workstation_%s.png";
+    public static final String WORKSHOP_GUI = "textures/gui/workshop_%s.png";
   }
 
   public static class Blocks {
