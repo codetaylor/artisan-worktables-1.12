@@ -5,7 +5,11 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityFluidBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -72,8 +76,8 @@ public class Container
         this.tile,
         resultHandler,
         0,
-        115,
-        35
+        this.containerResultPositionGetX(),
+        this.containerResultPositionGetY()
     );
     this.containerSlotAdd(this.craftingResultSlot);
 
@@ -87,7 +91,7 @@ public class Container
         this.containerSlotAdd(new CraftingIngredientSlot(
             slotChangeListener,
             craftingMatrixHandler,
-            x + y * 3,
+            x + y * craftingMatrixHandler.getWidth(),
             20 + x * 18,
             17 + y * 18
         ));
@@ -113,12 +117,6 @@ public class Container
       this.slotIndexToolsStart = this.nextSlotIndex;
       ItemStackHandler toolHandler = this.tile.getToolHandler();
 
-      int offsetY = 0;
-
-      if (this.tile instanceof TileEntityWorkstation) {
-        offsetY = -11;
-      }
-
       for (int i = 0; i < toolHandler.getSlots(); i++) {
         final int slotIndex = i;
         this.containerSlotAdd(new CraftingToolSlot(
@@ -126,8 +124,8 @@ public class Container
             itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithToolInSlot(itemStack, slotIndex),
             toolHandler,
             i,
-            78,
-            35 + 22 * i + offsetY
+            78 + this.containerToolOffsetGetX(),
+            35 + 22 * i + this.containerToolOffsetGetY()
         ));
       }
       this.slotIndexToolsEnd = this.nextSlotIndex - 1;
@@ -137,7 +135,12 @@ public class Container
     // Secondary output
     this.slotIndexSecondaryOutputStart = this.nextSlotIndex;
     for (int i = 0; i < 3; i++) {
-      this.containerSlotAdd(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 152, 17 + i * 18));
+      this.containerSlotAdd(new ResultSlot(
+          this.tile.getSecondaryOutputHandler(),
+          i,
+          this.containerSecondaryOutputOffsetGetX(),
+          this.containerSecondaryOutputOffsetGetY() + i * 18
+      ));
     }
     this.slotIndexSecondaryOutputEnd = this.nextSlotIndex - 1;
 
@@ -149,7 +152,13 @@ public class Container
       int slotCount = handler.getSlots();
 
       for (int i = 0; i < slotCount; i++) {
-        this.containerSlotAdd(new CraftingSecondarySlot(slotChangeListener, handler, i, 8 + i * 18, 75));
+        this.containerSlotAdd(new CraftingSecondarySlot(
+            slotChangeListener,
+            handler,
+            i,
+            8 + i * 18,
+            75 + this.containerSecondaryInputOffsetGetY()
+        ));
       }
       this.slotIndexSecondaryIntputEnd = this.nextSlotIndex - 1;
 
@@ -171,7 +180,7 @@ public class Container
               this.toolbox,
               itemHandler,
               y + x * 9,
-              x * -18 - 26,
+              x * -18 + this.containerToolboxOffsetGetX(),
               y * 18 + 8
           ));
         }
@@ -182,21 +191,86 @@ public class Container
     this.updateRecipeOutput(this.player);
   }
 
-  @Override
-  protected int containerHotbarPositionGetY() {
+  protected int containerSecondaryOutputOffsetGetX() {
 
-    if (this.tile instanceof TileEntityWorkstation) {
-      return super.containerHotbarPositionGetY() + 23;
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 188;
     }
 
-    return super.containerHotbarPositionGetY();
+    return 152;
+  }
+
+  protected int containerSecondaryOutputOffsetGetY() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 35;
+    }
+
+    return 17;
+  }
+
+  protected int containerToolboxOffsetGetX() {
+
+    return -26;
+  }
+
+  protected int containerSecondaryInputOffsetGetY() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 36;
+    }
+
+    return 0;
+  }
+
+  protected int containerToolOffsetGetX() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 36;
+    }
+
+    return 0;
+  }
+
+  protected int containerToolOffsetGetY() {
+
+    if (this.tile instanceof TileEntityWorkstation) {
+      return -11;
+
+    }
+    if (this.tile instanceof TileEntityWorkshop) {
+      return -15;
+    }
+
+    return 0;
+  }
+
+  protected int containerResultPositionGetY() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 53;
+    }
+
+    return 35;
+  }
+
+  protected int containerResultPositionGetX() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 151;
+    }
+
+    return 115;
   }
 
   @Override
   protected int containerInventoryPositionGetY() {
 
     if (this.tile instanceof TileEntityWorkstation) {
-      return super.containerInventoryPositionGetY() + 23;
+      return 107;
+
+    } else if (this.tile instanceof TileEntityWorkshop) {
+      return 143;
     }
 
     return super.containerInventoryPositionGetY();
@@ -205,11 +279,32 @@ public class Container
   @Override
   protected int containerInventoryPositionGetX() {
 
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 26;
+    }
+
     return super.containerInventoryPositionGetX();
   }
 
   @Override
+  protected int containerHotbarPositionGetY() {
+
+    if (this.tile instanceof TileEntityWorkstation) {
+      return 165;
+
+    } else if (this.tile instanceof TileEntityWorkshop) {
+      return 201;
+    }
+
+    return super.containerHotbarPositionGetY();
+  }
+
+  @Override
   protected int containerHotbarPositionGetX() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 26;
+    }
 
     return super.containerHotbarPositionGetX();
   }

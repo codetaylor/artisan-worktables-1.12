@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
@@ -55,7 +56,7 @@ public class TileEntityWorkshop
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 
-    return new GuiContainerWorkstation(
+    return new GuiContainerWorkshop(
         this.getContainer(inventoryPlayer, world, state, pos),
         this.getGuiBackgroundTexture(),
         this.getTableTitleKey(),
