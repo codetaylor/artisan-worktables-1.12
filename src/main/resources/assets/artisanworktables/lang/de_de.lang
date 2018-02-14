@@ -5,7 +5,7 @@ itemGroup.artisanworktables=Arbeitstisch der Handwerker
 tile.artisanworktables.worktable.basic.name=Normaler Arbeitstisch
 tile.artisanworktables.worktable.blacksmith.name=Arbeitstisch des Schmieds
 tile.artisanworktables.worktable.carpenter.name=Arbeitstisch des Zimmermanns
-tile.artisanworktables.worktable.chemist.name=Arbeitstisch des Handwerkers
+tile.artisanworktables.worktable.chemist.name=Arbeitstisch des Chemikers
 tile.artisanworktables.worktable.engineer.name=Arbeitstisch des Ingenieurs
 tile.artisanworktables.worktable.jeweler.name=Arbeitstisch des Juweliers
 tile.artisanworktables.worktable.mage.name=Arbeitstisch des Magiers
@@ -17,13 +17,25 @@ tile.artisanworktables.worktable.tailor.name=Arbeitstisch des Schneiders
 tile.artisanworktables.workstation.basic.name=Normaler Arbeitsplatz
 tile.artisanworktables.workstation.blacksmith.name=Arbeitsplatz des Schmieds
 tile.artisanworktables.workstation.carpenter.name=Arbeitsplatz des Zimmermanns
-tile.artisanworktables.workstation.chemist.name=Arbeitsplatz des Handwerkers
+tile.artisanworktables.workstation.chemist.name=Arbeitsplatz des Chemikers
 tile.artisanworktables.workstation.engineer.name=Arbeitsplatz des Ingenieurs
 tile.artisanworktables.workstation.jeweler.name=Arbeitsplatz des Juweliers
 tile.artisanworktables.workstation.mage.name=Arbeitsplatz des Magiers
 tile.artisanworktables.workstation.mason.name=Arbeitsplatz des Steinmetzes
 tile.artisanworktables.workstation.scribe.name=Arbeitsplatz des Schreibers
 tile.artisanworktables.workstation.tailor.name=Arbeitsplatz des Schneiders
+
+#Workshops
+tile.artisanworktables.workshop.basic.name=Normale Werkstatt
+tile.artisanworktables.workshop.blacksmith.name=Werkstatt des Schmieds
+tile.artisanworktables.workshop.carpenter.name=Werkstatt des Zimmermanns
+tile.artisanworktables.workshop.chemist.name=Werkstatt des Chemikers
+tile.artisanworktables.workshop.engineer.name=Werkstatt des Ingenieurs
+tile.artisanworktables.workshop.jeweler.name=Werkstatt des Juweliers
+tile.artisanworktables.workshop.mage.name=Werkstatt des Magiers
+tile.artisanworktables.workshop.mason.name=Werkstatt des Steinmetzes
+tile.artisanworktables.workshop.scribe.name=Werkstatt des Schreibers
+tile.artisanworktables.workshop.tailor.name=Werkstatt des Schneiders
 
 # Toolbox
 tile.artisanworktables.toolbox.name=Werkzeugkasten
