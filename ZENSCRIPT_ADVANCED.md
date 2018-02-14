@@ -2,7 +2,7 @@
 
 ## Import
 
-```
+```js
 import mods.artisanworktables.Worktable;
 import mods.artisanworktables.IRecipeBuilder;
 ```
@@ -11,7 +11,7 @@ import mods.artisanworktables.IRecipeBuilder;
 
 The bare minimum:
 
-```
+```js
 Worktable.createRecipeBuilder("carpenter")
     .setShaped([
         [<minecraft:planks>],
@@ -24,7 +24,7 @@ Worktable.createRecipeBuilder("carpenter")
 
 More options:
 
-```
+```js
 Worktable.createRecipeBuilder("carpenter")
     .setShaped([
         [<minecraft:planks>],
@@ -106,23 +106,13 @@ IRecipeBuilder setMirrored();
  
 Mirror a shaped recipe.
 
-### setTool
-
-```java
-IRecipeBuilder setTool(IIngredient tool, int damage);
-```
-
-*Deprecated* - use `addTool(IIngredient, int)` instead
-
-Set the tool required for this recipe. May be an OreDict entry.
-
 ### addTool
 
 ```java
 IRecipeBuilder addTool(IIngredient tool, int damage);
 ```
 
-Add a tool required for this recipe. May be an OreDict entry.
+Add a tool required for this recipe. The tool parameter may be an OreDict entry. The damage parameter indicates how much damage is applied to the tool per craft.
 
 A minimum of one tool is required for each recipe. Two tools may be defined for workstation recipes and three or four tools may be defined for workshop recipes.
 
@@ -145,6 +135,8 @@ IRecipeBuilder setExtraOutputThree(IItemStack output, float chance);
 &#x1F539;*Optional*
 
 Add up to three additional, extra outputs.
+
+The chance parameter is a float in the range `[0,1]`.
 
 ### requireGameStages
 
