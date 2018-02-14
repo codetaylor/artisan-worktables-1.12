@@ -54,8 +54,8 @@ jei.artisanworktables.tooltip.shapeless.recipe=Formloses Rezept
 jei.artisanworktables.tooltip.chance=%s%s%% Chance zum erfolgreichen basteln
 jei.artisanworktables.xp.cost=Erfahrungskosten: %d
 jei.artisanworktables.level.cost=Level Kosten: %d
-jei.artisanworktables.xp.required=Minimale Erfahrung benötigt: %d
-jei.artisanworktables.level.required=Minimales Level benötigt: %d
+jei.artisanworktables.xp.required=Benötigte Erfahrung: %d
+jei.artisanworktables.level.required=Benötigtes Level: %d
 
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Leer
