@@ -3,7 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.reference;
 public enum EnumTier {
 
   WORKTABLE(0, "worktable"),
-  WORKSTATION(1, "workstation");
+  WORKSTATION(1, "workstation"),
+  WORKSHOP(2, "workshop");
 
   private int id;
   private String name;

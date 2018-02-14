@@ -27,6 +27,12 @@ public class ModuleWorktablesConfig {
   public static boolean ENABLE_WORKSTATIONS = true;
 
   @Config.Comment({
+      "Set to false to disable workshops."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_WORKSHOPS = true;
+
+  @Config.Comment({
       "If set to true, crafting tools must have sufficient durability remaining to perform the craft.",
       "If set to false, this restriction is ignored."
   })
@@ -54,6 +60,17 @@ public class ModuleWorktablesConfig {
     }
   }
 
+  @Config.Comment("Workshop fluid capacity (milli-buckets).")
+  @Config.RequiresMcRestart
+  public static Map<String, Integer> FLUID_CAPACITY_WORKSHOP = new HashMap<>();
+
+  static {
+
+    for (String name : WorktableAPI.getWorktableNames()) {
+      FLUID_CAPACITY_WORKSHOP.put(name, 16000);
+    }
+  }
+
   @Mod.EventBusSubscriber(modid = ModuleWorktables.MOD_ID)
   private static class EventHandler {
 
@@ -73,6 +90,8 @@ public class ModuleWorktablesConfig {
         return ModuleWorktablesConfig.ENABLE_WORKTABLES;
       case WORKSTATION:
         return ModuleWorktablesConfig.ENABLE_WORKSTATIONS;
+      case WORKSHOP:
+        return ModuleWorktablesConfig.ENABLE_WORKSHOPS;
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }
