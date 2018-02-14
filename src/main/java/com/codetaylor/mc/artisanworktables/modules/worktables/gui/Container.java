@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -114,7 +115,7 @@ public class Container
 
       int offsetY = 0;
 
-      if (this.tile instanceof TileEntityWorkstationBase) {
+      if (this.tile instanceof TileEntityWorkstation) {
         offsetY = -11;
       }
 
@@ -184,7 +185,7 @@ public class Container
   @Override
   protected int containerHotbarPositionGetY() {
 
-    if (this.tile instanceof TileEntityWorkstationBase) {
+    if (this.tile instanceof TileEntityWorkstation) {
       return super.containerHotbarPositionGetY() + 23;
     }
 
@@ -194,7 +195,7 @@ public class Container
   @Override
   protected int containerInventoryPositionGetY() {
 
-    if (this.tile instanceof TileEntityWorkstationBase) {
+    if (this.tile instanceof TileEntityWorkstation) {
       return super.containerInventoryPositionGetY() + 23;
     }
 

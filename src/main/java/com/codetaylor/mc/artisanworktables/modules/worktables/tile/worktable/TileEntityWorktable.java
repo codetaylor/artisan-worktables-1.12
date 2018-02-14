@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
+package com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityTypedBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -14,10 +15,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityWorktableBase
+public class TileEntityWorktable
     extends TileEntityTypedBase {
 
-  public TileEntityWorktableBase(EnumType type) {
+  public TileEntityWorktable(EnumType type) {
 
     super(3, 3, ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(type.getName()), type);
   }

@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityMageDelegate;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityWorkstationBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetworkManager;
@@ -10,7 +9,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
 
 public class TileEntityWorkstationMage
-    extends TileEntityWorkstationBase
+    extends TileEntityWorkstation
     implements ITickable {
 
   private final TileEntityMageDelegate delegate;

@@ -6,8 +6,10 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktab
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
@@ -113,16 +115,8 @@ public class ModuleWorktables
       );
 
       registry.registerTileEntities(
-          TileEntityWorktableBasic.class,
-          TileEntityWorktableBlacksmith.class,
-          TileEntityWorktableCarpenter.class,
-          TileEntityWorktableChemist.class,
-          TileEntityWorktableEngineer.class,
-          TileEntityWorktableJeweler.class,
-          TileEntityWorktableMage.class,
-          TileEntityWorktableMason.class,
-          TileEntityWorktableScribe.class,
-          TileEntityWorktableTailor.class
+          TileEntityWorktable.class,
+          TileEntityWorktableMage.class
       );
     }
 
@@ -135,16 +129,8 @@ public class ModuleWorktables
       );
 
       registry.registerTileEntities(
-          TileEntityWorkstationBasic.class,
-          TileEntityWorkstationBlacksmith.class,
-          TileEntityWorkstationCarpenter.class,
-          TileEntityWorkstationChemist.class,
-          TileEntityWorkstationEngineer.class,
-          TileEntityWorkstationJeweler.class,
-          TileEntityWorkstationMage.class,
-          TileEntityWorkstationMason.class,
-          TileEntityWorkstationScribe.class,
-          TileEntityWorkstationTailor.class
+          TileEntityWorkstation.class,
+          TileEntityWorkstationMage.class
       );
     }
   }
