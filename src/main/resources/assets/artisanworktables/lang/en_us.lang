@@ -25,6 +25,18 @@ tile.artisanworktables.workstation.mason.name=Mason's Workstation
 tile.artisanworktables.workstation.scribe.name=Scribe's Workstation
 tile.artisanworktables.workstation.tailor.name=Tailor's Workstation
 
+# Workshops
+tile.artisanworktables.workshop.basic.name=Basic Workshop
+tile.artisanworktables.workshop.blacksmith.name=Blacksmith's Workshop
+tile.artisanworktables.workshop.carpenter.name=Carpenter's Workshop
+tile.artisanworktables.workshop.chemist.name=Chemist's Workshop
+tile.artisanworktables.workshop.engineer.name=Engineer's Workshop
+tile.artisanworktables.workshop.jeweler.name=Jeweler's Workshop
+tile.artisanworktables.workshop.mage.name=Mage's Workshop
+tile.artisanworktables.workshop.mason.name=Mason's Workshop
+tile.artisanworktables.workshop.scribe.name=Scribe's Workshop
+tile.artisanworktables.workshop.tailor.name=Tailor's Workshop
+
 # Toolbox
 tile.artisanworktables.toolbox.name=Toolbox
 tile.artisanworktables.mechanical_toolbox.name=Mechanical Toolbox
