@@ -52,6 +52,10 @@ item.artisanworktables.tailors.shears.name=%s Schere des Schneiders
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Formloses Rezept
 jei.artisanworktables.tooltip.chance=%s%s%% Chance zum erfolgreichen basteln
+jei.artisanworktables.xp.cost=Erfahrungskosten: %d
+jei.artisanworktables.level.cost=Level Kosten: %d
+jei.artisanworktables.xp.required=Benötigte Erfahrung: %d
+jei.artisanworktables.level.required=Benötigtes Level: %d
 
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Leer
