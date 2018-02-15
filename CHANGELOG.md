@@ -1,4 +1,5 @@
 1.15.23
+* Changed: updated de_de.lang (PR#63,PR#65 Xaikii)
 * IMPORTANT: This update will break existing worktable and workstation tile entities. To reduce the number of classes used, type information is now stored in the tile entity. Preexisting tiles will not have this information and, when loaded, will adopt type 0, which translates to the Tailor type. This means existing tables and stations in a world will look the same, but behave as a Tailor's table or station. Breaking a table or station and placing it again should reset its tile entity.
 
 1.14.23
