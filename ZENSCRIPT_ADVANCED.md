@@ -52,10 +52,6 @@ Worktable.createRecipeBuilder("carpenter")
 val builder = Worktable.createRecipeBuilder("carpenter") as IRecipeBuilder;
 ```
 
-It's a good idea to create a new builder for each recipe. If you don't create a new builder for each recipe, parameters set on the previous recipe may leak into subsequent recipes if not explicitly reset.
-
-Chain your method calls as shown in the examples above: it's cleaner.
-
 ## Recipe Builder Methods
 
 ### setShaped
@@ -212,7 +208,9 @@ If set to `true`, crafting the recipe will consume an amount of experience or le
 ### create
 
 ```java
-void create();
+IRecipeBuilder create();
 ```
 
 This method must be called last to register the defined recipe with the system.
+
+When this method is invoked, the the backing builder is reset and can be used to create a new recipe.

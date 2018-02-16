@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderException;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
@@ -17,15 +18,14 @@ import java.util.List;
 public class ZenRecipeBuilder
     implements IZenRecipeBuilder {
 
-  private String tableName;
+  private final String tableName;
   private RecipeBuilder recipeBuilder;
-  private int nextToolIndex;
+  private boolean invalid;
 
   /* package */ ZenRecipeBuilder(String tableName) {
 
     this.tableName = tableName;
     this.recipeBuilder = new RecipeBuilder();
-    this.nextToolIndex = 0;
   }
 
   @Override
@@ -42,7 +42,15 @@ public class ZenRecipeBuilder
       }
     }
 
-    this.recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(ingredients));
+    try {
+      this.recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(ingredients));
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+      return this;
+    }
+
     return this;
   }
 
@@ -57,14 +65,30 @@ public class ZenRecipeBuilder
       }
     }
 
-    this.recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(ingredients));
+    try {
+      this.recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(ingredients));
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+      return this;
+    }
+
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient) {
 
-    this.recipeBuilder.setFluidIngredient(CTInputHelper.toFluid(fluidIngredient));
+    try {
+      this.recipeBuilder.setFluidIngredient(CTInputHelper.toFluid(fluidIngredient));
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+      return this;
+    }
+
     return this;
   }
 
@@ -93,7 +117,15 @@ public class ZenRecipeBuilder
       }
     }
 
-    this.recipeBuilder.setSecondaryIngredients(adjustedList.toArray(new IIngredient[adjustedList.size()]));
+    try {
+      this.recipeBuilder.setSecondaryIngredients(adjustedList.toArray(new IIngredient[adjustedList.size()]));
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+      return this;
+    }
+
     return this;
   }
 
@@ -114,18 +146,21 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder addTool(IIngredient tool, int damage) {
 
-    if (this.nextToolIndex >= 4) {
-      CTLogHelper.logErrorFromZenMethod("Recipes are restricted to a maximum of 4 tools!");
-      return this;
-    }
-
     if (tool instanceof ILiquidStack) {
       CTLogHelper.logErrorFromZenMethod("Tools can't be liquids");
+      this.invalid = true;
       return this;
     }
 
-    this.recipeBuilder.setTool(this.nextToolIndex, CTInputHelper.toIngredient(tool), damage);
-    this.nextToolIndex += 1;
+    try {
+      this.recipeBuilder.addTool(CTInputHelper.toIngredient(tool), damage);
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+      return this;
+    }
+
     return this;
   }
 
@@ -135,7 +170,16 @@ public class ZenRecipeBuilder
     if (weight <= 0) {
       weight = 1;
     }
-    this.recipeBuilder.addOutput(CTInputHelper.toStack(output), weight);
+
+    try {
+      this.recipeBuilder.addOutput(CTInputHelper.toStack(output), weight);
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+      return this;
+    }
+
     return this;
   }
 
@@ -199,6 +243,7 @@ public class ZenRecipeBuilder
 
     if (experienceRequired < 0) {
       CTLogHelper.logErrorFromZenMethod("Experience can't be < 0");
+      this.invalid = true;
       return this;
     }
 
@@ -211,6 +256,7 @@ public class ZenRecipeBuilder
 
     if (levelRequired < 0) {
       CTLogHelper.logErrorFromZenMethod("Level can't be < 0");
+      this.invalid = true;
       return this;
     }
 
@@ -226,8 +272,23 @@ public class ZenRecipeBuilder
   }
 
   @Override
-  public void create() {
+  public IZenRecipeBuilder create() {
 
-    PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new ZenWorktable.Add(this.tableName, this.recipeBuilder));
+    if (this.invalid) {
+      CTLogHelper.logErrorFromZenMethod("Failed to create recipe");
+
+    } else {
+
+      try {
+        this.recipeBuilder.validate();
+        PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new ZenWorktable.Add(this.tableName, this.recipeBuilder));
+
+      } catch (RecipeBuilderException e) {
+        CTLogHelper.logErrorFromZenMethod("Recipe failed validation: " + e.getMessage());
+      }
+    }
+
+    this.recipeBuilder = new RecipeBuilder();
+    return this;
   }
 }
