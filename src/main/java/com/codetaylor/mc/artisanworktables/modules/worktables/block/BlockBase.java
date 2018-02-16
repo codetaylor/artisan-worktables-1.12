@@ -2,9 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityTypedBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import net.minecraft.block.Block;
@@ -153,8 +150,8 @@ public abstract class BlockBase
         tileEntity = worldIn.getTileEntity(pos);
       }
 
-      if (tileEntity instanceof TileEntityTypedBase
-          && ((TileEntityTypedBase) tileEntity).getType() == EnumType.MAGE) {
+      if (tileEntity instanceof TileEntityBase
+          && ((TileEntityBase) tileEntity).getType() == EnumType.MAGE) {
         return state.withProperty(ACTIVE, ((TileEntityBase) tileEntity).hasTool());
       }
     }

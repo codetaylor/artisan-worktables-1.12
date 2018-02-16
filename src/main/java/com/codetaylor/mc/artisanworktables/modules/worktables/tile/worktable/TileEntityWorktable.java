@@ -6,25 +6,29 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityTypedBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityWorktable
-    extends TileEntityTypedBase {
+    extends TileEntityBase {
 
+  @SuppressWarnings("unused")
   public TileEntityWorktable() {
     // serialization
   }
 
   public TileEntityWorktable(EnumType type) {
 
-    super(3, 3, ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(type.getName()), type);
+    super(type);
   }
 
   @Override
@@ -32,20 +36,45 @@ public class TileEntityWorktable
 
     return new ResourceLocation(
         ModuleWorktables.MOD_ID,
-        String.format(ModuleWorktables.Textures.WORKTABLE_GUI, this.type.getName())
+        String.format(ModuleWorktables.Textures.WORKTABLE_GUI, this.getType().getName())
     );
-  }
-
-  @Override
-  protected int getToolSlotCount() {
-
-    return 1;
   }
 
   @Override
   protected String getTableTitleKey() {
 
     return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, this.getWorktableName());
+  }
+
+  @Override
+  public EnumTier getTier() {
+
+    return EnumTier.WORKTABLE;
+  }
+
+  @Override
+  protected CraftingMatrixStackHandler createCraftingMatrixHandler() {
+
+    return new CraftingMatrixStackHandler(3, 3);
+  }
+
+  @Override
+  protected ObservableStackHandler createSecondaryOutputHandler() {
+
+    return new ObservableStackHandler(3);
+  }
+
+  @Override
+  protected FluidTank createFluidTank(EnumType type) {
+
+    int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(type.getName());
+    return new FluidTank(capacity);
+  }
+
+  @Override
+  protected ObservableStackHandler createToolHandler() {
+
+    return new ObservableStackHandler(1);
   }
 
   @Override
@@ -65,9 +94,4 @@ public class TileEntityWorktable
     );
   }
 
-  @Override
-  public EnumTier getTier() {
-
-    return EnumTier.WORKTABLE;
-  }
 }

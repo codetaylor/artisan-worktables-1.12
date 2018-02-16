@@ -2,13 +2,11 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementFluidTankSmall;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementMageEffect;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementToolboxSide;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementFluidTankSmall;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityFluidBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityTypedBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
@@ -58,15 +56,12 @@ public abstract class GuiContainerBase
     ));
 
     // mage special effect
-    if (this.tileEntity instanceof TileEntityTypedBase
-        && ((TileEntityTypedBase) this.tileEntity).getType() == EnumType.MAGE) {
+    if (this.tileEntity.getType() == EnumType.MAGE) {
       this.addMageEffectElement(container);
     }
 
     // fluid tank
-    if (this.tileEntity instanceof TileEntityFluidBase) {
-      this.addFluidTankElement();
-    }
+    this.addFluidTankElement();
 
     // toolbox side
     TileEntityToolbox toolbox = container.getToolbox();
@@ -113,7 +108,7 @@ public abstract class GuiContainerBase
 
     this.guiContainerElementAdd(new GuiElementFluidTankSmall(
         this,
-        ((TileEntityFluidBase) this.tileEntity).getTank(),
+        this.tileEntity.getTank(),
         this.tileEntity.getPos(),
         this.textShadowColor,
         8,
@@ -134,8 +129,7 @@ public abstract class GuiContainerBase
 
     FontRenderer fontRenderer = this.fontRenderer;
 
-    if (this.tileEntity instanceof TileEntityTypedBase
-        && ((TileEntityTypedBase) this.tileEntity).getType() == EnumType.MAGE) {
+    if (this.tileEntity.getType() == EnumType.MAGE) {
       fontRenderer = this.mc.standardGalacticFontRenderer;
     }
 

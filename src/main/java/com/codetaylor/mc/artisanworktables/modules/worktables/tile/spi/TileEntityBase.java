@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechan
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
@@ -15,6 +16,7 @@ import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
+import com.codetaylor.mc.athenaeum.util.BottleHelper;
 import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -35,11 +37,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
@@ -50,25 +58,54 @@ public abstract class TileEntityBase
 
   private Random random = new Random();
 
+  private EnumType type;
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
   private ObservableStackHandler secondaryOutputHandler;
+  private FluidTank tank;
+
+  protected boolean initialized;
 
   protected TileEntityBase() {
     // serialization
   }
 
-  public TileEntityBase(int width, int height) {
+  public TileEntityBase(EnumType type) {
 
-    this.craftingMatrixHandler = new CraftingMatrixStackHandler(width, height);
+    this.type = type;
+    this.initialize(type);
+
+    /*
+    this.craftingMatrixHandler = new CraftingMatrixStackHandler(this.getCraftingWidth(), this.getCraftingHeight());
     this.toolHandler = new ObservableStackHandler(this.getToolSlotCount());
     this.secondaryOutputHandler = new ObservableStackHandler(3);
+
+    */
+  }
+
+  protected void initialize(EnumType type) {
+
+    if (this.initialized) {
+      return;
+    }
+
+    this.initialized = true;
+
+    this.craftingMatrixHandler = this.createCraftingMatrixHandler();
+    this.toolHandler = this.createToolHandler();
+    this.secondaryOutputHandler = this.createSecondaryOutputHandler();
+    this.tank = this.createFluidTank(type);
 
     ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
     contentsChangedEventHandler = (stackHandler, slotIndex) -> this.markDirty();
     this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
     this.toolHandler.addObserver(contentsChangedEventHandler);
     this.secondaryOutputHandler.addObserver(contentsChangedEventHandler);
+  }
+
+  public FluidTank getTank() {
+
+    return this.tank;
   }
 
   public ItemStackHandler getToolHandler() {
@@ -86,13 +123,65 @@ public abstract class TileEntityBase
     return this.secondaryOutputHandler;
   }
 
+  protected String getWorktableName() {
+
+    return this.type.getName();
+  }
+
+  protected int getGuiTextShadowColor() {
+
+    return this.type.getTextOutlineColor();
+  }
+
+  public boolean canHandleJEIRecipeTransfer(
+      String name,
+      EnumTier tier
+  ) {
+
+    return this.type.getName().equals(name) && tier.getId() <= this.getTier().getId();
+  }
+
+  public int getWorktableGuiTabTextureYOffset() {
+
+    return this.type.getGuiTabTextureOffsetY();
+  }
+
+  public EnumType getType() {
+
+    return this.type;
+  }
+
+  @Override
+  public boolean hasCapability(
+      @Nonnull Capability<?> capability, @Nullable EnumFacing facing
+  ) {
+
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+  }
+
+  @Nullable
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      //noinspection unchecked
+      return (T) this.tank;
+    }
+
+    return super.getCapability(capability, facing);
+  }
+
   @Override
   public List<ItemStack> getBlockBreakDrops() {
 
     List<ItemStack> result = new ArrayList<>();
 
-    for (int i = 0; i < this.getToolSlotCount(); i++) {
-      result.add(this.toolHandler.getStackInSlot(i));
+    for (int i = 0; i < this.toolHandler.getSlots(); i++) {
+      ItemStack itemStack = this.toolHandler.getStackInSlot(i);
+
+      if (!itemStack.isEmpty()) {
+        result.add(itemStack);
+      }
     }
 
     int slotCount = this.craftingMatrixHandler.getSlots();
@@ -133,9 +222,11 @@ public abstract class TileEntityBase
   public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 
     tag = super.writeToNBT(tag);
+    tag.setInteger("type", this.type.getMeta());
     tag.setTag("craftingMatrixHandler", this.craftingMatrixHandler.serializeNBT());
     tag.setTag("toolHandler", this.toolHandler.serializeNBT());
     tag.setTag("secondaryOutputHandler", this.secondaryOutputHandler.serializeNBT());
+    tag.setTag("tank", this.tank.writeToNBT(new NBTTagCompound()));
     return tag;
   }
 
@@ -143,9 +234,12 @@ public abstract class TileEntityBase
   public void readFromNBT(NBTTagCompound tag) {
 
     super.readFromNBT(tag);
+    this.type = EnumType.fromMeta(tag.getInteger("type"));
+    this.initialize(this.type);
     this.craftingMatrixHandler.deserializeNBT(tag.getCompoundTag("craftingMatrixHandler"));
     this.toolHandler.deserializeNBT(tag.getCompoundTag("toolHandler"));
     this.secondaryOutputHandler.deserializeNBT(tag.getCompoundTag("secondaryOutputHandler"));
+    this.tank.readFromNBT(tag.getCompoundTag("tank"));
   }
 
   @Override
@@ -367,18 +461,22 @@ public abstract class TileEntityBase
         }
       }
     }
+
+    if (recipe != null) {
+      FluidStack fluidIngredient = recipe.getFluidIngredient();
+
+      if (fluidIngredient != null) {
+        this.tank.drain(fluidIngredient, true);
+      }
+    }
   }
 
   public IRecipe getRecipe(EntityPlayer player) {
 
-    FluidStack fluidStack = null;
+    FluidStack fluidStack = this.getTank().getFluid();
 
-    if (this instanceof TileEntityFluidBase) {
-      fluidStack = ((TileEntityFluidBase) this).getTank().getFluid();
-
-      if (fluidStack != null) {
-        fluidStack = fluidStack.copy();
-      }
+    if (fluidStack != null) {
+      fluidStack = fluidStack.copy();
     }
 
     RegistryRecipe registry = this.getWorktableRecipeRegistry();
@@ -552,6 +650,26 @@ public abstract class TileEntityBase
       float hitZ
   ) {
 
+    if (BottleHelper.drainWaterFromBottle(this, playerIn, this.tank)) {
+      return true;
+    }
+
+    if (BottleHelper.drainWaterIntoBottle(this, playerIn, this.tank)) {
+      return true;
+    }
+
+    IFluidHandler fluidHandler = this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+    boolean result = false;
+
+    if (fluidHandler != null) {
+      result = FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
+    }
+
+    if (result) {
+      BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
+      return true;
+    }
+
     playerIn.openGui(ModuleWorktables.MOD_INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
     return true;
   }
@@ -571,21 +689,15 @@ public abstract class TileEntityBase
 
   protected abstract String getTableTitleKey();
 
-  public abstract int getWorktableGuiTabTextureYOffset();
-
-  public abstract boolean canHandleJEIRecipeTransfer(
-      String name,
-      EnumTier tier
-  );
-
-  protected abstract int getGuiTextShadowColor();
-
   protected abstract ResourceLocation getGuiBackgroundTexture();
 
-  protected abstract String getWorktableName();
+  protected abstract ObservableStackHandler createToolHandler();
 
-  protected abstract int getToolSlotCount();
+  protected abstract CraftingMatrixStackHandler createCraftingMatrixHandler();
+
+  protected abstract ObservableStackHandler createSecondaryOutputHandler();
+
+  protected abstract FluidTank createFluidTank(EnumType type);
 
   public abstract EnumTier getTier();
-
 }

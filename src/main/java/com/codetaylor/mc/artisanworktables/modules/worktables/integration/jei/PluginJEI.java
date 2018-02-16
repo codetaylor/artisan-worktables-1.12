@@ -146,6 +146,16 @@ public class PluginJEI
             guiHelper
         );
 
+      case WORKSHOP:
+        return new JEICategoryWorkshop(
+            name,
+            tier,
+            PluginJEI.createUID(name, tier),
+            this.createTitleTranslateKey(name, tier),
+            this.createBackground(name, tier, guiHelper),
+            guiHelper
+        );
+
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }
@@ -167,6 +177,13 @@ public class PluginJEI
       );
       return guiHelper.createDrawable(resourceLocation, 3, 3, 170, 102);
 
+    } else if (tier == EnumTier.WORKSHOP) {
+      ResourceLocation resourceLocation = new ResourceLocation(
+          ModuleWorktables.MOD_ID,
+          String.format(ModuleWorktables.Textures.WORKSHOP_GUI, name)
+      );
+      return guiHelper.createDrawable(resourceLocation, 3, 13, 206, 118);
+
     } else {
       throw new IllegalArgumentException("Unknown tier: " + tier);
     }
@@ -179,6 +196,8 @@ public class PluginJEI
         return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, name);
       case WORKSTATION:
         return String.format(ModuleWorktables.Lang.WORKSTATION_TITLE, name);
+      case WORKSHOP:
+        return String.format(ModuleWorktables.Lang.WORKSHOP_TITLE, name);
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }

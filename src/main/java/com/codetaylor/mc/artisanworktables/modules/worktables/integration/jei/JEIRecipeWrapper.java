@@ -231,13 +231,19 @@ public class JEIRecipeWrapper
     GlStateManager.enableDepth();
     GlStateManager.pushMatrix();
     int xPos = 334;
+    int yPos = 32;
+
+    if (CATEGORY_TIER == EnumTier.WORKSHOP) {
+      xPos += 36 * 2;
+      yPos += 16;
+    }
 
     if (!this.recipe.getSecondaryOutput().isEmpty()) {
       String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
       minecraft.fontRenderer.drawString(
           label,
           (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (35 - 3),
+          yPos,
           0xFFFFFFFF,
           true
       );
@@ -248,7 +254,7 @@ public class JEIRecipeWrapper
       minecraft.fontRenderer.drawString(
           label,
           (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (35 - 3 + 36),
+          (yPos + 36),
           0xFFFFFFFF,
           true
       );
@@ -259,7 +265,7 @@ public class JEIRecipeWrapper
       minecraft.fontRenderer.drawString(
           label,
           (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (35 - 3 + 72),
+          (yPos + 72),
           0xFFFFFFFF,
           true
       );

@@ -7,7 +7,6 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRec
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityFluidBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
@@ -321,14 +320,16 @@ public class Container
 
   private void updateRecipeOutput(EntityPlayer player) {
 
-    FluidStack fluidStack = null;
+    if (this.tile == null) {
+      return;
+    }
 
-    if (this.tile instanceof TileEntityFluidBase) {
-      fluidStack = ((TileEntityFluidBase) this.tile).getTank().getFluid();
+    FluidStack fluidStack;
 
-      if (fluidStack != null) {
-        fluidStack = fluidStack.copy();
-      }
+    fluidStack = this.tile.getTank().getFluid();
+
+    if (fluidStack != null) {
+      fluidStack = fluidStack.copy();
     }
 
     RegistryRecipe registry = this.tile.getWorktableRecipeRegistry();
@@ -672,12 +673,12 @@ public class Container
 
     super.detectAndSendChanges();
 
-    if (!(this.tile instanceof TileEntityFluidBase)
+    if (this.tile == null
         || this.tile.getWorld().isRemote) {
       return;
     }
 
-    FluidTank tank = ((TileEntityFluidBase) this.tile).getTank();
+    FluidTank tank = this.tile.getTank();
     FluidStack fluidStack = tank.getFluid();
 
     if (this.lastFluidStack != null

@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementFluidTankLarge;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementMageEffect;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityFluidBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 import net.minecraft.util.ResourceLocation;
 import yalter.mousetweaks.api.MouseTweaksDisableWheelTweak;
@@ -52,7 +51,7 @@ public class GuiContainerWorkshop
 
     this.guiContainerElementAdd(new GuiElementFluidTankLarge(
         this,
-        ((TileEntityFluidBase) this.tileEntity).getTank(),
+        this.tileEntity.getTank(),
         this.tileEntity.getPos(),
         this.textShadowColor,
         8,
