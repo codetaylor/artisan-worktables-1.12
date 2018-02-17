@@ -222,6 +222,29 @@ public class JEIRecipeWrapper
             true
         );
       }
+
+    } else if (CATEGORY_TIER == EnumTier.WORKSHOP) {
+
+      for (int i = 0; i < this.recipe.getToolCount(); i++) {
+        String label = "-" + this.recipe.getToolDamage(i);
+        minecraft.fontRenderer.drawString(
+            label,
+            (119) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            (19) + (22 * i),
+            0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (experienceString != null) {
+        minecraft.fontRenderer.drawString(
+            experienceString,
+            9,
+            recipeHeight + 2,
+            0xFF80FF20,
+            true
+        );
+      }
     }
     GlStateManager.popMatrix();
 
