@@ -133,13 +133,28 @@ public class Container
     // ------------------------------------------------------------------------
     // Secondary output
     this.slotIndexSecondaryOutputStart = this.nextSlotIndex;
-    for (int i = 0; i < 3; i++) {
-      this.containerSlotAdd(new ResultSlot(
-          this.tile.getSecondaryOutputHandler(),
-          i,
-          this.containerSecondaryOutputOffsetGetX(),
-          this.containerSecondaryOutputOffsetGetY() + i * 18
-      ));
+
+    if (this.tile instanceof TileEntityWorkshop) {
+
+      for (int i = 0; i < 3; i++) {
+        this.containerSlotAdd(new ResultSlot(
+            this.tile.getSecondaryOutputHandler(),
+            i,
+            116 + i * 18,
+            17
+        ));
+      }
+
+    } else {
+
+      for (int i = 0; i < 3; i++) {
+        this.containerSlotAdd(new ResultSlot(
+            this.tile.getSecondaryOutputHandler(),
+            i,
+            152,
+            17 + i * 18
+        ));
+      }
     }
     this.slotIndexSecondaryOutputEnd = this.nextSlotIndex - 1;
 
@@ -190,30 +205,12 @@ public class Container
     this.updateRecipeOutput(this.player);
   }
 
-  protected int containerSecondaryOutputOffsetGetX() {
-
-    if (this.tile instanceof TileEntityWorkshop) {
-      return 188;
-    }
-
-    return 152;
-  }
-
-  protected int containerSecondaryOutputOffsetGetY() {
-
-    if (this.tile instanceof TileEntityWorkshop) {
-      return 35;
-    }
-
-    return 17;
-  }
-
-  protected int containerToolboxOffsetGetX() {
+  private int containerToolboxOffsetGetX() {
 
     return -26;
   }
 
-  protected int containerSecondaryInputOffsetGetY() {
+  private int containerSecondaryInputOffsetGetY() {
 
     if (this.tile instanceof TileEntityWorkshop) {
       return 36;
@@ -222,7 +219,7 @@ public class Container
     return 0;
   }
 
-  protected int containerToolOffsetGetX() {
+  private int containerToolOffsetGetX() {
 
     if (this.tile instanceof TileEntityWorkshop) {
       return 36;
@@ -231,32 +228,32 @@ public class Container
     return 0;
   }
 
-  protected int containerToolOffsetGetY() {
+  private int containerToolOffsetGetY() {
 
     if (this.tile instanceof TileEntityWorkstation) {
       return -11;
 
     }
     if (this.tile instanceof TileEntityWorkshop) {
-      return -15;
+      return 5;
     }
 
     return 0;
   }
 
-  protected int containerResultPositionGetY() {
+  private int containerResultPositionGetY() {
 
     if (this.tile instanceof TileEntityWorkshop) {
-      return 53;
+      return 62;
     }
 
     return 35;
   }
 
-  protected int containerResultPositionGetX() {
+  private int containerResultPositionGetX() {
 
     if (this.tile instanceof TileEntityWorkshop) {
-      return 151;
+      return 143;
     }
 
     return 115;
@@ -278,10 +275,6 @@ public class Container
   @Override
   protected int containerInventoryPositionGetX() {
 
-    if (this.tile instanceof TileEntityWorkshop) {
-      return 26;
-    }
-
     return super.containerInventoryPositionGetX();
   }
 
@@ -300,10 +293,6 @@ public class Container
 
   @Override
   protected int containerHotbarPositionGetX() {
-
-    if (this.tile instanceof TileEntityWorkshop) {
-      return 26;
-    }
 
     return super.containerHotbarPositionGetX();
   }
