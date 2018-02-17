@@ -78,7 +78,7 @@ import net.minecraft.util.ResourceLocation;
           ModuleWorktables.MOD_ID,
           String.format(ModuleWorktables.Textures.WORKSHOP_GUI, name)
       );
-      return guiHelper.createDrawable(resourceLocation, 3, 13, 170, 129);
+      return guiHelper.createDrawable(resourceLocation, 3, 13, 170, 128);
 
     } else {
       throw new IllegalArgumentException("Unknown tier: " + tier);

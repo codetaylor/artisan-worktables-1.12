@@ -113,7 +113,7 @@ public class JEICategoryWorkshop
       }
     }
 
-    recipeLayout.setRecipeTransferButton(157, 116);
+    recipeLayout.setRecipeTransferButton(157, 115);
   }
 
 }
