@@ -84,6 +84,12 @@ public class TileEntityWorkshop
   }
 
   @Override
+  public int getMaximumDisplayedTabCount() {
+
+    return 7;
+  }
+
+  @Override
   public GuiContainerBase getGuiContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
