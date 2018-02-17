@@ -58,6 +58,7 @@ public abstract class TileEntityBase
 
   private Random random = new Random();
 
+  private String uuid;
   private EnumType type;
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
@@ -90,6 +91,8 @@ public abstract class TileEntityBase
     }
 
     this.initialized = true;
+
+    this.uuid = type.getName() + "." + this.getTier().getName();
 
     this.craftingMatrixHandler = this.createCraftingMatrixHandler();
     this.toolHandler = this.createToolHandler();
@@ -543,7 +546,7 @@ public abstract class TileEntityBase
   public List<TileEntityBase> getJoinedTables(List<TileEntityBase> result) {
 
     Map<String, TileEntityBase> joinedTableMap = new TreeMap<>();
-    joinedTableMap.put(this.getClass().getName(), this);
+    joinedTableMap.put(this.uuid, this);
 
     Set<BlockPos> searchedPositionSet = new HashSet<>();
     searchedPositionSet.add(this.pos);
@@ -569,16 +572,16 @@ public abstract class TileEntityBase
       TileEntity tileEntity = this.world.getTileEntity(searchPosition);
 
       if (tileEntity instanceof TileEntityBase) {
-        String name = tileEntity.getClass().getName();
+        String key = ((TileEntityBase) tileEntity).uuid;
 
-        if (joinedTableMap.containsKey(name)) {
+        if (joinedTableMap.containsKey(key)) {
           // this indicates two tables of the same type joined in the pseudo-multiblock
           // and we need to invalidate the structure by returning nothing
           return Collections.emptyList();
         }
 
         // found a table!
-        joinedTableMap.put(name, (TileEntityBase) tileEntity);
+        joinedTableMap.put(key, (TileEntityBase) tileEntity);
 
         // check around this newly discovered table
         toSearchQueue.offer(tileEntity.getPos().offset(EnumFacing.NORTH));
