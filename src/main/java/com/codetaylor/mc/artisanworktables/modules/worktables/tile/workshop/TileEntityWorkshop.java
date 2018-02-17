@@ -74,19 +74,19 @@ public class TileEntityWorkshop
   @Override
   protected ObservableStackHandler createToolHandler() {
 
-    return new ObservableStackHandler(4);
+    return new ObservableStackHandler(3);
   }
 
   @Override
   protected int getSecondaryInputSlotCount() {
 
-    return 11;
+    return 9;
   }
 
   @Override
   public int getMaximumDisplayedTabCount() {
 
-    return 7;
+    return 6;
   }
 
   @Override
@@ -100,7 +100,7 @@ public class TileEntityWorkshop
         this.getTableTitleKey(),
         this.getGuiTextShadowColor(),
         this,
-        212,
+        176,
         225
     );
   }
