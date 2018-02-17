@@ -465,12 +465,10 @@ public abstract class TileEntityBase
       }
     }
 
-    if (recipe != null) {
-      FluidStack fluidIngredient = recipe.getFluidIngredient();
+    FluidStack fluidIngredient = recipe.getFluidIngredient();
 
-      if (fluidIngredient != null) {
-        this.tank.drain(fluidIngredient, true);
-      }
+    if (fluidIngredient != null) {
+      this.tank.drain(fluidIngredient, true);
     }
   }
 
