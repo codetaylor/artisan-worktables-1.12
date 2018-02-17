@@ -36,7 +36,8 @@ public class ZenRecipeBuilder
       for (IIngredient ingredient : ingredientArray) {
 
         if (ingredient instanceof ILiquidStack) {
-          CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+          CTLogHelper.logErrorFromZenMethod("Liquids are not supported in ingredients");
+          this.invalid = true;
           return this;
         }
       }
@@ -60,7 +61,8 @@ public class ZenRecipeBuilder
     for (IIngredient ingredient : ingredients) {
 
       if (ingredient instanceof ILiquidStack) {
-        CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+        CTLogHelper.logErrorFromZenMethod("Liquids are not supported in ingredients");
+        this.invalid = true;
         return this;
       }
     }
@@ -96,10 +98,13 @@ public class ZenRecipeBuilder
   public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] ingredients) {
 
     if (ingredients == null || ingredients.length == 0) {
+      CTLogHelper.logErrorFromZenMethod("Secondary ingredients parameter can't be null or zero length");
+      this.invalid = true;
       return this;
 
-    } else if (ingredients.length > 11) {
-      CTLogHelper.logErrorFromZenMethod("Exceeded max allowed 11 secondary ingredients: " + ingredients.length);
+    } else if (ingredients.length > 9) {
+      CTLogHelper.logErrorFromZenMethod("Exceeded max allowed 9 secondary ingredients: " + ingredients.length);
+      this.invalid = true;
       return this;
     }
 
@@ -108,7 +113,8 @@ public class ZenRecipeBuilder
     for (IIngredient ingredient : ingredients) {
 
       if (ingredient instanceof ILiquidStack) {
-        CTLogHelper.logErrorFromZenMethod("Liquids are not yet supported in ingredients");
+        CTLogHelper.logErrorFromZenMethod("Liquids are not supported in ingredients");
+        this.invalid = true;
         return this;
       }
 
@@ -211,8 +217,9 @@ public class ZenRecipeBuilder
 
     if (enumGameStageRequire == null) {
       CTLogHelper.logErrorFromZenMethod("Invalid gamestage requirement enum: " + require + ". Valid enums are: " + Arrays
-          .toString(EnumGameStageRequire.values()) + ". Defaulting to ANY.");
-      enumGameStageRequire = EnumGameStageRequire.ANY;
+          .toString(EnumGameStageRequire.values()));
+      this.invalid = true;
+      return this;
     }
 
     this.recipeBuilder.requireGamestages(enumGameStageRequire, stages);
@@ -231,6 +238,7 @@ public class ZenRecipeBuilder
 
     if (minimumTier < 0 || minimumTier > 2) {
       CTLogHelper.logErrorFromZenMethod("Minimum tier out of bounds: 0 <= " + minimumTier + " <= 2");
+      this.invalid = true;
       return this;
     }
 
