@@ -482,7 +482,10 @@ public class Container
       if (this.swapItemStack(slotIndex, i, true)) {
         return true; // Swapped tools
       }
+    }
 
+    for (int i = this.slotIndexToolsStart; i <= this.slotIndexToolsEnd; i++) {
+      
       // swap tools into any valid slot
       if (this.swapItemStack(slotIndex, i, false)) {
         return true; // Swapped tools
