@@ -6,16 +6,16 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import net.minecraft.util.ResourceLocation;
 
-public class JEICategoryFactory {
+/* package */ class JEICategoryFactory {
 
   private IGuiHelper guiHelper;
 
-  public JEICategoryFactory(IGuiHelper guiHelper) {
+  /* package */ JEICategoryFactory(IGuiHelper guiHelper) {
 
     this.guiHelper = guiHelper;
   }
 
-  public JEICategoryBase createCategory(
+  /* package */ JEICategoryBase createCategory(
       String name,
       EnumTier tier
   ) {
@@ -88,12 +88,16 @@ public class JEICategoryFactory {
   private String createTitleTranslateKey(String name, EnumTier tier) {
 
     switch (tier) {
+
       case WORKTABLE:
         return String.format(ModuleWorktables.Lang.WORKTABLE_TITLE, name);
+
       case WORKSTATION:
         return String.format(ModuleWorktables.Lang.WORKSTATION_TITLE, name);
+
       case WORKSHOP:
         return String.format(ModuleWorktables.Lang.WORKSHOP_TITLE, name);
+
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }
