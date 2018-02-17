@@ -49,7 +49,7 @@ public class Container
   private final int slotIndexToolboxStart;
   private final int slotIndexToolboxEnd;
   private final int slotIndexSecondaryInputStart;
-  private final int slotIndexSecondaryIntputEnd;
+  private final int slotIndexSecondaryInputEnd;
 
   public Container(
       InventoryPlayer playerInventory,
@@ -159,11 +159,11 @@ public class Container
             75 + this.containerSecondaryInputOffsetGetY()
         ));
       }
-      this.slotIndexSecondaryIntputEnd = this.nextSlotIndex - 1;
+      this.slotIndexSecondaryInputEnd = this.nextSlotIndex - 1;
 
     } else {
       this.slotIndexSecondaryInputStart = -1;
-      this.slotIndexSecondaryIntputEnd = -1;
+      this.slotIndexSecondaryInputEnd = -1;
     }
 
     // ------------------------------------------------------------------------
@@ -407,7 +407,7 @@ public class Container
 
   private boolean isSlotSecondaryInput(int slotIndex) {
 
-    return slotIndex >= this.slotIndexSecondaryInputStart && slotIndex <= this.slotIndexSecondaryIntputEnd;
+    return slotIndex >= this.slotIndexSecondaryInputStart && slotIndex <= this.slotIndexSecondaryInputEnd;
   }
 
   private boolean isSlotIndexResult(int slotIndex) {
@@ -469,7 +469,7 @@ public class Container
     return this.mergeItemStack(
         itemStack,
         this.slotIndexSecondaryInputStart,
-        this.slotIndexSecondaryIntputEnd + 1,
+        this.slotIndexSecondaryInputEnd + 1,
         reverse
     );
   }
@@ -651,7 +651,7 @@ public class Container
       }
     }
 
-    for (int i = this.slotIndexSecondaryInputStart; i < this.slotIndexSecondaryIntputEnd; i++) {
+    for (int i = this.slotIndexSecondaryInputStart; i < this.slotIndexSecondaryInputEnd; i++) {
       result.add(this.inventorySlots.get(i));
     }
 
