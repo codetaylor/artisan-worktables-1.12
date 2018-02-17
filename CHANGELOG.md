@@ -1,7 +1,7 @@
 1.15.23
 * Added: Workshops!
-  * Workshops are third tier worktables. They can support recipes that use up to four tools and eleven secondary ingredients.
-  * All recipes share the same recipe pool, therefore, any recipe defined for a worktable or workstation will also work in a workshop. If a recipe is defined that uses a 5x5 crafting grid, three or four tools, or ten or eleven secondary ingredients, it will only be craftable in the new workshops.
+  * Workshops are third tier worktables. They can support recipes that use up to three tools and nine secondary ingredients.
+  * All recipes share the same recipe pool, therefore, any recipe defined for a worktable or workstation will also work in a workshop. If a recipe is defined that uses a pattern larger than a 3x3 crafting grid, or three tools, it will only be craftable in the new workshops.
 * Added: additional error reporting to the ZenScript IRecipeBuilder
 * Changed: ZenScript IRecipeBuilder#create() now resets the builder
 * Changed: ZenScript IRecipeBuilder#create() now returns the recipe builder, allowing method chaining
