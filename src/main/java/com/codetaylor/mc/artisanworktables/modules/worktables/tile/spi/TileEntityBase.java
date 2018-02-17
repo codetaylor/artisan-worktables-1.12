@@ -74,7 +74,7 @@ public abstract class TileEntityBase
   public TileEntityBase(EnumType type) {
 
     this.type = type;
-    this.initialize(type);
+    this.initializeInternal(type);
 
     /*
     this.craftingMatrixHandler = new CraftingMatrixStackHandler(this.getCraftingWidth(), this.getCraftingHeight());
@@ -84,13 +84,15 @@ public abstract class TileEntityBase
     */
   }
 
-  protected void initialize(EnumType type) {
+  private void initializeInternal(EnumType type) {
 
-    if (this.initialized) {
-      return;
+    if (!this.initialized) {
+      this.initialize(type);
+      this.initialized = true;
     }
+  }
 
-    this.initialized = true;
+  protected void initialize(EnumType type) {
 
     this.uuid = type.getName() + "." + this.getTier().getName();
 
@@ -238,7 +240,7 @@ public abstract class TileEntityBase
 
     super.readFromNBT(tag);
     this.type = EnumType.fromMeta(tag.getInteger("type"));
-    this.initialize(this.type);
+    this.initializeInternal(this.type);
     this.craftingMatrixHandler.deserializeNBT(tag.getCompoundTag("craftingMatrixHandler"));
     this.toolHandler.deserializeNBT(tag.getCompoundTag("toolHandler"));
     this.secondaryOutputHandler.deserializeNBT(tag.getCompoundTag("secondaryOutputHandler"));

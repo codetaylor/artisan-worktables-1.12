@@ -485,7 +485,7 @@ public class Container
     }
 
     for (int i = this.slotIndexToolsStart; i <= this.slotIndexToolsEnd; i++) {
-      
+
       // swap tools into any valid slot
       if (this.swapItemStack(slotIndex, i, false)) {
         return true; // Swapped tools
@@ -680,6 +680,8 @@ public class Container
         || this.tile.getWorld().isRemote) {
       return;
     }
+
+    // Send fluid changes to the client.
 
     FluidTank tank = this.tile.getTank();
     FluidStack fluidStack = tank.getFluid();

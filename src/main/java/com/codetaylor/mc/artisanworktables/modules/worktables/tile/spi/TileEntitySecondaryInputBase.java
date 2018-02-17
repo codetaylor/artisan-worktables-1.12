@@ -35,7 +35,6 @@ public abstract class TileEntitySecondaryInputBase
   protected void initialize(EnumType type) {
 
     super.initialize(type);
-
     this.secondaryIngredientHandler = new ObservableStackHandler(this.getSecondaryInputSlotCount());
     this.secondaryIngredientHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
   }
