@@ -42,7 +42,7 @@ public class JEICategoryWorkshop
     List<List<ItemStack>> secondaryInputs = wrapper.getSecondaryInputs();
     List<ItemStack> outputs = wrapper.getOutput();
 
-    stacks.init(0, false, 147, 39);
+    stacks.init(0, false, 139, 48);
     stacks.set(0, outputs);
 
     this.setupTooltip(stacks, wrapper.getWeightedOutput());
@@ -62,12 +62,12 @@ public class JEICategoryWorkshop
     }
 
     // This assumes there will always be at least one tool
-    stacks.init(26, true, 110, 6);
+    stacks.init(26, true, 110, 26);
     stacks.set(26, tools.get(0));
 
-    stacks.init(27, false, 184, 21);
-    stacks.init(28, false, 184, 18 + 21);
-    stacks.init(29, false, 184, 36 + 21);
+    stacks.init(27, false, 112, 3);
+    stacks.init(28, false, 112 + 18, 3);
+    stacks.init(29, false, 112 + 36, 3);
 
     ItemStack extraOutput = wrapper.getSecondaryOutput();
 
@@ -92,9 +92,8 @@ public class JEICategoryWorkshop
     fluidStacks.init(30, true, 5, 4, 6, 88, capacity, true, null);
     fluidStacks.set(30, wrapper.getFluidStack());
 
-    stacks.init(31, true, 110, 6 + 22);
-    stacks.init(32, true, 110, 6 + 44);
-    stacks.init(33, true, 110, 6 + 66);
+    stacks.init(31, true, 110, 26 + 22);
+    stacks.init(32, true, 110, 26 + 44);
 
     if (tools.size() > 1) {
       stacks.set(31, tools.get(1));
@@ -104,21 +103,17 @@ public class JEICategoryWorkshop
       stacks.set(32, tools.get(2));
     }
 
-    if (tools.size() > 3) {
-      stacks.set(33, tools.get(3));
-    }
-
     for (int i = 0; i < 25; i++) {
       // The input flag is set to false here to prevent JEI from trying to transfer
       // recipe items into these slots when the transfer button is clicked.
-      stacks.init(34 + i, false, 4 + (18 * i), 97);
+      stacks.init(33 + i, false, 4 + (18 * i), 97);
 
       if (i + 1 <= secondaryInputs.size()) {
-        stacks.set(34 + i, secondaryInputs.get(i));
+        stacks.set(33 + i, secondaryInputs.get(i));
       }
     }
 
-    recipeLayout.setRecipeTransferButton(188, 80);
+    recipeLayout.setRecipeTransferButton(157, 116);
   }
 
 }

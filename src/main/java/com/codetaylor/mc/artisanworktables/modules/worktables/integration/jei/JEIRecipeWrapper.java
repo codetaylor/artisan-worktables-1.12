@@ -230,7 +230,7 @@ public class JEIRecipeWrapper
         minecraft.fontRenderer.drawString(
             label,
             (119) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            (19) + (22 * i),
+            (39) + (22 * i),
             0xFFFFFFFF,
             true
         );
@@ -239,8 +239,8 @@ public class JEIRecipeWrapper
       if (experienceString != null) {
         minecraft.fontRenderer.drawString(
             experienceString,
-            9,
-            recipeHeight + 2,
+            5,
+            recipeHeight - 10,
             0xFF80FF20,
             true
         );
@@ -253,45 +253,78 @@ public class JEIRecipeWrapper
     GlStateManager.translate(0, 0, 1000);
     GlStateManager.enableDepth();
     GlStateManager.pushMatrix();
-    int xPos = 334;
-    int yPos = 32;
 
     if (CATEGORY_TIER == EnumTier.WORKSHOP) {
-      xPos += 36 * 2;
-      yPos += 16;
-    }
 
-    if (!this.recipe.getSecondaryOutput().isEmpty()) {
-      String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
-      minecraft.fontRenderer.drawString(
-          label,
-          (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          yPos,
-          0xFFFFFFFF,
-          true
-      );
-    }
+      if (!this.recipe.getSecondaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (256) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            12,
+            0xFFFFFFFF,
+            true
+        );
+      }
 
-    if (!this.recipe.getTertiaryOutput().isEmpty()) {
-      String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
-      minecraft.fontRenderer.drawString(
-          label,
-          (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (yPos + 36),
-          0xFFFFFFFF,
-          true
-      );
-    }
+      if (!this.recipe.getTertiaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (256 + 36) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            12,
+            0xFFFFFFFF,
+            true
+        );
+      }
 
-    if (!this.recipe.getQuaternaryOutput().isEmpty()) {
-      String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
-      minecraft.fontRenderer.drawString(
-          label,
-          (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (yPos + 72),
-          0xFFFFFFFF,
-          true
-      );
+      if (!this.recipe.getQuaternaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (256 + 72) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            12,
+            0xFFFFFFFF,
+            true
+        );
+      }
+    } else {
+
+      int xPos = 334;
+      int yPos = 32;
+
+      if (!this.recipe.getSecondaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            yPos,
+            0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (!this.recipe.getTertiaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            (yPos + 36),
+            0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (!this.recipe.getQuaternaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            (yPos + 72),
+            0xFFFFFFFF,
+            true
+        );
+      }
     }
 
     GlStateManager.popMatrix();
