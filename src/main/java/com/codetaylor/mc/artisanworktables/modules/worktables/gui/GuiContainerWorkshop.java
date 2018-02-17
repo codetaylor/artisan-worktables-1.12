@@ -29,8 +29,8 @@ public class GuiContainerWorkshop
     this.guiContainerElementAdd(new GuiElementMageEffect(
         this,
         container,
-        115,
-        35
+        143,
+        62
     ));
   }
 
