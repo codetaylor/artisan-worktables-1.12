@@ -1,5 +1,5 @@
 1.16.25
-* Added: json files to define tool materials
+* Added: json files to define tool materials (#64)
   * Tool materials have been removed from the tool module config file, instead use the `Custom` tool material json file to add / remove tool materials.
   * The file `artisanworktables.module.Tools.Materials.Generated.json` will be regenerated from the defaults each time the app is launched; you may reference this file, but don't edit it - it will be overwritten.
   * Any edits to the file `artisanworktables.module.Tools.Materials.Custom.json` will be read during initialization and tools will be generated using the defined materials.
