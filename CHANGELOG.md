@@ -4,6 +4,7 @@
   * The file `artisanworktables.module.Tools.Materials.Generated.json` will be regenerated from the defaults each time the app is launched; you may reference this file, but don't edit it - it will be overwritten.
   * Any edits to the file `artisanworktables.module.Tools.Materials.Custom.json` will be read during initialization and tools will be generated using the defined materials.
 * Added: the table text highlight color can now be changed via the config file or the in-game config menu
+* Added: support for ingredientOr
 * Changed: bone tool recipes now use the `bone` oredict entry
 * Changed: all config files have been moved into the subfolder `artisanworktables`
 * Note: you will need to refresh your config files as their location has changed 
