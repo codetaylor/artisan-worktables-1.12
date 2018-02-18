@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.material;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DataCustomMaterial {
 
   private String name;
@@ -10,6 +12,8 @@ public class DataCustomMaterial {
   private int enchantability;
   private String color;
   private boolean shiny;
+
+  @SerializedName("ingredient")
   private String ingredientString;
   private String langKey;
 

@@ -1,11 +1,11 @@
-1.16.25
+1.16.x-SNAPSHOT
 * Added: json files to define tool materials (#64)
   * Tool materials have been removed from the tool module config file, instead use the `Custom` tool material json file to add / remove tool materials.
   * The file `artisanworktables.module.Tools.Materials.Generated.json` will be regenerated from the defaults each time the app is launched; you may reference this file, but don't edit it - it will be overwritten.
   * Any edits to the file `artisanworktables.module.Tools.Materials.Custom.json` will be read during initialization and tools will be generated using the defined materials.
 * Changed: all config files have been moved into the subfolder `artisanworktables`
 * Note: you will need to refresh your config files as their location has changed 
-* Requires: Athenaeum >= 1.10.5
+* Requires: Athenaeum >= 1.10.6
 
 1.15.25
 * Fixed: Unable to craft item when recipe is put in by another player (#79)
