@@ -7,12 +7,19 @@ public class CustomMaterial {
   private DataCustomMaterial dataCustomMaterial;
   private Item.ToolMaterial toolMaterial;
   private int color;
+  private Object ingredient;
 
-  public CustomMaterial(DataCustomMaterial dataCustomMaterial, Item.ToolMaterial toolMaterial, int color) {
+  public CustomMaterial(
+      DataCustomMaterial dataCustomMaterial,
+      Item.ToolMaterial toolMaterial,
+      int color,
+      Object ingredient
+  ) {
 
     this.dataCustomMaterial = dataCustomMaterial;
     this.toolMaterial = toolMaterial;
     this.color = color;
+    this.ingredient = ingredient;
   }
 
   public DataCustomMaterial getDataCustomMaterial() {
@@ -28,5 +35,10 @@ public class CustomMaterial {
   public int getColor() {
 
     return this.color;
+  }
+
+  public Object getIngredient() {
+
+    return this.ingredient;
   }
 }

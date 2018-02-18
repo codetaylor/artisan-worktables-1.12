@@ -10,7 +10,7 @@ public class DataCustomMaterial {
   private int enchantability;
   private String color;
   private boolean shiny;
-  private String ingredient;
+  private String ingredientString;
   private String langKey;
 
   public DataCustomMaterial(
@@ -22,7 +22,7 @@ public class DataCustomMaterial {
       int enchantability,
       String color,
       boolean shiny,
-      String ingredient,
+      String ingredientString,
       String langKey
   ) {
 
@@ -34,7 +34,7 @@ public class DataCustomMaterial {
     this.enchantability = enchantability;
     this.color = color;
     this.shiny = shiny;
-    this.ingredient = ingredient;
+    this.ingredientString = ingredientString;
     this.langKey = langKey;
   }
 
@@ -78,9 +78,9 @@ public class DataCustomMaterial {
     return this.shiny;
   }
 
-  public String getIngredient() {
+  public String getIngredientString() {
 
-    return this.ingredient;
+    return this.ingredientString;
   }
 
   public String getLangKey() {

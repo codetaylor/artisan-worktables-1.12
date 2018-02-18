@@ -5,8 +5,8 @@ import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
 import com.codetaylor.mc.artisanworktables.modules.tools.material.*;
 import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleToolsRecipes;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
-import com.codetaylor.mc.athenaeum.ModAthenaeum;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.RecipeItemParser;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.FileHelper;
 import com.google.gson.Gson;
@@ -45,7 +45,6 @@ public class ModuleTools
 
   public static final class Lang {
 
-    public static final String MATERIAL_STRING = "material." + ModAthenaeum.MOD_ID + ".%s";
     public static final String TOOLTIP_DURABILITY = "item." + MOD_ID + ".tooltip.durability";
   }
 
@@ -130,9 +129,10 @@ public class ModuleTools
     try {
       reader = Files.newBufferedReader(customPath);
       DataCustomMaterialList dataCustomMaterialList = gson.fromJson(reader, DataCustomMaterialList.class);
-      CustomMaterialConverter customMaterialConverter = new CustomMaterialConverter();
+      RecipeItemParser recipeItemParser = new RecipeItemParser();
+      CustomMaterialConverter customMaterialConverter = new CustomMaterialConverter(recipeItemParser);
       CustomMaterialListConverter customMaterialListConverter = new CustomMaterialListConverter(customMaterialConverter);
-      this.materialList = customMaterialListConverter.convert(dataCustomMaterialList);
+      this.materialList = customMaterialListConverter.convert(dataCustomMaterialList, event.getModLog());
 
     } catch (IOException e) {
       event.getModLog().error("", e);

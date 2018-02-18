@@ -249,7 +249,7 @@ public class ModuleToolsRecipes {
     for (ItemWorktableTool item : toolList) {
       Object[] recipeDefinition = ModuleToolsRecipes.getRecipeDefinition(
           item.getType(),
-          item.getMaterial().getDataCustomMaterial().getIngredient()
+          item.getMaterial().getIngredient()
       );
 
       if (recipeDefinition == null) {

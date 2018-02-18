@@ -22,7 +22,7 @@ public class DataCustomMaterialListFactory {
       String ingredient;
 
       if (recipeIngredient instanceof String) {
-        ingredient = (String) recipeIngredient;
+        ingredient = "ore:" + recipeIngredient;
 
       } else {
         ResourceLocation resourceLocation = ((Item) recipeIngredient).getRegistryName();
