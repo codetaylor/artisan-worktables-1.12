@@ -65,7 +65,9 @@ public abstract class TileEntityBase
   private ObservableStackHandler secondaryOutputHandler;
   private FluidTank tank;
 
-  protected boolean initialized;
+  private boolean initialized;
+
+  private List<Container> containerList = new ArrayList<>();
 
   protected TileEntityBase() {
     // serialization
@@ -75,13 +77,6 @@ public abstract class TileEntityBase
 
     this.type = type;
     this.initializeInternal(type);
-
-    /*
-    this.craftingMatrixHandler = new CraftingMatrixStackHandler(this.getCraftingWidth(), this.getCraftingHeight());
-    this.toolHandler = new ObservableStackHandler(this.getToolSlotCount());
-    this.secondaryOutputHandler = new ObservableStackHandler(3);
-
-    */
   }
 
   private void initializeInternal(EnumType type) {
@@ -102,10 +97,30 @@ public abstract class TileEntityBase
     this.tank = this.createFluidTank(type);
 
     ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
-    contentsChangedEventHandler = (stackHandler, slotIndex) -> this.markDirty();
+    contentsChangedEventHandler = (stackHandler, slotIndex) -> {
+      this.markDirty();
+      this.triggerContainerRecipeUpdate();
+    };
     this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
     this.toolHandler.addObserver(contentsChangedEventHandler);
     this.secondaryOutputHandler.addObserver(contentsChangedEventHandler);
+  }
+
+  public void addContainer(Container container) {
+
+    this.containerList.add(container);
+  }
+
+  public void removeContainer(Container container) {
+
+    this.containerList.remove(container);
+  }
+
+  protected void triggerContainerRecipeUpdate() {
+
+    for (Container container : this.containerList) {
+      container.updateRecipeOutput();
+    }
   }
 
   public FluidTank getTank() {
