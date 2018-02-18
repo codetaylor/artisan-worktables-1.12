@@ -2,25 +2,15 @@
   "parent": "block/block",
   "elements": [
     {
-      "from": [ 1.0, 0.0, 1.0 ],
-      "to": [ 15.0, 4.0, 15.0 ],
+      "from": [ 0.0, 0.0, 0.0 ],
+      "to": [ 16.0, 7.0, 16.0 ],
       "faces": {
-        "north": { "texture": "#base", "uv": [ 1.0, 12.0, 15.0, 16.0 ] },
-        "east": { "texture": "#base", "uv": [ 1.0, 12.0, 15.0, 16.0 ] },
-        "south": { "texture": "#base", "uv": [ 1.0, 12.0, 15.0, 16.0 ] },
-        "west": { "texture": "#base", "uv": [ 1.0, 12.0, 15.0, 16.0 ] },
-        "up": { "texture": "#bottom", "uv": [ 1.0, 1.0, 15.0, 15.0 ] },
-        "down": { "texture": "#bottom", "uv": [ 1.0, 1.0, 15.0, 15.0 ] }
-      }
-    },
-    {
-      "from": [ 3.0, 4.0, 3.0 ],
-      "to": [ 13.0, 8.0, 13.0 ],
-      "faces": {
-        "north": { "texture": "#base", "uv": [ 3.0, 8.0, 13.0, 12.0 ] },
-        "east": { "texture": "#base", "uv": [ 3.0, 8.0, 13.0, 12.0 ] },
-        "south": { "texture": "#base", "uv": [ 3.0, 8.0, 13.0, 12.0 ] },
-        "west": { "texture": "#base", "uv": [ 3.0, 8.0, 13.0, 12.0 ] }
+        "north": { "texture": "#base", "uv": [0.0, 9.0, 16.0, 16.0 ] },
+        "east": { "texture": "#base", "uv": [ 0.0, 9.0, 16.0, 16.0 ] },
+        "south": { "texture": "#base", "uv": [ 0.0, 9.0, 16.0, 16.0 ] },
+        "west": { "texture": "#base", "uv": [ 0.0, 9.0, 16.0, 16.0 ] },
+        "up": { "texture": "#bottom", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+        "down": { "texture": "#bottom", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
       }
     },
     {
@@ -39,10 +29,10 @@
       "from": [ 1.0, 7.0, 1.0 ],
       "to": [ 15.0, 9.0, 15.0 ],
       "faces": {
-        "north": { "texture": "#bottom", "uv": [ 1.0, 15.0, 15.0, 16.0 ] },
-        "east": { "texture": "#bottom", "uv": [ 1.0, 15.0, 15.0, 16.0 ] },
-        "south": { "texture": "#bottom", "uv": [ 1.0, 15.0, 15.0, 16.0 ] },
-        "west": { "texture": "#bottom", "uv": [ 1.0, 15.0, 15.0, 16.0 ] },
+        "north": { "texture": "#bottom", "uv": [ 1.0, 13.0, 15.0, 14.0 ] },
+        "east": { "texture": "#bottom", "uv": [ 1.0, 13.0, 15.0, 14.0 ] },
+        "south": { "texture": "#bottom", "uv": [ 1.0, 13.0, 15.0, 14.0 ] },
+        "west": { "texture": "#bottom", "uv": [ 1.0, 13.0, 15.0, 14.0 ] },
         "down": { "texture": "#bottom", "uv": [ 1.0, 1.0, 15.0, 15.0 ] }
       }
     }
