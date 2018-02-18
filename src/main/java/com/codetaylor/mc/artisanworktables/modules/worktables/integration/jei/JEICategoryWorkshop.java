@@ -58,7 +58,7 @@ public class JEICategoryWorkshop
       this.craftingGridHelper.setInputs(stacks, inputs, wrapper.getWidth(), wrapper.getHeight());
 
     } else {
-      this.craftingGridHelper.setInputs(stacks, inputs);
+      this.craftingGridHelper.setInputs(stacks, inputs, 5, 5);
     }
 
     // This assumes there will always be at least one tool
