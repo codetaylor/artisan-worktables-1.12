@@ -47,6 +47,12 @@ public class WorktableAPI {
     return Collections.unmodifiableList(WORKTABLE_NAME_LIST);
   }
 
+  public static int getWorktableTextHighlightColor(String name) {
+
+    EnumType type = EnumType.fromName(name);
+    return type.getTextOutlineColor();
+  }
+
   public static ItemStack getWorktableAsItemStack(String name, EnumTier tier) {
 
     EnumType type = EnumType.fromName(name);

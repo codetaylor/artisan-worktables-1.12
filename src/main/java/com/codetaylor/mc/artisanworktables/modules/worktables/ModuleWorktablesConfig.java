@@ -8,6 +8,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,6 +70,29 @@ public class ModuleWorktablesConfig {
     for (String name : WorktableAPI.getWorktableNames()) {
       FLUID_CAPACITY_WORKSHOP.put(name, 16000);
     }
+  }
+
+  public static Client CLIENT = new Client();
+
+  public static class Client {
+
+    @Config.Comment("Here you can change the gui text highlight color. (Hexadecimal)")
+    public Map<String, String> TEXT_HIGHLIGHT_COLOR = new HashMap<>();
+
+    /* package */ Client() {
+
+      for (String name : WorktableAPI.getWorktableNames()) {
+        Color color = new Color(WorktableAPI.getWorktableTextHighlightColor(name));
+        String hex = String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+        this.TEXT_HIGHLIGHT_COLOR.put(name, hex);
+      }
+    }
+
+    public int getTextHighlightColor(String name) {
+
+      return Integer.decode("0x" + this.TEXT_HIGHLIGHT_COLOR.get(name));
+    }
+
   }
 
   @Mod.EventBusSubscriber(modid = ModuleWorktables.MOD_ID)

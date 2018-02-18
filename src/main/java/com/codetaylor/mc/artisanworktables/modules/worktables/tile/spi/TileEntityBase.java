@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechanicalToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
@@ -150,7 +151,7 @@ public abstract class TileEntityBase
 
   protected int getGuiTextShadowColor() {
 
-    return this.type.getTextOutlineColor();
+    return ModuleWorktablesConfig.CLIENT.getTextHighlightColor(this.type.getName());
   }
 
   public boolean canHandleJEIRecipeTransfer(
