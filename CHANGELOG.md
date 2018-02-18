@@ -1,3 +1,10 @@
+1.16.23
+* Added: json files to define tool materials
+  * Tool materials have been removed from the tool module config file, instead use the `Custom` tool material json file to add / remove tool materials.
+  * The file `artisanworktables.module.Tools.Materials.Generated.json` will be regenerated from the defaults each time the app is launched; you may reference this file, but don't edit it - it will be overwritten.
+  * Any edits to the file `artisanworktables.module.Tools.Materials.Custom.json` will be read during initialization and tools will be generated using the defined materials.
+* Requires: Athenaeum >= 1.10.5
+
 1.15.23
 * IMPORTANT: This update will break existing worktable and workstation tile entities. To reduce the number of classes used, type information is now stored in the tile entity. Preexisting tiles will not have this information and, when loaded, will adopt type 0, which translates to the Tailor type. This means existing tables and stations in a world will look the same, but behave as a Tailor's table or station. Breaking a table or station and placing it again should reset its tile entity.
 * Added: Workshops!
