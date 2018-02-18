@@ -63,6 +63,6 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setConsumeExperience(boolean consumeExperience);
 
   @ZenMethod
-  void create();
+  IZenRecipeBuilder create();
 
 }

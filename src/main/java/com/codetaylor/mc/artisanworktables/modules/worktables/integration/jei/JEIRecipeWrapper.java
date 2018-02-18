@@ -222,6 +222,29 @@ public class JEIRecipeWrapper
             true
         );
       }
+
+    } else if (CATEGORY_TIER == EnumTier.WORKSHOP) {
+
+      for (int i = 0; i < this.recipe.getToolCount(); i++) {
+        String label = "-" + this.recipe.getToolDamage(i);
+        minecraft.fontRenderer.drawString(
+            label,
+            (119) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            (39) + (22 * i),
+            0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (experienceString != null) {
+        minecraft.fontRenderer.drawString(
+            experienceString,
+            5,
+            recipeHeight - 10,
+            0xFF80FF20,
+            true
+        );
+      }
     }
     GlStateManager.popMatrix();
 
@@ -230,45 +253,90 @@ public class JEIRecipeWrapper
     GlStateManager.translate(0, 0, 1000);
     GlStateManager.enableDepth();
     GlStateManager.pushMatrix();
-    int xPos = 334;
 
-    if (!this.recipe.getSecondaryOutput().isEmpty()) {
-      String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
-      minecraft.fontRenderer.drawString(
-          label,
-          (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (35 - 3),
-          0xFFFFFFFF,
-          true
-      );
-    }
+    if (CATEGORY_TIER == EnumTier.WORKSHOP) {
 
-    if (!this.recipe.getTertiaryOutput().isEmpty()) {
-      String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
-      minecraft.fontRenderer.drawString(
-          label,
-          (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (35 - 3 + 36),
-          0xFFFFFFFF,
-          true
-      );
-    }
+      if (!this.recipe.getSecondaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (256) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            12,
+            0xFFFFFFFF,
+            true
+        );
+      }
 
-    if (!this.recipe.getQuaternaryOutput().isEmpty()) {
-      String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
-      minecraft.fontRenderer.drawString(
-          label,
-          (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (35 - 3 + 72),
-          0xFFFFFFFF,
-          true
-      );
+      if (!this.recipe.getTertiaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (256 + 36) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            12,
+            0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (!this.recipe.getQuaternaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (256 + 72) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            12,
+            0xFFFFFFFF,
+            true
+        );
+      }
+    } else {
+
+      int xPos = 334;
+      int yPos = 32;
+
+      if (!this.recipe.getSecondaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            yPos,
+            0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (!this.recipe.getTertiaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            (yPos + 36),
+            0xFFFFFFFF,
+            true
+        );
+      }
+
+      if (!this.recipe.getQuaternaryOutput().isEmpty()) {
+        String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
+        minecraft.fontRenderer.drawString(
+            label,
+            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+            (yPos + 72),
+            0xFFFFFFFF,
+            true
+        );
+      }
     }
 
     GlStateManager.popMatrix();
 
     if (!this.recipe.isShaped()) {
-      GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 221, 8, 18, 17, 100, 0, 0, 1, 1);
+
+      if (CATEGORY_TIER == EnumTier.WORKSHOP) {
+        GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 288, 58, 18, 17, 0, 0, 0, 1, 1);
+
+      } else {
+        GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 234, 8, 18, 17, 0, 0, 0, 1, 1);
+      }
     }
 
     GlStateManager.popMatrix();
@@ -278,13 +346,22 @@ public class JEIRecipeWrapper
     GlStateManager.translate(0, -8, 0);
 
     if (!this.recipe.isShaped()) {
-      if (mouseX >= 110 && mouseX <= 110 + 9 && mouseY >= 4 && mouseY <= 4 + 9) {
+
+      int x = 117;
+      int y = 4;
+
+      if (CATEGORY_TIER == EnumTier.WORKSHOP) {
+        x = 144;
+        y = 29;
+      }
+
+      if (mouseX >= x && mouseX <= x + 9 && mouseY >= y && mouseY <= y + 9) {
         List<String> tooltip = new ArrayList<>();
         tooltip.add(I18n.format(ModuleWorktables.Lang.JEI_TOOLTIP_SHAPELESS_RECIPE));
         GuiUtils.drawHoveringText(
             tooltip,
-            110,
-            4,
+            mouseX,
+            mouseY,
             minecraft.displayWidth,
             minecraft.displayHeight,
             200,

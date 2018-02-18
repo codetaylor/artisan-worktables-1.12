@@ -1,3 +1,14 @@
+1.15.23
+* IMPORTANT: This update will break existing worktable and workstation tile entities. To reduce the number of classes used, type information is now stored in the tile entity. Preexisting tiles will not have this information and, when loaded, will adopt type 0, which translates to the Tailor type. This means existing tables and stations in a world will look the same, but behave as a Tailor's table or station. Breaking a table or station and placing it again should reset its tile entity.
+* Added: Workshops!
+  * Workshops are third tier worktables. They can support recipes that use up to three tools and nine secondary ingredients.
+  * All recipes share the same recipe pool, therefore, any recipe defined for a worktable or workstation will also work in a workshop. If a recipe is defined that uses a pattern larger than a 3x3 crafting grid, or three tools, it will only be craftable in the new workshops.
+* Added: additional error reporting to the ZenScript IRecipeBuilder
+* Changed: rope handle texture on the side of the Mechanical Toolbox now matches the Toolbox's rope handle texture
+* Changed: ZenScript IRecipeBuilder#create() now resets the builder
+* Changed: ZenScript IRecipeBuilder#create() now returns the recipe builder, allowing method chaining
+* Changed: updated de_de.lang (PR#63,PR#65 Xaikii)
+
 1.14.23
 * Fixed: Workstation shows wrong internal tank capacity in JEI (#62)
 

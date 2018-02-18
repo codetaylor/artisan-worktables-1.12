@@ -5,7 +5,11 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +49,7 @@ public class Container
   private final int slotIndexToolboxStart;
   private final int slotIndexToolboxEnd;
   private final int slotIndexSecondaryInputStart;
-  private final int slotIndexSecondaryIntputEnd;
+  private final int slotIndexSecondaryInputEnd;
 
   public Container(
       InventoryPlayer playerInventory,
@@ -71,8 +75,8 @@ public class Container
         this.tile,
         resultHandler,
         0,
-        115,
-        35
+        this.containerResultPositionGetX(),
+        this.containerResultPositionGetY()
     );
     this.containerSlotAdd(this.craftingResultSlot);
 
@@ -86,7 +90,7 @@ public class Container
         this.containerSlotAdd(new CraftingIngredientSlot(
             slotChangeListener,
             craftingMatrixHandler,
-            x + y * 3,
+            x + y * craftingMatrixHandler.getWidth(),
             20 + x * 18,
             17 + y * 18
         ));
@@ -112,12 +116,6 @@ public class Container
       this.slotIndexToolsStart = this.nextSlotIndex;
       ItemStackHandler toolHandler = this.tile.getToolHandler();
 
-      int offsetY = 0;
-
-      if (this.tile instanceof TileEntityWorkstationBase) {
-        offsetY = -11;
-      }
-
       for (int i = 0; i < toolHandler.getSlots(); i++) {
         final int slotIndex = i;
         this.containerSlotAdd(new CraftingToolSlot(
@@ -125,8 +123,8 @@ public class Container
             itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithToolInSlot(itemStack, slotIndex),
             toolHandler,
             i,
-            78,
-            35 + 22 * i + offsetY
+            78 + this.containerToolOffsetGetX(),
+            35 + 22 * i + this.containerToolOffsetGetY()
         ));
       }
       this.slotIndexToolsEnd = this.nextSlotIndex - 1;
@@ -135,8 +133,28 @@ public class Container
     // ------------------------------------------------------------------------
     // Secondary output
     this.slotIndexSecondaryOutputStart = this.nextSlotIndex;
-    for (int i = 0; i < 3; i++) {
-      this.containerSlotAdd(new ResultSlot(this.tile.getSecondaryOutputHandler(), i, 152, 17 + i * 18));
+
+    if (this.tile instanceof TileEntityWorkshop) {
+
+      for (int i = 0; i < 3; i++) {
+        this.containerSlotAdd(new ResultSlot(
+            this.tile.getSecondaryOutputHandler(),
+            i,
+            116 + i * 18,
+            17
+        ));
+      }
+
+    } else {
+
+      for (int i = 0; i < 3; i++) {
+        this.containerSlotAdd(new ResultSlot(
+            this.tile.getSecondaryOutputHandler(),
+            i,
+            152,
+            17 + i * 18
+        ));
+      }
     }
     this.slotIndexSecondaryOutputEnd = this.nextSlotIndex - 1;
 
@@ -148,13 +166,19 @@ public class Container
       int slotCount = handler.getSlots();
 
       for (int i = 0; i < slotCount; i++) {
-        this.containerSlotAdd(new CraftingSecondarySlot(slotChangeListener, handler, i, 8 + i * 18, 75));
+        this.containerSlotAdd(new CraftingSecondarySlot(
+            slotChangeListener,
+            handler,
+            i,
+            8 + i * 18,
+            75 + this.containerSecondaryInputOffsetGetY()
+        ));
       }
-      this.slotIndexSecondaryIntputEnd = this.nextSlotIndex - 1;
+      this.slotIndexSecondaryInputEnd = this.nextSlotIndex - 1;
 
     } else {
       this.slotIndexSecondaryInputStart = -1;
-      this.slotIndexSecondaryIntputEnd = -1;
+      this.slotIndexSecondaryInputEnd = -1;
     }
 
     // ------------------------------------------------------------------------
@@ -170,7 +194,7 @@ public class Container
               this.toolbox,
               itemHandler,
               y + x * 9,
-              x * -18 - 26,
+              x * -18 + this.containerToolboxOffsetGetX(),
               y * 18 + 8
           ));
         }
@@ -181,21 +205,68 @@ public class Container
     this.updateRecipeOutput(this.player);
   }
 
-  @Override
-  protected int containerHotbarPositionGetY() {
+  private int containerToolboxOffsetGetX() {
 
-    if (this.tile instanceof TileEntityWorkstationBase) {
-      return super.containerHotbarPositionGetY() + 23;
+    return -26;
+  }
+
+  private int containerSecondaryInputOffsetGetY() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 36;
     }
 
-    return super.containerHotbarPositionGetY();
+    return 0;
+  }
+
+  private int containerToolOffsetGetX() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 36;
+    }
+
+    return 0;
+  }
+
+  private int containerToolOffsetGetY() {
+
+    if (this.tile instanceof TileEntityWorkstation) {
+      return -11;
+
+    }
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 5;
+    }
+
+    return 0;
+  }
+
+  private int containerResultPositionGetY() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 62;
+    }
+
+    return 35;
+  }
+
+  private int containerResultPositionGetX() {
+
+    if (this.tile instanceof TileEntityWorkshop) {
+      return 143;
+    }
+
+    return 115;
   }
 
   @Override
   protected int containerInventoryPositionGetY() {
 
-    if (this.tile instanceof TileEntityWorkstationBase) {
-      return super.containerInventoryPositionGetY() + 23;
+    if (this.tile instanceof TileEntityWorkstation) {
+      return 107;
+
+    } else if (this.tile instanceof TileEntityWorkshop) {
+      return 143;
     }
 
     return super.containerInventoryPositionGetY();
@@ -205,6 +276,19 @@ public class Container
   protected int containerInventoryPositionGetX() {
 
     return super.containerInventoryPositionGetX();
+  }
+
+  @Override
+  protected int containerHotbarPositionGetY() {
+
+    if (this.tile instanceof TileEntityWorkstation) {
+      return 165;
+
+    } else if (this.tile instanceof TileEntityWorkshop) {
+      return 201;
+    }
+
+    return super.containerHotbarPositionGetY();
   }
 
   @Override
@@ -225,14 +309,16 @@ public class Container
 
   private void updateRecipeOutput(EntityPlayer player) {
 
-    FluidStack fluidStack = null;
+    if (this.tile == null) {
+      return;
+    }
 
-    if (this.tile instanceof TileEntityFluidBase) {
-      fluidStack = ((TileEntityFluidBase) this.tile).getTank().getFluid();
+    FluidStack fluidStack;
 
-      if (fluidStack != null) {
-        fluidStack = fluidStack.copy();
-      }
+    fluidStack = this.tile.getTank().getFluid();
+
+    if (fluidStack != null) {
+      fluidStack = fluidStack.copy();
     }
 
     RegistryRecipe registry = this.tile.getWorktableRecipeRegistry();
@@ -310,7 +396,7 @@ public class Container
 
   private boolean isSlotSecondaryInput(int slotIndex) {
 
-    return slotIndex >= this.slotIndexSecondaryInputStart && slotIndex <= this.slotIndexSecondaryIntputEnd;
+    return slotIndex >= this.slotIndexSecondaryInputStart && slotIndex <= this.slotIndexSecondaryInputEnd;
   }
 
   private boolean isSlotIndexResult(int slotIndex) {
@@ -372,7 +458,7 @@ public class Container
     return this.mergeItemStack(
         itemStack,
         this.slotIndexSecondaryInputStart,
-        this.slotIndexSecondaryIntputEnd + 1,
+        this.slotIndexSecondaryInputEnd + 1,
         reverse
     );
   }
@@ -385,6 +471,9 @@ public class Container
       if (this.swapItemStack(slotIndex, i, true)) {
         return true; // Swapped tools
       }
+    }
+
+    for (int i = this.slotIndexToolsStart; i <= this.slotIndexToolsEnd; i++) {
 
       // swap tools into any valid slot
       if (this.swapItemStack(slotIndex, i, false)) {
@@ -551,7 +640,7 @@ public class Container
       }
     }
 
-    for (int i = this.slotIndexSecondaryInputStart; i < this.slotIndexSecondaryIntputEnd; i++) {
+    for (int i = this.slotIndexSecondaryInputStart; i < this.slotIndexSecondaryInputEnd; i++) {
       result.add(this.inventorySlots.get(i));
     }
 
@@ -576,12 +665,14 @@ public class Container
 
     super.detectAndSendChanges();
 
-    if (!(this.tile instanceof TileEntityFluidBase)
+    if (this.tile == null
         || this.tile.getWorld().isRemote) {
       return;
     }
 
-    FluidTank tank = ((TileEntityFluidBase) this.tile).getTank();
+    // Send fluid changes to the client.
+
+    FluidTank tank = this.tile.getTank();
     FluidStack fluidStack = tank.getFluid();
 
     if (this.lastFluidStack != null

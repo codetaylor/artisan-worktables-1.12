@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
+import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
@@ -116,7 +117,9 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
-  public void create() {
-    //
+  public IZenRecipeBuilder create() {
+
+    CTLogHelper.logErrorFromZenMethod("Failed to create recipe");
+    return this;
   }
 }

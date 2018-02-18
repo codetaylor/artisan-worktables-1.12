@@ -16,20 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TileEntitySecondaryInputBase
-    extends TileEntityTypedBase {
+    extends TileEntityBase {
 
   protected ObservableStackHandler secondaryIngredientHandler;
 
+  protected TileEntitySecondaryInputBase() {
+    // serialization
+  }
+
   public TileEntitySecondaryInputBase(
-      int width,
-      int height,
-      int fluidCapacity,
-      int secondaryInputSlotCount,
       EnumType type
   ) {
 
-    super(width, height, fluidCapacity, type);
-    this.secondaryIngredientHandler = new ObservableStackHandler(secondaryInputSlotCount);
+    super(type);
+  }
+
+  @Override
+  protected void initialize(EnumType type) {
+
+    super.initialize(type);
+    this.secondaryIngredientHandler = new ObservableStackHandler(this.getSecondaryInputSlotCount());
     this.secondaryIngredientHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
   }
 
@@ -132,4 +138,6 @@ public abstract class TileEntitySecondaryInputBase
     tag.setTag("secondaryIngredientHandler", this.secondaryIngredientHandler.serializeNBT());
     return tag;
   }
+
+  protected abstract int getSecondaryInputSlotCount();
 }

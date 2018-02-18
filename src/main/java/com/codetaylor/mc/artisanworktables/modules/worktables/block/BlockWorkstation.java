@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -33,30 +34,11 @@ public class BlockWorkstation
 
     EnumType type = state.getValue(VARIANT);
 
-    switch (type) {
-      case BASIC:
-        return new TileEntityWorkstationBasic();
-      case BLACKSMITH:
-        return new TileEntityWorkstationBlacksmith();
-      case CARPENTER:
-        return new TileEntityWorkstationCarpenter();
-      case CHEMIST:
-        return new TileEntityWorkstationChemist();
-      case ENGINEER:
-        return new TileEntityWorkstationEngineer();
-      case JEWELER:
-        return new TileEntityWorkstationJeweler();
-      case MAGE:
-        return new TileEntityWorkstationMage();
-      case MASON:
-        return new TileEntityWorkstationMason();
-      case SCRIBE:
-        return new TileEntityWorkstationScribe();
-      case TAILOR:
-        return new TileEntityWorkstationTailor();
-      default:
-        throw new IllegalStateException("Unknown type: " + type);
+    if (type == EnumType.MAGE) {
+      return new TileEntityWorkstationMage();
     }
+
+    return new TileEntityWorkstation(type);
   }
 
 }

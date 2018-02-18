@@ -6,10 +6,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class RecipeBuilder {
 
@@ -20,7 +17,7 @@ public class RecipeBuilder {
   private List<Ingredient> ingredients;
   private List<IIngredient> secondaryIngredients;
   private FluidStack fluidIngredient;
-  private ToolIngredientEntry[] tools;
+  private List<ToolIngredientEntry> tools;
   private List<OutputWeightPair> outputWeightPairList;
   private ExtraOutputChancePair[] extraOutputs;
   private EnumGameStageRequire gameStageRequire;
@@ -33,8 +30,8 @@ public class RecipeBuilder {
 
   public RecipeBuilder() {
 
-    this.ingredients = Collections.emptyList();
-    this.secondaryIngredients = Collections.emptyList();
+    this.ingredients = null;
+    this.secondaryIngredients = null;
     this.fluidIngredient = null;
     this.outputWeightPairList = new ArrayList<>();
     this.extraOutputs = new ExtraOutputChancePair[3];
@@ -42,14 +39,18 @@ public class RecipeBuilder {
     this.gameStageRequire = EnumGameStageRequire.ANY;
     this.includeGamestages = new String[0];
     this.excludeGamestages = new String[0];
-    this.tools = new ToolIngredientEntry[MAX_TOOL_COUNT];
+    this.tools = new ArrayList<>();
     this.minimumTier = 0;
     this.experienceRequired = 0;
     this.levelRequired = 0;
     this.consumeExperience = true;
   }
 
-  public RecipeBuilder setIngredients(Ingredient[][] ingredients) {
+  public RecipeBuilder setIngredients(Ingredient[][] ingredients) throws RecipeBuilderException {
+
+    if (this.ingredients != null) {
+      throw new RecipeBuilderException("Ingredients already set, can't be set twice");
+    }
 
     this.ingredients = new ArrayList<>();
     this.width = 0;
@@ -67,20 +68,32 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setIngredients(Ingredient[] ingredients) {
+  public RecipeBuilder setIngredients(Ingredient[] ingredients) throws RecipeBuilderException {
+
+    if (this.ingredients != null) {
+      throw new RecipeBuilderException("Ingredients already set, can't be set twice");
+    }
 
     this.ingredients = new ArrayList<>();
     Collections.addAll(this.ingredients, ingredients);
     return this;
   }
 
-  public RecipeBuilder setFluidIngredient(FluidStack fluidIngredient) {
+  public RecipeBuilder setFluidIngredient(FluidStack fluidIngredient) throws RecipeBuilderException {
+
+    if (this.fluidIngredient != null) {
+      throw new RecipeBuilderException("Fluid ingredient already set, can't be set twice");
+    }
 
     this.fluidIngredient = fluidIngredient;
     return this;
   }
 
-  public RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) {
+  public RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) throws RecipeBuilderException {
+
+    if (this.secondaryIngredients != null) {
+      throw new RecipeBuilderException("Secondary ingredients already set, can't ve set twice");
+    }
 
     this.secondaryIngredients = new ArrayList<>();
     Collections.addAll(this.secondaryIngredients, secondaryIngredients);
@@ -93,15 +106,22 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setTool(int index, Ingredient tool, int toolDamage) {
+  public RecipeBuilder addTool(Ingredient tool, int toolDamage) throws RecipeBuilderException {
 
-    this.tools[index] = new ToolIngredientEntry(tool, toolDamage);
+    if (this.tools.size() == MAX_TOOL_COUNT) {
+      throw new RecipeBuilderException("Exceeded maximum tool count of " + MAX_TOOL_COUNT + " tools: " + this.tools.size() + 1);
+    }
+
+    this.tools.add(new ToolIngredientEntry(tool, toolDamage));
     return this;
   }
 
-  public RecipeBuilder addOutput(ItemStack output, int weight) {
+  public RecipeBuilder addOutput(ItemStack output, int weight) throws RecipeBuilderException {
 
-    weight = MathHelper.clamp(weight, 0, Integer.MAX_VALUE);
+    if (weight < 0) {
+      throw new RecipeBuilderException("Output weight can't be < 0: " + weight);
+    }
+
     this.outputWeightPairList.add(new OutputWeightPair(output, weight));
     return this;
   }
@@ -156,30 +176,25 @@ public class RecipeBuilder {
     return this;
   }
 
-  public IRecipe create() throws RecipeBuilderException {
+  public void validate() throws RecipeBuilderException {
 
+    // Recipe must have a minimum of one output
     if (this.outputWeightPairList == null || this.outputWeightPairList.isEmpty()) {
       throw new RecipeBuilderException("No outputs defined for recipe");
     }
 
-    int toolCount = 0;
-
-    for (int i = 0; i < MAX_TOOL_COUNT; i++) {
-
-      if (this.tools[i] == null) {
-        break;
-      }
-
-      toolCount += 1;
-    }
-
-    if (toolCount == 0) {
+    // Recipe must have a minimum of one tool
+    if (this.tools.isEmpty()) {
       throw new RecipeBuilderException("No tools defined for recipe");
     }
 
+    // Recipe must have ingredients
     if (this.ingredients == null || this.ingredients.isEmpty()) {
       throw new RecipeBuilderException("No ingredients defined for recipe");
     }
+  }
+
+  public IRecipe create() throws RecipeBuilderException {
 
     IGameStageMatcher gameStageMatcher;
 
@@ -203,10 +218,14 @@ public class RecipeBuilder {
       recipeMatcher = IRecipeMatrixMatcher.SHAPELESS;
     }
 
-    ToolEntry[] tools = new ToolEntry[toolCount];
+    ToolEntry[] tools = new ToolEntry[this.tools.size()];
 
-    for (int i = 0; i < toolCount; i++) {
-      tools[i] = new ToolEntry(this.tools[i]);
+    for (int i = 0; i < this.tools.size(); i++) {
+      tools[i] = new ToolEntry(this.tools.get(i));
+    }
+
+    if (this.secondaryIngredients == null) {
+      this.secondaryIngredients = Collections.emptyList();
     }
 
     return new Recipe(

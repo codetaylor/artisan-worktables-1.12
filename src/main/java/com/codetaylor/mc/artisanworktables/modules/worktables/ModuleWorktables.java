@@ -1,13 +1,18 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshopMage;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
@@ -29,6 +34,7 @@ public class ModuleWorktables
 
     public static final String WORKTABLE_TITLE = "tile." + MOD_ID + ".worktable.%s.name";
     public static final String WORKSTATION_TITLE = "tile." + MOD_ID + ".workstation.%s.name";
+    public static final String WORKSHOP_TITLE = "tile." + MOD_ID + ".workshop.%s.name";
 
     public static final String JEI_TOOLTIP_SHAPELESS_RECIPE = "jei." + MOD_ID + ".tooltip.shapeless.recipe";
     public static final String JEI_TOOLTIP_CHANCE = "jei." + MOD_ID + ".tooltip.chance";
@@ -45,12 +51,14 @@ public class ModuleWorktables
 
     public static final String WORKTABLE_GUI = "textures/gui/worktable_%s.png";
     public static final String WORKSTATION_GUI = "textures/gui/workstation_%s.png";
+    public static final String WORKSHOP_GUI = "textures/gui/workshop_%s.png";
   }
 
   public static class Blocks {
 
     public static final BlockWorktable WORKTABLE = new BlockWorktable();
     public static final BlockWorkstation WORKSTATION = new BlockWorkstation();
+    public static final BlockWorkshop WORKSHOP = new BlockWorkshop();
   }
 
   public static IPacketService PACKET_SERVICE;
@@ -113,16 +121,8 @@ public class ModuleWorktables
       );
 
       registry.registerTileEntities(
-          TileEntityWorktableBasic.class,
-          TileEntityWorktableBlacksmith.class,
-          TileEntityWorktableCarpenter.class,
-          TileEntityWorktableChemist.class,
-          TileEntityWorktableEngineer.class,
-          TileEntityWorktableJeweler.class,
-          TileEntityWorktableMage.class,
-          TileEntityWorktableMason.class,
-          TileEntityWorktableScribe.class,
-          TileEntityWorktableTailor.class
+          TileEntityWorktable.class,
+          TileEntityWorktableMage.class
       );
     }
 
@@ -135,16 +135,22 @@ public class ModuleWorktables
       );
 
       registry.registerTileEntities(
-          TileEntityWorkstationBasic.class,
-          TileEntityWorkstationBlacksmith.class,
-          TileEntityWorkstationCarpenter.class,
-          TileEntityWorkstationChemist.class,
-          TileEntityWorkstationEngineer.class,
-          TileEntityWorkstationJeweler.class,
-          TileEntityWorkstationMage.class,
-          TileEntityWorkstationMason.class,
-          TileEntityWorkstationScribe.class,
-          TileEntityWorkstationTailor.class
+          TileEntityWorkstation.class,
+          TileEntityWorkstationMage.class
+      );
+    }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSHOPS) {
+
+      registry.registerBlock(
+          Blocks.WORKSHOP,
+          new ItemWorktable(Blocks.WORKSHOP),
+          BlockWorkshop.NAME
+      );
+
+      registry.registerTileEntities(
+          TileEntityWorkshop.class,
+          TileEntityWorkshopMage.class
       );
     }
   }
@@ -158,6 +164,10 @@ public class ModuleWorktables
 
     if (ModuleWorktablesConfig.ENABLE_WORKSTATIONS) {
       registry.registerItemModelStrategy(Blocks.WORKSTATION.getModelRegistrationStrategy());
+    }
+
+    if (ModuleWorktablesConfig.ENABLE_WORKSHOPS) {
+      registry.registerItemModelStrategy(Blocks.WORKSHOP.getModelRegistrationStrategy());
     }
   }
 

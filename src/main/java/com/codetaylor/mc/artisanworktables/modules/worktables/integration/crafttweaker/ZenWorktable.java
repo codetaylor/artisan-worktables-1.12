@@ -53,7 +53,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTool(0, CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       if (mirrored) {
         recipeBuilder.setMirrored();
@@ -112,7 +112,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTool(0, CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       if (mirrored) {
         recipeBuilder.setMirrored();
@@ -175,7 +175,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTool(0, CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
 
@@ -229,7 +229,7 @@ public class ZenWorktable {
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
       recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.setTool(0, CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
 
       recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
 

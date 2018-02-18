@@ -2,7 +2,7 @@
 
 ## Import
 
-```
+```js
 import mods.artisanworktables.Worktable;
 import mods.artisanworktables.IRecipeBuilder;
 ```
@@ -11,7 +11,7 @@ import mods.artisanworktables.IRecipeBuilder;
 
 The bare minimum:
 
-```
+```js
 Worktable.createRecipeBuilder("carpenter")
     .setShaped([
         [<minecraft:planks>],
@@ -24,7 +24,7 @@ Worktable.createRecipeBuilder("carpenter")
 
 More options:
 
-```
+```js
 Worktable.createRecipeBuilder("carpenter")
     .setShaped([
         [<minecraft:planks>],
@@ -48,13 +48,9 @@ Worktable.createRecipeBuilder("carpenter")
 
 ## Recipe Builder
 
-```
+```js
 val builder = Worktable.createRecipeBuilder("carpenter") as IRecipeBuilder;
 ```
-
-It's a good idea to create a new builder for each recipe. If you don't create a new builder for each recipe, parameters set on the previous recipe may leak into subsequent recipes if not explicitly reset.
-
-Chain your method calls as shown in the examples above: it's cleaner.
 
 ## Recipe Builder Methods
 
@@ -106,23 +102,13 @@ IRecipeBuilder setMirrored();
  
 Mirror a shaped recipe.
 
-### setTool
-
-```java
-IRecipeBuilder setTool(IIngredient tool, int damage);
-```
-
-*Deprecated* - use `addTool(IIngredient, int)` instead
-
-Set the tool required for this recipe. May be an OreDict entry.
-
 ### addTool
 
 ```java
 IRecipeBuilder addTool(IIngredient tool, int damage);
 ```
 
-Add a tool required for this recipe. May be an OreDict entry.
+Add a tool required for this recipe. The tool parameter may be an OreDict entry. The damage parameter indicates how much damage is applied to the tool per craft.
 
 A minimum of one tool is required for each recipe. Two tools may be defined for workstation recipes and three or four tools may be defined for workshop recipes.
 
@@ -145,6 +131,8 @@ IRecipeBuilder setExtraOutputThree(IItemStack output, float chance);
 &#x1F539;*Optional*
 
 Add up to three additional, extra outputs.
+
+The chance parameter is a float in the range `[0,1]`.
 
 ### requireGameStages
 
@@ -220,7 +208,9 @@ If set to `true`, crafting the recipe will consume an amount of experience or le
 ### create
 
 ```java
-void create();
+IRecipeBuilder create();
 ```
 
 This method must be called last to register the defined recipe with the system.
+
+When this method is invoked, the the backing builder is reset and can be used to create a new recipe.

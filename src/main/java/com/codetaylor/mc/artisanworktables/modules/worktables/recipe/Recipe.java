@@ -393,6 +393,24 @@ public class Recipe
       }
     }
 
+    // test for tier three requirements
+    if (this.width <= 5
+        && this.height <= 5) {
+
+      if (this.width > 3 || this.height > 3) {
+        return EnumTier.WORKSHOP;
+      }
+
+      if (this.tools.length > 2
+          && this.tools.length <= 4) {
+        return EnumTier.WORKSHOP;
+      }
+
+      if (this.secondaryIngredients.size() > 9 && this.secondaryIngredients.size() <= 11) {
+        return EnumTier.WORKSHOP;
+      }
+    }
+
     throw new IllegalStateException("Can't calculate recipe tier");
   }
 }

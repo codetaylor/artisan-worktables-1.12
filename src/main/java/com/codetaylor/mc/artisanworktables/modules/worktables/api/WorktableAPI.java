@@ -59,6 +59,9 @@ public class WorktableAPI {
       case WORKSTATION:
         return new ItemStack(ModuleWorktables.Blocks.WORKSTATION, 1, type.getMeta());
 
+      case WORKSHOP:
+        return new ItemStack(ModuleWorktables.Blocks.WORKSHOP, 1, type.getMeta());
+
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }

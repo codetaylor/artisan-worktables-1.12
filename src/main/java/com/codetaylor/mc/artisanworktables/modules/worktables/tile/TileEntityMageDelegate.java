@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.particle.ParticleWorktableMage;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityTypedBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -21,9 +21,9 @@ public class TileEntityMageDelegate {
   private boolean activeDirty = true;
   private boolean active;
 
-  private TileEntityTypedBase tileEntity;
+  private TileEntityBase tileEntity;
 
-  public TileEntityMageDelegate(TileEntityTypedBase tileEntity) {
+  public TileEntityMageDelegate(TileEntityBase tileEntity) {
 
     this.tileEntity = tileEntity;
     this.random = new Random();
