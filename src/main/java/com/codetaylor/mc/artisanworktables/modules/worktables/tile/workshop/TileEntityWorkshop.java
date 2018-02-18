@@ -15,6 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityWorkshop
     extends TileEntitySecondaryInputBase {
@@ -90,6 +92,7 @@ public class TileEntityWorkshop
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public GuiContainerBase getGuiContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
