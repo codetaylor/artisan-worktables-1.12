@@ -3,7 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.tools;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModuleTools.MOD_ID, name = ModuleTools.MOD_ID + ".module.Tools")
+@Config(modid = ModuleTools.MOD_ID, name = ModuleTools.MOD_ID + "/" + ModuleTools.MOD_ID + ".module.Tools")
 public class ModuleToolsConfig {
 
   public static Client CLIENT = new Client();

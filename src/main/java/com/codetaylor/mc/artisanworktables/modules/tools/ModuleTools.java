@@ -67,12 +67,24 @@ public class ModuleTools
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     File configurationDirectory = event.getModConfigurationDirectory();
+    Path configurationPath = Paths.get(configurationDirectory.toString(), ModuleTools.MOD_ID);
+
+    if (!Files.exists(configurationPath)) {
+
+      try {
+        Files.createDirectories(configurationPath);
+
+      } catch (IOException e) {
+        event.getModLog().error("", e);
+      }
+    }
+
     Path generatedPath = Paths.get(
-        configurationDirectory.toString(),
+        configurationPath.toString(),
         "artisanworktables.module.Tools.Materials.Generated.json"
     );
     Path customPath = Paths.get(
-        configurationDirectory.toString(),
+        configurationPath.toString(),
         "artisanworktables.module.Tools.Materials.Custom.json"
     );
 
