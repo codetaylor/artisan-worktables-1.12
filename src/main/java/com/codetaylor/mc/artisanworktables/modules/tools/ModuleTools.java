@@ -2,12 +2,15 @@ package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
+import com.codetaylor.mc.artisanworktables.modules.tools.material.*;
 import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleToolsRecipes;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import com.codetaylor.mc.athenaeum.ModAthenaeum;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
-import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
 import com.codetaylor.mc.athenaeum.registry.Registry;
+import com.codetaylor.mc.athenaeum.util.FileHelper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -18,11 +21,20 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ModuleTools
@@ -39,6 +51,8 @@ public class ModuleTools
 
   private final List<ItemWorktableTool> registeredToolList = new ArrayList<>();
 
+  private List<CustomMaterial> materialList = Collections.emptyList();
+
   public ModuleTools() {
 
     super(0, MOD_ID);
@@ -49,39 +63,79 @@ public class ModuleTools
   }
 
   @Override
+  public void onPreInitializationEvent(FMLPreInitializationEvent event) {
+
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    File configurationDirectory = event.getModConfigurationDirectory();
+    Path generatedPath = Paths.get(
+        configurationDirectory.toString(),
+        "artisanworktables.module.Tools.Materials.Generated.json"
+    );
+    Path customPath = Paths.get(
+        configurationDirectory.toString(),
+        "artisanworktables.module.Tools.Materials.Custom.json"
+    );
+
+    // Delete the generated file if it exists.
+    if (Files.exists(generatedPath)) {
+
+      try {
+        Files.delete(generatedPath);
+
+      } catch (IOException e) {
+        event.getModLog().error("", e);
+      }
+    }
+
+    // Create and write the generated file.
+    BufferedWriter writer = null;
+
+    try {
+      writer = Files.newBufferedWriter(generatedPath);
+      gson.toJson(new DataCustomMaterialListFactory().create(), writer);
+      writer.close();
+
+    } catch (IOException e) {
+      event.getModLog().error("", e);
+
+    } finally {
+      FileHelper.closeSilently(writer);
+    }
+
+    // Copy the generated file to the custom file if the custom file doesn't exist.
+    if (!Files.exists(customPath)) {
+
+      try {
+        Files.copy(generatedPath, customPath);
+
+      } catch (IOException e) {
+        event.getModLog().error("", e);
+      }
+    }
+
+    BufferedReader reader = null;
+
+    try {
+      reader = Files.newBufferedReader(customPath);
+      DataCustomMaterialList dataCustomMaterialList = gson.fromJson(reader, DataCustomMaterialList.class);
+      CustomMaterialConverter customMaterialConverter = new CustomMaterialConverter();
+      CustomMaterialListConverter customMaterialListConverter = new CustomMaterialListConverter(customMaterialConverter);
+      this.materialList = customMaterialListConverter.convert(dataCustomMaterialList);
+
+    } catch (IOException e) {
+      event.getModLog().error("", e);
+
+    } finally {
+      FileHelper.closeSilently(reader);
+    }
+
+    super.onPreInitializationEvent(event);
+  }
+
+  @Override
   public void onRegister(Registry registry) {
 
     super.onRegister(registry);
-
-    final List<EnumMaterial> materialList = new ArrayList<>();
-
-    // Vanilla materials
-    materialList.add(EnumMaterial.WOOD);
-    materialList.add(EnumMaterial.FLINT);
-    materialList.add(EnumMaterial.BONE);
-    materialList.add(EnumMaterial.STONE);
-    materialList.add(EnumMaterial.IRON);
-    materialList.add(EnumMaterial.GOLD);
-    materialList.add(EnumMaterial.DIAMOND);
-
-    // Thermal Foundation materials
-    materialList.add(EnumMaterial.ALUMINUM);
-    materialList.add(EnumMaterial.BRONZE);
-    materialList.add(EnumMaterial.CONSTANTAN);
-    materialList.add(EnumMaterial.COPPER);
-    materialList.add(EnumMaterial.ELECTRUM);
-    materialList.add(EnumMaterial.INVAR);
-    materialList.add(EnumMaterial.LEAD);
-    materialList.add(EnumMaterial.NICKEL);
-    materialList.add(EnumMaterial.PLATINUM);
-    materialList.add(EnumMaterial.SILVER);
-    materialList.add(EnumMaterial.STEEL);
-    materialList.add(EnumMaterial.TIN);
-
-    // Botania materials
-    materialList.add(EnumMaterial.MANASTEEL);
-    materialList.add(EnumMaterial.ELEMENTIUM);
-    materialList.add(EnumMaterial.TERRASTEEL);
 
     List<String> allowedToolTypeList = new ArrayList<>();
     allowedToolTypeList.addAll(Arrays.asList(ModuleToolsConfig.ENABLED_TOOL_TYPES));
@@ -91,10 +145,7 @@ public class ModuleTools
       return;
     }
 
-    List<String> allowedToolMaterialList = new ArrayList<>();
-    allowedToolMaterialList.addAll(Arrays.asList(ModuleToolsConfig.ENABLED_TOOL_MATERIALS));
-
-    if (allowedToolMaterialList.isEmpty()) {
+    if (this.materialList.isEmpty()) {
       // User has disabled all tool materials.
       return;
     }
@@ -107,13 +158,8 @@ public class ModuleTools
         continue;
       }
 
-      for (EnumMaterial material : materialList) {
-        String materialName = material.getName();
-
-        if (!allowedToolMaterialList.contains(materialName)) {
-          // User has disabled this material.
-          continue;
-        }
+      for (CustomMaterial material : materialList) {
+        String materialName = material.getDataCustomMaterial().getName();
 
         ItemWorktableTool item = new ItemWorktableTool(type, material);
         this.registeredToolList.add(item);
@@ -133,7 +179,9 @@ public class ModuleTools
     registry.registerItemModelStrategy(() -> {
 
       for (ItemWorktableTool item : ModuleTools.this.registeredToolList) {
-        String resourcePath = item.getMaterial().isHighlighted() ? item.getName() + "_highlighted" : item.getName();
+        String resourcePath = item.getMaterial()
+            .getDataCustomMaterial()
+            .isShiny() ? item.getName() + "_highlighted" : item.getName();
         ResourceLocation location = new ResourceLocation(MOD_ID, resourcePath);
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation(location, "inventory");
         ModelLoader.setCustomModelResourceLocation(item, 0, modelResourceLocation);

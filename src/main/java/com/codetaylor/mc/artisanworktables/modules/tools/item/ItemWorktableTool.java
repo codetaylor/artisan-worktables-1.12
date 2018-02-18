@@ -1,11 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.item;
 
-import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleTools;
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfig;
+import com.codetaylor.mc.artisanworktables.modules.tools.material.CustomMaterial;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,10 +23,11 @@ public class ItemWorktableTool
     extends ItemTool {
 
   private EnumWorktableToolType type;
-  private EnumMaterial material;
+  private CustomMaterial material;
 
   public ItemWorktableTool(
-      EnumWorktableToolType type, EnumMaterial material
+      EnumWorktableToolType type,
+      CustomMaterial material
   ) {
 
     super(material.getToolMaterial(), Collections.emptySet());
@@ -47,7 +46,7 @@ public class ItemWorktableTool
     return this.type.getName();
   }
 
-  public EnumMaterial getMaterial() {
+  public CustomMaterial getMaterial() {
 
     return this.material;
   }
@@ -67,11 +66,8 @@ public class ItemWorktableTool
     Item item = stack.getItem();
 
     if (item instanceof ItemWorktableTool) {
-      EnumMaterial material = ((ItemWorktableTool) item).getMaterial();
-      String parameter = I18n.translateToLocalFormatted(String.format(
-          ModuleTools.Lang.MATERIAL_STRING,
-          material.getName()
-      ));
+      CustomMaterial material = ((ItemWorktableTool) item).getMaterial();
+      String parameter = I18n.translateToLocalFormatted(material.getDataCustomMaterial().getLangKey());
       return I18n.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", parameter);
     }
 

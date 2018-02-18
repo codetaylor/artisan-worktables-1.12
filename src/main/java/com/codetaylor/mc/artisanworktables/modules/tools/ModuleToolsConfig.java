@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
-import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import net.minecraftforge.common.config.Config;
 
@@ -44,22 +43,6 @@ public class ModuleToolsConfig {
 
     for (int i = 0; i < EnumWorktableToolType.values().length; i++) {
       ENABLED_TOOL_TYPES[i] = EnumWorktableToolType.values()[i].getName();
-    }
-  }
-
-  @Config.Comment({
-      "To disable a tool material, remove it from this list.",
-      "If new tool materials are added to the mod, you may have to regenerate your config file",
-      "or manually add them to this list to activate them."
-  })
-  @Config.RequiresMcRestart
-  public static String[] ENABLED_TOOL_MATERIALS;
-
-  static {
-    ENABLED_TOOL_MATERIALS = new String[EnumMaterial.values().length];
-
-    for (int i = 0; i < EnumMaterial.values().length; i++) {
-      ENABLED_TOOL_MATERIALS[i] = EnumMaterial.values()[i].getName();
     }
   }
 }

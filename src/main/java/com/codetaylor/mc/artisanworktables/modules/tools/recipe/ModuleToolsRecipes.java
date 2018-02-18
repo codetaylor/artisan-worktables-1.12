@@ -249,7 +249,7 @@ public class ModuleToolsRecipes {
     for (ItemWorktableTool item : toolList) {
       Object[] recipeDefinition = ModuleToolsRecipes.getRecipeDefinition(
           item.getType(),
-          item.getMaterial().getRecipeIngredient()
+          item.getMaterial().getDataCustomMaterial().getIngredient()
       );
 
       if (recipeDefinition == null) {
@@ -259,7 +259,7 @@ public class ModuleToolsRecipes {
       ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
       recipe.setRegistryName(new ResourceLocation(
           modId,
-          "recipe." + item.getName() + "." + item.getMaterial().getName()
+          "recipe." + item.getName() + "." + item.getMaterial().getDataCustomMaterial().getName()
       ));
 
       registry.register(recipe);
