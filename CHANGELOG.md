@@ -1,3 +1,6 @@
+1.15.25
+* Fixed: Unable to craft item when recipe is put in by another player (#79)
+
 1.15.24
 * Fixed: NoClassDefFoundError: com/codetaylor/mc/artisanworktables/modules/worktables/gui/GuiContainerBase (#78)
 

@@ -63,8 +63,10 @@ public class Container
     this.tile = tile;
     this.toolbox = this.getToolbox(this.tile);
 
+    this.tile.addContainer(this);
+
     this.player = playerInventory.player;
-    Runnable slotChangeListener = () -> this.updateRecipeOutput(this.player);
+    Runnable slotChangeListener = this::updateRecipeOutput;
 
     // ------------------------------------------------------------------------
     // Result
@@ -202,7 +204,7 @@ public class Container
     }
     this.slotIndexToolboxEnd = this.nextSlotIndex - 1;
 
-    this.updateRecipeOutput(this.player);
+    this.updateRecipeOutput();
   }
 
   private int containerToolboxOffsetGetX() {
@@ -307,7 +309,7 @@ public class Container
     return this.toolbox;
   }
 
-  private void updateRecipeOutput(EntityPlayer player) {
+  public void updateRecipeOutput() {
 
     if (this.tile == null) {
       return;
@@ -323,7 +325,7 @@ public class Container
 
     RegistryRecipe registry = this.tile.getWorktableRecipeRegistry();
     IRecipe recipe = registry.findRecipe(
-        player,
+        this.player,
         this.tile.getTools(),
         this.tile.getCraftingMatrixHandler(),
         fluidStack,
@@ -665,6 +667,8 @@ public class Container
 
     super.detectAndSendChanges();
 
+    //System.out.println("Player: " + this.player + ", Stack:" + this.craftingResultSlot.getStack());
+
     if (this.tile == null
         || this.tile.getWorld().isRemote) {
       return;
@@ -678,19 +682,26 @@ public class Container
     if (this.lastFluidStack != null
         && fluidStack == null) {
       this.lastFluidStack = null;
-      this.updateRecipeOutput(this.player);
+      this.updateRecipeOutput();
 
     } else if (this.lastFluidStack == null
         && fluidStack != null) {
       this.lastFluidStack = fluidStack.copy();
-      this.updateRecipeOutput(this.player);
+      this.updateRecipeOutput();
 
     } else if (this.lastFluidStack != null) {
 
       if (!this.lastFluidStack.isFluidStackIdentical(fluidStack)) {
         this.lastFluidStack = fluidStack.copy();
-        this.updateRecipeOutput(this.player);
+        this.updateRecipeOutput();
       }
     }
+  }
+
+  @Override
+  public void onContainerClosed(EntityPlayer playerIn) {
+
+    super.onContainerClosed(playerIn);
+    this.tile.removeContainer(this);
   }
 }
