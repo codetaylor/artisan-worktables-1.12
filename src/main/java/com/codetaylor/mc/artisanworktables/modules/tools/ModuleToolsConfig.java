@@ -45,4 +45,10 @@ public class ModuleToolsConfig {
       ENABLED_TOOL_TYPES[i] = EnumWorktableToolType.values()[i].getName();
     }
   }
+
+  @Config.Comment({
+      "Set to false to prevent creation of ore dict groups for tools by material type, ie. 'toolFlint' or 'toolCopper'."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_TOOL_MATERIAL_ORE_DICT_GROUPS = true;
 }

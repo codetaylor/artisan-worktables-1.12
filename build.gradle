@@ -24,7 +24,7 @@ version = project.ext.mcversion + "-" + getVersionName("${project.projectDir}")
 group = "com.sudoplay.mc"
 archivesBaseName = "artisanworktables"
 
-project.ext.athenaeum_version = "1.12.2-1.10.6"
+project.ext.athenaeum_version = "1.12.2-1.11.5"
 project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker;after:jei@[4.8.5.139,);after:gamestages"'
 
 compileJava.doFirst {

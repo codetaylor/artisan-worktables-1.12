@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.material;
 
 import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
+import com.codetaylor.mc.athenaeum.util.StringHelper;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
@@ -39,7 +40,8 @@ public class DataCustomMaterialListFactory {
           String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue()),
           material.isHighlighted(),
           ingredient,
-          "material.athenaeum." + material.getName().toLowerCase()
+          "material.athenaeum." + material.getName().toLowerCase(),
+          "tool" + StringHelper.capitalizeFirstLetter(material.getName())
       ));
     }
 
