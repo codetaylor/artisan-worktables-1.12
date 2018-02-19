@@ -1,12 +1,16 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
 import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class RecipeBuilder {
 
@@ -137,33 +141,59 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder requireGamestages(EnumGameStageRequire require, String[] includeGamestages) {
+  public RecipeBuilder requireGamestages(
+      EnumGameStageRequire require,
+      String[] includeGamestages
+  ) throws RecipeBuilderException {
+
+    if (includeGamestages == null) {
+      throw new RecipeBuilderException("Gamestage array can't be null");
+    }
 
     this.gameStageRequire = require;
     this.includeGamestages = includeGamestages;
     return this;
   }
 
-  public RecipeBuilder excludeGamestages(String[] excludeGamestages) {
+  public RecipeBuilder excludeGamestages(String[] excludeGamestages) throws RecipeBuilderException {
+
+    if (excludeGamestages == null) {
+      throw new RecipeBuilderException("Gamestage array can't be null");
+    }
 
     this.excludeGamestages = excludeGamestages;
     return this;
   }
 
-  public RecipeBuilder setMinimumTier(int minimumTier) {
+  public RecipeBuilder setMinimumTier(int minimumTier) throws RecipeBuilderException {
+
+    try {
+      EnumTier.fromId(minimumTier);
+
+    } catch (Exception e) {
+      throw new RecipeBuilderException("Invalid tier: " + minimumTier);
+    }
 
     this.minimumTier = minimumTier;
     return this;
   }
 
-  public RecipeBuilder setExperienceRequired(int cost) {
+  public RecipeBuilder setExperienceRequired(int cost) throws RecipeBuilderException {
+
+    if (cost < 0) {
+      throw new RecipeBuilderException("Experience can't be < 0");
+    }
 
     this.levelRequired = 0;
     this.experienceRequired = cost;
     return this;
   }
 
-  public RecipeBuilder setLevelRequired(int cost) {
+  public RecipeBuilder setLevelRequired(int cost) throws RecipeBuilderException {
+
+    if (cost < 0) {
+      throw new RecipeBuilderException("Level can't be < 0");
+    }
 
     this.experienceRequired = 0;
     this.levelRequired = cost;
@@ -191,6 +221,20 @@ public class RecipeBuilder {
     // Recipe must have ingredients
     if (this.ingredients == null || this.ingredients.isEmpty()) {
       throw new RecipeBuilderException("No ingredients defined for recipe");
+    }
+
+    // Must be able to calculate recipe tier
+    try {
+      EnumTier tier = RecipeTierCalculator.calculateTier(
+          this.width,
+          this.height,
+          this.tools.size(),
+          this.secondaryIngredients.size()
+      );
+      this.minimumTier = Math.max(this.minimumTier, tier.getId());
+
+    } catch (Exception e) {
+      throw new RecipeBuilderException(e.getMessage());
     }
   }
 

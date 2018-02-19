@@ -7,4 +7,9 @@ public class RecipeBuilderException
 
     super(message);
   }
+
+  public RecipeBuilderException(String message, Throwable cause) {
+
+    super(message, cause);
+  }
 }

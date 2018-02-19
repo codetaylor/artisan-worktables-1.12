@@ -31,7 +31,6 @@ public class Recipe
   private boolean mirrored;
   private int width;
   private int height;
-  private EnumTier tier;
   private int minimumTier;
   private int experienceRequired;
   private int levelRequired;
@@ -70,8 +69,6 @@ public class Recipe
     this.width = width;
     this.height = height;
     this.minimumTier = minimumTier;
-
-    this.tier = this.calculateTier();
   }
 
   @Override
@@ -362,55 +359,8 @@ public class Recipe
   }
 
   @Override
-  public EnumTier getTier() {
-
-    return this.tier;
-  }
-
-  @Override
   public boolean matchTier(EnumTier tier) {
 
-    return Math.max(this.tier.getId(), this.minimumTier) <= tier.getId();
-  }
-
-  private EnumTier calculateTier() {
-
-    // test for tier one requirements
-    if (this.width <= 3
-        && this.height <= 3
-        && this.tools.length == 1
-        && this.secondaryIngredients.isEmpty()) {
-      return EnumTier.WORKTABLE;
-    }
-
-    // test for tier two requirements
-    if (this.width <= 3
-        && this.height <= 3) {
-
-      if (this.tools.length <= 2
-          || (this.secondaryIngredients.size() > 0 && this.secondaryIngredients.size() <= 9)) {
-        return EnumTier.WORKSTATION;
-      }
-    }
-
-    // test for tier three requirements
-    if (this.width <= 5
-        && this.height <= 5) {
-
-      if (this.width > 3 || this.height > 3) {
-        return EnumTier.WORKSHOP;
-      }
-
-      if (this.tools.length > 2
-          && this.tools.length <= 4) {
-        return EnumTier.WORKSHOP;
-      }
-
-      if (this.secondaryIngredients.size() > 9 && this.secondaryIngredients.size() <= 11) {
-        return EnumTier.WORKSHOP;
-      }
-    }
-
-    throw new IllegalStateException("Can't calculate recipe tier");
+    return this.minimumTier <= tier.getId();
   }
 }

@@ -173,7 +173,7 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder addOutput(IItemStack output, int weight) {
 
-    if (weight <= 0) {
+    if (weight <= 0) { // weight is optional, may be 0
       weight = 1;
     }
 
@@ -222,53 +222,70 @@ public class ZenRecipeBuilder
       return this;
     }
 
-    this.recipeBuilder.requireGamestages(enumGameStageRequire, stages);
+    try {
+      this.recipeBuilder.requireGamestages(enumGameStageRequire, stages);
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+    }
+
     return this;
   }
 
   @Override
   public IZenRecipeBuilder excludeGameStages(String[] stages) {
 
-    this.recipeBuilder.excludeGamestages(stages);
+    try {
+      this.recipeBuilder.excludeGamestages(stages);
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
+      this.invalid = true;
+    }
+
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setMinimumTier(int minimumTier) {
 
-    if (minimumTier < 0 || minimumTier > 2) {
-      CTLogHelper.logErrorFromZenMethod("Minimum tier out of bounds: 0 <= " + minimumTier + " <= 2");
+    try {
+      this.recipeBuilder.setMinimumTier(minimumTier);
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
       this.invalid = true;
-      return this;
     }
 
-    this.recipeBuilder.setMinimumTier(minimumTier);
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setExperienceRequired(int experienceRequired) {
 
-    if (experienceRequired < 0) {
-      CTLogHelper.logErrorFromZenMethod("Experience can't be < 0");
+    try {
+      this.recipeBuilder.setExperienceRequired(experienceRequired);
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
       this.invalid = true;
-      return this;
     }
 
-    this.recipeBuilder.setExperienceRequired(experienceRequired);
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setLevelRequired(int levelRequired) {
 
-    if (levelRequired < 0) {
-      CTLogHelper.logErrorFromZenMethod("Level can't be < 0");
+    try {
+      this.recipeBuilder.setLevelRequired(levelRequired);
+
+    } catch (RecipeBuilderException e) {
+      CTLogHelper.logErrorFromZenMethod(e.getMessage());
       this.invalid = true;
-      return this;
     }
 
-    this.recipeBuilder.setLevelRequired(levelRequired);
     return this;
   }
 

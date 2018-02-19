@@ -75,8 +75,6 @@ public interface IRecipe {
 
   boolean hasMultipleWeightedOutputs();
 
-  EnumTier getTier();
-
   boolean matchTier(EnumTier tier);
 
   int getExperienceRequired();

@@ -24,4 +24,16 @@ public enum EnumTier {
 
     return this.name;
   }
+
+  public static EnumTier fromId(int id) {
+
+    for (EnumTier tier : EnumTier.values()) {
+
+      if (tier.getId() == id) {
+        return tier;
+      }
+    }
+
+    throw new IllegalArgumentException("Invalid id: " + id);
+  }
 }
