@@ -129,9 +129,12 @@ public class ModuleTools
     try {
       reader = Files.newBufferedReader(customPath);
       DataCustomMaterialList dataCustomMaterialList = gson.fromJson(reader, DataCustomMaterialList.class);
-      RecipeItemParser recipeItemParser = new RecipeItemParser();
-      CustomMaterialConverter customMaterialConverter = new CustomMaterialConverter(recipeItemParser);
-      CustomMaterialListConverter customMaterialListConverter = new CustomMaterialListConverter(customMaterialConverter);
+      CustomMaterialListConverter customMaterialListConverter = new CustomMaterialListConverter(
+          new CustomMaterialValidator(),
+          new CustomMaterialConverter(
+              new RecipeItemParser()
+          )
+      );
       this.materialList = customMaterialListConverter.convert(dataCustomMaterialList, event.getModLog());
 
     } catch (IOException e) {

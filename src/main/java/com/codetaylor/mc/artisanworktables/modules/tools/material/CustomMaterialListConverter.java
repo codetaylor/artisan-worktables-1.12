@@ -8,10 +8,15 @@ import java.util.List;
 
 public class CustomMaterialListConverter {
 
+  private CustomMaterialValidator customMaterialValidator;
   private CustomMaterialConverter customMaterialConverter;
 
-  public CustomMaterialListConverter(CustomMaterialConverter customMaterialConverter) {
+  public CustomMaterialListConverter(
+      CustomMaterialValidator customMaterialValidator,
+      CustomMaterialConverter customMaterialConverter
+  ) {
 
+    this.customMaterialValidator = customMaterialValidator;
     this.customMaterialConverter = customMaterialConverter;
   }
 
@@ -21,6 +26,14 @@ public class CustomMaterialListConverter {
     List<DataCustomMaterial> list = data.getList();
 
     for (DataCustomMaterial dataCustomMaterial : list) {
+
+      try {
+        this.customMaterialValidator.validate(dataCustomMaterial);
+
+      } catch (CustomMaterialValidationException e) {
+        logger.error("", e);
+        continue;
+      }
 
       try {
         result.add(this.customMaterialConverter.convert(dataCustomMaterial));

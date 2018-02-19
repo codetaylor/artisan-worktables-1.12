@@ -39,6 +39,12 @@ public class CustomMaterialConverter {
 
     // Convert ingredient
     ParseResult parseResult = this.recipeItemParser.parse(data.getIngredientString());
+
+    if (parseResult == ParseResult.NULL) {
+      throw new MalformedRecipeItemException("Unable to parse ingredient [" + data.getIngredientString() + "] for material [" + data
+          .getName() + "]");
+    }
+
     Object ingredient;
 
     if ("ore".equals(parseResult.getDomain())) {
