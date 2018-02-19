@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -45,7 +45,7 @@ public class ModuleWorktablesConfig {
 
   static {
 
-    for (String name : WorktableAPI.getWorktableNames()) {
+    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
       FLUID_CAPACITY_WORKTABLE.put(name, 4000);
     }
   }
@@ -56,7 +56,7 @@ public class ModuleWorktablesConfig {
 
   static {
 
-    for (String name : WorktableAPI.getWorktableNames()) {
+    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
       FLUID_CAPACITY_WORKSTATION.put(name, 8000);
     }
   }
@@ -67,7 +67,7 @@ public class ModuleWorktablesConfig {
 
   static {
 
-    for (String name : WorktableAPI.getWorktableNames()) {
+    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
       FLUID_CAPACITY_WORKSHOP.put(name, 16000);
     }
   }
@@ -81,8 +81,8 @@ public class ModuleWorktablesConfig {
 
     /* package */ Client() {
 
-      for (String name : WorktableAPI.getWorktableNames()) {
-        Color color = new Color(WorktableAPI.getWorktableTextHighlightColor(name));
+      for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
+        Color color = new Color(ArtisanWorktablesAPI.getWorktableTextHighlightColor(name));
         String hex = String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         this.TEXT_HIGHLIGHT_COLOR.put(name, hex);
       }

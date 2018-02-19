@@ -1,11 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
@@ -84,7 +83,7 @@ public class Container
 
     // ------------------------------------------------------------------------
     // Crafting Matrix
-    CraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
+    ICraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
     this.slotIndexCraftingMatrixStart = this.nextSlotIndex;
 
     for (int y = 0; y < craftingMatrixHandler.getHeight(); ++y) {
@@ -315,23 +314,7 @@ public class Container
       return;
     }
 
-    FluidStack fluidStack;
-
-    fluidStack = this.tile.getTank().getFluid();
-
-    if (fluidStack != null) {
-      fluidStack = fluidStack.copy();
-    }
-
-    RegistryRecipe registry = this.tile.getWorktableRecipeRegistry();
-    IRecipe recipe = registry.findRecipe(
-        this.player,
-        this.tile.getTools(),
-        this.tile.getCraftingMatrixHandler(),
-        fluidStack,
-        this.tile.getSecondaryIngredientMatcher(),
-        this.tile.getTier()
-    );
+    IAWRecipe recipe = this.tile.getRecipe(this.player);
 
     if (recipe != null) {
       this.resultHandler.setStackInSlot(0, recipe.getBaseOutput());
@@ -503,7 +486,7 @@ public class Container
         // grid has multiple, complete recipes, this will be executed for each complete
         // recipe.
 
-        IRecipe recipe = this.tile.getRecipe(playerIn);
+        IAWRecipe recipe = this.tile.getRecipe(playerIn);
 
         if (recipe == null) {
           return ItemStack.EMPTY;

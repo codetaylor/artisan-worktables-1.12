@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.util.RecipeMatcher;
@@ -15,8 +16,8 @@ public interface IRecipeMatrixMatcher {
 
     @Override
     public boolean matches(
-        IRecipe recipe,
-        CraftingMatrixStackHandler craftingMatrix,
+        IAWRecipe recipe,
+        ICraftingMatrixStackHandler craftingMatrix,
         FluidStack fluidStack
     ) {
 
@@ -52,7 +53,7 @@ public interface IRecipeMatrixMatcher {
 
     private boolean checkMatch(
         List<Ingredient> ingredients,
-        CraftingMatrixStackHandler craftingMatrix,
+        ICraftingMatrixStackHandler craftingMatrix,
         int startX,
         int startY,
         int width,
@@ -119,8 +120,8 @@ public interface IRecipeMatrixMatcher {
   };
 
   boolean matches(
-      IRecipe recipe,
-      CraftingMatrixStackHandler craftingMatrix,
+      IAWRecipe recipe,
+      ICraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack
   );
 }

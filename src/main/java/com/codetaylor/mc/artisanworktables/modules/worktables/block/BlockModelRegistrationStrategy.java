@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
+import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
 import com.google.common.base.Preconditions;
 import net.minecraft.block.Block;

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.reference;
+package com.codetaylor.mc.artisanworktables.api.reference;
 
 public enum EnumTier {
 

@@ -1,10 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.WorktableAPI;
+import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RegistryRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.AWRecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.darkhax.gamestages.event.GameStageEvent;
@@ -65,15 +65,15 @@ public class PluginGameStages {
     Collection<String> unlockedStages = PlayerDataHandler.getStageData(Minecraft.getMinecraft().player)
         .getUnlockedStages();
 
-    for (String name : WorktableAPI.getWorktableNames()) {
-      RegistryRecipe registry = WorktableAPI.getWorktableRecipeRegistry(name);
+    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
+      AWRecipeRegistry registry = ArtisanWorktablesAPI.getWorktableRecipeRegistry(name);
 
       if (registry != null) {
 
         for (EnumTier tier : EnumTier.values()) {
-          List<IRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
+          List<IAWRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
 
-          for (IRecipe recipe : recipeList) {
+          for (IAWRecipe recipe : recipeList) {
             String uid = PluginJEI.createUID(name, tier);
             IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 

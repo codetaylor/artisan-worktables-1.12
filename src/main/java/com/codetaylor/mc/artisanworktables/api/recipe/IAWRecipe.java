@@ -1,7 +1,6 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
+package com.codetaylor.mc.artisanworktables.api.recipe;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -13,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public interface IRecipe {
+public interface IAWRecipe {
 
   boolean matches(
       Collection<String> unlockedStages,
@@ -21,7 +20,7 @@ public interface IRecipe {
       int playerLevels,
       boolean isPlayerCreative,
       ItemStack[] tools,
-      CraftingMatrixStackHandler craftingMatrix,
+      ICraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier

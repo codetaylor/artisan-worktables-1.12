@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.OutputWeightPair;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -238,7 +240,7 @@ public class RecipeBuilder {
     }
   }
 
-  public IRecipe create() throws RecipeBuilderException {
+  public IAWRecipe create() throws RecipeBuilderException {
 
     IGameStageMatcher gameStageMatcher;
 

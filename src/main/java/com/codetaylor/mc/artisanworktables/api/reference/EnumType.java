@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.block;
+package com.codetaylor.mc.artisanworktables.api.reference;
 
 import com.codetaylor.mc.athenaeum.spi.IVariant;
 import net.minecraft.block.SoundType;

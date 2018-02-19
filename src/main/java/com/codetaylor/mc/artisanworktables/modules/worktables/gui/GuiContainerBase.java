@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementFluidTankSmall;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementMageEffect;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;

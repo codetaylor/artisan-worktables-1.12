@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 
 public class RecipeTierCalculator {
 

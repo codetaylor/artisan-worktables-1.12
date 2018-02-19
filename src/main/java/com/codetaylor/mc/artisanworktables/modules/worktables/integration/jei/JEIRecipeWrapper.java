@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
+import com.codetaylor.mc.artisanworktables.api.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.Recipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import crafttweaker.api.item.IIngredient;

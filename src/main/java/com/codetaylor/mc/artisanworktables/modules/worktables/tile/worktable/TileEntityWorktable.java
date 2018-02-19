@@ -2,10 +2,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.artisanworktables.modules.worktables.block.EnumType;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;

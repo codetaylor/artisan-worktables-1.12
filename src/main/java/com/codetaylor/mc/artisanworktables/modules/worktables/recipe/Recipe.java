@@ -1,9 +1,12 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.api.recipe.OutputWeightPair;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.artisanworktables.modules.worktables.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
@@ -18,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Recipe
-    implements IRecipe {
+    implements IAWRecipe {
 
   private IGameStageMatcher gameStageMatcher;
   private ToolEntry[] tools;
@@ -303,7 +306,7 @@ public class Recipe
       int playerLevels,
       boolean isPlayerCreative,
       ItemStack[] tools,
-      CraftingMatrixStackHandler craftingMatrix,
+      ICraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier
