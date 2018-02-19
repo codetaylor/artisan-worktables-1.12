@@ -6,27 +6,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
-/**
- * This event is fired immediately after a player successfully crafts an item
- * in an Artisan Worktable. All values are immutable; making changes to any of
- * the values provided by the event will have no effect on the outcome of the
- * crafting process.
- * <p>
- * This event is only fired on the server.
- */
-public class AWItemCraftedEvent
+public abstract class AWItemCraftEvent
     extends PlayerEvent {
 
   private final EnumType tableType;
   private final EnumTier tableTier;
-  private final ItemStack craftedItem;
 
-  public AWItemCraftedEvent(EntityPlayer player, EnumType tableType, EnumTier tableTier, ItemStack craftedItem) {
+  public AWItemCraftEvent(EntityPlayer player, EnumType tableType, EnumTier tableTier) {
 
     super(player);
     this.tableType = tableType;
     this.tableTier = tableTier;
-    this.craftedItem = craftedItem;
   }
 
   @Override
@@ -52,10 +42,35 @@ public class AWItemCraftedEvent
   }
 
   /**
-   * @return a copy of the item crafted
+   * This event is fired immediately after a player successfully crafts an item
+   * in an Artisan Worktable. All values are immutable; making changes to any of
+   * the values provided by the event will have no effect on the outcome of the
+   * crafting process.
+   * <p>
+   * This event is only fired on the server.
    */
-  public ItemStack getCraftedItem() {
+  public static class Post
+      extends AWItemCraftEvent {
 
-    return this.craftedItem;
+    private final ItemStack craftedItem;
+
+    public Post(
+        EntityPlayer player,
+        EnumType tableType,
+        EnumTier tableTier,
+        ItemStack craftedItem
+    ) {
+
+      super(player, tableType, tableTier);
+      this.craftedItem = craftedItem;
+    }
+
+    /**
+     * @return a copy of the item crafted
+     */
+    public ItemStack getCraftedItem() {
+
+      return this.craftedItem;
+    }
   }
 }

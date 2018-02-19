@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
-import com.codetaylor.mc.artisanworktables.api.event.AWItemCraftedEvent;
+import com.codetaylor.mc.artisanworktables.api.event.AWItemCraftEvent;
 import com.codetaylor.mc.artisanworktables.api.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
@@ -319,7 +319,7 @@ public abstract class TileEntityBase
       this.notifyBlockUpdate();
 
       if (craftedItem != null) {
-        MinecraftForge.EVENT_BUS.post(new AWItemCraftedEvent(
+        MinecraftForge.EVENT_BUS.post(new AWItemCraftEvent.Post(
             player,
             this.getType(),
             this.getTier(),
