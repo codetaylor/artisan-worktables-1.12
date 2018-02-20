@@ -1,7 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;

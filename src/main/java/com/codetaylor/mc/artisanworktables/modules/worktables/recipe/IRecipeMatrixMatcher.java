@@ -1,7 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.util.RecipeMatcher;

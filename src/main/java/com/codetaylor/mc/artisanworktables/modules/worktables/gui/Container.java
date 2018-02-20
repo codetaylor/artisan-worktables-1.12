@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;

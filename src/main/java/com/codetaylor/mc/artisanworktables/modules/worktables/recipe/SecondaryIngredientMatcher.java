@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.ISecondaryIngredientMatcher;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 

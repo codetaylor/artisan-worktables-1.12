@@ -1,9 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.api.recipe.ISecondaryIngredientMatcher;
-import com.codetaylor.mc.artisanworktables.api.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;

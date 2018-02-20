@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
-import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;

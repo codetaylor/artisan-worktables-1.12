@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.api.recipe;
+package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,6 @@
-package com.codetaylor.mc.artisanworktables.api;
+package com.codetaylor.mc.artisanworktables.modules.worktables.api;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.AWRecipeRegistry;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import net.minecraft.item.ItemStack;
 

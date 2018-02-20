@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
 
-import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.AWRecipeRegistry;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;

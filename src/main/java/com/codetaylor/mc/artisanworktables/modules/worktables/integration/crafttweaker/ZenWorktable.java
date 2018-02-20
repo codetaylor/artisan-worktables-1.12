@@ -1,11 +1,11 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
-import com.codetaylor.mc.artisanworktables.api.recipe.AWRecipeRegistry;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;

@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.SecondaryIngredientMatcher;
 import com.codetaylor.mc.athenaeum.helper.StackHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;

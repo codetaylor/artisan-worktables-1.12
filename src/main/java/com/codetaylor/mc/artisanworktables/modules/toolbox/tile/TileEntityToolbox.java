@@ -5,7 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.ContainerToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.GuiContainerToolbox;
-import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;

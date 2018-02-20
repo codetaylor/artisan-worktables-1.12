@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.api.recipe.OutputWeightPair;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;

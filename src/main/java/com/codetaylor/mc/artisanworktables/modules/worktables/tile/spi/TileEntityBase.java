@@ -1,11 +1,11 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
-import com.codetaylor.mc.artisanworktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.artisanworktables.api.event.AWItemCraftEvent;
-import com.codetaylor.mc.artisanworktables.api.recipe.AWRecipeRegistry;
-import com.codetaylor.mc.artisanworktables.api.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.api.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechanicalToolbox;

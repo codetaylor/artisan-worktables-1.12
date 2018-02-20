@@ -8,7 +8,9 @@
 * Added: the table text highlight color can now be changed via the config file or the in-game config menu (#75)
 * Added: support for ingredientOr (#68)
 * Added: ore dict groups for tools by material type; the ore dict keys can be changed in the tool material json config file (#74)
+* Added: `AWItemCraftEvent.Post` post craft event (#72)
 * Changed: bone tool recipes now use the `bone` oredict entry (#70)
+* Changed: factored out and exposed limited API package, API Version 1 - subject to change, build against this at your own risk
 * Requires: Athenaeum >= 1.10.6
 
 1.15.25
