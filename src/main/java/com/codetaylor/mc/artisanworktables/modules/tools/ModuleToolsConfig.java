@@ -18,6 +18,19 @@ public class ModuleToolsConfig {
   }
 
   @Config.Comment({
+      "Change the ore dict prefix for each tool type group."
+  })
+  public static String TOOL_BY_TYPE_ORE_DICT_PREFIX = "artisans";
+
+  @Config.Comment({
+      "Change the ore dict prefix for each tool material type group.",
+      "This is used when generating the tool material .json file.",
+      "Changing this will have no effect if the 'Custom' tool material file has already been generated.",
+      "You will need to regenerate the file by deleting it and running the game, or manually change the file."
+  })
+  public static String TOOL_BY_MATERIAL_ORE_DICT_PREFIX = "artisansTool";
+
+  @Config.Comment({
       "Set to false to disable all tools.",
       "This supersedes all other tool settings."
   })
@@ -51,4 +64,9 @@ public class ModuleToolsConfig {
   })
   @Config.RequiresMcRestart
   public static boolean ENABLE_TOOL_MATERIAL_ORE_DICT_GROUPS = true;
+
+  @Config.Comment({
+      "Set to false to prevent creation of ore dict groups for tools by type, ie. 'artisansHammer' or 'artisansChisel'."
+  })
+  public static boolean ENABLE_TOOL_TYPE_ORE_DICT_GROUPS = true;
 }

@@ -42,24 +42,24 @@ tile.artisanworktables.toolbox.name=Toolbox
 tile.artisanworktables.mechanical_toolbox.name=Mechanical Toolbox
 
 # Worktable Tools
-item.artisanworktables.blacksmiths.cutters.name=Blacksmith's %s Cutters
-item.artisanworktables.blacksmiths.hammer.name=Blacksmith's %s Hammer
-item.artisanworktables.carpenters.hammer.name=Carpenter's %s Hammer
-item.artisanworktables.carpenters.handsaw.name=Carpenter's %s Handsaw
-item.artisanworktables.chemists.beaker.name=Chemist's %s Beaker
-item.artisanworktables.chemists.burner.name=Chemist's %s Burner
-item.artisanworktables.engineers.driver.name=Engineer's %s Driver
-item.artisanworktables.engineers.spanner.name=Engineer's %s Spanner
-item.artisanworktables.jewelers.gemcutter.name=Jeweler's %s Gemcutter
-item.artisanworktables.jewelers.pliers.name=Jeweler's %s Pliers
-item.artisanworktables.mages.athame.name=Mage's %s Athame
-item.artisanworktables.mages.grimoire.name=Mage's %s-Bound Grimoire
-item.artisanworktables.masons.chisel.name=Mason's %s Chisel
-item.artisanworktables.masons.trowel.name=Mason's %s Trowel
-item.artisanworktables.scribes.compass.name=Scribe's %s Compass
-item.artisanworktables.scribes.quill.name=Scribe's %s Quill
-item.artisanworktables.tailors.needle.name=Tailor's %s Needle
-item.artisanworktables.tailors.shears.name=Tailor's %s Shears
+item.artisanworktables.artisans.cutters.name=Artisan's %s Cutters
+item.artisanworktables.artisans.hammer.name=Artisan's %s Hammer
+item.artisanworktables.artisans.framing.hammer.name=Artisan's %s Framing Hammer
+item.artisanworktables.artisans.handsaw.name=Artisan's %s Handsaw
+item.artisanworktables.artisans.beaker.name=Artisan's %s Beaker
+item.artisanworktables.artisans.burner.name=Artisan's %s Burner
+item.artisanworktables.artisans.driver.name=Artisan's %s Driver
+item.artisanworktables.artisans.spanner.name=Artisan's %s Spanner
+item.artisanworktables.artisans.gemcutter.name=Artisan's %s Gemcutter
+item.artisanworktables.artisans.pliers.name=Artisan's %s Pliers
+item.artisanworktables.artisans.athame.name=Artisan's %s Athame
+item.artisanworktables.artisans.grimoire.name=Artisan's %s-Bound Grimoire
+item.artisanworktables.artisans.chisel.name=Artisan's %s Chisel
+item.artisanworktables.artisans.trowel.name=Artisan's %s Trowel
+item.artisanworktables.artisans.compass.name=Artisan's %s Compass
+item.artisanworktables.artisans.quill.name=Artisan's %s Quill
+item.artisanworktables.artisans.needle.name=Artisan's %s Needle
+item.artisanworktables.artisans.shears.name=Artisan's %s Shears
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Shapeless Recipe

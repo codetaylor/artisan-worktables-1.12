@@ -1,7 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/tailors_shears_base",
-    "layer1": "artisanworktables:items/tailors_shears_color"
-  }
-}

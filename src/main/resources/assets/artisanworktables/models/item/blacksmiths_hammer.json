@@ -1,8 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/blacksmiths_hammer_base",
-    "layer1": "artisanworktables:items/blacksmiths_hammer_color",
-    "layer2": "artisanworktables:items/blacksmiths_hammer_overlay"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/masons_trowel_base",
-    "layer1": "artisanworktables:items/masons_trowel_color",
-    "layer2": "artisanworktables:items/masons_trowel_highlight"
-  }
-}

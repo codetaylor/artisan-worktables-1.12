@@ -2,34 +2,58 @@ package com.codetaylor.mc.artisanworktables.modules.tools.reference;
 
 public enum EnumWorktableToolType {
 
-  BLACKSMITHS_CUTTERS("blacksmiths_cutters"),
-  BLACKSMITHS_HAMMER("blacksmiths_hammer"),
-  CARPENTERS_HAMMER("carpenters_hammer"),
-  CARPENTERS_HANDSAW("carpenters_handsaw"),
-  CHEMISTS_BEAKER("chemists_beaker"),
-  CHEMISTS_BURNER("chemists_burner"),
-  ENGINEERS_DRIVER("engineers_driver"),
-  ENGINEERS_SPANNER("engineers_spanner"),
-  JEWELERS_GEMCUTTER("jewelers_gemcutter"),
-  JEWELERS_PLIERS("jewelers_pliers"),
-  MAGES_ATHAME("mages_athame"),
-  MAGES_GRIMOIRE("mages_grimoire"),
-  MASONS_CHISEL("masons_chisel"),
-  MASONS_TROWEL("masons_trowel"),
-  SCRIBES_COMPASS("scribes_compass"),
-  SCRIBES_QUILL("scribes_quill"),
-  TAILORS_NEEDLE("tailors_needle"),
-  TAILORS_SHEARS("tailors_shears");
+  // Blacksmith
+  BLACKSMITHS_CUTTERS("artisans_cutters", "Cutters"),
+  BLACKSMITHS_HAMMER("artisans_hammer", "Hammer"),
 
-  private String name;
+  // Carpenter
+  CARPENTERS_HAMMER("artisans_framing_hammer", "FramingHammer"),
+  CARPENTERS_HANDSAW("artisans_handsaw", "Handsaw"),
 
-  EnumWorktableToolType(String name) {
+  // Chemist
+  CHEMISTS_BEAKER("artisans_beaker", "Beaker"),
+  CHEMISTS_BURNER("artisans_burner", "Burner"),
+
+  // Engineer
+  ENGINEERS_DRIVER("artisans_driver", "Driver"),
+  ENGINEERS_SPANNER("artisans_spanner", "Spanner"),
+
+  // Jeweler
+  JEWELERS_GEMCUTTER("artisans_gemcutter", "GemCutter"),
+  JEWELERS_PLIERS("artisans_pliers", "Pliers"),
+
+  // Mage
+  MAGES_ATHAME("artisans_athame", "Athame"),
+  MAGES_GRIMOIRE("artisans_grimoire", "Grimoire"),
+
+  // Mason
+  MASONS_CHISEL("artisans_chisel", "Chisel"),
+  MASONS_TROWEL("artisans_trowel", "Trowel"),
+
+  // Scribe
+  SCRIBES_COMPASS("artisans_compass", "Compass"),
+  SCRIBES_QUILL("artisans_quill", "Quill"),
+
+  // Tailor
+  TAILORS_NEEDLE("artisans_needle", "Needle"),
+  TAILORS_SHEARS("artisans_shears", "Shears");
+
+  private final String name;
+  private final String oreDictSuffix;
+
+  EnumWorktableToolType(String name, String oreDictSuffix) {
 
     this.name = name;
+    this.oreDictSuffix = oreDictSuffix;
   }
 
   public String getName() {
 
     return this.name;
+  }
+
+  public String getOreDictSuffix() {
+
+    return this.oreDictSuffix;
   }
 }

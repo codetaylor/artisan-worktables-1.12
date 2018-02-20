@@ -1,6 +1,10 @@
 1.16.x-SNAPSHOT
+* NOTES:
+  * This beta release has many changes. I encourage you to read the changelog and regen your configs.
 * BREAKING CHANGES:
-  * all config files have been moved into the subfolder `artisanworktables`  
+  * all config files have been moved into the subfolder `artisanworktables`
+  * all tool by type ore dict groups have been renamed, ie. `<ore:masons_chisel>` is now `<ore:artisansChisel>`
+  * all tool item names have changed, ie. `<artisanworktables:masons_chisel_iron>` is now `<artisanworktables:artisans_chisel_iron>`
 * Added: json files to define tool materials (#64)
   * Tool materials have been removed from the tool module config file, instead use the `Custom` tool material json file to add / remove tool materials.
   * The file `artisanworktables.module.Tools.Materials.Generated.json` will be regenerated from the defaults each time the app is launched; you may reference this file, but don't edit it - it will be overwritten.
@@ -9,9 +13,15 @@
 * Added: support for ingredientOr (#68)
 * Added: ore dict groups for tools by material type; the ore dict keys can be changed in the tool material json config file (#74)
 * Added: `AWItemCraftEvent.Post` post craft event (#72)
+* Added: config option to:
+    * change tool material group ore dict prefix
+    * change tool type group ore dict prefix
+    * disable all tool material ore dict groups
+    * disable all tool type ore dict groups
+* Changed: removed profession distinction from tool names, ie. `Mason's Chisel` is now `Artisan's Chisel` (#76)
 * Changed: recipes without tools are now allowed, simply omit the call to `addTool` (#50,#82)
-* Changed: bone tool recipes now use the `bone` oredict entry (#70)
-* Changed: factored out and exposed limited API package, API Version 1 - subject to change, build against this at your own risk
+* Changed: bone tool recipes now use the `bone` ore dict entry (#70)
+* Changed: factored out and exposed limited API package to complete (#72), API Version 1 - subject to change, build against this at your own risk
 * Requires: Athenaeum >= 1.10.6
 
 1.15.25

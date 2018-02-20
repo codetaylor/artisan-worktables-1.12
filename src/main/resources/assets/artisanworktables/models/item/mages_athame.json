@@ -1,7 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/mages_athame_base",
-    "layer1": "artisanworktables:items/mages_athame_color"
-  }
-}

@@ -1,0 +1,8 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "artisanworktables:items/artisans_beaker_base",
+    "layer1": "artisanworktables:items/artisans_beaker_color",
+    "layer2": "artisanworktables:items/artisans_beaker_highlight"
+  }
+}

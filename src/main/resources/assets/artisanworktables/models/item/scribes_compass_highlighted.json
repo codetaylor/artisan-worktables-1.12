@@ -1,8 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/scribes_compass_base",
-    "layer1": "artisanworktables:items/scribes_compass_color",
-    "layer2": "artisanworktables:items/scribes_compass_highlight"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/jewelers_pliers_base",
-    "layer1": "artisanworktables:items/jewelers_pliers_color",
-    "layer2": "artisanworktables:items/jewelers_pliers_highlight"
-  }
-}

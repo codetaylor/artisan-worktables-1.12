@@ -1,7 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/masons_chisel_base",
-    "layer1": "artisanworktables:items/masons_chisel_color"
-  }
-}

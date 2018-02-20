@@ -209,8 +209,11 @@ public class ModuleTools
 
     super.onInitializationEvent(event);
 
-    for (ItemWorktableTool item : this.registeredToolList) {
-      OreDictionary.registerOre(item.getType().getName(), item);
+    if (ModuleToolsConfig.ENABLE_TOOL_TYPE_ORE_DICT_GROUPS) {
+
+      for (ItemWorktableTool item : this.registeredToolList) {
+        OreDictionary.registerOre(ModuleToolsConfig.TOOL_BY_TYPE_ORE_DICT_PREFIX + item.getType().getOreDictSuffix(), item);
+      }
     }
 
     if (ModuleToolsConfig.ENABLE_TOOL_MATERIAL_ORE_DICT_GROUPS) {

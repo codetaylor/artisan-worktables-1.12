@@ -6,78 +6,78 @@
       
       "targetSlices": [
 
-        { "target": "tailors_shears_base.png", "position": [0, 0] },
-        { "target": "tailors_shears_color.png", "position": [1, 0] },
-        { "target": "tailors_shears_highlight.png", "position": [2, 0] },
+        { "target": "artisans_shears_base.png", "position": [0, 0] },
+        { "target": "artisans_shears_color.png", "position": [1, 0] },
+        { "target": "artisans_shears_highlight.png", "position": [2, 0] },
 
-        { "target": "tailors_needle_base.png", "position": [0, 1] },
-        { "target": "tailors_needle_color.png", "position": [1, 1] },
-        { "target": "tailors_needle_highlight.png", "position": [2, 1] },
+        { "target": "artisans_needle_base.png", "position": [0, 1] },
+        { "target": "artisans_needle_color.png", "position": [1, 1] },
+        { "target": "artisans_needle_highlight.png", "position": [2, 1] },
 
-        { "target": "blacksmiths_hammer_base.png", "position": [0, 2] },
-        { "target": "blacksmiths_hammer_color.png", "position": [1, 2] },
-        { "target": "blacksmiths_hammer_overlay.png", "position": [3, 2] },
+        { "target": "artisans_hammer_base.png", "position": [0, 2] },
+        { "target": "artisans_hammer_color.png", "position": [1, 2] },
+        { "target": "artisans_hammer_overlay.png", "position": [3, 2] },
 
-        { "target": "blacksmiths_cutters_base.png", "position": [0, 3] },
-        { "target": "blacksmiths_cutters_color.png", "position": [1, 3] },
-        { "target": "blacksmiths_cutters_highlight.png", "position": [2, 3] },
+        { "target": "artisans_cutters_base.png", "position": [0, 3] },
+        { "target": "artisans_cutters_color.png", "position": [1, 3] },
+        { "target": "artisans_cutters_highlight.png", "position": [2, 3] },
 
-        { "target": "carpenters_handsaw_base.png", "position": [0, 4] },
-        { "target": "carpenters_handsaw_color.png", "position": [1, 4] },
-        { "target": "carpenters_handsaw_highlight.png", "position": [2, 4] },
+        { "target": "artisans_handsaw_base.png", "position": [0, 4] },
+        { "target": "artisans_handsaw_color.png", "position": [1, 4] },
+        { "target": "artisans_handsaw_highlight.png", "position": [2, 4] },
 
-        { "target": "carpenters_hammer_base.png", "position": [0, 5] },
-        { "target": "carpenters_hammer_color.png", "position": [1, 5] },
-        { "target": "carpenters_hammer_highlight.png", "position": [2, 5] },
-        { "target": "carpenters_hammer_overlay.png", "position": [3, 5] },
+        { "target": "artisans_framing_hammer_base.png", "position": [0, 5] },
+        { "target": "artisans_framing_hammer_color.png", "position": [1, 5] },
+        { "target": "artisans_framing_hammer_highlight.png", "position": [2, 5] },
+        { "target": "artisans_framing_hammer_overlay.png", "position": [3, 5] },
 
-        { "target": "masons_chisel_base.png", "position": [0, 6] },
-        { "target": "masons_chisel_color.png", "position": [1, 6] },
-        { "target": "masons_chisel_highlight.png", "position": [2, 6] },
+        { "target": "artisans_chisel_base.png", "position": [0, 6] },
+        { "target": "artisans_chisel_color.png", "position": [1, 6] },
+        { "target": "artisans_chisel_highlight.png", "position": [2, 6] },
 
-        { "target": "masons_trowel_base.png", "position": [0, 7] },
-        { "target": "masons_trowel_color.png", "position": [1, 7] },
-        { "target": "masons_trowel_highlight.png", "position": [2, 7] },
+        { "target": "artisans_trowel_base.png", "position": [0, 7] },
+        { "target": "artisans_trowel_color.png", "position": [1, 7] },
+        { "target": "artisans_trowel_highlight.png", "position": [2, 7] },
 
-        { "target": "chemists_burner_base.png", "position": [0, 8] },
-        { "target": "chemists_burner_color.png", "position": [1, 8] },
-        { "target": "chemists_burner_highlight.png", "position": [2, 8] },
+        { "target": "artisans_burner_base.png", "position": [0, 8] },
+        { "target": "artisans_burner_color.png", "position": [1, 8] },
+        { "target": "artisans_burner_highlight.png", "position": [2, 8] },
 
-        { "target": "chemists_beaker_base.png", "position": [0, 9] },
-        { "target": "chemists_beaker_color.png", "position": [1, 9] },
-        { "target": "chemists_beaker_highlight.png", "position": [2, 9] },
+        { "target": "artisans_beaker_base.png", "position": [0, 9] },
+        { "target": "artisans_beaker_color.png", "position": [1, 9] },
+        { "target": "artisans_beaker_highlight.png", "position": [2, 9] },
 
-        { "target": "jewelers_pliers_base.png", "position": [4, 0] },
-        { "target": "jewelers_pliers_color.png", "position": [5, 0] },
-        { "target": "jewelers_pliers_highlight.png", "position": [6, 0] },
+        { "target": "artisans_pliers_base.png", "position": [4, 0] },
+        { "target": "artisans_pliers_color.png", "position": [5, 0] },
+        { "target": "artisans_pliers_highlight.png", "position": [6, 0] },
 
-        { "target": "jewelers_gemcutter_base.png", "position": [4, 1] },
-        { "target": "jewelers_gemcutter_color.png", "position": [5, 1] },
-        { "target": "jewelers_gemcutter_highlight.png", "position": [6, 1] },
+        { "target": "artisans_gemcutter_base.png", "position": [4, 1] },
+        { "target": "artisans_gemcutter_color.png", "position": [5, 1] },
+        { "target": "artisans_gemcutter_highlight.png", "position": [6, 1] },
 
-        { "target": "engineers_spanner_base.png", "position": [4, 2] },
-        { "target": "engineers_spanner_color.png", "position": [5, 2] },
-        { "target": "engineers_spanner_highlight.png", "position": [6, 2] },
+        { "target": "artisans_spanner_base.png", "position": [4, 2] },
+        { "target": "artisans_spanner_color.png", "position": [5, 2] },
+        { "target": "artisans_spanner_highlight.png", "position": [6, 2] },
 
-        { "target": "engineers_driver_base.png", "position": [4, 3] },
-        { "target": "engineers_driver_color.png", "position": [5, 3] },
-        { "target": "engineers_driver_highlight.png", "position": [6, 3] },
+        { "target": "artisans_driver_base.png", "position": [4, 3] },
+        { "target": "artisans_driver_color.png", "position": [5, 3] },
+        { "target": "artisans_driver_highlight.png", "position": [6, 3] },
 
-        { "target": "mages_athame_base.png", "position": [4, 4] },
-        { "target": "mages_athame_color.png", "position": [5, 4] },
-        { "target": "mages_athame_highlight.png", "position": [6, 4] },
+        { "target": "artisans_athame_base.png", "position": [4, 4] },
+        { "target": "artisans_athame_color.png", "position": [5, 4] },
+        { "target": "artisans_athame_highlight.png", "position": [6, 4] },
 
-        { "target": "mages_grimoire_base.png", "position": [4, 5] },
-        { "target": "mages_grimoire_color.png", "position": [5, 5] },
-        { "target": "mages_grimoire_highlight.png", "position": [6, 5] },
+        { "target": "artisans_grimoire_base.png", "position": [4, 5] },
+        { "target": "artisans_grimoire_color.png", "position": [5, 5] },
+        { "target": "artisans_grimoire_highlight.png", "position": [6, 5] },
 
-        { "target": "scribes_quill_base.png", "position": [4, 6] },
-        { "target": "scribes_quill_color.png", "position": [5, 6] },
-        { "target": "scribes_quill_highlight.png", "position": [6, 6] },
+        { "target": "artisans_quill_base.png", "position": [4, 6] },
+        { "target": "artisans_quill_color.png", "position": [5, 6] },
+        { "target": "artisans_quill_highlight.png", "position": [6, 6] },
 
-        { "target": "scribes_compass_base.png", "position": [4, 7] },
-        { "target": "scribes_compass_color.png", "position": [5, 7] },
-        { "target": "scribes_compass_highlight.png", "position": [6, 7] }
+        { "target": "artisans_compass_base.png", "position": [4, 7] },
+        { "target": "artisans_compass_color.png", "position": [5, 7] },
+        { "target": "artisans_compass_highlight.png", "position": [6, 7] }
 
       ]
     }

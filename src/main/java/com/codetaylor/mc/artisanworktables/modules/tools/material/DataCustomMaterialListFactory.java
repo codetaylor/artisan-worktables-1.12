@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.material;
 
+import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfig;
 import com.codetaylor.mc.athenaeum.reference.EnumMaterial;
 import com.codetaylor.mc.athenaeum.util.StringHelper;
 import net.minecraft.item.Item;
@@ -41,7 +42,7 @@ public class DataCustomMaterialListFactory {
           material.isHighlighted(),
           ingredient,
           "material.athenaeum." + material.getName().toLowerCase(),
-          "tool" + StringHelper.capitalizeFirstLetter(material.getName())
+          ModuleToolsConfig.TOOL_BY_MATERIAL_ORE_DICT_PREFIX + StringHelper.capitalizeFirstLetter(material.getName())
       ));
     }
 

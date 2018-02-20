@@ -1,8 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "artisanworktables:items/carpenters_handsaw_base",
-    "layer1": "artisanworktables:items/carpenters_handsaw_color",
-    "layer2": "artisanworktables:items/carpenters_handsaw_highlight"
-  }
-}

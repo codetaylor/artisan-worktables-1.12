@@ -1,0 +1,8 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "artisanworktables:items/artisans_spanner_base",
+    "layer1": "artisanworktables:items/artisans_spanner_color",
+    "layer2": "artisanworktables:items/artisans_spanner_highlight"
+  }
+}
