@@ -61,7 +61,10 @@ public class JEICategoryWorktable
     }
 
     stacks.init(10, true, 74, 31);
-    stacks.set(10, tools.get(0));
+
+    if (tools.size() > 0) {
+      stacks.set(10, tools.get(0));
+    }
 
     stacks.init(11, false, 148, 13);
     stacks.init(12, false, 148, 31);

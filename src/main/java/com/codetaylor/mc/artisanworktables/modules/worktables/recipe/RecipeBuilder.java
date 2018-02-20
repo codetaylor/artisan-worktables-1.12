@@ -35,7 +35,7 @@ public class RecipeBuilder {
   public RecipeBuilder() {
 
     this.ingredients = null;
-    this.secondaryIngredients = null;
+    this.secondaryIngredients = Collections.emptyList();
     this.fluidIngredient = null;
     this.outputWeightPairList = new ArrayList<>();
     this.extraOutputs = new ExtraOutputChancePair[3];
@@ -95,7 +95,7 @@ public class RecipeBuilder {
 
   public RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) throws RecipeBuilderException {
 
-    if (this.secondaryIngredients != null) {
+    if (!this.secondaryIngredients.isEmpty()) {
       throw new RecipeBuilderException("Secondary ingredients already set, can't ve set twice");
     }
 
@@ -213,29 +213,25 @@ public class RecipeBuilder {
       throw new RecipeBuilderException("No outputs defined for recipe");
     }
 
-    // Recipe must have a minimum of one tool
-    if (this.tools.isEmpty()) {
-      throw new RecipeBuilderException("No tools defined for recipe");
-    }
-
     // Recipe must have ingredients
     if (this.ingredients == null || this.ingredients.isEmpty()) {
       throw new RecipeBuilderException("No ingredients defined for recipe");
     }
 
     // Must be able to calculate recipe tier
-    try {
-      EnumTier tier = RecipeTierCalculator.calculateTier(
-          this.width,
-          this.height,
-          this.tools.size(),
-          this.secondaryIngredients.size()
-      );
-      this.minimumTier = Math.max(this.minimumTier, tier.getId());
+    EnumTier tier = RecipeTierCalculator.calculateTier(
+        this.width,
+        this.height,
+        this.tools.size(),
+        this.secondaryIngredients.size()
+    );
 
-    } catch (Exception e) {
-      throw new RecipeBuilderException(e.getMessage());
+    if (tier == null) {
+      throw new RecipeBuilderException("Unable to calculate recipe tier");
     }
+
+    this.minimumTier = Math.max(this.minimumTier, tier.getId());
+
   }
 
   public IAWRecipe create() throws RecipeBuilderException {

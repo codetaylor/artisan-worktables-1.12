@@ -62,7 +62,10 @@ public class JEICategoryWorkstation
     }
 
     stacks.init(10, true, 74, 20);
-    stacks.set(10, tools.get(0));
+
+    if (tools.size() > 0) {
+      stacks.set(10, tools.get(0));
+    }
 
     stacks.init(11, false, 148, 13);
     stacks.init(12, false, 148, 18 + 13);

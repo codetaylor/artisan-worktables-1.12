@@ -2,14 +2,22 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 
+import javax.annotation.Nullable;
+
 public class RecipeTierCalculator {
 
-  public static EnumTier calculateTier(int width, int height, int toolCount, int secondaryIngredientCount) {
+  @Nullable
+  public static EnumTier calculateTier(
+      int width,
+      int height,
+      int toolCount,
+      int secondaryIngredientCount
+  ) {
 
     // test for tier one requirements
     if (width <= 3
         && height <= 3
-        && toolCount == 1
+        && toolCount <= 1
         && secondaryIngredientCount == 0) {
       return EnumTier.WORKTABLE;
     }
@@ -28,7 +36,7 @@ public class RecipeTierCalculator {
       return EnumTier.WORKSHOP;
     }
 
-    throw new IllegalStateException("Can't calculate recipe tier");
+    return null;
   }
 
   private RecipeTierCalculator() {

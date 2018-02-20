@@ -36,9 +36,7 @@ public class ZenRecipeBuilder
       for (IIngredient ingredient : ingredientArray) {
 
         if (ingredient instanceof ILiquidStack) {
-          CTLogHelper.logErrorFromZenMethod("Liquids are not supported in ingredients");
-          this.invalid = true;
-          return this;
+          return this.setInvalid("Liquids are not supported in ingredients");
         }
       }
     }
@@ -47,9 +45,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(ingredients));
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
-      return this;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -61,9 +57,7 @@ public class ZenRecipeBuilder
     for (IIngredient ingredient : ingredients) {
 
       if (ingredient instanceof ILiquidStack) {
-        CTLogHelper.logErrorFromZenMethod("Liquids are not supported in ingredients");
-        this.invalid = true;
-        return this;
+        return this.setInvalid("Liquids are not supported in ingredients");
       }
     }
 
@@ -71,9 +65,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(ingredients));
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
-      return this;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -86,9 +78,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setFluidIngredient(CTInputHelper.toFluid(fluidIngredient));
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
-      return this;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -98,14 +88,10 @@ public class ZenRecipeBuilder
   public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] ingredients) {
 
     if (ingredients == null || ingredients.length == 0) {
-      CTLogHelper.logErrorFromZenMethod("Secondary ingredients parameter can't be null or zero length");
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Secondary ingredients parameter can't be null or zero length");
 
     } else if (ingredients.length > 9) {
-      CTLogHelper.logErrorFromZenMethod("Exceeded max allowed 9 secondary ingredients: " + ingredients.length);
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Exceeded max allowed 9 secondary ingredients: " + ingredients.length);
     }
 
     List<IIngredient> adjustedList = new ArrayList<>();
@@ -113,9 +99,7 @@ public class ZenRecipeBuilder
     for (IIngredient ingredient : ingredients) {
 
       if (ingredient instanceof ILiquidStack) {
-        CTLogHelper.logErrorFromZenMethod("Liquids are not supported in ingredients");
-        this.invalid = true;
-        return this;
+        return this.setInvalid("Liquids are not supported in ingredients");
       }
 
       if (ingredient != null) {
@@ -127,9 +111,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setSecondaryIngredients(adjustedList.toArray(new IIngredient[adjustedList.size()]));
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
-      return this;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -152,19 +134,19 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder addTool(IIngredient tool, int damage) {
 
+    if (tool == null) {
+      return this.setInvalid("Tools can't be null");
+    }
+
     if (tool instanceof ILiquidStack) {
-      CTLogHelper.logErrorFromZenMethod("Tools can't be liquids");
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Tools can't be liquids");
     }
 
     try {
       this.recipeBuilder.addTool(CTInputHelper.toIngredient(tool), damage);
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
-      return this;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -172,6 +154,10 @@ public class ZenRecipeBuilder
 
   @Override
   public IZenRecipeBuilder addOutput(IItemStack output, int weight) {
+
+    if (output == null) {
+      return this.setInvalid("Output can't be null");
+    }
 
     if (weight <= 0) { // weight is optional, may be 0
       weight = 1;
@@ -181,9 +167,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.addOutput(CTInputHelper.toStack(output), weight);
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
-      return this;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -216,18 +200,15 @@ public class ZenRecipeBuilder
     EnumGameStageRequire enumGameStageRequire = EnumGameStageRequire.fromName(require);
 
     if (enumGameStageRequire == null) {
-      CTLogHelper.logErrorFromZenMethod("Invalid gamestage requirement enum: " + require + ". Valid enums are: " + Arrays
+      return this.setInvalid("Invalid gamestage requirement enum: " + require + ". Valid enums are: " + Arrays
           .toString(EnumGameStageRequire.values()));
-      this.invalid = true;
-      return this;
     }
 
     try {
       this.recipeBuilder.requireGamestages(enumGameStageRequire, stages);
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -240,8 +221,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.excludeGamestages(stages);
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -254,8 +234,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setMinimumTier(minimumTier);
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -268,8 +247,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setExperienceRequired(experienceRequired);
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -282,8 +260,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setLevelRequired(levelRequired);
 
     } catch (RecipeBuilderException e) {
-      CTLogHelper.logErrorFromZenMethod(e.getMessage());
-      this.invalid = true;
+      return this.setInvalid(e.getMessage());
     }
 
     return this;
@@ -313,7 +290,15 @@ public class ZenRecipeBuilder
       }
     }
 
+    this.invalid = false;
     this.recipeBuilder = new RecipeBuilder();
+    return this;
+  }
+
+  private IZenRecipeBuilder setInvalid(String message) {
+
+    CTLogHelper.logErrorFromZenMethod(message);
+    this.invalid = true;
     return this;
   }
 }

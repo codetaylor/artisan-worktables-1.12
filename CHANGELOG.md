@@ -9,6 +9,7 @@
 * Added: support for ingredientOr (#68)
 * Added: ore dict groups for tools by material type; the ore dict keys can be changed in the tool material json config file (#74)
 * Added: `AWItemCraftEvent.Post` post craft event (#72)
+* Changed: recipes without tools are now allowed, simply omit the call to `addTool` (#50,#82)
 * Changed: bone tool recipes now use the `bone` oredict entry (#70)
 * Changed: factored out and exposed limited API package, API Version 1 - subject to change, build against this at your own risk
 * Requires: Athenaeum >= 1.10.6
