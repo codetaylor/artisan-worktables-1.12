@@ -6,6 +6,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
 public abstract class AWItemCraftEvent
     extends PlayerEvent {
 
@@ -53,24 +57,38 @@ public abstract class AWItemCraftEvent
       extends AWItemCraftEvent {
 
     private final ItemStack craftedItem;
+    private final List<ItemStack> secondaryOutputItemList;
 
+    @ParametersAreNonnullByDefault
     public Post(
         EntityPlayer player,
         EnumType tableType,
         EnumTier tableTier,
-        ItemStack craftedItem
+        ItemStack craftedItem,
+        List<ItemStack> secondaryOutputItemList
     ) {
 
       super(player, tableType, tableTier);
       this.craftedItem = craftedItem;
+      this.secondaryOutputItemList = secondaryOutputItemList;
     }
 
     /**
      * @return a copy of the item crafted
      */
+    @Nonnull
     public ItemStack getCraftedItem() {
 
       return this.craftedItem;
+    }
+
+    /**
+     * @return a list containing copies of the secondary output items
+     */
+    @Nonnull
+    public List<ItemStack> getSecondaryOutputItemList() {
+
+      return this.secondaryOutputItemList;
     }
   }
 }

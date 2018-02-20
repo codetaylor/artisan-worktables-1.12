@@ -22,7 +22,8 @@
 * Changed: recipes without tools are now allowed, simply omit the call to `addTool` (#50,#82)
 * Changed: bone tool recipes now use the `bone` ore dict entry (#70)
 * Changed: factored out and exposed limited API package to complete (#72), API Version 1 - subject to change, build against this at your own risk
-* Requires: Athenaeum >= 1.10.6
+* Changed: updated de_de.lang (PR#83 Xaikii)
+* Requires: Athenaeum >= 1.11.6
 
 1.15.25
 * Fixed: Unable to craft item when recipe is put in by another player (#79)
