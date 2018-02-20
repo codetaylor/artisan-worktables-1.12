@@ -10,6 +10,11 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.recipes.ICraftingRecipe;
+import crafttweaker.api.recipes.ShapedRecipe;
+import crafttweaker.api.recipes.ShapelessRecipe;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,6 +74,20 @@ public class ZenRecipeBuilder
     }
 
     return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder copyRecipe(ICraftingRecipe recipe) {
+
+    if (recipe instanceof IShapedRecipe) {
+      return ZenRecipeBuilderCopyHelper.copyShapedRecipe((IShapedRecipe) recipe, this);
+
+    } else if (recipe instanceof IRecipe) {
+      return ZenRecipeBuilderCopyHelper.copyShapelessRecipe((IRecipe) recipe, this);
+
+    } else {
+      return this.setInvalid("Can't copy unknown recipe type");
+    }
   }
 
   @Override

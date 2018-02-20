@@ -4,6 +4,7 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.recipes.ICraftingRecipe;
 
 public class ZenRecipeBuilderNoOp
     implements IZenRecipeBuilder {
@@ -22,6 +23,12 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder copyRecipe(ICraftingRecipe recipe) {
 
     return this;
   }

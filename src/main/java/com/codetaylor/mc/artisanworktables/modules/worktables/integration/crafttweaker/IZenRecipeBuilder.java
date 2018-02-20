@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.recipes.ICraftingRecipe;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -15,6 +16,9 @@ public interface IZenRecipeBuilder {
 
   @ZenMethod
   IZenRecipeBuilder setShapeless(IIngredient[] ingredients);
+
+  @ZenMethod
+  IZenRecipeBuilder copyRecipe(ICraftingRecipe recipe);
 
   @ZenMethod
   IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient);
