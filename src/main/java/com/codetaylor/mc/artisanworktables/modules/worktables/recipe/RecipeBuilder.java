@@ -96,7 +96,7 @@ public class RecipeBuilder {
   public RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) throws RecipeBuilderException {
 
     if (!this.secondaryIngredients.isEmpty()) {
-      throw new RecipeBuilderException("Secondary ingredients already set, can't ve set twice");
+      throw new RecipeBuilderException("Secondary ingredients already set, can't be set twice");
     }
 
     this.secondaryIngredients = new ArrayList<>();
