@@ -83,38 +83,40 @@ public class ZenRecipeBuilderCopyHook {
     @Override
     public void apply() {
 
+      // We assume if we're here, one of these must be true.
+
+      boolean copyRecipeInput = this.copyRecipeInputName != null;
+      boolean copyRecipeOutput = this.copyRecipeOutputName != null;
+
       try {
         Set<Map.Entry<ResourceLocation, IRecipe>> entries = ForgeRegistries.RECIPES.getEntries();
 
         for (Map.Entry<ResourceLocation, IRecipe> recipeEntry : entries) {
+          String recipeName = recipeEntry.getKey().toString();
 
-          if (this.copyRecipeInputName != null) {
-
-            if (recipeEntry.getKey().toString().equals(this.copyRecipeInputName)) {
-              RecipeBuilderCopyHelper.copyRecipeInput(recipeEntry.getValue(), this.recipeBuilder);
-
-              if (this.copyRecipeOutputName == null) {
-                break;
-              }
-            }
+          if (copyRecipeInput && recipeName.equals(this.copyRecipeInputName)) {
+            RecipeBuilderCopyHelper.copyRecipeInput(recipeEntry.getValue(), this.recipeBuilder);
+            copyRecipeInput = false; // stop looking for input
           }
 
-          if (this.copyRecipeOutputName != null) {
+          if (copyRecipeOutput && recipeName.equals(this.copyRecipeOutputName)) {
+            RecipeBuilderCopyHelper.copyRecipeOutput(recipeEntry.getValue(), this.recipeBuilder);
+            copyRecipeOutput = false; // stop looking for output
+          }
 
-            if (recipeEntry.getKey().toString().equals(this.copyRecipeOutputName)) {
-              RecipeBuilderCopyHelper.copyRecipeOutput(recipeEntry.getValue(), this.recipeBuilder);
-
-              if (this.copyRecipeInputName == null) {
-                break;
-              }
-            }
+          if (!copyRecipeInput && !copyRecipeOutput) {
+            // We've found everything we're looking for, exit the loop.
+            break;
           }
         }
 
         this.recipeBuilder.validate();
         CraftTweaker.LATE_ACTIONS.add(new ZenWorktable.Add(this.tableName, this.recipeBuilder));
 
-      } catch (Exception e) {
+      } catch (
+          Exception e)
+
+      {
         CTLogHelper.logError("Unable to copy and register recipe", e);
       }
     }
