@@ -113,10 +113,7 @@ public class ZenRecipeBuilderCopyHook {
         this.recipeBuilder.validate();
         CraftTweaker.LATE_ACTIONS.add(new ZenWorktable.Add(this.tableName, this.recipeBuilder));
 
-      } catch (
-          Exception e)
-
-      {
+      } catch (Exception e) {
         CTLogHelper.logError("Unable to copy and register recipe", e);
       }
     }
