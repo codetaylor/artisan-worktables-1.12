@@ -4,7 +4,6 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.recipes.ICraftingRecipe;
 
 public class ZenRecipeBuilderNoOp
     implements IZenRecipeBuilder {
@@ -13,6 +12,12 @@ public class ZenRecipeBuilderNoOp
 
   private ZenRecipeBuilderNoOp() {
     //
+  }
+
+  @Override
+  public IZenRecipeBuilder copyRecipeByName(String recipeName) {
+
+    return this;
   }
 
   @Override
@@ -28,7 +33,7 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
-  public IZenRecipeBuilder copyRecipe(ICraftingRecipe recipe) {
+  public IZenRecipeBuilder copyRecipeInputByName(String recipeName) {
 
     return this;
   }
@@ -65,6 +70,12 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder addOutput(IItemStack output, int weight) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder copyRecipeOutputByName(String recipeName) {
 
     return this;
   }
