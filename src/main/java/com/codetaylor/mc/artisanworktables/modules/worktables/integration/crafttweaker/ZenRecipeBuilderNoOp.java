@@ -15,6 +15,12 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder copyRecipeByName(String recipeName) {
+
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setShaped(IIngredient[][] ingredients) {
 
     return this;
@@ -22,6 +28,12 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder copyRecipeInputByName(String recipeName) {
 
     return this;
   }
@@ -58,6 +70,12 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder addOutput(IItemStack output, int weight) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder copyRecipeOutputByName(String recipeName) {
 
     return this;
   }
