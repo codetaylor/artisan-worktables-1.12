@@ -25,6 +25,18 @@ tile.artisanworktables.workstation.mason.name=石匠工作站
 tile.artisanworktables.workstation.scribe.name=翻印工工作站
 tile.artisanworktables.workstation.tailor.name=裁缝工作站
 
+# Workshops
+tile.artisanworktables.workshop.basic.name=基础工作坊
+tile.artisanworktables.workshop.blacksmith.name=铁匠工作坊
+tile.artisanworktables.workshop.carpenter.name=木匠工作坊
+tile.artisanworktables.workshop.chemist.name=药剂师工作坊
+tile.artisanworktables.workshop.engineer.name=工程师工作坊
+tile.artisanworktables.workshop.jeweler.name=珠宝工作坊
+tile.artisanworktables.workshop.mage.name=法师工作坊
+tile.artisanworktables.workshop.mason.name=石匠工作坊
+tile.artisanworktables.workshop.scribe.name=翻印工工作坊
+tile.artisanworktables.workshop.tailor.name=裁缝工作坊
+
 # Toolbox
 tile.artisanworktables.toolbox.name=工具箱
 tile.artisanworktables.mechanical_toolbox.name=机械工具箱
@@ -52,6 +64,10 @@ item.artisanworktables.tailors.shears.name=%s 裁缝剪
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=无序合成
 jei.artisanworktables.tooltip.chance=%s%s%%概率合成
+jei.artisanworktables.xp.cost=经验消耗：%d
+jei.artisanworktables.level.cost=等级消耗：%d
+jei.artisanworktables.xp.required=最低经验：%d
+jei.artisanworktables.level.required=最低等级：%d
 
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=空
