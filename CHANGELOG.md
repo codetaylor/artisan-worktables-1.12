@@ -14,10 +14,15 @@
 * Added: ore dict groups for tools by material type; the ore dict keys can be changed in the tool material json config file (#74)
 * Added: `AWItemCraftEvent.Post` post craft event (#72)
 * Added: config option to:
-    * change tool material group ore dict prefix
-    * change tool type group ore dict prefix
-    * disable all tool material ore dict groups
-    * disable all tool type ore dict groups
+  * change tool material group ore dict prefix
+  * change tool type group ore dict prefix
+  * disable all tool material ore dict groups
+  * disable all tool type ore dict groups
+* Added: new ZenScript methods (#69, gigitty):
+  * Note: these new methods *will not* work to copy recipes added by ZenScript, only with recipes that exist *before* ZenScript recipes are added
+  * `RecipeBuilder#copyRecipeByName(String)` - copy a recipe's input and output by recipe name
+  * `RecipeBuilder#copyRecipeInputByName(String)` - copy a recipe's input by recipe name
+  * `RecipeBuilder#copyRecipeOutputByName(String)` - copy a recipe's output by recipe name
 * Changed: removed profession distinction from tool names, ie. `Mason's Chisel` is now `Artisan's Chisel` (#76)
 * Changed: recipes without tools are now allowed, simply omit the call to `addTool` (#50,#82)
 * Changed: bone tool recipes now use the `bone` ore dict entry (#70)
