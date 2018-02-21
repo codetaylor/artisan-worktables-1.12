@@ -1,3 +1,6 @@
+1.15.26
+* Changed: updated zh_cn.lang (PR#84 DYColdWind)
+
 1.15.25
 * Fixed: Unable to craft item when recipe is put in by another player (#79)
 
