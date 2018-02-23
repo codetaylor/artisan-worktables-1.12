@@ -41,19 +41,19 @@ public class JEIRecipeTransferInfoWorktable
   @Override
   public boolean canHandle(Container container) {
 
-    return container.canHandleJEIRecipeTransfer(this.name, this.tier);
+    return container.canHandleRecipeTransferJEI(this.name, this.tier);
   }
 
   @Override
   public List<Slot> getRecipeSlots(Container container) {
 
-    return container.getRecipeSlots(new ArrayList<>());
+    return container.getRecipeSlotsJEI(new ArrayList<>());
   }
 
   @Override
   public List<Slot> getInventorySlots(Container container) {
 
-    return container.getInventorySlots(new ArrayList<>());
+    return container.getInventorySlotsJEI(new ArrayList<>());
   }
 
   @Override

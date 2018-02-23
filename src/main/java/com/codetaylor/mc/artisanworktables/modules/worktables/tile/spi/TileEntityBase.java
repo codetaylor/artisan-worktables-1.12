@@ -15,13 +15,13 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeReg
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
-import com.codetaylor.mc.athenaeum.util.StackHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import com.codetaylor.mc.athenaeum.util.BottleHelper;
 import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
+import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -157,7 +157,7 @@ public abstract class TileEntityBase
     return ModuleWorktablesConfig.CLIENT.getTextHighlightColor(this.type.getName());
   }
 
-  public boolean canHandleJEIRecipeTransfer(
+  public boolean canHandleRecipeTransferJEI(
       String name,
       EnumTier tier
   ) {
@@ -604,6 +604,20 @@ public abstract class TileEntityBase
 
   public List<TileEntityBase> getJoinedTables(List<TileEntityBase> result) {
 
+    return this.getJoinedTables(result, null);
+  }
+
+  /**
+   * Uses a flood fill to find all tables adjacent to this one. An empty list is returned
+   * if any of the tables found are of the same type and tier. If a player is provided,
+   * any tables outside of the player's reach will not be returned in the list.
+   *
+   * @param result a list to store the result
+   * @param player the player, can be null
+   * @return result list
+   */
+  public List<TileEntityBase> getJoinedTables(List<TileEntityBase> result, @Nullable EntityPlayer player) {
+
     Map<String, TileEntityBase> joinedTableMap = new TreeMap<>();
     joinedTableMap.put(this.uuid, this);
 
@@ -640,7 +654,9 @@ public abstract class TileEntityBase
         }
 
         // found a table!
-        joinedTableMap.put(key, (TileEntityBase) tileEntity);
+        if (player == null || ((TileEntityBase) tileEntity).canPlayerUse(player)) {
+          joinedTableMap.put(key, (TileEntityBase) tileEntity);
+        }
 
         // check around this newly discovered table
         toSearchQueue.offer(tileEntity.getPos().offset(EnumFacing.NORTH));

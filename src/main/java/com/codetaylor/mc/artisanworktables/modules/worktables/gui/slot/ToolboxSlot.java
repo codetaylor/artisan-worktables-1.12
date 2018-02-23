@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
-import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -12,10 +12,10 @@ import javax.annotation.Nonnull;
 public class ToolboxSlot
     extends SlotItemHandler {
 
-  private final TileEntityToolbox tile;
+  private final Container container;
 
   public ToolboxSlot(
-      TileEntityToolbox tile,
+      Container container,
       IItemHandler itemHandler,
       int index,
       int xPosition,
@@ -23,14 +23,14 @@ public class ToolboxSlot
   ) {
 
     super(itemHandler, index, xPosition, yPosition);
-    this.tile = tile;
+    this.container = container;
   }
 
   @Nonnull
   @Override
   public ItemStack getStack() {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       return super.getStack();
     }
 
@@ -40,7 +40,7 @@ public class ToolboxSlot
   @Override
   public void putStack(@Nonnull ItemStack stack) {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       super.putStack(stack);
     }
   }
@@ -48,7 +48,7 @@ public class ToolboxSlot
   @Override
   public void onSlotChange(@Nonnull ItemStack p_75220_1_, @Nonnull ItemStack p_75220_2_) {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       super.onSlotChange(p_75220_1_, p_75220_2_);
     }
   }
@@ -56,7 +56,7 @@ public class ToolboxSlot
   @Override
   public int getSlotStackLimit() {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       return super.getSlotStackLimit();
     }
 
@@ -66,7 +66,7 @@ public class ToolboxSlot
   @Override
   public int getItemStackLimit(@Nonnull ItemStack stack) {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       return super.getItemStackLimit(stack);
     }
 
@@ -76,7 +76,7 @@ public class ToolboxSlot
   @Override
   public boolean canTakeStack(EntityPlayer playerIn) {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       return super.canTakeStack(playerIn);
     }
 
@@ -87,7 +87,7 @@ public class ToolboxSlot
   @Override
   public ItemStack decrStackSize(int amount) {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       return super.decrStackSize(amount);
     }
 
@@ -97,7 +97,7 @@ public class ToolboxSlot
   @Override
   public boolean isSameInventory(Slot other) {
 
-    if (!this.tile.isInvalid()) {
+    if (this.container.canPlayerUseToolbox()) {
       return super.isSameInventory(other);
     }
 
@@ -107,6 +107,6 @@ public class ToolboxSlot
   @Override
   public boolean isEnabled() {
 
-    return !this.tile.isInvalid();
+    return this.container.canPlayerUseToolbox();
   }
 }

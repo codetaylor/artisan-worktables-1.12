@@ -61,6 +61,12 @@ public class TileEntityToolbox
     return ModuleToolboxConfig.TOOLBOX.RESTRICT_TO_TOOLS_ONLY;
   }
 
+  public boolean canPlayerUse(EntityPlayer player) {
+
+    return this.getWorld().getTileEntity(this.getPos()) == this
+        && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
+  }
+
   @Nullable
   @Override
   public <T> T getCapability(

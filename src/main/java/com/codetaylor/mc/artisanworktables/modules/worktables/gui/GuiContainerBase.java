@@ -67,7 +67,7 @@ public abstract class GuiContainerBase
     // toolbox side
     TileEntityToolbox toolbox = container.getToolbox();
 
-    if (toolbox != null && !toolbox.isInvalid()) {
+    if (toolbox != null && container.canPlayerUseToolbox()) {
       this.guiContainerElementAdd(new GuiElementToolboxSide(
           this,
           toolbox,

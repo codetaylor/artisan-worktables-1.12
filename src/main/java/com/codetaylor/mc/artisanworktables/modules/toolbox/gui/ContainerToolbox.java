@@ -37,7 +37,7 @@ public class ContainerToolbox
   @Override
   public boolean canInteractWith(EntityPlayer playerIn) {
 
-    return this.tile.isUsableByPlayer(playerIn);
+    return this.tile.canPlayerUse(playerIn);
   }
 
   @Override

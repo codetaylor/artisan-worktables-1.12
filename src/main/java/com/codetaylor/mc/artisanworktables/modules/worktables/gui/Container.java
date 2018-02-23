@@ -1,10 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class Container
@@ -185,14 +186,14 @@ public class Container
     // ------------------------------------------------------------------------
     // Side Toolbox
     this.slotIndexToolboxStart = this.nextSlotIndex;
-    if (this.toolbox != null && !this.toolbox.isInvalid()) {
+    if (this.canPlayerUseToolbox()) {
       ItemStackHandler itemHandler = this.toolbox.getItemHandler();
 
       for (int x = 0; x < 3; x++) {
 
         for (int y = 0; y < 9; y++) {
           this.containerSlotAdd(new ToolboxSlot(
-              this.toolbox,
+              this,
               itemHandler,
               y + x * 9,
               x * -18 + this.containerToolboxOffsetGetX(),
@@ -303,9 +304,28 @@ public class Container
     return tile.getAdjacentToolbox();
   }
 
+  /**
+   * @return the adjacent toolbox, or null
+   */
+  @Nullable
   public TileEntityToolbox getToolbox() {
 
-    return this.toolbox;
+    if (this.hasValidToolbox()) {
+
+      return this.toolbox;
+    }
+
+    return null;
+  }
+
+  public boolean hasValidToolbox() {
+
+    return this.toolbox != null && !this.toolbox.isInvalid();
+  }
+
+  public boolean canPlayerUseToolbox() {
+
+    return this.hasValidToolbox() && this.toolbox.canPlayerUse(this.player);
   }
 
   public void updateRecipeOutput() {
@@ -550,7 +570,7 @@ public class Container
       } else if (this.isSlotIndexTool(slotIndex)) {
         // Tool slot clicked, try to move to toolbox first, then inventory, then hotbar
 
-        if (this.toolbox != null) {
+        if (this.canPlayerUseToolbox()) {
 
           if (!this.mergeToolbox(itemStack, false)
               && !this.mergeInventory(itemStack, false)
@@ -590,7 +610,7 @@ public class Container
     return itemStackCopy;
   }
 
-  public List<Slot> getRecipeSlots(List<Slot> result) {
+  public List<Slot> getRecipeSlotsJEI(List<Slot> result) {
 
     // grid
     for (int i = this.slotIndexCraftingMatrixStart; i <= this.slotIndexCraftingMatrixEnd; i++) {
@@ -608,7 +628,7 @@ public class Container
     return result;
   }
 
-  public List<Slot> getInventorySlots(List<Slot> result) {
+  public List<Slot> getInventorySlotsJEI(List<Slot> result) {
 
     for (int i = this.slotIndexInventoryStart; i <= this.slotIndexInventoryEnd; i++) {
       result.add(this.inventorySlots.get(i));
@@ -618,7 +638,7 @@ public class Container
       result.add(this.inventorySlots.get(i));
     }
 
-    if (this.toolbox != null) {
+    if (this.canPlayerUseToolbox()) {
 
       for (int i = this.slotIndexToolboxStart; i <= this.slotIndexToolboxEnd; i++) {
         result.add(this.inventorySlots.get(i));
@@ -637,12 +657,12 @@ public class Container
     return this.tile;
   }
 
-  public boolean canHandleJEIRecipeTransfer(
+  public boolean canHandleRecipeTransferJEI(
       String name,
       EnumTier tier
   ) {
 
-    return this.tile.canHandleJEIRecipeTransfer(name, tier);
+    return this.tile.canHandleRecipeTransferJEI(name, tier);
   }
 
   @Override
