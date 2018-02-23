@@ -20,12 +20,20 @@ public class ZenRecipeBuilder
 
   private final String tableName;
 
+  private static final String INPUT_ONLY = "INPUT_ONLY";
+  private static final int COPY_MODE_NONE = 0;
+  private static final int COPY_MODE_BY_NAME = 1;
+  private static final int COPY_MODE_BY_OUTPUT = 2;
+
   private RecipeBuilder recipeBuilder;
   private boolean invalid;
   private boolean inputSet;
   private boolean outputSet;
   private String copyRecipeInputName;
   private String copyRecipeOutputName;
+  private IIngredient[] copyRecipesFor;
+  private boolean excludeOutputFromRecipeCopy;
+  private int copyMode;
 
   /* package */ ZenRecipeBuilder(String tableName) {
 
@@ -112,6 +120,10 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder copyRecipeByName(String recipeName) {
 
+    if (this.copyMode == COPY_MODE_BY_OUTPUT) {
+      return this.setInvalid("Copy by name can't be called on the same builder as copy by output");
+    }
+
     if (recipeName == null) {
       return this.setInvalid("Recipe name can't be null");
     }
@@ -120,7 +132,7 @@ public class ZenRecipeBuilder
       return this.setInvalid("Recipe input already set");
     }
 
-    if (this.outputSet) {
+    if (this.copyRecipeOutputName != null) {
       return this.setInvalid("Recipe output already set");
     }
 
@@ -128,11 +140,16 @@ public class ZenRecipeBuilder
     this.copyRecipeOutputName = recipeName;
     this.inputSet = true;
     this.outputSet = true;
+    this.copyMode = COPY_MODE_BY_NAME;
     return this;
   }
 
   @Override
   public IZenRecipeBuilder copyRecipeInputByName(String recipeName) {
+
+    if (this.copyMode == COPY_MODE_BY_OUTPUT) {
+      return this.setInvalid("Copy by name can't be called on the same builder as copy by output");
+    }
 
     if (recipeName == null) {
       return this.setInvalid("Recipe name can't be null");
@@ -144,6 +161,30 @@ public class ZenRecipeBuilder
 
     this.copyRecipeInputName = recipeName;
     this.inputSet = true;
+    this.copyMode = COPY_MODE_BY_NAME;
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder copyRecipes(IIngredient[] recipeOutputs, boolean excludeOutput) {
+
+    if (this.copyMode == COPY_MODE_BY_NAME) {
+      return this.setInvalid("Copy by output can't be called on the same builder as copy by name");
+    }
+
+    if (recipeOutputs == null) {
+      return this.setInvalid("Recipe output ingredient can't be null");
+    }
+
+    if (this.inputSet) {
+      return this.setInvalid("Recipe input already set");
+    }
+
+    this.copyRecipesFor = recipeOutputs;
+    this.excludeOutputFromRecipeCopy = excludeOutput;
+    this.inputSet = true;
+    this.outputSet = !excludeOutput;
+    this.copyMode = COPY_MODE_BY_OUTPUT;
     return this;
   }
 
@@ -235,10 +276,6 @@ public class ZenRecipeBuilder
       return this.setInvalid("Output can't be null");
     }
 
-    if (this.outputSet) {
-      return this.setInvalid("Recipe output already set");
-    }
-
     if (weight <= 0) { // weight is optional, may be 0
       weight = 1;
     }
@@ -261,7 +298,7 @@ public class ZenRecipeBuilder
       return this.setInvalid("Recipe name can't be null");
     }
 
-    if (this.outputSet) {
+    if (this.copyRecipeOutputName != null) {
       return this.setInvalid("Recipe output already set with copy method");
     }
 
@@ -380,26 +417,36 @@ public class ZenRecipeBuilder
 
       try {
 
-        if (this.copyRecipeInputName != null
-            || this.copyRecipeOutputName != null) {
-
-          // We can do a little input and output validation here.
+        if (this.copyMode == COPY_MODE_BY_NAME) {
 
           if (!this.inputSet) {
-            throw new RecipeBuilderException("Recipe is missing input");
+            CTLogHelper.logErrorFromZenMethod("Recipe missing input");
+
+          } else if (!this.outputSet) {
+            CTLogHelper.logErrorFromZenMethod("Recipe missing output");
           }
 
-          if (!this.outputSet) {
-            throw new RecipeBuilderException("Recipe is missing output");
-          }
-
-          // Can't call builder#validate here because we need to validate after the recipe copy is executed.
-
-          ZenRecipeBuilderCopyHook.RECIPE_COPY_ACTION_LIST.add(new ZenRecipeBuilderCopyHook.CopyAction(
+          ZenRecipeBuilderCopyHook.RECIPE_COPY_ACTION_LIST.add(new ZenRecipeBuilderCopyHook.CopyRecipeByNameAction(
               this.tableName,
               this.recipeBuilder,
               this.copyRecipeInputName,
               this.copyRecipeOutputName
+          ));
+
+        } else if (this.copyMode == COPY_MODE_BY_OUTPUT) {
+
+          if (!this.inputSet) {
+            CTLogHelper.logErrorFromZenMethod("Recipe missing input");
+
+          } else if (!this.outputSet) {
+            CTLogHelper.logErrorFromZenMethod("Recipe missing output");
+          }
+
+          ZenRecipeBuilderCopyHook.RECIPE_COPY_ACTION_LIST.add(new ZenRecipeBuilderCopyHook.CopyRecipesByOutputAction(
+              this.tableName,
+              this.recipeBuilder,
+              this.copyRecipesFor,
+              !this.excludeOutputFromRecipeCopy
           ));
 
         } else {
@@ -423,6 +470,9 @@ public class ZenRecipeBuilder
     this.outputSet = false;
     this.copyRecipeInputName = null;
     this.copyRecipeOutputName = null;
+    this.copyRecipesFor = null;
+    this.excludeOutputFromRecipeCopy = false;
+    this.copyMode = COPY_MODE_NONE;
     this.recipeBuilder = new RecipeBuilder();
   }
 

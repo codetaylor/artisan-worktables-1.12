@@ -39,6 +39,12 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder copyRecipes(IIngredient[] recipeOutput, boolean excludeOutput) {
+
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient) {
 
     return this;

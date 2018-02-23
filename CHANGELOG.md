@@ -23,6 +23,7 @@
   * `RecipeBuilder#copyRecipeByName(String)` - copy a recipe's input and output by recipe name
   * `RecipeBuilder#copyRecipeInputByName(String)` - copy a recipe's input by recipe name
   * `RecipeBuilder#copyRecipeOutputByName(String)` - copy a recipe's output by recipe name
+  * `RecipeBuilder#copyRecipes(IIngredient, @Optional boolean)` - copy multiple recipes for the output given, flag to prevent copying the recipe output 
 * Changed: if a player is too far away from a table to use it, the table's tab will no longer display in the gui
 * Changed: if a player is too far away from the toolbox to use it, its gui will no longer be displayed
 * Changed: removed profession distinction from tool names, ie. `Mason's Chisel` is now `Artisan's Chisel` (#76)

@@ -27,6 +27,21 @@ public interface IZenRecipeBuilder {
   @ZenMethod
   IZenRecipeBuilder copyRecipeInputByName(String recipeName);
 
+  /**
+   * Copies recipe ingredients and outputs for all the recipe outputs provided.
+   * <p>
+   * This method is mutually exclusive with the following methods and can't be called
+   * on the same builder: {@link IZenRecipeBuilder#copyRecipeByName(String)},
+   * {@link IZenRecipeBuilder#copyRecipeInputByName(String)},
+   * {@link IZenRecipeBuilder#copyRecipeOutputByName(String)}.
+   *
+   * @param recipeOutput  outputs of the recipes to copy
+   * @param excludeOutput true to not copy recipe outputs, defaults to false
+   * @return builder
+   */
+  @ZenMethod
+  IZenRecipeBuilder copyRecipes(IIngredient[] recipeOutput, @Optional boolean excludeOutput);
+
   @ZenMethod
   IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient);
 

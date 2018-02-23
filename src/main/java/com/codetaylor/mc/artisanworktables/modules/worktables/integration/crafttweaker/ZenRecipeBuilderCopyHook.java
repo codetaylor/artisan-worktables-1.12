@@ -2,8 +2,11 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderCopyHelper;
+import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.utils.BaseUndoable;
+import crafttweaker.IAction;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.mc1120.CraftTweaker;
 import crafttweaker.mc1120.events.ScriptRunEvent;
 import crafttweaker.mc1120.recipes.MCRecipeManager;
@@ -13,15 +16,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.annotation.Nullable;
+import java.util.*;
 
 @Mod.EventBusSubscriber
 public class ZenRecipeBuilderCopyHook {
 
-  /* package */ static final List<CopyAction> RECIPE_COPY_ACTION_LIST = new ArrayList<>();
+  /* package */ static final List<IAction> RECIPE_COPY_ACTION_LIST = new ArrayList<>();
 
   @SubscribeEvent
   public static void onScriptEvent(ScriptRunEvent.Post event) {
@@ -44,7 +45,7 @@ public class ZenRecipeBuilderCopyHook {
       public void apply() {
 
         // initialize copy recipes
-        for (CopyAction action : RECIPE_COPY_ACTION_LIST) {
+        for (IAction action : RECIPE_COPY_ACTION_LIST) {
           action.apply();
         }
       }
@@ -58,7 +59,72 @@ public class ZenRecipeBuilderCopyHook {
 
   }
 
-  public static class CopyAction
+  public static class CopyRecipesByOutputAction
+      extends BaseUndoable {
+
+    private final String tableName;
+    private final RecipeBuilder recipeBuilder;
+    private final IIngredient[] copyRecipes;
+    private final boolean copyOutput;
+
+    protected CopyRecipesByOutputAction(
+        String tableName,
+        RecipeBuilder recipeBuilder,
+        IIngredient[] copyRecipes,
+        boolean copyOutput
+    ) {
+
+      super("RecipeWorktable");
+      this.tableName = tableName;
+      this.recipeBuilder = recipeBuilder;
+      this.copyRecipes = copyRecipes;
+      this.copyOutput = copyOutput;
+    }
+
+    @Override
+    public void apply() {
+
+      try {
+        Collection<IRecipe> recipes = ForgeRegistries.RECIPES.getValuesCollection();
+
+        Set<IRecipe> toCopy = new HashSet<>();
+
+        for (IRecipe recipe : recipes) {
+
+          for (IIngredient copyRecipe : this.copyRecipes) {
+
+            if (!recipe.getRecipeOutput().isEmpty()
+                && copyRecipe.matches(CTInputHelper.toIItemStack(recipe.getRecipeOutput()))) {
+              toCopy.add(recipe);
+            }
+          }
+        }
+
+        for (IRecipe recipe : toCopy) {
+          RecipeBuilder recipeBuilderCopy = this.recipeBuilder.copy();
+          RecipeBuilderCopyHelper.copyRecipeInput(recipe, recipeBuilderCopy);
+
+          if (this.copyOutput) {
+            RecipeBuilderCopyHelper.copyRecipeOutput(recipe, recipeBuilderCopy);
+          }
+
+          recipeBuilderCopy.validate();
+          CraftTweaker.LATE_ACTIONS.add(new ZenWorktable.Add(this.tableName, recipeBuilderCopy));
+        }
+
+      } catch (Exception e) {
+        CTLogHelper.logError("Unable to copy and register recipe", e);
+      }
+    }
+
+    @Override
+    protected String getRecipeInfo() {
+
+      return CTLogHelper.getStackDescription(this.tableName);
+    }
+  }
+
+  public static class CopyRecipeByNameAction
       extends BaseUndoable {
 
     private final String tableName;
@@ -66,11 +132,11 @@ public class ZenRecipeBuilderCopyHook {
     private final String copyRecipeInputName;
     private final String copyRecipeOutputName;
 
-    CopyAction(
+    CopyRecipeByNameAction(
         String tableName,
         RecipeBuilder recipeBuilder,
-        String copyRecipeInputName,
-        String copyRecipeOutputName
+        @Nullable String copyRecipeInputName,
+        @Nullable String copyRecipeOutputName
     ) {
 
       super("RecipeWorktable");

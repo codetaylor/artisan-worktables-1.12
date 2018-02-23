@@ -234,6 +234,35 @@ public class RecipeBuilder {
 
   }
 
+  public RecipeBuilder copy() {
+
+    RecipeBuilder copy = new RecipeBuilder();
+    copy.width = this.width;
+    copy.height = this.height;
+    copy.mirrored = this.mirrored;
+
+    if (this.ingredients != null) {
+      copy.ingredients = new ArrayList<>(this.ingredients);
+    }
+    copy.secondaryIngredients = new ArrayList<>(this.secondaryIngredients);
+    copy.fluidIngredient = this.fluidIngredient;
+    copy.tools = new ArrayList<>(this.tools);
+    copy.outputWeightPairList = new ArrayList<>(this.outputWeightPairList);
+    copy.extraOutputs = new ExtraOutputChancePair[this.extraOutputs.length];
+    System.arraycopy(this.extraOutputs, 0, copy.extraOutputs, 0, this.extraOutputs.length);
+    copy.gameStageRequire = this.gameStageRequire;
+    copy.includeGamestages = new String[this.includeGamestages.length];
+    System.arraycopy(this.includeGamestages, 0, copy.includeGamestages, 0, this.includeGamestages.length);
+    copy.excludeGamestages = new String[this.excludeGamestages.length];
+    System.arraycopy(this.excludeGamestages, 0, copy.excludeGamestages, 0, this.excludeGamestages.length);
+    copy.minimumTier = this.minimumTier;
+    copy.experienceRequired = this.experienceRequired;
+    copy.levelRequired = this.levelRequired;
+    copy.consumeExperience = this.consumeExperience;
+
+    return copy;
+  }
+
   public IAWRecipe create() throws RecipeBuilderException {
 
     IGameStageMatcher gameStageMatcher;
