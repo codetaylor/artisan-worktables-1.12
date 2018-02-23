@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
-import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
+import com.codetaylor.mc.athenaeum.registry.strategy.IClientModelRegistrationStrategy;
 
 public interface IModelRegistrationStrategyProvider {
 
-  IModelRegistrationStrategy getModelRegistrationStrategy();
+  IClientModelRegistrationStrategy getModelRegistrationStrategy();
 
 }

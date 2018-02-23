@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
-import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
+import com.codetaylor.mc.athenaeum.registry.strategy.IClientModelRegistrationStrategy;
 import com.google.common.base.Preconditions;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import javax.annotation.Nonnull;
 
 class BlockModelRegistrationStrategy
-    implements IModelRegistrationStrategy {
+    implements IClientModelRegistrationStrategy {
 
   private Block block;
 

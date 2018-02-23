@@ -3,7 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.event;
 import com.codetaylor.mc.artisanworktables.api.event.AWItemCraftEvent;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
-import com.codetaylor.mc.athenaeum.helper.StackHelper;
+import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;

@@ -191,7 +191,7 @@ public class ModuleTools
 
     super.onClientRegister(registry);
 
-    registry.registerItemModelStrategy(() -> {
+    registry.registerClientModelRegistrationStrategy(() -> {
 
       for (ItemWorktableTool item : ModuleTools.this.registeredToolList) {
         String resourcePath = item.getMaterial()
