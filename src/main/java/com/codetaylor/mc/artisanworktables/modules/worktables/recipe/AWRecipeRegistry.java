@@ -55,7 +55,32 @@ public class AWRecipeRegistry {
       Collection<String> unlockedPlayerStages
   ) {
 
-    for (IAWRecipe recipe : this.recipeList) {
+    // If the recipe list is empty, short-circuit.
+    if (this.recipeList.isEmpty()) {
+      return null;
+    }
+
+    // Next, check the last recipe first.
+    IAWRecipe lastRecipe = this.recipeList.get(this.recipeList.size() - 1);
+    boolean lastRecipeMatches = lastRecipe.matches(
+        unlockedPlayerStages,
+        playerExperience,
+        playerLevels,
+        isPlayerCreative,
+        tools,
+        craftingMatrix,
+        fluidStack,
+        secondaryIngredientMatcher,
+        tier
+    );
+
+    if (lastRecipeMatches) {
+      return lastRecipe;
+    }
+
+    // Next, loop through the remaining recipes in reverse.
+    for (int i = this.recipeList.size() - 2; i >= 0; i--) {
+      IAWRecipe recipe = this.recipeList.get(i);
 
       boolean matches = recipe.matches(
           unlockedPlayerStages,
@@ -70,10 +95,19 @@ public class AWRecipeRegistry {
       );
 
       if (matches) {
+        // If the recipe matches, move it to the end of the list. This ensures that the
+        // recipe will be checked faster next time, increasing performance for shift +
+        // click crafting operations.
+        //
+        // Worst case remove: O(n) for re-indexing.
+        // Worst case add: O(1) because we're adding to the end of the list.
+        this.recipeList.remove(i);
+        this.recipeList.add(recipe);
         return recipe;
       }
     }
 
+    // Finally, if no recipe was matched, return null.
     return null;
   }
 
