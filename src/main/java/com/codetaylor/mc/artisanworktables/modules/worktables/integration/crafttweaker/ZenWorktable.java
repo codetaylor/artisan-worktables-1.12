@@ -2,10 +2,12 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilder;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.ZenRecipeBuilderProvider;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
@@ -262,18 +264,7 @@ public class ZenWorktable {
   @ZenMethod
   public static IZenRecipeBuilder createRecipeBuilder(String table) {
 
-    table = table.toLowerCase();
-
-    if (!ArtisanWorktablesAPI.isWorktableNameValid(table)) {
-      CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
-      CTLogHelper.logInfo("Valid table types are: " + String.join(
-          ",",
-          ArtisanWorktablesAPI.getWorktableNames()
-      ));
-      return ZenRecipeBuilderNoOp.INSTANCE;
-    }
-
-    return new ZenRecipeBuilder(table);
+    return ZenRecipeBuilderProvider.get(table);
   }
 
   // --------------------------------------------------------------------------
@@ -286,7 +277,7 @@ public class ZenWorktable {
     private final String tableName;
     private final RecipeBuilder recipeBuilder;
 
-    Add(String tableName, RecipeBuilder recipeBuilder) {
+    public Add(String tableName, RecipeBuilder recipeBuilder) {
 
       super("RecipeWorktable");
       this.tableName = tableName;

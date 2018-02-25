@@ -1,5 +1,6 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
+package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -15,12 +16,6 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
-  public IZenRecipeBuilder copyRecipeByName(String recipeName) {
-
-    return this;
-  }
-
-  @Override
   public IZenRecipeBuilder setShaped(IIngredient[][] ingredients) {
 
     return this;
@@ -28,18 +23,6 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
-
-    return this;
-  }
-
-  @Override
-  public IZenRecipeBuilder copyRecipeInputByName(String recipeName) {
-
-    return this;
-  }
-
-  @Override
-  public IZenRecipeBuilder copyRecipes(IIngredient[] recipeOutput, boolean excludeOutput) {
 
     return this;
   }
@@ -76,12 +59,6 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder addOutput(IItemStack output, int weight) {
-
-    return this;
-  }
-
-  @Override
-  public IZenRecipeBuilder copyRecipeOutputByName(String recipeName) {
 
     return this;
   }
@@ -136,6 +113,12 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder setConsumeExperience(boolean consumeExperience) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setCopy(IZenRecipeBuilderCopyStrategy copyStrategy) {
 
     return this;
   }

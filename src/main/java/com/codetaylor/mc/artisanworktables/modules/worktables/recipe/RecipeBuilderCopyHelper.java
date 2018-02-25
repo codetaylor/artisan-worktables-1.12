@@ -1,5 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
+import crafttweaker.api.item.IItemStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
@@ -98,6 +101,19 @@ public class RecipeBuilderCopyHelper {
   public static RecipeBuilder copyRecipeOutput(IRecipe recipe, RecipeBuilder builder) throws RecipeBuilderException {
 
     builder.addOutput(recipe.getRecipeOutput().copy(), 1);
+    return builder;
+  }
+
+  public static RecipeBuilder replaceRecipeOutput(
+      IRecipe recipe,
+      IItemStack toReplace,
+      RecipeBuilder builder
+  ) throws RecipeBuilderException {
+
+    ItemStack itemStack = CTInputHelper.toStack(toReplace).copy();
+    int count = recipe.getRecipeOutput().getCount();
+    itemStack.setCount(count);
+    builder.addOutput(itemStack, 1);
     return builder;
   }
 

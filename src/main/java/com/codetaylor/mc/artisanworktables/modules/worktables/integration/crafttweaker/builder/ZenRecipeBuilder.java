@@ -1,6 +1,9 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
+package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IRecipeBuilderCopyStrategy;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderException;
@@ -20,26 +23,20 @@ public class ZenRecipeBuilder
 
   private final String tableName;
 
-  private static final String INPUT_ONLY = "INPUT_ONLY";
-  private static final int COPY_MODE_NONE = 0;
-  private static final int COPY_MODE_BY_NAME = 1;
-  private static final int COPY_MODE_BY_OUTPUT = 2;
-
   private RecipeBuilder recipeBuilder;
   private boolean invalid;
   private boolean inputSet;
   private boolean outputSet;
-  private String copyRecipeInputName;
-  private String copyRecipeOutputName;
-  private IIngredient[] copyRecipesFor;
-  private boolean excludeOutputFromRecipeCopy;
-  private int copyMode;
+  private IRecipeBuilderCopyStrategy recipeCopyStrategy;
 
-  /* package */ ZenRecipeBuilder(String tableName) {
+  public ZenRecipeBuilder(String tableName) {
 
     this.tableName = tableName;
     this.recipeBuilder = new RecipeBuilder();
   }
+
+  // --------------------------------------------------------------------------
+  // - Input
 
   @Override
   public IZenRecipeBuilder setShaped(IIngredient[][] ingredients) {
@@ -94,99 +91,8 @@ public class ZenRecipeBuilder
     return this;
   }
 
-  /*
-  @Override
-  public IZenRecipeBuilder copyRecipe(ICraftingRecipe recipe) {
-
-    try {
-
-      if (recipe instanceof IShapedRecipe) {
-        RecipeBuilderCopyHelper.copyShapedRecipe((IShapedRecipe) recipe, this.recipeBuilder);
-        return this;
-
-      } else if (recipe instanceof IRecipe) {
-        RecipeBuilderCopyHelper.copyShapelessRecipe((IRecipe) recipe, this.recipeBuilder);
-        return this;
-
-      }
-    } catch (Exception e) {
-      return this.setInvalid("Unable to copy recipe: " + e.getMessage());
-    }
-
-    return this;
-  }
-  */
-
-  @Override
-  public IZenRecipeBuilder copyRecipeByName(String recipeName) {
-
-    if (this.copyMode == COPY_MODE_BY_OUTPUT) {
-      return this.setInvalid("Copy by name can't be called on the same builder as copy by output");
-    }
-
-    if (recipeName == null) {
-      return this.setInvalid("Recipe name can't be null");
-    }
-
-    if (this.inputSet) {
-      return this.setInvalid("Recipe input already set");
-    }
-
-    if (this.copyRecipeOutputName != null) {
-      return this.setInvalid("Recipe output already set");
-    }
-
-    this.copyRecipeInputName = recipeName;
-    this.copyRecipeOutputName = recipeName;
-    this.inputSet = true;
-    this.outputSet = true;
-    this.copyMode = COPY_MODE_BY_NAME;
-    return this;
-  }
-
-  @Override
-  public IZenRecipeBuilder copyRecipeInputByName(String recipeName) {
-
-    if (this.copyMode == COPY_MODE_BY_OUTPUT) {
-      return this.setInvalid("Copy by name can't be called on the same builder as copy by output");
-    }
-
-    if (recipeName == null) {
-      return this.setInvalid("Recipe name can't be null");
-    }
-
-    if (this.inputSet) {
-      return this.setInvalid("Recipe input already set");
-    }
-
-    this.copyRecipeInputName = recipeName;
-    this.inputSet = true;
-    this.copyMode = COPY_MODE_BY_NAME;
-    return this;
-  }
-
-  @Override
-  public IZenRecipeBuilder copyRecipes(IIngredient[] recipeOutputs, boolean excludeOutput) {
-
-    if (this.copyMode == COPY_MODE_BY_NAME) {
-      return this.setInvalid("Copy by output can't be called on the same builder as copy by name");
-    }
-
-    if (recipeOutputs == null) {
-      return this.setInvalid("Recipe output ingredient can't be null");
-    }
-
-    if (this.inputSet) {
-      return this.setInvalid("Recipe input already set");
-    }
-
-    this.copyRecipesFor = recipeOutputs;
-    this.excludeOutputFromRecipeCopy = excludeOutput;
-    this.inputSet = true;
-    this.outputSet = !excludeOutput;
-    this.copyMode = COPY_MODE_BY_OUTPUT;
-    return this;
-  }
+  // --------------------------------------------------------------------------
+  // - Fluid
 
   @Override
   public IZenRecipeBuilder setFluid(ILiquidStack fluidIngredient) {
@@ -200,6 +106,9 @@ public class ZenRecipeBuilder
 
     return this;
   }
+
+  // --------------------------------------------------------------------------
+  // - Secondary Ingredients
 
   @Override
   public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] ingredients) {
@@ -241,6 +150,10 @@ public class ZenRecipeBuilder
     return this;
   }
 
+  // --------------------------------------------------------------------------
+  // - Tools
+
+  @Deprecated
   @Override
   public IZenRecipeBuilder setTool(IIngredient tool, int damage) {
 
@@ -269,6 +182,9 @@ public class ZenRecipeBuilder
     return this;
   }
 
+  // --------------------------------------------------------------------------
+  // - Output
+
   @Override
   public IZenRecipeBuilder addOutput(IItemStack output, int weight) {
 
@@ -291,21 +207,8 @@ public class ZenRecipeBuilder
     return this;
   }
 
-  @Override
-  public IZenRecipeBuilder copyRecipeOutputByName(String recipeName) {
-
-    if (recipeName == null) {
-      return this.setInvalid("Recipe name can't be null");
-    }
-
-    if (this.copyRecipeOutputName != null) {
-      return this.setInvalid("Recipe output already set with copy method");
-    }
-
-    this.copyRecipeOutputName = recipeName;
-    this.outputSet = true;
-    return this;
-  }
+  // --------------------------------------------------------------------------
+  // - Extra Output
 
   @Override
   public IZenRecipeBuilder setExtraOutputOne(IItemStack output, float chance) {
@@ -327,6 +230,9 @@ public class ZenRecipeBuilder
     this.recipeBuilder.setExtraOutput(2, CTInputHelper.toStack(output), chance);
     return this;
   }
+
+  // --------------------------------------------------------------------------
+  // - Game Stages
 
   @Override
   public IZenRecipeBuilder requireGameStages(String require, String[] stages) {
@@ -361,6 +267,9 @@ public class ZenRecipeBuilder
     return this;
   }
 
+  // --------------------------------------------------------------------------
+  // - Tier Restriction
+
   @Override
   public IZenRecipeBuilder setMinimumTier(int minimumTier) {
 
@@ -373,6 +282,9 @@ public class ZenRecipeBuilder
 
     return this;
   }
+
+  // --------------------------------------------------------------------------
+  // - Experience
 
   @Override
   public IZenRecipeBuilder setExperienceRequired(int experienceRequired) {
@@ -407,6 +319,28 @@ public class ZenRecipeBuilder
     return this;
   }
 
+  // --------------------------------------------------------------------------
+  // - Copy
+
+  @Override
+  public IZenRecipeBuilder setCopy(IZenRecipeBuilderCopyStrategy copyStrategy) {
+
+    this.recipeCopyStrategy = (IRecipeBuilderCopyStrategy) copyStrategy;
+
+    if (!this.recipeCopyStrategy.isExcludeInput()) {
+      this.inputSet = true;
+    }
+
+    if (!this.recipeCopyStrategy.isExcludeOutput()) {
+      this.outputSet = true;
+    }
+
+    return this;
+  }
+
+  // --------------------------------------------------------------------------
+  // - Create
+
   @Override
   public IZenRecipeBuilder create() {
 
@@ -417,37 +351,23 @@ public class ZenRecipeBuilder
 
       try {
 
-        if (this.copyMode == COPY_MODE_BY_NAME) {
+        if (this.recipeCopyStrategy != null) {
 
-          if (!this.inputSet) {
-            CTLogHelper.logErrorFromZenMethod("Recipe missing input");
+          if (this.recipeCopyStrategy.isValid()) {
 
-          } else if (!this.outputSet) {
-            CTLogHelper.logErrorFromZenMethod("Recipe missing output");
+            if (!this.inputSet && this.recipeCopyStrategy.isExcludeInput()) {
+              this.setInvalid("Recipe missing input");
+
+            } else if (!this.outputSet && this.recipeCopyStrategy.isExcludeOutput()) {
+              this.setInvalid("Recipe missing output");
+
+            } else {
+              this.recipeCopyStrategy.onCreate(this.tableName, this.recipeBuilder);
+            }
+
+          } else {
+            CTLogHelper.logErrorFromZenMethod("Recipe copy strategy failed validation");
           }
-
-          ZenRecipeBuilderCopyHook.RECIPE_COPY_ACTION_LIST.add(new ZenRecipeBuilderCopyHook.CopyRecipeByNameAction(
-              this.tableName,
-              this.recipeBuilder,
-              this.copyRecipeInputName,
-              this.copyRecipeOutputName
-          ));
-
-        } else if (this.copyMode == COPY_MODE_BY_OUTPUT) {
-
-          if (!this.inputSet) {
-            CTLogHelper.logErrorFromZenMethod("Recipe missing input");
-
-          } else if (!this.outputSet) {
-            CTLogHelper.logErrorFromZenMethod("Recipe missing output");
-          }
-
-          ZenRecipeBuilderCopyHook.RECIPE_COPY_ACTION_LIST.add(new ZenRecipeBuilderCopyHook.CopyRecipesByOutputAction(
-              this.tableName,
-              this.recipeBuilder,
-              this.copyRecipesFor,
-              !this.excludeOutputFromRecipeCopy
-          ));
 
         } else {
           this.recipeBuilder.validate();
@@ -468,13 +388,12 @@ public class ZenRecipeBuilder
     this.invalid = false;
     this.inputSet = false;
     this.outputSet = false;
-    this.copyRecipeInputName = null;
-    this.copyRecipeOutputName = null;
-    this.copyRecipesFor = null;
-    this.excludeOutputFromRecipeCopy = false;
-    this.copyMode = COPY_MODE_NONE;
+    this.recipeCopyStrategy = null;
     this.recipeBuilder = new RecipeBuilder();
   }
+
+  // --------------------------------------------------------------------------
+  // - Internal
 
   private IZenRecipeBuilder setInvalid(String message) {
 
