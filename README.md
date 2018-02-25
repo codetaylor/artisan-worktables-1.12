@@ -1,8 +1,7 @@
 * [Download](https://minecraft.curseforge.com/projects/artisan-worktables)
-* [CHANGELOG.md](https://github.com/codetaylor/artisan-worktables/blob/master/CHANGELOG.md)
-* [CONFIG.md](https://github.com/codetaylor/artisan-worktables/blob/master/CONFIG.md)
-* [ZENSCRIPT.md](https://github.com/codetaylor/artisan-worktables/blob/master/ZENSCRIPT.md)
-* [ZENSCRIPT_ADVANCED.md](https://github.com/codetaylor/artisan-worktables/blob/master/ZENSCRIPT_ADVANCED.md)
+* [CHANGELOG](http://artisan-worktables.readthedocs.io/en/latest/changelog/)
+* [CONFIG](http://artisan-worktables.readthedocs.io/en/latest/configuration/)
+* [ZENSCRIPT](http://artisan-worktables.readthedocs.io/en/latest/recipes/gettingstarted/)
 
 ## Feature Request Guidelines
 
