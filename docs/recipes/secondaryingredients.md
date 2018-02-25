@@ -9,7 +9,7 @@ Secondary ingredients are items that are required by a recipe and consumed when 
 To add secondary ingredients to a recipe, call the following method on a builder:
 
 ```java
-IRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
+RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
 ```
 
 This recipe requires `8` `<minecraft:gravel>` and one `<minecraft:string>` in the secondary ingredient storage area to craft:

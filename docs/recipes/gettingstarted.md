@@ -7,9 +7,9 @@ Artisan Worktables is designed to be used with [CraftTweaker](https://minecraft.
 
 ## Building Recipes
 
-Recipes are created by calling methods on an `IRecipeBuilder` object and can be combined in various ways to achieve many unique results.
+Recipes are created by calling methods on a `RecipeBuilder` object and can be combined in various ways to achieve many unique results.
 
-`IRecipeBuilder` objects are retrieved by importing the `RecipeBuilder` and calling `get(String tableName)` for the desired table.
+`RecipeBuilder` objects are retrieved by importing the `RecipeBuilder` and calling `get(String tableName)` for the desired table.
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;
@@ -69,10 +69,10 @@ RecipeBuilder.get("basic")
   .create();
 ```
 
-!!! tip
+!!! warning
     For optimal debugging when creating multiple recipes, it is better to end method chains after calls to `create()`.
 
-    While using method chains can be appealing for a variety of reasons, there is a caveat that you should be aware of. When ZenScript compiles the above example, it sees the entire method chain as a single line. This means that when you have multiple recipes created in the same method chain and one of the recipes has an error, the error will indicate that the point of failure is on the line that begins the method chain. This behavior isn't very useful for determining which recipe in the chain has gone bad.
+    While using method chains can be appealing for a variety of reasons, there is a caveat that you should be aware of. When ZenScript compiles the example below, it sees the entire method chain as a single line. This means that when you have multiple recipes created in the same method chain and one of the recipes has an error, the error will indicate that the point of failure is on the line that begins the method chain. This behavior isn't very useful for determining which recipe in the chain has gone bad.
 
 The builder object's methods can be chained repeatedly:
 

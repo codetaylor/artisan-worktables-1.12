@@ -41,7 +41,7 @@ Copy replaceOutput(IItemStack replacement);
 You'll then pass this configured `Copy` object into this recipe builder method:
 
 ```java
-IRecipeBuilder setCopy(Copy copy);
+RecipeBuilder setCopy(Copy copy);
 ```
 
 This sounds complicated, but it's really not. Here are some examples to better illustrate the syntax.
@@ -81,7 +81,7 @@ for recipe in recipes.getRecipesFor(<ore:ingotGold>) {
 ```
 
 !!! error "CraftTweaker Issues"
-    As of CraftTweaker version 4.1.4.432 there are still issues when using: `recipes.getRecipesFor(IIngredient)`
+    As of CraftTweaker version 4.1.4.432 there are still issues with `recipes.getRecipesFor(IIngredient)` causing NPEs.
 
 ### By Recipe Output
 

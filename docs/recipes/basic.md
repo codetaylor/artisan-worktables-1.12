@@ -7,7 +7,7 @@ All recipes require, at the very least, an input and an output. Artisan Worktabl
 Shaped recipes are created by calling the following method on the builder:
 
 ```java
-IRecipeBuilder setShaped(IIngredient[][] ingredients);
+RecipeBuilder setShaped(IIngredient[][] ingredients);
 ```
 
 This recipe will craft a furnace using the vanilla furnace pattern in any of the basic tables.
@@ -27,7 +27,7 @@ RecipeBuilder.get("basic")
 To allow a shaped recipe to be mirrored in the crafting grid, call the following method on the builder:
 
 ```java
-IRecipeBuilder setMirrored();
+RecipeBuilder setMirrored();
 ```
 
 ## Shapeless Recipes
@@ -35,7 +35,7 @@ IRecipeBuilder setMirrored();
 Shapeless recipes are created by calling the following method on the builder:
 
 ```java
-IRecipeBuilder setShapeless(IIngredient[] ingredients);
+RecipeBuilder setShapeless(IIngredient[] ingredients);
 ```
 
 This recipe will take any item that matches the ore dictionary `logWood` and craft an oak plank in any of the basic tables.

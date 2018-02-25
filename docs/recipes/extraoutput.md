@@ -5,9 +5,9 @@ Each recipe can define up to three extra outputs with a chance of being created 
 ## Add Extra Output to Recipes
 
 ```java
-IRecipeBuilder setExtraOutputOne(IItemStack output, float chance);
-IRecipeBuilder setExtraOutputTwo(IItemStack output, float chance);
-IRecipeBuilder setExtraOutputThree(IItemStack output, float chance);
+RecipeBuilder setExtraOutputOne(IItemStack output, float chance);
+RecipeBuilder setExtraOutputTwo(IItemStack output, float chance);
+RecipeBuilder setExtraOutputThree(IItemStack output, float chance);
 ```
 
 In these methods, `chance` is a float in the range `[0,1]`.

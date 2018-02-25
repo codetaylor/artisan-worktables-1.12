@@ -9,7 +9,7 @@ Adding tool requirements to a recipe is optional. Recipes will work just fine if
 To add a tool to a recipe, call the following method on the builder:
 
 ```java
-IRecipeBuilder addTool(IIngredient tool, int damage);
+RecipeBuilder addTool(IIngredient tool, int damage);
 ```
 
 The `damage` parameter in this method represents the amount of damage applied to a tool during the craft operation.

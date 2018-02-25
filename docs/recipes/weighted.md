@@ -5,7 +5,7 @@ A recipe's primary output, the item that is shown in the main result slot in the
 The `addOutput` method can be called multiple times and accepts an optional weight parameter. By default this parameter is set to `1`.
 
 ```java
-IRecipeBuilder addOutput(IItemStack output, @Optional int weight);
+RecipeBuilder addOutput(IItemStack output, @Optional int weight);
 ```
 
 ## Equal Weight

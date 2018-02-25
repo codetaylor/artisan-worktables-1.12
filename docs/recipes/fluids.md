@@ -7,7 +7,7 @@ Each crafting table in Artisan Worktables has a fluid tank and recipes can requi
 To add a fluid to a recipe, call the following method on a builder:
 
 ```java
-IRecipeBuilder setFluid(ILiquidStack fluidIngredient);
+RecipeBuilder setFluid(ILiquidStack fluidIngredient);
 ```
 
 This example will consume `250` millibuckets of `<liquid:water>` to craft:

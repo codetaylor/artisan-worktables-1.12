@@ -7,7 +7,7 @@ Artisan Worktables integrates with the [Game Stages mod](https://minecraft.curse
 If you want to require a player to have certain game stages unlocked to craft a recipe, call the following method on the builder:
 
 ```java
-IRecipeBuilder requireGameStages(String require, String[] stages);
+RecipeBuilder requireGameStages(String require, String[] stages);
 ```
 
 Allowed values for the `require` parameter are `ALL` and `ANY`. If set to `ALL`, the player is required to have unlocked all of the game stages provided. If set to `ANY` the player is required to have unlocked at least one of the game stages provided.
@@ -15,7 +15,7 @@ Allowed values for the `require` parameter are `ALL` and `ANY`. If set to `ALL`,
 If you want to require a player to *not* have certain game stages unlocked, call the following method on the builder:
 
 ```java
-IRecipeBuilder excludeGameStages(String[] stages);
+RecipeBuilder excludeGameStages(String[] stages);
 ```
 
 If a player has unlocked any of the game stages provided, the recipe can't be crafted.

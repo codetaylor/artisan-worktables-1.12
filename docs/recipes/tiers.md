@@ -15,7 +15,7 @@ Recipes that don't exceed any of a table tier's limitations can be able to be cr
 If you want to restrict a lower tier recipe from being crafted in a lower tier table, you can use the following method when constructing a recipe:
 
 ```java
-IRecipeBuilder setMinimumTier(int minimumTier);
+RecipeBuilder setMinimumTier(int minimumTier);
 ```
 
 Accepted values for `minimumTier` are:

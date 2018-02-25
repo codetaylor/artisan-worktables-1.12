@@ -1,9 +1,10 @@
 1.16.x-SNAPSHOT
 
  * NOTES:
-    * This beta release has many changes. I encourage you to read the changelog and regen your configs.
+    * This beta release has many changes. I encourage you to read the changelog, regen your configs, and reference the new documentation.
+    * http://artisan-worktables.readthedocs.io
   * BREAKING CHANGES:
-    * the import `mods.artisanworktables.IRecipeBuilder` has moved to `mods.artisanworktables.builder.RecipeBuilder`
+    * the import `mods.artisanworktables.IRecipeBuilder` has moved to `mods.artisanworktables.builder.RecipeBuilder`; note the change in the package as well as the removal of the `I`
     * all config files have been moved into the subfolder `artisanworktables`
     * all tool by type ore dict groups have been renamed, ie. `<ore:masons_chisel>` is now `<ore:artisansChisel>`
     * all tool item names have changed, ie. `<artisanworktables:masons_chisel_iron>` is now `<artisanworktables:artisans_chisel_iron>`
@@ -61,10 +62,10 @@
   * Added: Workshops!
     * Workshops are third tier worktables. They can support recipes that use up to three tools and nine secondary ingredients.
     * All recipes share the same recipe pool, therefore, any recipe defined for a worktable or workstation will also work in a workshop. If a recipe is defined that uses a pattern larger than a 3x3 crafting grid, or three tools, it will only be craftable in the new workshops.
-  * Added: additional error reporting to the ZenScript IRecipeBuilder
+  * Added: additional error reporting to the ZenScript RecipeBuilder
   * Changed: rope handle texture on the side of the Mechanical Toolbox now matches the Toolbox's rope handle texture
-  * Changed: ZenScript IRecipeBuilder#create() now resets the builder
-  * Changed: ZenScript IRecipeBuilder#create() now returns the recipe builder, allowing method chaining
+  * Changed: ZenScript RecipeBuilder#create() now resets the builder
+  * Changed: ZenScript RecipeBuilder#create() now returns the recipe builder, allowing method chaining
   * Changed: updated de_de.lang (PR#63,PR#65 Xaikii)
 
 ---
