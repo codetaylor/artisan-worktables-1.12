@@ -1,0 +1,24 @@
+site_name: Artisan Worktables
+
+pages:
+  - Introduction: index.md
+  - ChangeLog: changelog.md
+  - Creating Recipes:
+    - Getting Started: recipes/gettingstarted.md
+    - Basic Recipes: recipes/basic.md
+    - Table Tiers: recipes/tiers.md
+    - Recipes with Tools: recipes/tools.md
+    - Recipes with Fluids: recipes/fluids.md
+    - Extra Chance Output: recipes/extraoutput.md
+    - Weighted Primary Output: recipes/weighted.md
+    - Secondary Ingredients: recipes/secondaryingredients.md
+    - Experience Requirements: recipes/experiencerequirements.md
+    - GameStages: recipes/gamestages.md
+    - Copying Recipes: recipes/copying.md
+  - Tools:
+    - Custom Tool Materials: tools/custommaterials.md
+
+theme: readthedocs
+
+markdown_extensions:
+  - admonition
