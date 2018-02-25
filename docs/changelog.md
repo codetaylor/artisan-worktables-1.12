@@ -33,7 +33,7 @@
   * Deprecated:
     * `Worktable.createRecipeBuilder(String)` will be removed in a future version - instead, import `mods.artisanworktables.builder.RecipeBuilder` and call `RecipeBuilder.get(String)`
     * the entire import `mods.artisanworktables.Worktable` and all its methods will be removed in a future version - use the recipe builder instead
-  * Requires: Athenaeum >= 1.11.6
+  * Requires: Athenaeum >= 1.12.6
 
 ---
 
