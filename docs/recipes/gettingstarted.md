@@ -51,7 +51,30 @@ RecipeBuilder.get("basic")
 
 To finalize, or actually create, a recipe, you must call `create()` on the builder object. Doing this will validate and save the recipe, as well as reset the builder, preparing it to create more recipes.
 
-The builder object's methods can be chained repeatedly like so:
+## Method Chaining
+
+Methods can be chained directly after calls to `create()`, however, for better results when debugging, it's more useful to end each method chain after the call to `create()` like this:
+
+```js
+import mods.artisanworktables.builder.RecipeBuilder;
+
+RecipeBuilder.get("basic")
+  .setShapeless([<minecraft:dirt>])
+  .addOutput(<minecraft:cobblestone>)
+  .create();
+
+RecipeBuilder.get("basic")
+  .setShapeless([<minecraft:string>])
+  .addOutput(<minecraft:cobblestone>)
+  .create();
+```
+
+!!! tip
+    For optimal debugging when creating multiple recipes, it is better to end method chains after calls to `create()`.
+
+    While using method chains can be appealing for a variety of reasons, there is a caveat that you should be aware of. When ZenScript compiles the above example, it sees the entire method chain as a single line. This means that when you have multiple recipes created in the same method chain and one of the recipes has an error, the error will indicate that the point of failure is on the line that begins the method chain. This behavior isn't very useful for determining which recipe in the chain has gone bad.
+
+The builder object's methods can be chained repeatedly:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;
@@ -66,7 +89,3 @@ RecipeBuilder.get("basic")
   .create();
 ```
 
-!!! tip
-    When creating multiple recipes, don't chain any methods after calls to `create()`.
-
-While using method chains can be appealing for a variety of reasons, there is a caveat that you should be aware of. When ZenScript compiles the above example, it sees the entire method chain as a single line. This means that when you have multiple recipes created in the same method chain and one of the recipes has an error, the error will not indicate to you which recipe failed, only that this entire chain failed.
