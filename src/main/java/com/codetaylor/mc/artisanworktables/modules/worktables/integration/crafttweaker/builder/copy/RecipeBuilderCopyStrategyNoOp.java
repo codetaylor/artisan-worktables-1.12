@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderException;
 import crafttweaker.api.item.IItemStack;
 
 public class RecipeBuilderCopyStrategyNoOp
@@ -22,7 +22,7 @@ public class RecipeBuilderCopyStrategyNoOp
   }
 
   @Override
-  public IZenRecipeBuilderCopyStrategy replaceOutput(IItemStack replacement) throws RecipeBuilderException {
+  public IZenRecipeBuilderCopyStrategy replaceOutput(IItemStack replacement) {
 
     return this;
   }

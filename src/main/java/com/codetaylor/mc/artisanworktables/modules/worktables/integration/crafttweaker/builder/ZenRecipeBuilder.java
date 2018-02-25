@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IRecipeBuilderCopyStrategy;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderException;

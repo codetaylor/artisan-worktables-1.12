@@ -2,7 +2,7 @@
 * NOTES:
   * This beta release has many changes. I encourage you to read the changelog and regen your configs.
 * BREAKING CHANGES:
-  * the import `mods.artisanworktables.IRecipeBuilder` has moved to `mods.artisanworktables.builder.IRecipeBuilder`
+  * the import `mods.artisanworktables.IRecipeBuilder` has moved to `mods.artisanworktables.builder.RecipeBuilder`
   * all config files have been moved into the subfolder `artisanworktables`
   * all tool by type ore dict groups have been renamed, ie. `<ore:masons_chisel>` is now `<ore:artisansChisel>`
   * all tool item names have changed, ie. `<artisanworktables:masons_chisel_iron>` is now `<artisanworktables:artisans_chisel_iron>`
@@ -21,7 +21,7 @@
   * disable all tool type ore dict groups
 * Added: can now copy existing recipes to worktable recipes (#69, gigitty):
   * Note: this *will not* work to copy recipes added by ZenScript, only with recipes that exist *before* ZenScript recipes are added
-  * `RecipeBuilder#setCopy(ICopyStrategy)` - copy a recipe's input and output, see documentation
+  * `RecipeBuilder#setCopy(Copy)` - copy a recipe's input and output, see documentation
 * Changed: if a player is too far away from a table to use it, the table's tab will no longer display in the gui
 * Changed: if a player is too far away from the toolbox to use it, its gui will no longer be displayed
 * Changed: removed profession distinction from tool names, ie. `Mason's Chisel` is now `Artisan's Chisel` (#76)
@@ -30,7 +30,7 @@
 * Changed: factored out and exposed limited API package to complete (#72), API Version 1 - subject to change, build against this at your own risk
 * Changed: updated de_de.lang (PR#83 Xaikii)
 * Deprecated:
-  * `Worktable.createRecipeBuilder(String)` will be removed in a future version - instead, import `mods.artisanworktables.builder.RecipeBuilder` and use `RecipeBuilder.get(String)`
+  * `Worktable.createRecipeBuilder(String)` will be removed in a future version - instead, import `mods.artisanworktables.builder.RecipeBuilder` and call `RecipeBuilder.get(String)`
   * the entire import `mods.artisanworktables.Worktable` and all its methods will be removed in a future version - use the recipe builder instead
 * Requires: Athenaeum >= 1.11.6
 

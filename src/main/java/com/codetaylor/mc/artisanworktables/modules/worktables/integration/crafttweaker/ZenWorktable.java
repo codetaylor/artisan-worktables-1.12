@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.ZenRecipeBuilderProvider;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
@@ -264,7 +263,7 @@ public class ZenWorktable {
   @ZenMethod
   public static IZenRecipeBuilder createRecipeBuilder(String table) {
 
-    return ZenRecipeBuilderProvider.get(table);
+    return IZenRecipeBuilder.get(table);
   }
 
   // --------------------------------------------------------------------------

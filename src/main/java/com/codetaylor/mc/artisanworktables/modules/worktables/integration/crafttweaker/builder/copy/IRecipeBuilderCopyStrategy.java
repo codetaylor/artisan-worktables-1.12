@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
 
 public interface IRecipeBuilderCopyStrategy

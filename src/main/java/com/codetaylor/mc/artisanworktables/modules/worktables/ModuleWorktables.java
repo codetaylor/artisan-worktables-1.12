@@ -85,17 +85,7 @@ public class ModuleWorktables
 
     this.registerIntegrationPlugin(
         "crafttweaker",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.ZenRecipeBuilderProvider"
-    );
-
-    this.registerIntegrationPlugin(
-        "crafttweaker",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.ZenRecipeBuilderCopy"
-    );
-
-    this.registerIntegrationPlugin(
-        "crafttweaker",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy"
+        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilderCopyStrategy"
     );
 
     this.registerIntegrationPlugin(

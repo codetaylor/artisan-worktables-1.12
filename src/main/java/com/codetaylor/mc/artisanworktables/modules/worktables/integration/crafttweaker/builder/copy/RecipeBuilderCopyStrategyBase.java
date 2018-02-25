@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderCopyHelper;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderException;
@@ -67,10 +68,12 @@ public abstract class RecipeBuilderCopyStrategyBase
   }
 
   @Override
-  public IZenRecipeBuilderCopyStrategy replaceOutput(IItemStack replacement) throws RecipeBuilderException {
+  public IZenRecipeBuilderCopyStrategy replaceOutput(IItemStack replacement) {
 
     if (replacement == null) {
-      throw new RecipeBuilderException("Recipe output can't be null");
+      CTLogHelper.logErrorFromZenMethod("Recipe output can't be null");
+      this.invalid = true;
+      return this;
     }
 
     if (this.excludeOutput) {
