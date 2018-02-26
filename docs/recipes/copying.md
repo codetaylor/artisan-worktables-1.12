@@ -142,7 +142,7 @@ for recipe in recipes.getRecipesFor(<ore:ingotGold>) {
 
 ### By Recipe Output
 
-This recipe will copy only the input of all recipes that have an output of `<ore:ingotIron>`, add a tool requirement, and add an output of `<minecraft:string>`.
+This recipe will copy only the input of all recipes that have an output of either `<ore:ingotIron>` or `<ore:ingotGold>`, add a tool requirement, and add an output of `<minecraft:string>`.
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;
