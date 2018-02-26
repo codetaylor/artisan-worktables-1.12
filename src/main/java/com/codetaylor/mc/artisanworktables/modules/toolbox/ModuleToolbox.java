@@ -5,9 +5,9 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.block.BlockMechanical
 import com.codetaylor.mc.artisanworktables.modules.toolbox.block.BlockToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechanicalToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
-import com.codetaylor.mc.athenaeum.helper.ModelRegistrationHelper;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.registry.Registry;
+import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class ModuleToolbox
@@ -67,11 +67,11 @@ public class ModuleToolbox
 
     super.onClientRegister(registry);
 
-    registry.registerItemModelStrategy(() -> {
+    registry.registerClientModelRegistrationStrategy(() -> {
       ModelRegistrationHelper.registerBlockItemModel(Blocks.TOOLBOX.getDefaultState());
     });
 
-    registry.registerItemModelStrategy(() -> {
+    registry.registerClientModelRegistrationStrategy(() -> {
       ModelRegistrationHelper.registerBlockItemModel(Blocks.MECHANICAL_TOOLBOX.getDefaultState());
     });
   }

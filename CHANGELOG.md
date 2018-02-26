@@ -1,3 +1,6 @@
+1.15.27
+* Fixed: compatibility issue with lib Athenaeum 1.12.5+ 
+
 1.15.26
 * Changed: updated zh_cn.lang (PR#84 DYColdWind)
 

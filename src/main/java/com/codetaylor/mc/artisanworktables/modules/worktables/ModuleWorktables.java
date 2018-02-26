@@ -159,15 +159,15 @@ public class ModuleWorktables
   public void onClientRegister(Registry registry) {
 
     if (ModuleWorktablesConfig.ENABLE_WORKTABLES) {
-      registry.registerItemModelStrategy(Blocks.WORKTABLE.getModelRegistrationStrategy());
+      registry.registerClientModelRegistrationStrategy(Blocks.WORKTABLE.getModelRegistrationStrategy());
     }
 
     if (ModuleWorktablesConfig.ENABLE_WORKSTATIONS) {
-      registry.registerItemModelStrategy(Blocks.WORKSTATION.getModelRegistrationStrategy());
+      registry.registerClientModelRegistrationStrategy(Blocks.WORKSTATION.getModelRegistrationStrategy());
     }
 
     if (ModuleWorktablesConfig.ENABLE_WORKSHOPS) {
-      registry.registerItemModelStrategy(Blocks.WORKSHOP.getModelRegistrationStrategy());
+      registry.registerClientModelRegistrationStrategy(Blocks.WORKSHOP.getModelRegistrationStrategy());
     }
   }
 

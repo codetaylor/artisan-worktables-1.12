@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import com.codetaylor.mc.athenaeum.registry.strategy.IModelRegistrationStrategy;
+import com.codetaylor.mc.athenaeum.registry.strategy.IClientModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -201,7 +201,7 @@ public abstract class BlockBase
     return VARIANT;
   }
 
-  public IModelRegistrationStrategy getModelRegistrationStrategy() {
+  public IClientModelRegistrationStrategy getModelRegistrationStrategy() {
 
     return new BlockModelRegistrationStrategy(this);
   }
