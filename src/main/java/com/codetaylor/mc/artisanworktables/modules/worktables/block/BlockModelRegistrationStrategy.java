@@ -17,7 +17,7 @@ class BlockModelRegistrationStrategy
 
   private Block block;
 
-  BlockModelRegistrationStrategy(Block block) {
+  public BlockModelRegistrationStrategy(Block block) {
 
     this.block = block;
   }
