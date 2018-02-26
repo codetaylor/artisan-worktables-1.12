@@ -22,7 +22,7 @@ If a player has unlocked any of the game stages provided, the recipe can't be cr
 
 ## Examples
 
-This recipe requires that the player has unlocked both game stages `one` and `two` to craft the recipe.
+For example, the following recipe requires that the player has unlocked both game stages `one` and `two` to craft the recipe.
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;
@@ -34,7 +34,7 @@ RecipeBuilder.get("basic")
   .create();
 ```
 
-This recipe requires that the player has unlocked either game stage `one` or `two`, but not `three` to craft the recipe:
+To present another example, the following recipe requires that the player has unlocked either game stage `one` or `two`, but not `three` to craft the recipe:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;

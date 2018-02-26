@@ -40,7 +40,7 @@ RecipeBuilder.get("basic")
   .create();
 ```
 
-You might notice that we're using a ore dictionary entries for the tools in these examples. Artisan Worktables provides two different types of ore dictionary groups for its tools: groups by tool type and groups by tool material.
+You might notice that ore dictionary entries for the tools were used in these examples. Artisan Worktables provides two different types of ore dictionary groups for its tools: groups by tool type and groups by tool material.
 
 ## OreDict Tool Groups
 

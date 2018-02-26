@@ -1,4 +1,4 @@
-1.16.x-SNAPSHOT
+1.16.0
 
  * NOTES:
     * This beta release has many changes. I encourage you to read the changelog, regen your configs, and reference the new documentation.
@@ -35,6 +35,12 @@
     * `Worktable.createRecipeBuilder(String)` will be removed in a future version - instead, import `mods.artisanworktables.builder.RecipeBuilder` and call `RecipeBuilder.get(String)`
     * the entire import `mods.artisanworktables.Worktable` and all its methods will be removed in a future version - use the recipe builder instead
   * Requires: Athenaeum >= 1.12.6
+
+---
+
+1.15.27
+
+  * Fixed: compatibility issue with lib Athenaeum 1.12.6+
 
 ---
 

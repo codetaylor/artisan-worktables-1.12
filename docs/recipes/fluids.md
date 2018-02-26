@@ -10,7 +10,7 @@ To add a fluid to a recipe, call the following method on a builder:
 RecipeBuilder setFluid(ILiquidStack fluidIngredient);
 ```
 
-This example will consume `250` millibuckets of `<liquid:water>` to craft:
+For example, the following recipe will consume `250` millibuckets of `<liquid:water>` to craft:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;

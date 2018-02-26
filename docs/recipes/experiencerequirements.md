@@ -14,7 +14,7 @@ RecipeBuilder setConsumeExperience(boolean consumeExperience);
 
 By default, recipes will consume experience or levels when the requirements are set. You can call `setConsumeExperience(false)` to keep the experience requirement of a recipe, but prevent it from consuming any when crafting.
 
-This recipe requires and consumes `20` experience when crafting:
+For example, the following recipe requires and consumes `20` experience when crafting:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;
@@ -26,7 +26,7 @@ RecipeBuilder.get("basic")
   .create();
 ```
 
-This recipe requires `30` levels to craft, but does not consume any experience when crafting:
+To present another example, the followng recipe requires that the player has `30` levels, but does not consume any experience when crafting:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;

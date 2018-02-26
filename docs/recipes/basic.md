@@ -1,6 +1,6 @@
 # Basic Recipes
 
-All recipes require, at the very least, an input and an output. Artisan Worktable's recipes come in two forms that most of you are probably familiar with: shaped and shapeless.
+All recipes require, at the very least, an input and an output. Artisan Worktables' recipes come in two forms that most of you are probably familiar with: shaped and shapeless.
 
 ## Shaped Recipes
 
@@ -10,7 +10,7 @@ Shaped recipes are created by calling the following method on the builder:
 RecipeBuilder setShaped(IIngredient[][] ingredients);
 ```
 
-This recipe will craft a furnace using the vanilla furnace pattern in any of the basic tables.
+For example, the following recipe will craft a furnace using the vanilla furnace pattern in any of the `basic` tables.
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;
@@ -38,7 +38,7 @@ Shapeless recipes are created by calling the following method on the builder:
 RecipeBuilder setShapeless(IIngredient[] ingredients);
 ```
 
-This recipe will take any item that matches the ore dictionary `logWood` and craft an oak plank in any of the basic tables.
+For example, the following recipe will take any item that matches the ore dictionary entry `logWood` and craft an oak plank in any of the `basic` tables.
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;

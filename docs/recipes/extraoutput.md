@@ -12,7 +12,7 @@ RecipeBuilder setExtraOutputThree(IItemStack output, float chance);
 
 In these methods, `chance` is a float in the range `[0,1]`.
 
-This example has a 75% chance of dropping a string and a 25% chance of dropping a diamond:
+For example, the following recipe has a `75%` chance of dropping a `<minecraft:string>` and a `25%` chance of dropping a `<minecraft:diamond>`:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;

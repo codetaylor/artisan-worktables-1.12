@@ -1,6 +1,6 @@
 # Table Tiers
 
-The Artisans Worktables come in three different flavors: `Worktables`, `Workstations`, and `Workshops`.
+The Artisan Worktables crafting tables come in three different flavors: `Worktables`, `Workstations`, and `Workshops`.
 
 | Tier        | Grid | Tools | Fluid Capacity | Secondary |
 |-------------|:----:|:-----:|:--------------:|:---------:|
@@ -10,7 +10,7 @@ The Artisans Worktables come in three different flavors: `Worktables`, `Workstat
 
 ## Recipe Tiers
 
-Recipes that don't exceed any of a table tier's limitations can be able to be crafted in that tier. For example, a recipe that uses a 3x3 grid pattern and one tool can be crafted in any of the three tiers, while a recipe that uses a 4x4 grid and two tools will only be craftable in a tier three table.
+Recipes that don't exceed any of a tier's limitations can be crafted in that tier. For example, a recipe that uses a 3x3 grid pattern and one tool can be crafted in any of the three tiers, while a recipe that uses a 4x4 grid and two tools will only be craftable in a tier three table.
 
 If you want to restrict a lower tier recipe from being crafted in a lower tier table, you can use the following method when constructing a recipe:
 
@@ -26,7 +26,7 @@ Accepted values for `minimumTier` are:
 | Workstation | 1       |
 | Workshop    | 2       |
 
-In the following recipe, even though the table doesn't exceed the limitations of any of the three table tiers, it can only be crafted in a `Workshop` tier table:
+In the following recipe, even though the table doesn't exceed the limitations of any of the three tiers, it can only be crafted in a `Workshop` tier table:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;

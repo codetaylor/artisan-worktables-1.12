@@ -17,7 +17,7 @@ import mods.artisanworktables.builder.RecipeBuilder;
 val builder = RecipeBuilder.get("basic");
 ```
 
-You can reuse builder objects or call `RecipeBuilder.get(String tableName)` each time you need one for a specific table. Calling this method repeatedly won't impact performace because, under the hood, the same builder object is used.
+You can reuse builder objects or call `RecipeBuilder.get(String tableName)` each time you need one for a specific table. Calling this method repeatedly will have little impact on performace, if any, because the same builder object is used.
 
 The list of valid table names is: `basic`, `blacksmith`, `carpenter`, `chemist`, `engineer`, `jeweler`, `mage`, `mason`, `scribe`, and `tailor`.
 
@@ -74,7 +74,7 @@ RecipeBuilder.get("basic")
 
     While using method chains can be appealing for a variety of reasons, there is a caveat that you should be aware of. When ZenScript compiles the example below, it sees the entire method chain as a single line. This means that when you have multiple recipes created in the same method chain and one of the recipes has an error, the error will indicate that the point of failure is on the line that begins the method chain. This behavior isn't very useful for determining which recipe in the chain has gone bad.
 
-The builder object's methods can be chained repeatedly:
+While it's not the best practice, the builder object's methods can be chained repeatedly:
 
 ```js
 import mods.artisanworktables.builder.RecipeBuilder;
