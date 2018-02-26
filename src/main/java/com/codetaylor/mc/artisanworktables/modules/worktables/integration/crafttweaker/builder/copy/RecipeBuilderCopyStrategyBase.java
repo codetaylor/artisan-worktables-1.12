@@ -24,7 +24,7 @@ public abstract class RecipeBuilderCopyStrategyBase
   private boolean invalid;
 
   @Override
-  public IZenRecipeBuilderCopyStrategy excludeInput() {
+  public IZenRecipeBuilderCopyStrategy noInput() {
 
     if (this.excludeOutput) {
       CTLogHelper.logErrorFromZenMethod("Can't exclude both input and output from recipe copy");
@@ -43,7 +43,7 @@ public abstract class RecipeBuilderCopyStrategyBase
   }
 
   @Override
-  public IZenRecipeBuilderCopyStrategy excludeOutput() {
+  public IZenRecipeBuilderCopyStrategy noOutput() {
 
     if (this.excludeInput) {
       CTLogHelper.logErrorFromZenMethod("Can't exclude both input and output from recipe copy");

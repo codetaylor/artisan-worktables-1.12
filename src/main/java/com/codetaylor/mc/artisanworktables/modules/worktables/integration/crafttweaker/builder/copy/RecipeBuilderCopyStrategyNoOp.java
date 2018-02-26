@@ -10,13 +10,13 @@ public class RecipeBuilderCopyStrategyNoOp
   public static final IZenRecipeBuilderCopyStrategy INSTANCE = new RecipeBuilderCopyStrategyNoOp();
 
   @Override
-  public IZenRecipeBuilderCopyStrategy excludeInput() {
+  public IZenRecipeBuilderCopyStrategy noInput() {
 
     return this;
   }
 
   @Override
-  public IZenRecipeBuilderCopyStrategy excludeOutput() {
+  public IZenRecipeBuilderCopyStrategy noOutput() {
 
     return this;
   }

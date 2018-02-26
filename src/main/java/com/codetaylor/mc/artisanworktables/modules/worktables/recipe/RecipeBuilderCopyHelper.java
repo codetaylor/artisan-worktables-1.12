@@ -54,7 +54,7 @@ public class RecipeBuilderCopyHelper {
       return RecipeBuilderCopyHelper.copyShapedRecipeInput((IShapedRecipe) recipe, builder);
 
     } else {
-      return RecipeBuilderCopyHelper.copyRecipeInput(recipe, builder);
+      return RecipeBuilderCopyHelper.copyShapelessRecipeInput(recipe, builder);
     }
   }
 

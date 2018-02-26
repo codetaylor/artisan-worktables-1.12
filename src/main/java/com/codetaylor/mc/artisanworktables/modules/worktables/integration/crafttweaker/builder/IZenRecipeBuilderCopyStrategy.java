@@ -53,10 +53,10 @@ public interface IZenRecipeBuilderCopyStrategy {
   }
 
   @ZenMethod
-  IZenRecipeBuilderCopyStrategy excludeInput();
+  IZenRecipeBuilderCopyStrategy noInput();
 
   @ZenMethod
-  IZenRecipeBuilderCopyStrategy excludeOutput();
+  IZenRecipeBuilderCopyStrategy noOutput();
 
   @ZenMethod
   IZenRecipeBuilderCopyStrategy replaceOutput(IItemStack replacement);
