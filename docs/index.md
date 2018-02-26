@@ -20,4 +20,5 @@ Artisan Worktables contains a variety of unique features that include:
 
 ## Supported Versions
 
-* Minecraft 1.12.2
+  * Features and bugfixes:
+    * Minecraft 1.12.2
