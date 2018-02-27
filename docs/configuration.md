@@ -6,7 +6,7 @@ To give you an idea of Artisan Worktables' configuration options, here is an up-
 
 `config/artisanworktables/artisanworktables.module.Toolbox.cfg`
 
-```
+```coffeescript
 # Configuration file
 
 general {
@@ -44,7 +44,7 @@ general {
 
 `config/artisanworktables/artisanworktables.module.Tools.cfg`
 
-```
+```coffeescript
 # Configuration file
 
 general {
@@ -106,7 +106,7 @@ general {
 
 `config/artisanworktables/artisanworktables.module.Worktables.cfg`
 
-```
+```coffeescript
 # Configuration file
 
 general {
