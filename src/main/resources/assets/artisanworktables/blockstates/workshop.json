@@ -85,6 +85,13 @@
           "top": "artisanworktables:blocks/chemist_top",
           "particle": "artisanworktables:blocks/chemist_top"
         }
+      },
+      "farmer": {
+        "textures": {
+          "side": "artisanworktables:blocks/farmer_side",
+          "top": "artisanworktables:blocks/farmer_top",
+          "particle": "artisanworktables:blocks/farmer_top"
+        }
       }
     }
   }

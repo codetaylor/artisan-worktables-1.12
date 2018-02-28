@@ -20,7 +20,8 @@ public enum EnumType
   ENGINEER(6, "engineer", SoundType.ANVIL, new Color(202, 103, 27).getRGB(), 6),
   MAGE(7, "mage", SoundType.CLOTH, new Color(172, 81, 227).getRGB(), 7),
   SCRIBE(8, "scribe", SoundType.WOOD, new Color(182, 136, 79).getRGB(), 8),
-  CHEMIST(9, "chemist", SoundType.METAL, new Color(71, 97, 71).getRGB(), 9);
+  CHEMIST(9, "chemist", SoundType.METAL, new Color(71, 97, 71).getRGB(), 9),
+  FARMER(10, "farmer", SoundType.GROUND, new Color(128, 198, 82).getRGB(), 10);
 
   private static final EnumType[] META_LOOKUP = Stream.of(EnumType.values())
       .sorted(Comparator.comparing(EnumType::getMeta))
