@@ -19,6 +19,8 @@ pages:
     - ZenScript Reference: recipes/zenscriptreference.md
   - Tools:
     - Custom Tool Materials: tools/custommaterials.md
+  - Developer Notes:
+    - Workflow: notes/workflow.md
 
 theme: readthedocs
 
