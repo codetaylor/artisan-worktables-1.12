@@ -12,6 +12,7 @@ public enum EnumWorktableToolType {
 
   // Chef
   CHEFS_CUTTING_BOARD("artisans_cutting_board", "CuttingBoard"),
+  CHEFS_PAN("artisans_pan", "Pan"),
 
   // Chemist
   CHEMISTS_BEAKER("artisans_beaker", "Beaker"),

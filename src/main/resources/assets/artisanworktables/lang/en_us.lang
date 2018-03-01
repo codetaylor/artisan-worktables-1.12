@@ -66,6 +66,7 @@ item.artisanworktables.artisans.shears.name=Artisan's %s Shears
 item.artisanworktables.artisans.lens.name=Artisan's %s Lens
 item.artisanworktables.artisans.sifter.name=Artisan's %s Sifter
 item.artisanworktables.artisans.cutting.board.name=Artisan's %s Cutting Board
+item.artisanworktables.artisans.pan.name=Artisan's %s Pan
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Shapeless Recipe

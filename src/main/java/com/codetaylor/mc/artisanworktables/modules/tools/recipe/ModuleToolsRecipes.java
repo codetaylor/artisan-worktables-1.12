@@ -271,6 +271,17 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.CHEFS_PAN,
+        new Object[]{
+            "s  ",
+            "c..",
+            'c', Items.CLAY_BALL,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**
