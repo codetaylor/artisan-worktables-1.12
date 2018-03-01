@@ -77,7 +77,15 @@
 
         { "target": "artisans_compass_base.png", "position": [4, 7] },
         { "target": "artisans_compass_color.png", "position": [5, 7] },
-        { "target": "artisans_compass_highlight.png", "position": [6, 7] }
+        { "target": "artisans_compass_highlight.png", "position": [6, 7] },
+
+        { "target": "artisans_lens_base.png", "position": [4, 8] },
+        { "target": "artisans_lens_color.png", "position": [5, 8] },
+        { "target": "artisans_lens_highlight.png", "position": [6, 8] },
+
+        { "target": "artisans_sifter_base.png", "position": [4, 9] },
+        { "target": "artisans_sifter_color.png", "position": [5, 9] },
+        { "target": "artisans_sifter_highlight.png", "position": [6, 9] }
 
       ]
     }

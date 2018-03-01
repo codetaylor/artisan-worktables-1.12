@@ -18,6 +18,10 @@ public enum EnumWorktableToolType {
   ENGINEERS_DRIVER("artisans_driver", "Driver"),
   ENGINEERS_SPANNER("artisans_spanner", "Spanner"),
 
+  // Farmer
+  FARMERS_LENS("artisans_lens", "Lens"),
+  FARMERS_SIFTER("artisans_sifter", "Sifter"),
+
   // Jeweler
   JEWELERS_GEMCUTTER("artisans_gemcutter", "GemCutter"),
   JEWELERS_PLIERS("artisans_pliers", "Pliers"),

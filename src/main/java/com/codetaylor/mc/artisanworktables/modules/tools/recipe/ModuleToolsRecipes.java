@@ -235,6 +235,30 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.FARMERS_LENS,
+        new Object[]{
+            "   ",
+            ".g.",
+            "s  ",
+            'g', "paneGlassColorless",
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.FARMERS_SIFTER,
+        new Object[]{
+            "s.s",
+            "sxs",
+            "s.s",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**
