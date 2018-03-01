@@ -24,6 +24,7 @@ public class Recipe
   private List<OutputWeightPair> output;
   private List<Ingredient> ingredients;
   private List<IIngredient> secondaryIngredients;
+  private boolean consumeSecondaryIngredients;
   private FluidStack fluidIngredient;
   private ExtraOutputChancePair[] extraOutputs;
   private IRecipeMatrixMatcher recipeMatrixMatcher;
@@ -42,6 +43,7 @@ public class Recipe
       ToolEntry[] tools,
       List<Ingredient> ingredients,
       @Nonnull List<IIngredient> secondaryIngredients,
+      boolean consumeSecondaryIngredients,
       @Nullable FluidStack fluidIngredient,
       int experienceRequired,
       int levelRequired,
@@ -60,6 +62,7 @@ public class Recipe
     this.tools = tools;
     this.ingredients = ingredients;
     this.secondaryIngredients = secondaryIngredients;
+    this.consumeSecondaryIngredients = consumeSecondaryIngredients;
     this.fluidIngredient = fluidIngredient;
     this.experienceRequired = experienceRequired;
     this.levelRequired = levelRequired;
@@ -149,6 +152,12 @@ public class Recipe
   public List<IIngredient> getSecondaryIngredients() {
 
     return this.secondaryIngredients;
+  }
+
+  @Override
+  public boolean consumeSecondaryIngredients() {
+
+    return this.consumeSecondaryIngredients;
   }
 
   @Override

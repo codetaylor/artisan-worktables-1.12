@@ -54,6 +54,9 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
 
   @ZenMethod
+  IZenRecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients);
+
+  @ZenMethod
   IZenRecipeBuilder setMirrored();
 
   @Deprecated

@@ -52,6 +52,10 @@ public abstract class TileEntitySecondaryInputBase
 
     super.onCraftReduceIngredients(recipe);
 
+    if (!recipe.consumeSecondaryIngredients()) {
+      return;
+    }
+
     List<IIngredient> secondaryIngredients = recipe.getSecondaryIngredients();
 
     if (!secondaryIngredients.isEmpty()) {

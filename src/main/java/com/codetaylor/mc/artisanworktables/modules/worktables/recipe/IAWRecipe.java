@@ -51,6 +51,8 @@ public interface IAWRecipe {
   @Nonnull
   List<IIngredient> getSecondaryIngredients();
 
+  boolean consumeSecondaryIngredients();
+
   boolean isValidTool(ItemStack tool, int toolIndex);
 
   boolean hasSufficientToolDurability(ItemStack tool, int toolIndex);

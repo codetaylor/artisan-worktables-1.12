@@ -20,6 +20,7 @@ public class RecipeBuilder {
   private boolean mirrored;
   private List<Ingredient> ingredients;
   private List<IIngredient> secondaryIngredients;
+  private boolean consumeSecondaryIngredients;
   private FluidStack fluidIngredient;
   private List<ToolIngredientEntry> tools;
   private List<OutputWeightPair> outputWeightPairList;
@@ -37,6 +38,7 @@ public class RecipeBuilder {
 
     this.ingredients = null;
     this.secondaryIngredients = Collections.emptyList();
+    this.consumeSecondaryIngredients = true;
     this.fluidIngredient = null;
     this.outputWeightPairList = new ArrayList<>();
     this.extraOutputs = new ExtraOutputChancePair[3];
@@ -103,6 +105,12 @@ public class RecipeBuilder {
 
     this.secondaryIngredients = new ArrayList<>();
     Collections.addAll(this.secondaryIngredients, secondaryIngredients);
+    return this;
+  }
+
+  public RecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients) {
+
+    this.consumeSecondaryIngredients = consumeSecondaryIngredients;
     return this;
   }
 
@@ -326,6 +334,7 @@ public class RecipeBuilder {
         tools,
         this.ingredients,
         this.secondaryIngredients,
+        this.consumeSecondaryIngredients,
         this.fluidIngredient,
         this.experienceRequired,
         this.levelRequired,

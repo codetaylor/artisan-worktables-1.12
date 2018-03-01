@@ -66,6 +66,13 @@ public class ZenRecipeBuilder
   }
 
   @Override
+  public IZenRecipeBuilder setMirrored() {
+
+    this.recipeBuilder.setMirrored();
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
 
     if (this.inputSet) {
@@ -143,9 +150,9 @@ public class ZenRecipeBuilder
   }
 
   @Override
-  public IZenRecipeBuilder setMirrored() {
+  public IZenRecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients) {
 
-    this.recipeBuilder.setMirrored();
+    this.recipeBuilder.setConsumeSecondaryIngredients(consumeSecondaryIngredients);
     return this;
   }
 

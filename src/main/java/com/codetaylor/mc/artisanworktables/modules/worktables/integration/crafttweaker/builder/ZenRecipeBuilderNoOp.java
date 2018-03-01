@@ -39,6 +39,12 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients) {
+
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setMirrored() {
 
     return this;
