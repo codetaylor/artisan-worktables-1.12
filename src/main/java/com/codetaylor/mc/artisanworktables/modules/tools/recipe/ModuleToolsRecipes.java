@@ -259,6 +259,18 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.CHEFS_CUTTING_BOARD,
+        new Object[]{
+            "  s",
+            " . ",
+            ".bb",
+            'b', "slabWood",
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**

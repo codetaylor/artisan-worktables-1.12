@@ -1,0 +1,8 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "artisanworktables:items/artisans_cutting_board_base",
+    "layer1": "artisanworktables:items/artisans_cutting_board_color",
+    "layer2": "artisanworktables:items/artisans_cutting_board_highlight"
+  }
+}

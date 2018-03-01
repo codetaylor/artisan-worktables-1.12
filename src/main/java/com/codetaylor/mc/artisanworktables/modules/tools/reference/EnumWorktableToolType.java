@@ -10,6 +10,9 @@ public enum EnumWorktableToolType {
   CARPENTERS_HAMMER("artisans_framing_hammer", "FramingHammer"),
   CARPENTERS_HANDSAW("artisans_handsaw", "Handsaw"),
 
+  // Chef
+  CHEFS_CUTTING_BOARD("artisans_cutting_board", "CuttingBoard"),
+
   // Chemist
   CHEMISTS_BEAKER("artisans_beaker", "Beaker"),
   CHEMISTS_BURNER("artisans_burner", "Burner"),

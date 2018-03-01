@@ -47,6 +47,10 @@
         { "target": "artisans_beaker_color.png", "position": [1, 9] },
         { "target": "artisans_beaker_highlight.png", "position": [2, 9] },
 
+        { "target": "artisans_cutting_board_base.png", "position": [0, 10] },
+        { "target": "artisans_cutting_board_color.png", "position": [1, 10] },
+        { "target": "artisans_cutting_board_highlight.png", "position": [2, 10] },
+
         { "target": "artisans_pliers_base.png", "position": [4, 0] },
         { "target": "artisans_pliers_color.png", "position": [5, 0] },
         { "target": "artisans_pliers_highlight.png", "position": [6, 0] },
