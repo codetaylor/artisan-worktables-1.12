@@ -1,10 +1,12 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.registry.strategy.IClientModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
+import com.codetaylor.mc.athenaeum.util.BottleHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,6 +29,8 @@ import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -82,17 +86,21 @@ public abstract class BlockBase
 
     TileEntity tileEntity = worldIn.getTileEntity(pos);
 
-    return !(tileEntity instanceof TileEntityBase) || ((TileEntityBase) tileEntity).onBlockActivated(
-        worldIn,
-        pos,
-        state,
-        playerIn,
-        hand,
-        facing,
-        hitX,
-        hitY,
-        hitZ
-    );
+    if (tileEntity instanceof TileEntityBase) {
+
+      FluidTank tank = ((TileEntityBase) tileEntity).getTank();
+
+      if (BottleHelper.drainWaterFromBottle(playerIn, tank)
+          || BottleHelper.drainWaterIntoBottle(playerIn, tank)
+          || FluidUtil.interactWithFluidHandler(playerIn, hand, tank)) {
+        return true;
+      }
+
+      playerIn.openGui(ModuleWorktables.MOD_INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+      return true;
+    }
+
+    return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
   }
 
   @Override

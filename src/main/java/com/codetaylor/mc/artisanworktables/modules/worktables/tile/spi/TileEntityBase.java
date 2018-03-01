@@ -20,7 +20,6 @@ import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
-import com.codetaylor.mc.athenaeum.util.BottleHelper;
 import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.Block;
@@ -37,7 +36,6 @@ import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -45,9 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -129,7 +125,7 @@ public abstract class TileEntityBase
 
     if (!this.world.isRemote) {
       ModuleWorktables.PACKET_SERVICE.sendToAllAround(
-          new CPacketWorktableFluidUpdate(this.getPos(), tank),
+          new CPacketWorktableFluidUpdate(this.getPos(), this.tank),
           this
       );
     }
@@ -739,42 +735,6 @@ public abstract class TileEntityBase
     Block block = state.getBlock();
     Item item = Item.getItemFromBlock(block);
     return new ItemStack(item, 1, block.getMetaFromState(state));
-  }
-
-  public boolean onBlockActivated(
-      World worldIn,
-      BlockPos pos,
-      IBlockState state,
-      EntityPlayer playerIn,
-      EnumHand hand,
-      EnumFacing facing,
-      float hitX,
-      float hitY,
-      float hitZ
-  ) {
-
-    if (BottleHelper.drainWaterFromBottle(this, playerIn, this.tank)) {
-      return true;
-    }
-
-    if (BottleHelper.drainWaterIntoBottle(this, playerIn, this.tank)) {
-      return true;
-    }
-
-    IFluidHandler fluidHandler = this.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-    boolean result = false;
-
-    if (fluidHandler != null) {
-      result = FluidUtil.interactWithFluidHandler(playerIn, hand, fluidHandler);
-    }
-
-    if (result) {
-      BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
-      return true;
-    }
-
-    playerIn.openGui(ModuleWorktables.MOD_INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
-    return true;
   }
 
   @Override

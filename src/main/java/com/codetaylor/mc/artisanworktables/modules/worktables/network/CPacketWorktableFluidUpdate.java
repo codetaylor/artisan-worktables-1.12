@@ -68,7 +68,9 @@ public class CPacketWorktableFluidUpdate
     if (tileEntity != null) {
       TileEntityBase tileEntityBase = (TileEntityBase) tileEntity;
       tileEntityBase.getTank().setFluid(message.fluidTank.getFluid());
-      tileEntityBase.triggerContainerRecipeUpdate();
+
+      // We don't force a container recipe update here because it's triggered
+      // when the tank's onContentsChanged() method is called.
     }
 
     return null;
