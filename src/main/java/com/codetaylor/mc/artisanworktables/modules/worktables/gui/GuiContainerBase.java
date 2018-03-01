@@ -1,13 +1,12 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
-import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementFluidTankSmall;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementMageEffect;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementToolboxSide;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
@@ -81,7 +80,7 @@ public abstract class GuiContainerBase
     this.guiContainerElementAdd(new GuiElementTabs(
         this,
         this.tileEntity,
-        (tileEntity instanceof TileEntityWorkshop) ? 212 : 176
+        176
     ));
   }
 
