@@ -1,3 +1,9 @@
+1.16.2
+
+ * Fixed: Fluid tank GUI display not updating when piping fluids in / out (#89)
+ 
+---
+
 1.16.1
 
  * Fixed: Workshop GUI tab arrow in the wrong position (#88)

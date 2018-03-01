@@ -1,11 +1,11 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation;
 
+import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorkstation;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -14,7 +14,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -65,10 +64,9 @@ public class TileEntityWorkstation
   }
 
   @Override
-  protected FluidTank createFluidTank(EnumType type) {
+  protected int getFluidTankCapacity(EnumType type) {
 
-    int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKSTATION.get(type.getName());
-    return new FluidTank(capacity);
+    return ModuleWorktablesConfig.FLUID_CAPACITY_WORKSTATION.get(type.getName());
   }
 
   @Override

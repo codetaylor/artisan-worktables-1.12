@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorksho
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
@@ -110,8 +111,12 @@ public class ModuleWorktables
   @Override
   public void onNetworkRegister(IPacketRegistry registry) {
 
+    // Server
     registry.register(SPacketWorktableTab.class, SPacketWorktableTab.class, Side.SERVER);
     registry.register(SPacketWorktableTankDestroyFluid.class, SPacketWorktableTankDestroyFluid.class, Side.SERVER);
+
+    // Client
+    registry.register(CPacketWorktableFluidUpdate.class, CPacketWorktableFluidUpdate.class, Side.CLIENT);
   }
 
   @Override

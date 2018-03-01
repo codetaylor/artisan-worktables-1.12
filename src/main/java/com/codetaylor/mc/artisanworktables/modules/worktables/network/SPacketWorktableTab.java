@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.network;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -10,51 +9,29 @@ import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * Sent from the client to the server to signal a worktable tab change.
  */
 public class SPacketWorktableTab
-    implements IMessage,
-    IMessageHandler<SPacketWorktableTab, IMessage> {
-
-  private int posX;
-  private int posY;
-  private int posZ;
+    extends SPacketTileEntityBase<SPacketWorktableTab> {
 
   @SuppressWarnings("unused")
   public SPacketWorktableTab() {
     // Serialization
   }
 
-  public SPacketWorktableTab(int posX, int posY, int posZ) {
+  public SPacketWorktableTab(BlockPos blockPos) {
 
-    this.posX = posX;
-    this.posY = posY;
-    this.posZ = posZ;
-  }
-
-  @Override
-  public void fromBytes(ByteBuf buf) {
-
-    this.posX = buf.readInt();
-    this.posY = buf.readInt();
-    this.posZ = buf.readInt();
-  }
-
-  @Override
-  public void toBytes(ByteBuf buf) {
-
-    buf.writeInt(this.posX);
-    buf.writeInt(this.posY);
-    buf.writeInt(this.posZ);
+    super(blockPos);
   }
 
   @Override
   public IMessage onMessage(
-      SPacketWorktableTab message, MessageContext ctx
+      SPacketWorktableTab message,
+      MessageContext ctx,
+      TileEntity tileEntity
   ) {
 
     // Reference:
@@ -68,17 +45,14 @@ public class SPacketWorktableTab
       player.inventory.setItemStack(ItemStack.EMPTY);
     }
 
-    BlockPos pos = new BlockPos(message.posX, message.posY, message.posZ);
-    TileEntity tileEntity = player.getEntityWorld().getTileEntity(pos);
-
     if (tileEntity instanceof TileEntityBase) {
       player.openGui(
           ModuleWorktables.MOD_INSTANCE,
           1,
           player.getEntityWorld(),
-          message.posX,
-          message.posY,
-          message.posZ
+          message.blockPos.getX(),
+          message.blockPos.getY(),
+          message.blockPos.getZ()
       );
     }
 

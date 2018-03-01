@@ -38,11 +38,7 @@ public abstract class GuiElementFluidTankBase
   public void elementClicked(int mouseX, int mouseY, int mouseButton) {
 
     if (mouseButton == 0 && GuiScreen.isShiftKeyDown()) {
-      ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTankDestroyFluid(
-          this.blockPos.getX(),
-          this.blockPos.getY(),
-          this.blockPos.getZ()
-      ));
+      ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTankDestroyFluid(this.blockPos));
     }
   }
 

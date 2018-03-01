@@ -199,11 +199,7 @@ public class GuiElementTabs
           && mouseY >= yMin) {
         TileEntityBase table = joinedTables.get(i);
         BlockPos pos = table.getPos();
-        ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTab(
-            pos.getX(),
-            pos.getY(),
-            pos.getZ()
-        ));
+        ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTab(pos));
         Minecraft.getMinecraft()
             .getSoundHandler()
             .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1));

@@ -11,6 +11,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.event.EventHelper;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesHelper;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
@@ -110,6 +111,30 @@ public abstract class TileEntityBase
     this.secondaryOutputHandler.addObserver(contentsChangedEventHandler);
   }
 
+  protected FluidTank createFluidTank(EnumType type) {
+
+    return new FluidTank(this.getFluidTankCapacity(type)) {
+
+      @Override
+      protected void onContentsChanged() {
+
+        TileEntityBase.this.onFluidTankContentsChanged();
+      }
+    };
+  }
+
+  protected void onFluidTankContentsChanged() {
+
+    this.triggerContainerRecipeUpdate();
+
+    if (!this.world.isRemote) {
+      ModuleWorktables.PACKET_SERVICE.sendToAllAround(
+          new CPacketWorktableFluidUpdate(this.getPos(), tank),
+          this
+      );
+    }
+  }
+
   public void addContainer(Container container) {
 
     this.containerList.add(container);
@@ -120,7 +145,7 @@ public abstract class TileEntityBase
     this.containerList.remove(container);
   }
 
-  protected void triggerContainerRecipeUpdate() {
+  public void triggerContainerRecipeUpdate() {
 
     for (Container container : this.containerList) {
       container.updateRecipeOutput();
@@ -775,7 +800,7 @@ public abstract class TileEntityBase
 
   protected abstract ObservableStackHandler createSecondaryOutputHandler();
 
-  protected abstract FluidTank createFluidTank(EnumType type);
+  protected abstract int getFluidTankCapacity(EnumType type);
 
   public abstract EnumTier getTier();
 }
