@@ -1,3 +1,9 @@
+1.16.1
+
+ * Fixed: Workshop GUI tab arrow in the wrong position (#88)
+
+---
+
 1.16.0
 
  * NOTES:
