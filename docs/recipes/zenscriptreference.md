@@ -33,6 +33,8 @@ RecipeBuilder excludeGameStages(String[] stages);
 
 RecipeBuilder setMinimumTier(int minimumTier);
 
+RecipeBuilder setMaximumTier(int maximumTier);
+
 RecipeBuilder setExperienceRequired(int experienceRequired);
 
 RecipeBuilder setLevelRequired(int levelRequired);
