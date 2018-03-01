@@ -25,6 +25,7 @@ Keeping the release branch current is as simple as rebasing on `master` any time
 ```
 $ git checkout release/version
 $ git rebase master
+$ git push --force-with-lease
 ```
 
 ### Finishing the Release Branch
@@ -71,6 +72,7 @@ Updating a feature branch is done with `rebase` similar to updating the release 
 ```
 $ git checkout feature/the-feature
 $ git rebase release/version
+$ git push --force-with-lease
 ```
 
 ### Finishing a Feature Branch
