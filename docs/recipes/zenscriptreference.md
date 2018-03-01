@@ -15,6 +15,8 @@ RecipeBuilder setFluid(ILiquidStack fluidIngredient);
 
 RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
 
+RecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients);
+
 RecipeBuilder setMirrored();
 
 RecipeBuilder addTool(IIngredient tool, int damage);
