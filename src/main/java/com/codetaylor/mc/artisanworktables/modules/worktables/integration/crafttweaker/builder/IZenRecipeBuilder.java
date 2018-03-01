@@ -85,6 +85,9 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setMinimumTier(int minimumTier);
 
   @ZenMethod
+  IZenRecipeBuilder setMaximumTier(int maximumTier);
+
+  @ZenMethod
   IZenRecipeBuilder setExperienceRequired(int experienceRequired);
 
   @ZenMethod

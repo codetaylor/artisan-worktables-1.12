@@ -31,6 +31,7 @@ public class Recipe
   private int width;
   private int height;
   private int minimumTier;
+  private int maximumTier;
   private int experienceRequired;
   private int levelRequired;
   private boolean consumeExperience;
@@ -50,7 +51,8 @@ public class Recipe
       boolean mirrored,
       int width,
       int height,
-      int minimumTier
+      int minimumTier,
+      int maximumTier
   ) {
 
     this.gameStageMatcher = gameStageMatcher;
@@ -68,6 +70,7 @@ public class Recipe
     this.width = width;
     this.height = height;
     this.minimumTier = minimumTier;
+    this.maximumTier = maximumTier;
   }
 
   @Override
@@ -360,6 +363,7 @@ public class Recipe
   @Override
   public boolean matchTier(EnumTier tier) {
 
-    return this.minimumTier <= tier.getId();
+    return this.minimumTier <= tier.getId()
+        && this.maximumTier >= tier.getId();
   }
 }

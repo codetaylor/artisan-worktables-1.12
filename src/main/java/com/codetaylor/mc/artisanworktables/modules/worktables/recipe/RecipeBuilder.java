@@ -28,6 +28,7 @@ public class RecipeBuilder {
   private String[] includeGamestages;
   private String[] excludeGamestages;
   private int minimumTier;
+  private int maximumTier;
   private int experienceRequired;
   private int levelRequired;
   private boolean consumeExperience;
@@ -45,6 +46,7 @@ public class RecipeBuilder {
     this.excludeGamestages = new String[0];
     this.tools = new ArrayList<>();
     this.minimumTier = 0;
+    this.maximumTier = Integer.MAX_VALUE;
     this.experienceRequired = 0;
     this.levelRequired = 0;
     this.consumeExperience = true;
@@ -165,16 +167,37 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setMinimumTier(int minimumTier) throws RecipeBuilderException {
+  public RecipeBuilder setMinimumTier(int tier) throws RecipeBuilderException {
 
     try {
-      EnumTier.fromId(minimumTier);
+      EnumTier.fromId(tier);
 
     } catch (Exception e) {
-      throw new RecipeBuilderException("Invalid tier: " + minimumTier);
+      throw new RecipeBuilderException("Invalid tier: " + tier);
     }
 
-    this.minimumTier = minimumTier;
+    if (tier > this.maximumTier) {
+      throw new RecipeBuilderException("Minimum tier can't be larger than maximum tier: " + this.maximumTier + " < " + tier);
+    }
+
+    this.minimumTier = tier;
+    return this;
+  }
+
+  public RecipeBuilder setMaximumTier(int tier) throws RecipeBuilderException {
+
+    try {
+      EnumTier.fromId(tier);
+
+    } catch (Exception e) {
+      throw new RecipeBuilderException("Invalid tier: " + tier);
+    }
+
+    if (tier < this.minimumTier) {
+      throw new RecipeBuilderException("Maximum tier can't be smaller than minimum tier: " + this.minimumTier + ">" + tier);
+    }
+
+    this.maximumTier = tier;
     return this;
   }
 
@@ -312,7 +335,8 @@ public class RecipeBuilder {
         this.mirrored,
         this.width,
         this.height,
-        this.minimumTier
+        this.minimumTier,
+        this.maximumTier
     );
   }
 }

@@ -99,6 +99,12 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder setMaximumTier(int maximumTier) {
+
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setExperienceRequired(int experienceRequired) {
 
     return this;

@@ -282,6 +282,19 @@ public class ZenRecipeBuilder
     return this;
   }
 
+  @Override
+  public IZenRecipeBuilder setMaximumTier(int maximumTier) {
+
+    try {
+      this.recipeBuilder.setMaximumTier(maximumTier);
+
+    } catch (RecipeBuilderException e) {
+      return this.setInvalid(e.getMessage());
+    }
+
+    return this;
+  }
+
   // --------------------------------------------------------------------------
   // - Experience
 
