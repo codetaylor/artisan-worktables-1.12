@@ -7,9 +7,12 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuild
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderException;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.IAction;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.mc1120.CraftTweaker;
 import net.minecraft.item.crafting.IRecipe;
+
+import javax.annotation.Nullable;
 
 public abstract class RecipeBuilderCopyStrategyBase
     implements IRecipeBuilderCopyStrategy,
@@ -20,16 +23,24 @@ public abstract class RecipeBuilderCopyStrategyBase
   protected boolean excludeInput;
   protected boolean excludeOutput;
   protected IItemStack replaceOutput;
+  protected InputReplacements inputReplacements;
 
   private boolean invalid;
+
+  public RecipeBuilderCopyStrategyBase() {
+
+    this.inputReplacements = InputReplacements.NO_OP;
+  }
 
   @Override
   public IZenRecipeBuilderCopyStrategy noInput() {
 
     if (this.excludeOutput) {
-      CTLogHelper.logErrorFromZenMethod("Can't exclude both input and output from recipe copy");
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Can't exclude both input and output from recipe copy");
+    }
+
+    if (this.inputReplacements != InputReplacements.NO_OP) {
+      return this.setInvalid("Can't exclude input and set input replacements");
     }
 
     this.excludeInput = true;
@@ -46,15 +57,11 @@ public abstract class RecipeBuilderCopyStrategyBase
   public IZenRecipeBuilderCopyStrategy noOutput() {
 
     if (this.excludeInput) {
-      CTLogHelper.logErrorFromZenMethod("Can't exclude both input and output from recipe copy");
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Can't exclude both input and output from recipe copy");
     }
 
     if (this.replaceOutput != null) {
-      CTLogHelper.logErrorFromZenMethod("Can't exclude output and replace output, one or the other");
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Can't exclude output and replace output, one or the other");
     }
 
     this.excludeOutput = true;
@@ -68,18 +75,59 @@ public abstract class RecipeBuilderCopyStrategyBase
   }
 
   @Override
+  public IZenRecipeBuilderCopyStrategy replaceInput(
+      @Nullable IIngredient toReplace,
+      @Nullable IIngredient replacement
+  ) {
+
+    if (this.excludeInput) {
+      return this.setInvalid("Can't exclude input and set input replacements");
+    }
+
+    if (toReplace == null && replacement == null) {
+      return this.setInvalid("Can't replace null with null");
+    }
+
+    if (this.inputReplacements == InputReplacements.NO_OP) {
+      this.inputReplacements = new InputReplacements();
+    }
+
+    this.inputReplacements.add(toReplace, replacement);
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilderCopyStrategy replaceShapedInput(int col, int row, @Nullable IIngredient replacement) {
+
+    if (this.excludeInput) {
+      return this.setInvalid("Can't exclude input and set input replacements");
+    }
+
+    if (col < 0 || col > 2) {
+      return this.setInvalid("Grid column index out of bounds: 0 <= " + col + " <= 2");
+    }
+
+    if (row < 0 || row > 2) {
+      return this.setInvalid("Grid row index out of bounds: 0 <= " + row + " <= 2");
+    }
+
+    if (this.inputReplacements == InputReplacements.NO_OP) {
+      this.inputReplacements = new InputReplacements();
+    }
+
+    this.inputReplacements.add(col, row, replacement);
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilderCopyStrategy replaceOutput(IItemStack replacement) {
 
     if (replacement == null) {
-      CTLogHelper.logErrorFromZenMethod("Recipe output can't be null");
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Recipe output can't be null");
     }
 
     if (this.excludeOutput) {
-      CTLogHelper.logErrorFromZenMethod("Can't exclude output and replace output, one or the other");
-      this.invalid = true;
-      return this;
+      return this.setInvalid("Can't exclude output and replace output, one or the other");
     }
 
     this.replaceOutput = replacement;
@@ -104,7 +152,7 @@ public abstract class RecipeBuilderCopyStrategyBase
   protected void doCopy(IRecipe recipe, RecipeBuilder builder) throws RecipeBuilderException {
 
     if (!this.excludeInput) {
-      RecipeBuilderCopyHelper.copyRecipeInput(recipe, builder);
+      RecipeBuilderCopyHelper.copyRecipeInput(recipe, this.inputReplacements, builder);
     }
 
     if (this.replaceOutput != null) {
@@ -116,5 +164,15 @@ public abstract class RecipeBuilderCopyStrategyBase
 
     builder.validate();
     CraftTweaker.LATE_ACTIONS.add(new ZenWorktable.Add(this.tableName, builder));
+  }
+
+  // --------------------------------------------------------------------------
+  // - Internal
+
+  protected IZenRecipeBuilderCopyStrategy setInvalid(String message) {
+
+    CTLogHelper.logErrorFromZenMethod(message);
+    this.invalid = true;
+    return this;
   }
 }

@@ -12,6 +12,8 @@ import crafttweaker.api.recipes.ICraftingRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import javax.annotation.Nullable;
+
 @ZenClass("mods.artisanworktables.builder.Copy")
 @SuppressWarnings("UnusedReturnValue")
 public interface IZenRecipeBuilderCopyStrategy {
@@ -57,6 +59,12 @@ public interface IZenRecipeBuilderCopyStrategy {
 
   @ZenMethod
   IZenRecipeBuilderCopyStrategy noOutput();
+
+  @ZenMethod
+  IZenRecipeBuilderCopyStrategy replaceInput(@Nullable IIngredient toReplace, @Nullable IIngredient replacement);
+
+  @ZenMethod
+  IZenRecipeBuilderCopyStrategy replaceShapedInput(int col, int row, @Nullable IIngredient replacement);
 
   @ZenMethod
   IZenRecipeBuilderCopyStrategy replaceOutput(IItemStack replacement);
