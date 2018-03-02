@@ -92,6 +92,13 @@
           "top": "artisanworktables:blocks/farmer_top",
           "particle": "artisanworktables:blocks/farmer_top"
         }
+      },
+      "chef": {
+        "textures": {
+          "side": "artisanworktables:blocks/chef_side",
+          "top": "artisanworktables:blocks/chef_top",
+          "particle": "artisanworktables:blocks/chef_top"
+        }
       }
     }
   }
