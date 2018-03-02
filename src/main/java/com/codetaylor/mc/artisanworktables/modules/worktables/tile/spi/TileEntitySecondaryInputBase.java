@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.SecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.MutuallyExclusiveStackHandler;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
@@ -11,14 +12,20 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TileEntitySecondaryInputBase
     extends TileEntityBase {
 
-  protected ObservableStackHandler secondaryIngredientHandler;
+  protected MutuallyExclusiveStackHandler secondaryIngredientHandler;
 
   protected TileEntitySecondaryInputBase() {
     // serialization
@@ -35,16 +42,40 @@ public abstract class TileEntitySecondaryInputBase
   protected void initialize(EnumType type) {
 
     super.initialize(type);
-    this.secondaryIngredientHandler = new ObservableStackHandler(this.getSecondaryInputSlotCount());
+    this.secondaryIngredientHandler = new MutuallyExclusiveStackHandler(this.getSecondaryInputSlotCount());
     this.secondaryIngredientHandler.addObserver((stackHandler, slotIndex) -> {
       this.markDirty();
       this.triggerContainerRecipeUpdate();
     });
   }
 
-  public ObservableStackHandler getSecondaryIngredientHandler() {
+  public IItemHandler getSecondaryIngredientHandler() {
 
     return this.secondaryIngredientHandler;
+  }
+
+  @Override
+  public boolean hasCapability(
+      @Nonnull Capability<?> capability, @Nullable EnumFacing facing
+  ) {
+
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return true;
+    }
+
+    return super.hasCapability(capability, facing);
+  }
+
+  @Nullable
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      //noinspection unchecked
+      return (T) this.secondaryIngredientHandler;
+    }
+
+    return super.getCapability(capability, facing);
   }
 
   @Override

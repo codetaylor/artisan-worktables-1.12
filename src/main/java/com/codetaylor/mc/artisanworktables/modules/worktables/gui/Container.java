@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -164,7 +165,7 @@ public class Container
     // Secondary input
     if (this.tile instanceof TileEntitySecondaryInputBase) {
       this.slotIndexSecondaryInputStart = this.nextSlotIndex;
-      ObservableStackHandler handler = ((TileEntitySecondaryInputBase) this.tile).getSecondaryIngredientHandler();
+      IItemHandler handler = ((TileEntitySecondaryInputBase) this.tile).getSecondaryIngredientHandler();
       int slotCount = handler.getSlots();
 
       for (int i = 0; i < slotCount; i++) {
