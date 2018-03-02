@@ -5,8 +5,10 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.Til
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -55,6 +57,23 @@ public class BlockWorktable
     return new TileEntityWorktable(type);
   }
 
+  @Override
+  public boolean isTopSolid(IBlockState state) {
+
+    return false;
+  }
+
+  @Override
+  public BlockFaceShape getBlockFaceShape(
+      IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face
+  ) {
+
+    if (face == EnumFacing.UP) {
+      return BlockFaceShape.UNDEFINED;
+    }
+
+    return super.getBlockFaceShape(worldIn, state, pos, face);
+  }
 }
 
 
