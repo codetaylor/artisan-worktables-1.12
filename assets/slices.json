@@ -93,7 +93,11 @@
 
         { "target": "artisans_sifter_base.png", "position": [4, 9] },
         { "target": "artisans_sifter_color.png", "position": [5, 9] },
-        { "target": "artisans_sifter_highlight.png", "position": [6, 9] }
+        { "target": "artisans_sifter_highlight.png", "position": [6, 9] },
+
+        { "target": "artisans_mortar_base.png", "position": [4, 10] },
+        { "target": "artisans_mortar_color.png", "position": [5, 10] },
+        { "target": "artisans_mortar_highlight.png", "position": [6, 10] }
 
       ]
     }

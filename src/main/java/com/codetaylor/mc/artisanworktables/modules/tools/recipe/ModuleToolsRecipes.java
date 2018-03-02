@@ -282,6 +282,18 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.UNIVERSAL_MORTAR,
+        new Object[]{
+            "  s",
+            ".f ",
+            " . ",
+            'f', Items.FLINT,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**
