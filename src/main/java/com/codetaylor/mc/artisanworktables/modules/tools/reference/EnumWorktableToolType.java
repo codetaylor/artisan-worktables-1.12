@@ -47,7 +47,8 @@ public enum EnumWorktableToolType {
   TAILORS_SHEARS("artisans_shears", "Shears"),
 
   // Universal
-  UNIVERSAL_MORTAR("artisans_mortar", "Mortar");
+  UNIVERSAL_MORTAR("artisans_mortar", "Mortar"),
+  UNIVERSAL_KNIFE("artisans_knife", "Knife");
 
   private final String name;
   private final String oreDictSuffix;

@@ -171,7 +171,8 @@ public class ModuleToolsRecipes {
         new Object[]{
             "  .",
             "x. ",
-            "sx ",
+            "sl ",
+            'l', "gemLapis",
             'x', Items.STRING,
             's', "stickWood",
             '.', MATERIAL_ALIAS
@@ -289,6 +290,18 @@ public class ModuleToolsRecipes {
             ".f ",
             " . ",
             'f', Items.FLINT,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.UNIVERSAL_KNIFE,
+        new Object[]{
+            "  .",
+            "x. ",
+            "sx ",
+            'x', Items.STRING,
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }

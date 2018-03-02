@@ -97,7 +97,11 @@
 
         { "target": "artisans_mortar_base.png", "position": [4, 10] },
         { "target": "artisans_mortar_color.png", "position": [5, 10] },
-        { "target": "artisans_mortar_highlight.png", "position": [6, 10] }
+        { "target": "artisans_mortar_highlight.png", "position": [6, 10] },
+
+        { "target": "artisans_knife_base.png", "position": [4, 11] },
+        { "target": "artisans_knife_color.png", "position": [5, 11] },
+        { "target": "artisans_knife_highlight.png", "position": [6, 11] }
 
       ]
     }
