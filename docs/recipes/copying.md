@@ -64,7 +64,46 @@ builder.setCopy(Copy.byName("minecraft:furnace").noInput());
 ```
 
 !!! warning
-    The `noInput()` method is mutually exclusive with the `noOutput()` method.
+    The `noInput()` method is mutually exclusive with the following methods:
+      
+      * `noOutput()`
+      * `replaceInput(IIngredient, IIngredient)`
+      * `replaceShapedInput(int, int, IIngredient)`
+
+### Replace Input
+
+The input ingredients of copied recipes can be replaced when copying, either by `IIngredient` or grid position.
+
+```java
+Copy replaceInput(@Nullable IIngredient toReplace, @Nullable IIngredient replacement);
+Copy replaceShapedInput(int col, int row, @Nullable IIngredient replacement);
+```
+
+Replacements are processed in the order the methods are shown above and only support recipes up to `3x3`. Any ingredient parameter may be `null`, however, when using `replaceInput(IIngredient, IIngredient)`, only one parameter may be `null`.
+
+!!! note
+    Using `replaceShapedInput(int, int, IIngredient)` when copying a recipe may increase the size of the recipe to include the grid position given.
+
+For example, the following recipe will copy the furnace recipe and replace each corner of the crafting grid and the empty ingredient in the middle:
+
+```js
+RecipeBuilder.get("basic")
+    .setCopy(
+        Copy.byName("minecraft:furnace")
+            .replaceInput(null, <ore:stickWood>)
+            .replaceShapedInput(0, 0, <minecraft:diamond>)
+            .replaceShapedInput(2, 0, null)
+            .replaceShapedInput(0, 2, null)
+            .replaceShapedInput(2, 2, <minecraft:diamond>)
+    )
+    .addTool(<ore:artisansHammer>, 1)
+    .create();
+```
+
+![Recipe Image](../images/recipe-replace-input.png)
+
+!!! warning
+    The input replacement methods described above are mutually exclusive with the `noInput()` method.
 
 ### Exclude Output
 

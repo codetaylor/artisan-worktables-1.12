@@ -1,6 +1,8 @@
-# ZenScript Reference
+# Quick Reference
 
-## RecipeBuilder
+## ZenScript Methods
+
+### RecipeBuilder
 
 ```java
 static RecipeBuilder get(String table);
@@ -48,7 +50,7 @@ RecipeBuilder setCopy(Copy copyTask);
 RecipeBuilder create();
 ```
 
-## Copy
+### Copy
 
 ```java
 static Copy byName(String recipeName);
@@ -61,7 +63,60 @@ static Copy byOutput(IIngredient[] outputs);
 ```java
 Copy noInput();
 
+Copy replaceInput(@Nullable IIngredient toReplace, @Nullable IIngredient replacement);
+
+Copy replaceShapedInput(int col, int row, @Nullable IIngredient replacement);
+
 Copy noOutput();
 
 Copy replaceOutput(IItemStack replacement);
+```
+
+## Table Names
+
+The list of valid table names is:
+
+```xml
+basic
+blacksmith
+carpenter
+chef
+chemist
+engineer
+farmer
+jeweler
+mage
+mason
+scribe
+tailor
+```
+
+## OreDict Tool Groups
+
+The complete list of tool type groups is as follows:
+
+```ruby
+<ore:artisansCutters>
+<ore:artisansHammer>
+<ore:artisansFramingHammer>
+<ore:artisansHandsaw>
+<ore:artisansDriver>
+<ore:artisansSpanner>
+<ore:artisansGemcutter>
+<ore:artisansPliers>
+<ore:artisansAthame>
+<ore:artisansGrimoire>
+<ore:artisansChisel>
+<ore:artisansTrowel>
+<ore:artisansNeedle>
+<ore:artisansShears>
+<ore:artisansBeaker>
+<ore:artisansBurner>
+<ore:artisansQuill>
+<ore:artisansCompass>
+<ore:artisansCuttingBoard>
+<ore:artisansPan>
+<ore:artisansLens>
+<ore:artisansSifter>
+<ore:artisansKnife>
 ```

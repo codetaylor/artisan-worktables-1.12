@@ -44,28 +44,7 @@ You might notice that ore dictionary entries for the tools were used in these ex
 
 ## OreDict Tool Groups
 
-The complete list of tool type groups is as follows:
-
-```
-<ore:artisansCutters>
-<ore:artisansHammer>
-<ore:artisansFramingHammer>
-<ore:artisansHandsaw>
-<ore:artisansDriver>
-<ore:artisansSpanner>
-<ore:artisansGemcutter>
-<ore:artisansPliers>
-<ore:artisansAthame>
-<ore:artisansGrimoire>
-<ore:artisansChisel>
-<ore:artisansTrowel>
-<ore:artisansNeedle>
-<ore:artisansShears>
-<ore:artisansBeaker>
-<ore:artisansBurner>
-<ore:artisansQuill>
-<ore:artisansCompass>
-```
+For the complete list of tool type groups, see [OreDict Tool Groups](quickreference.md#oredict-tool-groups).
 
 ## OreDict Tool Material Groups
 

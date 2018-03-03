@@ -19,7 +19,7 @@ val builder = RecipeBuilder.get("basic");
 
 You can reuse builder objects or call `RecipeBuilder.get(String tableName)` each time you need one for a specific table. Calling this method repeatedly will have little impact on performace, if any, because the same builder object is used.
 
-The list of valid table names is: `basic`, `blacksmith`, `carpenter`, `chemist`, `engineer`, `farmer`, `jeweler`, `mage`, `mason`, `scribe`, and `tailor`.
+For a list of valid table names, see [Quick Reference](quickreference.md#tables).
 
 ## Using the Builder
 
