@@ -5,6 +5,10 @@
 ### RecipeBuilder
 
 ```java
+import mods.artisanworktables.builder.RecipeBuilder;
+```
+
+```java
 static RecipeBuilder get(String table);
 ```
 
@@ -51,6 +55,10 @@ RecipeBuilder create();
 ```
 
 ### Copy
+
+```java
+import mods.artisanworktables.builder.Copy;
+```
 
 ```java
 static Copy byName(String recipeName);
