@@ -1,3 +1,9 @@
+1.17.1
+
+ * Changed: updated de_de.lang (PR#90 Xaikii)
+
+---
+
 1.17.0
 
  * Note: you will need to refresh the tool config or manually add the new tools to the list
@@ -25,6 +31,8 @@
  * Fixed: snow should not gather on top of Worktables
  * Fixed: copying shaped recipes rotates and flips ingredient layout
  * Requires: Athenaeum >= 1.13.0
+
+---
 
 1.16.2
 
