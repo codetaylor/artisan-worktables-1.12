@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.network;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.athenaeum.spi.packet.CPacketTileEntityBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;

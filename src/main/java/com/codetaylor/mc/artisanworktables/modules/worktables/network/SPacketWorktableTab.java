@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.network;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import com.codetaylor.mc.athenaeum.spi.packet.SPacketTileEntityBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
