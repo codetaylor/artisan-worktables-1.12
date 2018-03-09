@@ -6,7 +6,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiEle
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.registry.strategy.IClientModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
-import com.codetaylor.mc.athenaeum.util.BottleHelper;
+import com.codetaylor.mc.athenaeum.util.FluidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -91,8 +91,8 @@ public abstract class BlockBase
 
       FluidTank tank = ((TileEntityBase) tileEntity).getTank();
 
-      if (BottleHelper.drainWaterFromBottle(playerIn, tank)
-          || BottleHelper.drainWaterIntoBottle(playerIn, tank)
+      if (FluidHelper.drainWaterFromBottle(playerIn, tank)
+          || FluidHelper.drainWaterIntoBottle(playerIn, tank)
           || FluidUtil.interactWithFluidHandler(playerIn, hand, tank)) {
         return true;
       }
