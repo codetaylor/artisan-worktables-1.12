@@ -1,15 +1,14 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.SecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.MutuallyExclusiveStackHandler;
-import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
-import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
-import com.codetaylor.mc.athenaeum.util.StackHelper;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -79,72 +78,20 @@ public abstract class TileEntitySecondaryInputBase
   }
 
   @Override
-  protected void onCraftReduceIngredients(IAWRecipe recipe) {
+  protected ICraftingContext getCraftingContext(EntityPlayer player) {
 
-    super.onCraftReduceIngredients(recipe);
-
-    if (!recipe.consumeSecondaryIngredients()) {
-      return;
-    }
-
-    List<IIngredient> secondaryIngredients = recipe.getSecondaryIngredients();
-
-    if (!secondaryIngredients.isEmpty()) {
-      // reduce secondary ingredients
-
-      for (IIngredient requiredIngredient : secondaryIngredients) {
-        int requiredAmount = requiredIngredient.getAmount();
-
-        // Set the amount to 1 to avoid quantity discrepancies when matching
-        requiredIngredient = requiredIngredient.amount(1);
-
-        int slotCount = this.secondaryIngredientHandler.getSlots();
-
-        for (int i = 0; i < slotCount; i++) {
-          ItemStack stackInSlot = this.secondaryIngredientHandler.getStackInSlot(i);
-          IItemStack iItemStack = CTInputHelper.toIItemStack(stackInSlot);
-
-          if (stackInSlot.isEmpty() || iItemStack == null) {
-            continue;
-          }
-
-          if (requiredIngredient.matches(iItemStack.anyAmount())) {
-
-            if (stackInSlot.getCount() <= requiredAmount) {
-              requiredAmount -= stackInSlot.getCount();
-              this.secondaryIngredientHandler.setStackInSlot(i, ItemStack.EMPTY);
-
-            } else if (stackInSlot.getCount() > requiredAmount) {
-              this.secondaryIngredientHandler.setStackInSlot(
-                  i,
-                  StackHelper.decrease(stackInSlot.copy(), requiredAmount, false)
-              );
-              requiredAmount = 0;
-            }
-
-            if (requiredAmount == 0) {
-              break;
-            }
-          }
-        }
-
-        if (requiredAmount > 0) {
-          // TODO: failed to find all required ingredients... shouldn't happen if the matching code is correct
-        }
-
-      }
-    }
+    return CraftingContextFactory.createContext(this, player, this.secondaryIngredientHandler);
   }
 
   @Override
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {
 
     int slotCount = this.secondaryIngredientHandler.getSlots();
-    List<IItemStack> inputs = new ArrayList<>(slotCount);
+    List<IArtisanItemStack> inputs = new ArrayList<>(slotCount);
 
     for (int i = 0; i < slotCount; i++) {
       ItemStack itemStack = this.secondaryIngredientHandler.getStackInSlot(i);
-      inputs.add(CTInputHelper.toIItemStack(itemStack));
+      inputs.add(ArtisanItemStack.from(itemStack));
     }
 
     return new SecondaryIngredientMatcher(inputs);

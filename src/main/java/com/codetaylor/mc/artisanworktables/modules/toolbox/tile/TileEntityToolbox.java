@@ -1,11 +1,11 @@
 package com.codetaylor.mc.artisanworktables.modules.toolbox.tile;
 
 import com.codetaylor.mc.artisanworktables.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.ContainerToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.gui.GuiContainerToolbox;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
@@ -43,7 +43,7 @@ public class TileEntityToolbox
 
     Predicate<ItemStack> predicate = itemStack -> itemStack.isEmpty()
         || !this.restrictToToolsOnly()
-        || ArtisanWorktablesAPI.containsRecipeWithTool(itemStack);
+        || ArtisanAPI.getModuleWorktablesInstance().containsRecipeWithTool(itemStack);
 
     this.itemHandler = new ToolboxItemStackHandler(predicate, 27) {
 
@@ -53,7 +53,10 @@ public class TileEntityToolbox
         super.validateSlotIndex(slot);
       }
     };
-    this.itemHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+    this.itemHandler.addObserver((stackHandler, slotIndex) -> {
+      this.markDirty();
+      this.notifyBlockUpdate();
+    });
   }
 
   protected boolean restrictToToolsOnly() {

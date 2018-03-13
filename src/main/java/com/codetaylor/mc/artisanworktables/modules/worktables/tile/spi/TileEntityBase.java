@@ -1,51 +1,44 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityMechanicalToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.event.EventHelper;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesHelper;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
-import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -56,8 +49,6 @@ public abstract class TileEntityBase
     extends TileEntity
     implements IContainer,
     IContainerProvider<Container, GuiContainerBase> {
-
-  private Random random = new Random();
 
   private String uuid;
   private EnumType type;
@@ -307,198 +298,24 @@ public abstract class TileEntityBase
 
   public void onTakeResult(EntityPlayer player) {
 
-    // Find the recipe
-    IAWRecipe recipe = this.getRecipe(player);
+    IArtisanRecipe recipe = this.getRecipe(player);
 
     if (recipe == null) {
       return;
     }
 
-    // Reduce player experience
-    this.onCraftReduceExperience(player, recipe);
-
-    // Decrease stacks in crafting matrix
-    this.onCraftReduceIngredients(recipe);
-
-    ItemStack craftedItem = ItemStack.EMPTY;
-    List<ItemStack> extraOutputList = new ArrayList<>(3);
-
-    if (!this.world.isRemote) {
-      // These methods must only be called on the server. They depend on RNG
-      // and, as such, must be calculated with server authority.
-
-      // Check if the recipe has multiple, weighted outputs and swap outputs accordingly.
-      craftedItem = this.onCraftCheckAndSwapWeightedOutput(player, recipe);
-
-      // Check for and populate secondary, tertiary and quaternary outputs
-      extraOutputList = this.onCraftProcessExtraOutput(recipe, extraOutputList);
-    }
-
-    // Damage or destroy tools
-    // Check for replacement tool
-    for (int i = 0; i < recipe.getToolCount(); i++) {
-      this.onCraftDamageTool(player, i, recipe);
-      this.onCraftCheckAndReplaceTool(recipe, i);
-    }
+    recipe.doCraft(this.getCraftingContext(player));
 
     this.markDirty();
 
     if (!this.world.isRemote) {
       this.notifyBlockUpdate();
-
-      if (!craftedItem.isEmpty()) {
-        EventHelper.fireItemCraftEventPost(player, this.getType(), this.getTier(), craftedItem, extraOutputList);
-      }
     }
   }
 
-  private void onCraftReduceExperience(EntityPlayer player, IAWRecipe recipe) {
+  protected ICraftingContext getCraftingContext(EntityPlayer player) {
 
-    if (player.isCreative()) {
-      // Don't consume experience when the player is in creative mode.
-      return;
-    }
-
-    if (recipe.consumeExperience()) {
-
-      if (recipe.getExperienceRequired() > 0) {
-        EnchantmentHelper.adjustPlayerExperience(player, -recipe.getExperienceRequired());
-
-      } else if (recipe.getLevelRequired() > 0) {
-        int experience = EnchantmentHelper.getExperienceToLevel(
-            player.experienceLevel - recipe.getLevelRequired(),
-            player.experienceLevel
-        );
-        EnchantmentHelper.adjustPlayerExperience(player, -experience);
-      }
-    }
-  }
-
-  @Nonnull
-  private ItemStack onCraftCheckAndSwapWeightedOutput(
-      EntityPlayer player,
-      IAWRecipe recipe
-  ) {
-
-    if (!player.inventory.getItemStack().isEmpty()) {
-
-      if (recipe.hasMultipleWeightedOutputs()) {
-        ItemStack itemStack = recipe.selectOutput(this.random);
-        player.inventory.setItemStack(itemStack);
-        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
-      }
-    }
-
-    return player.inventory.getItemStack();
-  }
-
-  @Nonnull
-  private List<ItemStack> onCraftProcessExtraOutput(
-      IAWRecipe recipe,
-      List<ItemStack> result
-  ) {
-
-    ItemStack extraOutput = recipe.getSecondaryOutput();
-
-    if (!extraOutput.isEmpty()) {
-
-      if (this.random.nextFloat() < recipe.getSecondaryOutputChance()) {
-        result.add(this.generateExtraOutput(extraOutput));
-      }
-    }
-
-    extraOutput = recipe.getTertiaryOutput();
-
-    if (!extraOutput.isEmpty()) {
-
-      if (this.random.nextFloat() < recipe.getTertiaryOutputChance()) {
-        result.add(this.generateExtraOutput(extraOutput));
-      }
-    }
-
-    extraOutput = recipe.getQuaternaryOutput();
-
-    if (!extraOutput.isEmpty()) {
-
-      if (this.random.nextFloat() < recipe.getQuaternaryOutputChance()) {
-        result.add(this.generateExtraOutput(extraOutput));
-      }
-    }
-
-    return result;
-  }
-
-  private void onCraftDamageTool(EntityPlayer player, int toolIndex, IAWRecipe recipe) {
-
-    ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
-
-    if (!itemStack.isEmpty() && recipe.isValidTool(itemStack, toolIndex)) {
-      int itemDamage = itemStack.getMetadata() + recipe.getToolDamage(toolIndex);
-
-      if (itemDamage >= itemStack.getItem().getMaxDamage(itemStack)) {
-        this.toolHandler.setStackInSlot(toolIndex, ItemStack.EMPTY);
-
-        if (!this.world.isRemote) {
-          this.world.playSound(
-              player,
-              player.posX,
-              player.posY,
-              player.posZ,
-              SoundEvents.ENTITY_ITEM_BREAK,
-              SoundCategory.PLAYERS,
-              1.0f,
-              1.0f
-          );
-        }
-
-      } else {
-        ItemStack copy = itemStack.copy();
-        copy.setItemDamage(itemDamage);
-        this.toolHandler.setStackInSlot(toolIndex, copy);
-      }
-    }
-  }
-
-  private void onCraftCheckAndReplaceTool(IAWRecipe recipe, int toolIndex) {
-
-    ItemStack itemStack = this.toolHandler.getStackInSlot(toolIndex);
-
-    if (!recipe.hasSufficientToolDurability(itemStack, toolIndex)) {
-      // Tool needs to be replaced
-      TileEntityToolbox adjacentToolbox = this.getAdjacentToolbox();
-
-      if (adjacentToolbox == null
-          || !(adjacentToolbox instanceof TileEntityMechanicalToolbox)) {
-        return;
-      }
-
-      IItemHandler capability = adjacentToolbox.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-      if (capability == null) {
-        return;
-      }
-
-      int slotCount = capability.getSlots();
-
-      for (int i = 0; i < slotCount; i++) {
-        ItemStack potentialTool = capability.getStackInSlot(i);
-
-        if (potentialTool.isEmpty()) {
-          continue;
-        }
-
-        if (recipe.isValidTool(potentialTool, toolIndex)
-            && recipe.hasSufficientToolDurability(potentialTool, toolIndex)) {
-          // Found an acceptable tool
-          potentialTool = capability.extractItem(i, 1, false);
-          capability.insertItem(i, this.toolHandler.getStackInSlot(toolIndex), false);
-          this.toolHandler.setStackInSlot(toolIndex, potentialTool);
-
-          this.notifyBlockUpdate();
-          adjacentToolbox.notifyBlockUpdate();
-        }
-      }
-    }
+    return CraftingContextFactory.createContext(this, player, null);
   }
 
   public void notifyBlockUpdate() {
@@ -507,33 +324,7 @@ public abstract class TileEntityBase
     BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
   }
 
-  protected void onCraftReduceIngredients(IAWRecipe recipe) {
-
-    int slotCount = this.craftingMatrixHandler.getSlots();
-
-    for (int i = 0; i < slotCount; i++) {
-      ItemStack itemStack = this.craftingMatrixHandler.getStackInSlot(i);
-
-      if (!itemStack.isEmpty()) {
-
-        if (itemStack.getItem().hasContainerItem(itemStack)
-            && itemStack.getCount() == 1) {
-          this.craftingMatrixHandler.setStackInSlot(i, itemStack.getItem().getContainerItem(itemStack));
-
-        } else {
-          this.craftingMatrixHandler.setStackInSlot(i, StackHelper.decrease(itemStack.copy(), 1, false));
-        }
-      }
-    }
-
-    FluidStack fluidIngredient = recipe.getFluidIngredient();
-
-    if (fluidIngredient != null) {
-      this.tank.drain(fluidIngredient, true);
-    }
-  }
-
-  public IAWRecipe getRecipe(EntityPlayer player) {
+  public IArtisanRecipe getRecipe(EntityPlayer player) {
 
     FluidStack fluidStack = this.getTank().getFluid();
 
@@ -551,12 +342,12 @@ public abstract class TileEntityBase
       playerLevels = player.experienceLevel;
       isPlayerCreative = player.isCreative();
 
-      if (ModuleWorktables.MOD_LOADED_GAMESTAGES) {
+      if (ArtisanAPI.getModuleWorktablesInstance().isModLoadedGameStages()) {
         unlockedStages = GameStagesHelper.getUnlockedStages(player);
       }
     }
 
-    AWRecipeRegistry registry = this.getWorktableRecipeRegistry();
+    RecipeRegistry registry = this.getWorktableRecipeRegistry();
     return registry.findRecipe(
         playerExperience,
         playerLevels,
@@ -601,26 +392,6 @@ public abstract class TileEntityBase
     }
 
     return hasTool;
-  }
-
-  @Nonnull
-  private ItemStack generateExtraOutput(ItemStack extraOutput) {
-
-    ItemStack result = extraOutput;
-
-    for (int i = 0; i < 3; i++) {
-      result = this.secondaryOutputHandler.insertItem(i, result, false);
-
-      if (result.isEmpty()) {
-        break;
-      }
-    }
-
-    if (!result.isEmpty() && !this.world.isRemote) {
-      StackHelper.spawnStackOnTop(this.world, result, this.pos.add(0, 1, 0));
-    }
-
-    return result;
   }
 
   public List<TileEntityBase> getJoinedTables(List<TileEntityBase> result) {
@@ -725,9 +496,9 @@ public abstract class TileEntityBase
     return null;
   }
 
-  public AWRecipeRegistry getWorktableRecipeRegistry() {
+  public RecipeRegistry getWorktableRecipeRegistry() {
 
-    return ArtisanWorktablesAPI.getWorktableRecipeRegistry(this.getWorktableName());
+    return ArtisanAPI.getModuleWorktablesInstance().getWorktableRecipeRegistry(this.getWorktableName());
   }
 
   public ItemStack getItemStackForTabDisplay(IBlockState state) {

@@ -1,9 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
+import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanItemStack;
+import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
-import crafttweaker.api.item.IIngredient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,8 +19,8 @@ public class RecipeBuilder {
   private int width;
   private int height;
   private boolean mirrored;
-  private List<Ingredient> ingredients;
-  private List<IIngredient> secondaryIngredients;
+  private List<IArtisanIngredient> ingredients;
+  private List<IArtisanIngredient> secondaryIngredients;
   private boolean consumeSecondaryIngredients;
   private FluidStack fluidIngredient;
   private List<ToolIngredientEntry> tools;
@@ -42,7 +43,7 @@ public class RecipeBuilder {
     this.fluidIngredient = null;
     this.outputWeightPairList = new ArrayList<>();
     this.extraOutputs = new ExtraOutputChancePair[3];
-    Arrays.fill(this.extraOutputs, new ExtraOutputChancePair(ItemStack.EMPTY, 0));
+    Arrays.fill(this.extraOutputs, new ExtraOutputChancePair(ArtisanItemStack.EMPTY, 0));
     this.gameStageRequire = EnumGameStageRequire.ANY;
     this.includeGamestages = new String[0];
     this.excludeGamestages = new String[0];
@@ -54,7 +55,7 @@ public class RecipeBuilder {
     this.consumeExperience = true;
   }
 
-  public RecipeBuilder setIngredients(Ingredient[][] ingredients) throws RecipeBuilderException {
+  public RecipeBuilder setIngredients(IArtisanIngredient[][] ingredients) throws RecipeBuilderException {
 
     if (this.ingredients != null) {
       throw new RecipeBuilderException("Ingredients already set, can't be set twice");
@@ -63,7 +64,7 @@ public class RecipeBuilder {
     this.ingredients = new ArrayList<>();
     this.width = 0;
 
-    for (Ingredient[] row : ingredients) {
+    for (IArtisanIngredient[] row : ingredients) {
 
       if (row.length > this.width) {
         this.width = row.length;
@@ -76,7 +77,7 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setIngredients(Ingredient[] ingredients) throws RecipeBuilderException {
+  public RecipeBuilder setIngredients(IArtisanIngredient[] ingredients) throws RecipeBuilderException {
 
     if (this.ingredients != null) {
       throw new RecipeBuilderException("Ingredients already set, can't be set twice");
@@ -97,7 +98,7 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients) throws RecipeBuilderException {
+  public RecipeBuilder setSecondaryIngredients(IArtisanIngredient[] secondaryIngredients) throws RecipeBuilderException {
 
     if (!this.secondaryIngredients.isEmpty()) {
       throw new RecipeBuilderException("Secondary ingredients already set, can't be set twice");
@@ -120,7 +121,7 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder addTool(Ingredient tool, int toolDamage) throws RecipeBuilderException {
+  public RecipeBuilder addTool(IArtisanIngredient tool, int toolDamage) throws RecipeBuilderException {
 
     if (this.tools.size() == MAX_TOOL_COUNT) {
       throw new RecipeBuilderException("Exceeded maximum tool count of " + MAX_TOOL_COUNT + " tools: " + this.tools.size() + 1);
@@ -130,7 +131,7 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder addOutput(ItemStack output, int weight) throws RecipeBuilderException {
+  public RecipeBuilder addOutput(IArtisanItemStack output, int weight) throws RecipeBuilderException {
 
     if (weight < 0) {
       throw new RecipeBuilderException("Output weight can't be < 0: " + weight);
@@ -140,7 +141,7 @@ public class RecipeBuilder {
     return this;
   }
 
-  public RecipeBuilder setExtraOutput(int index, ItemStack output, float chance) {
+  public RecipeBuilder setExtraOutput(int index, IArtisanItemStack output, float chance) {
 
     if (index >= this.extraOutputs.length || index < 0) {
       index = 0;
@@ -294,7 +295,7 @@ public class RecipeBuilder {
     return copy;
   }
 
-  public IAWRecipe create() throws RecipeBuilderException {
+  public IArtisanRecipe create() throws RecipeBuilderException {
 
     IGameStageMatcher gameStageMatcher;
 
@@ -328,7 +329,7 @@ public class RecipeBuilder {
       this.secondaryIngredients = Collections.emptyList();
     }
 
-    return new Recipe(
+    return new ArtisanRecipe(
         gameStageMatcher,
         this.outputWeightPairList,
         tools,

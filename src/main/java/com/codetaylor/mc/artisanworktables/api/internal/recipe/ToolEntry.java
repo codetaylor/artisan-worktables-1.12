@@ -1,10 +1,8 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
-
-import net.minecraft.item.ItemStack;
+package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 public class ToolEntry {
 
-  private ItemStack[] tool;
+  private IArtisanItemStack[] tool;
   private int damage;
 
   public ToolEntry(ToolIngredientEntry entry) {
@@ -12,13 +10,13 @@ public class ToolEntry {
     this(entry.getTool().getMatchingStacks(), entry.getDamage());
   }
 
-  public ToolEntry(ItemStack[] tool, int damage) {
+  public ToolEntry(IArtisanItemStack[] tool, int damage) {
 
     this.tool = tool;
     this.damage = damage;
   }
 
-  public ItemStack[] getTool() {
+  public IArtisanItemStack[] getTool() {
 
     return this.tool;
   }

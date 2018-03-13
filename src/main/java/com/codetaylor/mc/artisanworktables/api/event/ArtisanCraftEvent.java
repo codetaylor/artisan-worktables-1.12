@@ -10,13 +10,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public abstract class AWItemCraftEvent
+public abstract class ArtisanCraftEvent
     extends PlayerEvent {
 
   private final EnumType tableType;
   private final EnumTier tableTier;
 
-  public AWItemCraftEvent(EntityPlayer player, EnumType tableType, EnumTier tableTier) {
+  public ArtisanCraftEvent(EntityPlayer player, EnumType tableType, EnumTier tableTier) {
 
     super(player);
     this.tableType = tableType;
@@ -54,7 +54,7 @@ public abstract class AWItemCraftEvent
    * This event is only fired on the server.
    */
   public static class Post
-      extends AWItemCraftEvent {
+      extends ArtisanCraftEvent {
 
     private final ItemStack craftedItem;
     private final List<ItemStack> secondaryOutputItemList;

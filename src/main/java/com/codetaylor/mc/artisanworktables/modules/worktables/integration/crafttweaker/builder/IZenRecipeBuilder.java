@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -22,11 +22,11 @@ public interface IZenRecipeBuilder {
 
     table = table.toLowerCase();
 
-    if (!ArtisanWorktablesAPI.isWorktableNameValid(table)) {
+    if (!ArtisanAPI.getModuleWorktablesInstance().isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          ArtisanWorktablesAPI.getWorktableNames()
+          ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()
       ));
       return ZenRecipeBuilderNoOp.INSTANCE;
     }

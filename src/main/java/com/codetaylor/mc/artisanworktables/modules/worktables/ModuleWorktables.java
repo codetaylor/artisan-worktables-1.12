@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.ModuleWorktablesAPI_Impl;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
@@ -22,6 +24,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class ModuleWorktables
     extends ModuleBase {
@@ -63,7 +68,6 @@ public class ModuleWorktables
   }
 
   public static IPacketService PACKET_SERVICE;
-  public static boolean MOD_LOADED_GAMESTAGES = false;
 
   public ModuleWorktables() {
 
@@ -103,9 +107,24 @@ public class ModuleWorktables
   @Override
   public void onConstructionEvent(FMLConstructionEvent event) {
 
-    super.onConstructionEvent(event);
+    try {
+      Field field = ArtisanAPI.class.getDeclaredField("MODULE_WORKTABLES_INSTANCE");
+      field.setAccessible(true);
 
-    MOD_LOADED_GAMESTAGES = Loader.isModLoaded("gamestages");
+      Field modifiersField = Field.class.getDeclaredField("modifiers");
+      modifiersField.setAccessible(true);
+      modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+      field.set(null, new ModuleWorktablesAPI_Impl(
+          Loader.isModLoaded("gamestages"),
+          ModuleWorktablesConfig.getAPIWrapper()
+      ));
+
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to inject module worktables API into ArtisanAPI", e);
+    }
+
+    super.onConstructionEvent(event);
   }
 
   @Override

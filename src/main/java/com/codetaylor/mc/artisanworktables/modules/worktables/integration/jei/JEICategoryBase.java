@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -85,7 +85,7 @@ public abstract class JEICategoryBase
 
           for (OutputWeightPair pair : weightedOutput) {
 
-            if (ItemStack.areItemStacksEqual(pair.getOutput(), ingredient)) {
+            if (ItemStack.areItemStacksEqual(pair.getOutput().toItemStack(), ingredient)) {
               int chance = Math.round(pair.getWeight() / (float) weightSum * 100);
 
               List<String> result = new ArrayList<>();

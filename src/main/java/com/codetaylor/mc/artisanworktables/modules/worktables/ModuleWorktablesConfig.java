@@ -1,7 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
+import com.codetaylor.mc.artisanworktables.api.config.IModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.modules.worktables.api.ModuleWorktablesAPI_Impl;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -45,7 +46,7 @@ public class ModuleWorktablesConfig {
 
   static {
 
-    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
+    for (String name : ModuleWorktablesAPI_Impl.getWorktableNamesStatic()) {
       FLUID_CAPACITY_WORKTABLE.put(name, 4000);
     }
   }
@@ -56,7 +57,7 @@ public class ModuleWorktablesConfig {
 
   static {
 
-    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
+    for (String name : ModuleWorktablesAPI_Impl.getWorktableNamesStatic()) {
       FLUID_CAPACITY_WORKSTATION.put(name, 8000);
     }
   }
@@ -67,7 +68,7 @@ public class ModuleWorktablesConfig {
 
   static {
 
-    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
+    for (String name : ModuleWorktablesAPI_Impl.getWorktableNamesStatic()) {
       FLUID_CAPACITY_WORKSHOP.put(name, 16000);
     }
   }
@@ -81,8 +82,8 @@ public class ModuleWorktablesConfig {
 
     /* package */ Client() {
 
-      for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
-        Color color = new Color(ArtisanWorktablesAPI.getWorktableTextHighlightColor(name));
+      for (String name : ModuleWorktablesAPI_Impl.getWorktableNamesStatic()) {
+        Color color = new Color(ModuleWorktablesAPI_Impl.getWorktableTextHighlightColor(name));
         String hex = String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         this.TEXT_HIGHLIGHT_COLOR.put(name, hex);
       }
@@ -119,5 +120,17 @@ public class ModuleWorktablesConfig {
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }
+  }
+
+  public static IModuleWorktablesConfig getAPIWrapper() {
+
+    return new IModuleWorktablesConfig() {
+
+      @Override
+      public boolean restrictCraftMinimumDurability() {
+
+        return ModuleWorktablesConfig.RESTRICT_CRAFT_MINIMUM_DURABILITY;
+      }
+    };
   }
 }

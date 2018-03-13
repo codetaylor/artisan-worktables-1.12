@@ -1,8 +1,6 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy;
+package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
-import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
-import crafttweaker.api.item.IIngredient;
-import net.minecraft.item.crafting.Ingredient;
+import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanIngredient;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ public class InputReplacements {
   public static InputReplacements NO_OP = new InputReplacements() {
 
     @Override
-    public void add(IIngredient toReplace, IIngredient replacement) {
+    public void add(IArtisanIngredient toReplace, IArtisanIngredient replacement) {
 
       throw new UnsupportedOperationException();
     }
@@ -26,7 +24,7 @@ public class InputReplacements {
   private int width;
   private int height;
 
-  private Map<GridPosition, IIngredient> replacementMap;
+  private Map<GridPosition, IArtisanIngredient> replacementMap;
 
   public InputReplacements() {
 
@@ -34,12 +32,12 @@ public class InputReplacements {
     this.replacementMap = new HashMap<>(9);
   }
 
-  public void add(@Nullable IIngredient toReplace, @Nullable IIngredient replacement) {
+  public void add(@Nullable IArtisanIngredient toReplace, @Nullable IArtisanIngredient replacement) {
 
     this.inputReplacementEntryList.add(new InputReplacementEntry(toReplace, replacement));
   }
 
-  public void add(int col, int row, IIngredient replacement) {
+  public void add(int col, int row, IArtisanIngredient replacement) {
 
     this.width = Math.max(this.width, col + 1);
     this.height = Math.max(this.height, row + 1);
@@ -57,12 +55,12 @@ public class InputReplacements {
     return this.height;
   }
 
-  public Ingredient replace(@Nullable Ingredient ingredient) {
+  public IArtisanIngredient replace(@Nullable IArtisanIngredient ingredient) {
 
     for (InputReplacementEntry entry : this.inputReplacementEntryList) {
 
       if (entry.matches(ingredient)) {
-        ingredient = CTInputHelper.toIngredient(entry.getReplacement());
+        ingredient = entry.getReplacement();
         break;
       }
     }
@@ -70,18 +68,18 @@ public class InputReplacements {
     return ingredient;
   }
 
-  public Ingredient replace(int col, int row, @Nullable Ingredient ingredient) {
+  public IArtisanIngredient replace(int col, int row, @Nullable IArtisanIngredient ingredient) {
 
     GridPosition gridPosition = new GridPosition(col, row);
 
     if (this.replacementMap.containsKey(gridPosition)) {
-      IIngredient replacement = this.replacementMap.get(gridPosition);
+      IArtisanIngredient replacement = this.replacementMap.get(gridPosition);
 
       if (replacement != null) {
-        return CTInputHelper.toIngredient(replacement);
+        return replacement;
       }
 
-      return Ingredient.EMPTY;
+      return ArtisanIngredient.EMPTY;
     }
 
     return this.replace(ingredient);

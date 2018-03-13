@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanIngredient;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
@@ -55,7 +57,7 @@ public class ZenRecipeBuilder
     }
 
     try {
-      this.recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(ingredients));
+      this.recipeBuilder.setIngredients(CTArtisanIngredient.fromMatrix(ingredients));
       this.inputSet = true;
 
     } catch (RecipeBuilderException e) {
@@ -87,7 +89,7 @@ public class ZenRecipeBuilder
     }
 
     try {
-      this.recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(ingredients));
+      this.recipeBuilder.setIngredients(CTArtisanIngredient.fromArray(ingredients));
       this.inputSet = true;
 
     } catch (RecipeBuilderException e) {
@@ -140,7 +142,9 @@ public class ZenRecipeBuilder
     }
 
     try {
-      this.recipeBuilder.setSecondaryIngredients(adjustedList.toArray(new IIngredient[adjustedList.size()]));
+      this.recipeBuilder.setSecondaryIngredients(
+          CTArtisanIngredient.fromArray(adjustedList.toArray(new IIngredient[adjustedList.size()]))
+      );
 
     } catch (RecipeBuilderException e) {
       return this.setInvalid(e.getMessage());
@@ -179,7 +183,7 @@ public class ZenRecipeBuilder
     }
 
     try {
-      this.recipeBuilder.addTool(CTInputHelper.toIngredient(tool), damage);
+      this.recipeBuilder.addTool(CTArtisanIngredient.from(tool), damage);
 
     } catch (RecipeBuilderException e) {
       return this.setInvalid(e.getMessage());
@@ -203,7 +207,7 @@ public class ZenRecipeBuilder
     }
 
     try {
-      this.recipeBuilder.addOutput(CTInputHelper.toStack(output), weight);
+      this.recipeBuilder.addOutput(CTArtisanItemStack.from(output), weight);
       this.outputSet = true;
 
     } catch (RecipeBuilderException e) {
@@ -219,21 +223,21 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setExtraOutputOne(IItemStack output, float chance) {
 
-    this.recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(output), chance);
+    this.recipeBuilder.setExtraOutput(0, CTArtisanItemStack.from(output), chance);
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setExtraOutputTwo(IItemStack output, float chance) {
 
-    this.recipeBuilder.setExtraOutput(1, CTInputHelper.toStack(output), chance);
+    this.recipeBuilder.setExtraOutput(1, CTArtisanItemStack.from(output), chance);
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setExtraOutputThree(IItemStack output, float chance) {
 
-    this.recipeBuilder.setExtraOutput(2, CTInputHelper.toStack(output), chance);
+    this.recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(output), chance);
     return this;
   }
 

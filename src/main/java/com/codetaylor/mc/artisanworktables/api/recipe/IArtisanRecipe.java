@@ -1,9 +1,8 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
+package com.codetaylor.mc.artisanworktables.api.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
-import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -12,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public interface IAWRecipe {
+public interface IArtisanRecipe {
 
   boolean matches(
       Collection<String> unlockedStages,
@@ -36,20 +35,20 @@ public interface IAWRecipe {
 
   boolean matchGameStages(Collection<String> unlockedStages);
 
-  ItemStack getSecondaryOutput();
+  IArtisanItemStack getSecondaryOutput();
 
   float getSecondaryOutputChance();
 
-  ItemStack getTertiaryOutput();
+  IArtisanItemStack getTertiaryOutput();
 
   float getTertiaryOutputChance();
 
-  ItemStack getQuaternaryOutput();
+  IArtisanItemStack getQuaternaryOutput();
 
   float getQuaternaryOutputChance();
 
   @Nonnull
-  List<IIngredient> getSecondaryIngredients();
+  List<IArtisanIngredient> getSecondaryIngredients();
 
   boolean consumeSecondaryIngredients();
 
@@ -57,22 +56,22 @@ public interface IAWRecipe {
 
   boolean hasSufficientToolDurability(ItemStack tool, int toolIndex);
 
-  ItemStack[] getTools(int toolIndex);
+  IArtisanItemStack[] getTools(int toolIndex);
 
   int getToolDamage(int toolIndex);
 
   int getToolCount();
 
-  List<Ingredient> getIngredientList();
+  List<IArtisanIngredient> getIngredientList();
 
   @Nullable
   FluidStack getFluidIngredient();
 
   List<OutputWeightPair> getOutputWeightPairList();
 
-  ItemStack selectOutput(Random random);
+  IArtisanItemStack selectOutput(Random random);
 
-  ItemStack getBaseOutput();
+  IArtisanItemStack getBaseOutput();
 
   boolean hasMultipleWeightedOutputs();
 
@@ -83,4 +82,6 @@ public interface IAWRecipe {
   int getLevelRequired();
 
   boolean consumeExperience();
+
+  void doCraft(ICraftingContext context);
 }

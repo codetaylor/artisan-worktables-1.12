@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IGameStageMatcher;
+
 import java.util.ArrayList;
 import java.util.Collection;
 

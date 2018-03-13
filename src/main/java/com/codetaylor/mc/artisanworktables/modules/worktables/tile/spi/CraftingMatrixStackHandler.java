@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 
 public class CraftingMatrixStackHandler

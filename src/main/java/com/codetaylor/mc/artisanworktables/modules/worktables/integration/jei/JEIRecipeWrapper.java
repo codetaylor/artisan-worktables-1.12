@@ -1,19 +1,18 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.OutputWeightPair;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.Recipe;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
+import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
-import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
-import crafttweaker.api.item.IIngredient;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.config.GuiUtils;
@@ -32,38 +31,45 @@ public class JEIRecipeWrapper
 
   public static EnumTier CATEGORY_TIER = EnumTier.WORKTABLE;
 
-  private Recipe recipe;
+  private ArtisanRecipe artisanRecipe;
   private List<List<ItemStack>> inputs;
   private List<List<ItemStack>> secondaryInputs;
   private List<List<ItemStack>> tools;
   private List<ItemStack> output;
 
   public JEIRecipeWrapper(
-      Recipe recipe
+      ArtisanRecipe artisanRecipe
   ) {
 
-    this.recipe = recipe;
+    this.artisanRecipe = artisanRecipe;
     this.inputs = new ArrayList<>();
     this.secondaryInputs = new ArrayList<>();
     this.tools = new ArrayList<>();
 
-    for (Ingredient input : this.recipe.getIngredientList()) {
-      this.inputs.add(Arrays.asList(input.getMatchingStacks()));
+    for (IArtisanIngredient input : this.artisanRecipe.getIngredientList()) {
+      this.inputs.add(Arrays.asList(input.toIngredient().getMatchingStacks()));
     }
 
-    for (int i = 0; i < recipe.getToolCount(); i++) {
-      this.tools.add(Arrays.asList(this.recipe.getTools(i)));
+    for (int i = 0; i < artisanRecipe.getToolCount(); i++) {
+      IArtisanItemStack[] tools = this.artisanRecipe.getTools(i);
+      List<ItemStack> itemStackList = new ArrayList<>(tools.length);
+
+      for (IArtisanItemStack tool : tools) {
+        itemStackList.add(tool.toItemStack());
+      }
+
+      this.tools.add(itemStackList);
     }
 
-    List<OutputWeightPair> output = this.recipe.getOutputWeightPairList();
+    List<OutputWeightPair> output = this.artisanRecipe.getOutputWeightPairList();
     this.output = new ArrayList<>(output.size());
 
     for (OutputWeightPair pair : output) {
-      this.output.add(pair.getOutput());
+      this.output.add(pair.getOutput().toItemStack());
     }
 
-    for (IIngredient ingredient : this.recipe.getSecondaryIngredients()) {
-      this.secondaryInputs.add(CTInputHelper.getMatchingStacks(ingredient, new ArrayList<>()));
+    for (IArtisanIngredient ingredient : this.artisanRecipe.getSecondaryIngredients()) {
+      this.secondaryInputs.add(Arrays.asList(ingredient.toIngredient().getMatchingStacks()));
     }
   }
 
@@ -74,12 +80,12 @@ public class JEIRecipeWrapper
 
   public FluidStack getFluidStack() {
 
-    return this.recipe.getFluidIngredient();
+    return this.artisanRecipe.getFluidIngredient();
   }
 
   public List<OutputWeightPair> getWeightedOutput() {
 
-    return this.recipe.getOutputWeightPairList();
+    return this.artisanRecipe.getOutputWeightPairList();
   }
 
   public List<ItemStack> getOutput() {
@@ -89,17 +95,17 @@ public class JEIRecipeWrapper
 
   public boolean isShaped() {
 
-    return this.recipe.isShaped();
+    return this.artisanRecipe.isShaped();
   }
 
   public int getWidth() {
 
-    return this.recipe.getWidth();
+    return this.artisanRecipe.getWidth();
   }
 
   public int getHeight() {
 
-    return this.recipe.getHeight();
+    return this.artisanRecipe.getHeight();
   }
 
   public List<List<ItemStack>> getTools() {
@@ -114,17 +120,17 @@ public class JEIRecipeWrapper
 
   public ItemStack getSecondaryOutput() {
 
-    return this.recipe.getSecondaryOutput();
+    return this.artisanRecipe.getSecondaryOutput().toItemStack();
   }
 
   public ItemStack getTertiaryOutput() {
 
-    return this.recipe.getTertiaryOutput();
+    return this.artisanRecipe.getTertiaryOutput().toItemStack();
   }
 
   public ItemStack getQuaternaryOutput() {
 
-    return this.recipe.getQuaternaryOutput();
+    return this.artisanRecipe.getQuaternaryOutput().toItemStack();
   }
 
   @Override
@@ -136,7 +142,7 @@ public class JEIRecipeWrapper
     inputs.addAll(this.secondaryInputs);
     ingredients.setInputLists(ItemStack.class, inputs);
 
-    FluidStack fluidIngredient = this.recipe.getFluidIngredient();
+    FluidStack fluidIngredient = this.artisanRecipe.getFluidIngredient();
 
     if (fluidIngredient != null) {
       ingredients.setInput(FluidStack.class, fluidIngredient);
@@ -160,28 +166,31 @@ public class JEIRecipeWrapper
 
     String experienceString = null;
 
-    if (this.recipe.getExperienceRequired() > 0) {
+    if (this.artisanRecipe.getExperienceRequired() > 0) {
 
-      if (this.recipe.consumeExperience()) {
-        experienceString = I18n.format(ModuleWorktables.Lang.JEI_XP_COST, this.recipe.getExperienceRequired());
+      if (this.artisanRecipe.consumeExperience()) {
+        experienceString = I18n.format(ModuleWorktables.Lang.JEI_XP_COST, this.artisanRecipe.getExperienceRequired());
 
       } else {
-        experienceString = I18n.format(ModuleWorktables.Lang.JEI_XP_REQUIRED, this.recipe.getExperienceRequired());
+        experienceString = I18n.format(
+            ModuleWorktables.Lang.JEI_XP_REQUIRED,
+            this.artisanRecipe.getExperienceRequired()
+        );
       }
 
-    } else if (this.recipe.getLevelRequired() > 0) {
+    } else if (this.artisanRecipe.getLevelRequired() > 0) {
 
-      if (this.recipe.consumeExperience()) {
-        experienceString = I18n.format(ModuleWorktables.Lang.JEI_LEVEL_COST, this.recipe.getLevelRequired());
+      if (this.artisanRecipe.consumeExperience()) {
+        experienceString = I18n.format(ModuleWorktables.Lang.JEI_LEVEL_COST, this.artisanRecipe.getLevelRequired());
 
       } else {
-        experienceString = I18n.format(ModuleWorktables.Lang.JEI_LEVEL_REQUIRED, this.recipe.getLevelRequired());
+        experienceString = I18n.format(ModuleWorktables.Lang.JEI_LEVEL_REQUIRED, this.artisanRecipe.getLevelRequired());
       }
     }
 
     if (CATEGORY_TIER == EnumTier.WORKTABLE) {
 
-      String label = "-" + this.recipe.getToolDamage(0);
+      String label = "-" + this.artisanRecipe.getToolDamage(0);
       minecraft.fontRenderer.drawString(
           label,
           (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -202,8 +211,8 @@ public class JEIRecipeWrapper
 
     } else if (CATEGORY_TIER == EnumTier.WORKSTATION) {
 
-      for (int i = 0; i < this.recipe.getToolCount(); i++) {
-        String label = "-" + this.recipe.getToolDamage(i);
+      for (int i = 0; i < this.artisanRecipe.getToolCount(); i++) {
+        String label = "-" + this.artisanRecipe.getToolDamage(i);
         minecraft.fontRenderer.drawString(
             label,
             (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -225,8 +234,8 @@ public class JEIRecipeWrapper
 
     } else if (CATEGORY_TIER == EnumTier.WORKSHOP) {
 
-      for (int i = 0; i < this.recipe.getToolCount(); i++) {
-        String label = "-" + this.recipe.getToolDamage(i);
+      for (int i = 0; i < this.artisanRecipe.getToolCount(); i++) {
+        String label = "-" + this.artisanRecipe.getToolDamage(i);
         minecraft.fontRenderer.drawString(
             label,
             (119) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -256,8 +265,8 @@ public class JEIRecipeWrapper
 
     if (CATEGORY_TIER == EnumTier.WORKSHOP) {
 
-      if (!this.recipe.getSecondaryOutput().isEmpty()) {
-        String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
+      if (!this.artisanRecipe.getSecondaryOutput().isEmpty()) {
+        String label = (int) (this.artisanRecipe.getSecondaryOutputChance() * 100) + "%";
         minecraft.fontRenderer.drawString(
             label,
             (256) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -267,8 +276,8 @@ public class JEIRecipeWrapper
         );
       }
 
-      if (!this.recipe.getTertiaryOutput().isEmpty()) {
-        String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
+      if (!this.artisanRecipe.getTertiaryOutput().isEmpty()) {
+        String label = (int) (this.artisanRecipe.getTertiaryOutputChance() * 100) + "%";
         minecraft.fontRenderer.drawString(
             label,
             (256 + 36) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -278,8 +287,8 @@ public class JEIRecipeWrapper
         );
       }
 
-      if (!this.recipe.getQuaternaryOutput().isEmpty()) {
-        String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
+      if (!this.artisanRecipe.getQuaternaryOutput().isEmpty()) {
+        String label = (int) (this.artisanRecipe.getQuaternaryOutputChance() * 100) + "%";
         minecraft.fontRenderer.drawString(
             label,
             (256 + 72) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -293,8 +302,8 @@ public class JEIRecipeWrapper
       int xPos = 334;
       int yPos = 32;
 
-      if (!this.recipe.getSecondaryOutput().isEmpty()) {
-        String label = (int) (this.recipe.getSecondaryOutputChance() * 100) + "%";
+      if (!this.artisanRecipe.getSecondaryOutput().isEmpty()) {
+        String label = (int) (this.artisanRecipe.getSecondaryOutputChance() * 100) + "%";
         minecraft.fontRenderer.drawString(
             label,
             (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -304,8 +313,8 @@ public class JEIRecipeWrapper
         );
       }
 
-      if (!this.recipe.getTertiaryOutput().isEmpty()) {
-        String label = (int) (this.recipe.getTertiaryOutputChance() * 100) + "%";
+      if (!this.artisanRecipe.getTertiaryOutput().isEmpty()) {
+        String label = (int) (this.artisanRecipe.getTertiaryOutputChance() * 100) + "%";
         minecraft.fontRenderer.drawString(
             label,
             (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -315,8 +324,8 @@ public class JEIRecipeWrapper
         );
       }
 
-      if (!this.recipe.getQuaternaryOutput().isEmpty()) {
-        String label = (int) (this.recipe.getQuaternaryOutputChance() * 100) + "%";
+      if (!this.artisanRecipe.getQuaternaryOutput().isEmpty()) {
+        String label = (int) (this.artisanRecipe.getQuaternaryOutputChance() * 100) + "%";
         minecraft.fontRenderer.drawString(
             label,
             (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
@@ -329,7 +338,7 @@ public class JEIRecipeWrapper
 
     GlStateManager.popMatrix();
 
-    if (!this.recipe.isShaped()) {
+    if (!this.artisanRecipe.isShaped()) {
 
       if (CATEGORY_TIER == EnumTier.WORKSHOP) {
         GuiHelper.drawTexturedRect(minecraft, RECIPE_BACKGROUND, 288, 58, 18, 17, 0, 0, 0, 1, 1);
@@ -345,7 +354,7 @@ public class JEIRecipeWrapper
     GlStateManager.pushMatrix();
     GlStateManager.translate(0, -8, 0);
 
-    if (!this.recipe.isShaped()) {
+    if (!this.artisanRecipe.isShaped()) {
 
       int x = 117;
       int y = 4;

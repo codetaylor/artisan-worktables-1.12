@@ -1,14 +1,13 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
-import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.utils.BaseUndoable;
 import crafttweaker.api.item.IIngredient;
@@ -22,7 +21,6 @@ public class ZenWorktable {
 
   // --------------------------------------------------------------------------
   // - Shaped
-  // --------------------------------------------------------------------------
 
   @ZenMethod
   public static void addRecipeShaped(
@@ -42,36 +40,36 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!ArtisanWorktablesAPI.isWorktableNameValid(table)) {
+    if (!ArtisanAPI.getModuleWorktablesInstance().isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          ArtisanWorktablesAPI.getWorktableNames()
+          ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()
       ));
       return;
     }
 
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
-      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
+      recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 
       if (mirrored) {
         recipeBuilder.setMirrored();
       }
 
-      recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(input));
+      recipeBuilder.setIngredients(CTArtisanIngredient.fromMatrix(input));
 
       if (secondaryOutput != null) {
-        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+        recipeBuilder.setExtraOutput(0, CTArtisanItemStack.from(secondaryOutput), secondaryOutputChance);
       }
 
       if (tertiaryOutput != null) {
-        recipeBuilder.setExtraOutput(1, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+        recipeBuilder.setExtraOutput(1, CTArtisanItemStack.from(tertiaryOutput), tertiaryOutputChance);
       }
 
       if (quaternaryOutput != null) {
-        recipeBuilder.setExtraOutput(2, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+        recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(quaternaryOutput), quaternaryOutputChance);
       }
 
       PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new Add(table, recipeBuilder));
@@ -101,36 +99,36 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!ArtisanWorktablesAPI.isWorktableNameValid(table)) {
+    if (!ArtisanAPI.getModuleWorktablesInstance().isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          ArtisanWorktablesAPI.getWorktableNames()
+          ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()
       ));
       return;
     }
 
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
-      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
+      recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 
       if (mirrored) {
         recipeBuilder.setMirrored();
       }
 
-      recipeBuilder.setIngredients(CTInputHelper.toIngredientMatrix(input));
+      recipeBuilder.setIngredients(CTArtisanIngredient.fromMatrix(input));
 
       if (secondaryOutput != null) {
-        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+        recipeBuilder.setExtraOutput(0, CTArtisanItemStack.from(secondaryOutput), secondaryOutputChance);
       }
 
       if (tertiaryOutput != null) {
-        recipeBuilder.setExtraOutput(1, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+        recipeBuilder.setExtraOutput(1, CTArtisanItemStack.from(tertiaryOutput), tertiaryOutputChance);
       }
 
       if (quaternaryOutput != null) {
-        recipeBuilder.setExtraOutput(2, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+        recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(quaternaryOutput), quaternaryOutputChance);
       }
 
       recipeBuilder.requireGamestages(EnumGameStageRequire.ANY, new String[]{gameStageName});
@@ -145,7 +143,6 @@ public class ZenWorktable {
 
   // --------------------------------------------------------------------------
   // - Shapeless
-  // --------------------------------------------------------------------------
 
   @ZenMethod
   public static void addRecipeShapeless(
@@ -164,32 +161,32 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!ArtisanWorktablesAPI.isWorktableNameValid(table)) {
+    if (!ArtisanAPI.getModuleWorktablesInstance().isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          ArtisanWorktablesAPI.getWorktableNames()
+          ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()
       ));
       return;
     }
 
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
-      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
+      recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 
-      recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
+      recipeBuilder.setIngredients(CTArtisanIngredient.fromArray(input));
 
       if (secondaryOutput != null) {
-        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+        recipeBuilder.setExtraOutput(0, CTArtisanItemStack.from(secondaryOutput), secondaryOutputChance);
       }
 
       if (tertiaryOutput != null) {
-        recipeBuilder.setExtraOutput(1, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+        recipeBuilder.setExtraOutput(1, CTArtisanItemStack.from(tertiaryOutput), tertiaryOutputChance);
       }
 
       if (quaternaryOutput != null) {
-        recipeBuilder.setExtraOutput(2, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+        recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(quaternaryOutput), quaternaryOutputChance);
       }
 
       PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new Add(table, recipeBuilder));
@@ -218,32 +215,32 @@ public class ZenWorktable {
 
     table = table.toLowerCase();
 
-    if (!ArtisanWorktablesAPI.isWorktableNameValid(table)) {
+    if (!ArtisanAPI.getModuleWorktablesInstance().isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          ArtisanWorktablesAPI.getWorktableNames()
+          ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()
       ));
       return;
     }
 
     try {
       RecipeBuilder recipeBuilder = new RecipeBuilder();
-      recipeBuilder.addOutput(CTInputHelper.toStack(result), 1);
-      recipeBuilder.addTool(CTInputHelper.toIngredient(tool), toolDamage);
+      recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
+      recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 
-      recipeBuilder.setIngredients(CTInputHelper.toIngredientArray(input));
+      recipeBuilder.setIngredients(CTArtisanIngredient.fromArray(input));
 
       if (secondaryOutput != null) {
-        recipeBuilder.setExtraOutput(0, CTInputHelper.toStack(secondaryOutput), secondaryOutputChance);
+        recipeBuilder.setExtraOutput(0, CTArtisanItemStack.from(secondaryOutput), secondaryOutputChance);
       }
 
       if (tertiaryOutput != null) {
-        recipeBuilder.setExtraOutput(1, CTInputHelper.toStack(tertiaryOutput), tertiaryOutputChance);
+        recipeBuilder.setExtraOutput(1, CTArtisanItemStack.from(tertiaryOutput), tertiaryOutputChance);
       }
 
       if (quaternaryOutput != null) {
-        recipeBuilder.setExtraOutput(2, CTInputHelper.toStack(quaternaryOutput), quaternaryOutputChance);
+        recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(quaternaryOutput), quaternaryOutputChance);
       }
 
       recipeBuilder.requireGamestages(EnumGameStageRequire.ANY, new String[]{gameStageName});
@@ -258,7 +255,6 @@ public class ZenWorktable {
 
   // --------------------------------------------------------------------------
   // - Builder
-  // --------------------------------------------------------------------------
 
   @ZenMethod
   public static IZenRecipeBuilder createRecipeBuilder(String table) {
@@ -268,7 +264,6 @@ public class ZenWorktable {
 
   // --------------------------------------------------------------------------
   // - Internal
-  // --------------------------------------------------------------------------
 
   public static class Add
       extends BaseUndoable {
@@ -287,8 +282,8 @@ public class ZenWorktable {
     public void apply() {
 
       try {
-        AWRecipeRegistry registry = ArtisanWorktablesAPI.getWorktableRecipeRegistry(this.tableName);
-        IAWRecipe recipeWorktable = this.recipeBuilder.create();
+        RecipeRegistry registry = ArtisanAPI.getModuleWorktablesInstance().getWorktableRecipeRegistry(this.tableName);
+        IArtisanRecipe recipeWorktable = this.recipeBuilder.create();
         registry.addRecipe(recipeWorktable);
 
       } catch (Exception e) {

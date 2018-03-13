@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
+package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import java.util.Collection;
 

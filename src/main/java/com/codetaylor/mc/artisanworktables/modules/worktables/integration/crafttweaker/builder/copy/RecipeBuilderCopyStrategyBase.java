@@ -1,5 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.InputReplacements;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanIngredient;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
@@ -92,7 +95,7 @@ public abstract class RecipeBuilderCopyStrategyBase
       this.inputReplacements = new InputReplacements();
     }
 
-    this.inputReplacements.add(toReplace, replacement);
+    this.inputReplacements.add(CTArtisanIngredient.from(toReplace), CTArtisanIngredient.from(replacement));
     return this;
   }
 
@@ -115,7 +118,7 @@ public abstract class RecipeBuilderCopyStrategyBase
       this.inputReplacements = new InputReplacements();
     }
 
-    this.inputReplacements.add(col, row, replacement);
+    this.inputReplacements.add(col, row, CTArtisanIngredient.from(replacement));
     return this;
   }
 
@@ -156,7 +159,7 @@ public abstract class RecipeBuilderCopyStrategyBase
     }
 
     if (this.replaceOutput != null) {
-      RecipeBuilderCopyHelper.replaceRecipeOutput(recipe, this.replaceOutput, builder);
+      RecipeBuilderCopyHelper.replaceRecipeOutput(recipe, CTArtisanItemStack.from(this.replaceOutput), builder);
 
     } else if (!this.excludeOutput) {
       RecipeBuilderCopyHelper.copyRecipeOutput(recipe, builder);

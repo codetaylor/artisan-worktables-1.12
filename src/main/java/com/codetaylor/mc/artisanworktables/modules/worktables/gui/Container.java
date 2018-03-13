@@ -1,16 +1,15 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
-import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -335,10 +334,10 @@ public class Container
       return;
     }
 
-    IAWRecipe recipe = this.tile.getRecipe(this.player);
+    IArtisanRecipe recipe = this.tile.getRecipe(this.player);
 
     if (recipe != null) {
-      this.resultHandler.setStackInSlot(0, recipe.getBaseOutput());
+      this.resultHandler.setStackInSlot(0, recipe.getBaseOutput().toItemStack());
 
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
@@ -507,7 +506,7 @@ public class Container
         // grid has multiple, complete recipes, this will be executed for each complete
         // recipe.
 
-        IAWRecipe recipe = this.tile.getRecipe(playerIn);
+        IArtisanRecipe recipe = this.tile.getRecipe(playerIn);
 
         if (recipe == null) {
           return ItemStack.EMPTY;

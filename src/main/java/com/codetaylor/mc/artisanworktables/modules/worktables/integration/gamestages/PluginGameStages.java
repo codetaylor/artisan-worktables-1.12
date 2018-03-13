@@ -1,10 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.ArtisanWorktablesAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IAWRecipe;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.AWRecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.darkhax.gamestages.event.GameStageEvent;
@@ -65,15 +65,15 @@ public class PluginGameStages {
     Collection<String> unlockedStages = PlayerDataHandler.getStageData(Minecraft.getMinecraft().player)
         .getUnlockedStages();
 
-    for (String name : ArtisanWorktablesAPI.getWorktableNames()) {
-      AWRecipeRegistry registry = ArtisanWorktablesAPI.getWorktableRecipeRegistry(name);
+    for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
+      RecipeRegistry registry = ArtisanAPI.getModuleWorktablesInstance().getWorktableRecipeRegistry(name);
 
       if (registry != null) {
 
         for (EnumTier tier : EnumTier.values()) {
-          List<IAWRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
+          List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
 
-          for (IAWRecipe recipe : recipeList) {
+          for (IArtisanRecipe recipe : recipeList) {
             String uid = PluginJEI.createUID(name, tier);
             IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 

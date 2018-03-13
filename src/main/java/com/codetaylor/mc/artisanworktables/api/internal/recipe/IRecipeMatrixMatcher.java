@@ -1,5 +1,7 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
+package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanIngredient;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.util.RecipeMatcher;
@@ -14,7 +16,7 @@ public interface IRecipeMatrixMatcher {
 
     @Override
     public boolean matches(
-        IAWRecipe recipe,
+        IArtisanRecipe recipe,
         ICraftingMatrixStackHandler craftingMatrix,
         FluidStack fluidStack
     ) {
@@ -22,7 +24,7 @@ public interface IRecipeMatrixMatcher {
       int width = recipe.getWidth();
       int height = recipe.getHeight();
       boolean mirrored = recipe.isMirrored();
-      List<Ingredient> ingredients = recipe.getIngredientList();
+      List<IArtisanIngredient> ingredients = recipe.getIngredientList();
       FluidStack fluidIngredient = recipe.getFluidIngredient();
 
       if (fluidIngredient != null) {
@@ -50,7 +52,7 @@ public interface IRecipeMatrixMatcher {
     }
 
     private boolean checkMatch(
-        List<Ingredient> ingredients,
+        List<IArtisanIngredient> ingredients,
         ICraftingMatrixStackHandler craftingMatrix,
         int startX,
         int startY,
@@ -65,7 +67,7 @@ public interface IRecipeMatrixMatcher {
 
           int subX = x - startX;
           int subY = y - startY;
-          Ingredient ingredient = Ingredient.EMPTY;
+          IArtisanIngredient ingredient = ArtisanIngredient.EMPTY;
 
           if (subX >= 0 && subY >= 0 && subX < width && subY < height) {
 
@@ -77,7 +79,7 @@ public interface IRecipeMatrixMatcher {
             }
           }
 
-          if (!ingredient.apply(craftingMatrix.getStackInSlot(x + y * craftingMatrix.getWidth()))) {
+          if (!ingredient.matches(craftingMatrix.getStackInSlot(x + y * craftingMatrix.getWidth()))) {
             return false;
           }
         }
@@ -91,7 +93,7 @@ public interface IRecipeMatrixMatcher {
 
     int count = 0;
     List<ItemStack> itemList = new ArrayList<>();
-    List<Ingredient> ingredients = recipe.getIngredientList();
+    List<IArtisanIngredient> ingredients = recipe.getIngredientList();
     FluidStack fluidIngredient = recipe.getFluidIngredient();
 
     if (fluidIngredient != null) {
@@ -114,11 +116,17 @@ public interface IRecipeMatrixMatcher {
       return false;
     }
 
-    return RecipeMatcher.findMatches(itemList, ingredients) != null;
+    List<Ingredient> ingredientList = new ArrayList<>(ingredients.size());
+
+    for (IArtisanIngredient ingredient : ingredients) {
+      ingredientList.add(ingredient.toIngredient());
+    }
+
+    return RecipeMatcher.findMatches(itemList, ingredientList) != null;
   };
 
   boolean matches(
-      IAWRecipe recipe,
+      IArtisanRecipe recipe,
       ICraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack
   );
