@@ -142,14 +142,6 @@ public class ZenRecipeBuilder
   // --------------------------------------------------------------------------
   // - Tools
 
-  @Deprecated
-  @Override
-  public IZenRecipeBuilder setTool(IIngredient tool, int damage) {
-
-    this.addTool(tool, damage);
-    return this;
-  }
-
   @Override
   public IZenRecipeBuilder addTool(IIngredient tool, int damage) {
 

@@ -52,12 +52,6 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
-  public IZenRecipeBuilder setTool(IIngredient tool, int damage) {
-
-    return this;
-  }
-
-  @Override
   public IZenRecipeBuilder addTool(IIngredient tool, int damage) {
 
     return this;

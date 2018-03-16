@@ -68,10 +68,6 @@ public interface IZenRecipeBuilder {
   @ZenMethod
   IZenRecipeBuilder setMirrored();
 
-  @Deprecated
-  @ZenMethod
-  IZenRecipeBuilder setTool(IIngredient tool, int damage);
-
   @ZenMethod
   IZenRecipeBuilder addTool(IIngredient tool, int damage);
 
