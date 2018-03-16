@@ -9,7 +9,7 @@ import crafttweaker.api.liquid.ILiquidStack;
 public class ZenRecipeBuilderNoOp
     implements IZenRecipeBuilder {
 
-  public static final ZenRecipeBuilderNoOp INSTANCE = new ZenRecipeBuilderNoOp();
+  /* package */ static final ZenRecipeBuilderNoOp INSTANCE = new ZenRecipeBuilderNoOp();
 
   private ZenRecipeBuilderNoOp() {
     //

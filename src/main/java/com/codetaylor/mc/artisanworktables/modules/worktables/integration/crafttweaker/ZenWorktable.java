@@ -47,7 +47,9 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE);
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          recipeFactory
+      );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 
@@ -106,7 +108,9 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE);
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          recipeFactory
+      );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 
@@ -168,7 +172,9 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE);
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          recipeFactory
+      );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 
@@ -222,7 +228,9 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE);
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          recipeFactory
+      );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
 

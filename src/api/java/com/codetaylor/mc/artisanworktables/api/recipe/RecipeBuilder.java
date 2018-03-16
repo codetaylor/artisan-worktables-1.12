@@ -9,7 +9,12 @@ public class RecipeBuilder {
 
   public static IRecipeBuilder get(String tableName) throws RecipeBuilderException {
 
-    return RECIPE_BUILDER_PROVIDER.get(tableName);
+    return RECIPE_BUILDER_PROVIDER.get(tableName, IRecipeFactory.DEFAULT);
+  }
+
+  public static IRecipeBuilder get(String tableName, IRecipeFactory recipeFactory) throws RecipeBuilderException {
+
+    return RECIPE_BUILDER_PROVIDER.get(tableName, recipeFactory);
   }
 
   public static class Copy {

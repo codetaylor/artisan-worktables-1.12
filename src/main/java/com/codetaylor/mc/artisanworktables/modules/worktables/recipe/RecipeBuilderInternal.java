@@ -4,7 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
@@ -23,7 +23,7 @@ public class RecipeBuilderInternal
     implements IRecipeBuilder,
     IRecipeBuilderAction {
 
-  public static RecipeBuilderInternal get(String table) throws RecipeBuilderException {
+  public static RecipeBuilderInternal get(String table, IRecipeFactory recipeFactory) throws RecipeBuilderException {
 
     table = table.toLowerCase();
 
@@ -34,7 +34,7 @@ public class RecipeBuilderInternal
       ));
     }
 
-    return new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE);
+    return new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE, recipeFactory);
   }
 
   public static class Copy {
@@ -58,6 +58,8 @@ public class RecipeBuilderInternal
   private static final int MAX_TOOL_COUNT = 3;
 
   private String tableName;
+  private final IRecipeAdditionQueue recipeAdditionQueue;
+  private IRecipeFactory recipeFactory;
 
   // --------------------------------------------------------------------------
   // - Recipe
@@ -94,18 +96,18 @@ public class RecipeBuilderInternal
   private boolean outputSet;
   private boolean validateRun;
 
-  private final IRecipeAdditionQueue recipeAdditionQueue;
-
   // --------------------------------------------------------------------------
   // - Constructor
 
   public RecipeBuilderInternal(
       String tableName,
-      IRecipeAdditionQueue recipeAdditionQueue
+      IRecipeAdditionQueue recipeAdditionQueue,
+      IRecipeFactory recipeFactory
   ) {
 
     this.tableName = tableName;
     this.recipeAdditionQueue = recipeAdditionQueue;
+    this.recipeFactory = recipeFactory;
 
     this.ingredients = null;
     this.secondaryIngredients = Collections.emptyList();
@@ -442,9 +444,14 @@ public class RecipeBuilderInternal
     return this.recipeAdditionQueue;
   }
 
+  public IRecipeFactory getRecipeFactory() {
+
+    return this.recipeFactory;
+  }
+
   public RecipeBuilderInternal copy() {
 
-    RecipeBuilderInternal copy = new RecipeBuilderInternal(this.tableName, recipeAdditionQueue);
+    RecipeBuilderInternal copy = new RecipeBuilderInternal(this.tableName, recipeAdditionQueue, recipeFactory);
 
     copy.outputSet = this.outputSet;
     copy.inputSet = this.inputSet;
@@ -490,7 +497,7 @@ public class RecipeBuilderInternal
       this.recipeAdditionQueue.offer(this);
     }
 
-    return new RecipeBuilderInternal(this.tableName, recipeAdditionQueue);
+    return new RecipeBuilderInternal(this.tableName, this.recipeAdditionQueue, this.recipeFactory);
   }
 
   @Override
@@ -530,7 +537,7 @@ public class RecipeBuilderInternal
       this.secondaryIngredients = Collections.emptyList();
     }
 
-    ArtisanAPI.getWorktableRecipeRegistry(this.tableName).addRecipe(new ArtisanRecipe(
+    ArtisanAPI.getWorktableRecipeRegistry(this.tableName).addRecipe(this.recipeFactory.create(
         gameStageMatcher,
         this.outputWeightPairList,
         tools,
