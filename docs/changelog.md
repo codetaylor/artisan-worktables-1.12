@@ -1,3 +1,10 @@
+1.18.0-SNAPSHOT
+
+  * BREAKING CHANGES:
+    * API: `AWItemCraftEvent` renamed to `ArtisanCraftEvent`
+
+---
+
 1.17.2
 
  * Fixed: ContentTweaker custom fluids have gray color in GUI (#95)
