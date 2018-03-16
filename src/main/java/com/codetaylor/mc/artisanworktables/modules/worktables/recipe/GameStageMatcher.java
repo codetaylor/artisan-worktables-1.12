@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IGameStageMatcher;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 
 import java.util.ArrayList;
 import java.util.Collection;

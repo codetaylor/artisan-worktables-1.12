@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop;
 
-import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.TileEntityMageDelegate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

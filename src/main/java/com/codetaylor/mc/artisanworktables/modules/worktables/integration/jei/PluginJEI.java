@@ -2,10 +2,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import mezz.jei.api.IJeiRuntime;
@@ -38,7 +38,7 @@ public class PluginJEI
         continue;
       }
 
-      for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
+      for (String name : ArtisanAPI.getWorktableNames()) {
         registry.addRecipeCategories(categoryFactory.createCategory(name, tier));
       }
     }
@@ -53,14 +53,14 @@ public class PluginJEI
         continue;
       }
 
-      for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
+      for (String name : ArtisanAPI.getWorktableNames()) {
         registry.addRecipeCatalyst(
             this.getWorktableAsItemStack(name, tier),
             PluginJEI.createUID(name, tier)
         );
       }
 
-      for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
+      for (String name : ArtisanAPI.getWorktableNames()) {
         registry.handleRecipes(
             ArtisanRecipe.class,
             JEIRecipeWrapper::new,
@@ -69,7 +69,7 @@ public class PluginJEI
       }
 
       IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
-      for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
+      for (String name : ArtisanAPI.getWorktableNames()) {
         transferRegistry.addRecipeTransferHandler(new JEIRecipeTransferInfoWorktable(
             name,
             PluginJEI.createUID(name, tier),
@@ -77,9 +77,9 @@ public class PluginJEI
         ));
       }
 
-      for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
+      for (String name : ArtisanAPI.getWorktableNames()) {
         List<IArtisanRecipe> recipeList = new ArrayList<>();
-        RecipeRegistry recipeRegistry = ArtisanAPI.getModuleWorktablesInstance().getWorktableRecipeRegistry(name);
+        RecipeRegistry recipeRegistry = ArtisanAPI.getWorktableRecipeRegistry(name);
         recipeList = recipeRegistry.getRecipeListByTier(recipeList, tier);
         registry.addRecipes(recipeList, PluginJEI.createUID(name, tier));
       }
@@ -93,11 +93,11 @@ public class PluginJEI
     RECIPE_REGISTRY = jeiRuntime.getRecipeRegistry();
 
     // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
-    if (ArtisanAPI.getModuleWorktablesInstance().isModLoadedGameStages()) {
+    if (ArtisanAPI.IS_MOD_LOADED_GAMESTAGES) {
       Set<String> unlockedStages = Collections.emptySet();
 
-      for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
-        RecipeRegistry registry = ArtisanAPI.getModuleWorktablesInstance().getWorktableRecipeRegistry(name);
+      for (String name : ArtisanAPI.getWorktableNames()) {
+        RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
 
         if (registry != null) {
 

@@ -43,7 +43,7 @@ public class TileEntityToolbox
 
     Predicate<ItemStack> predicate = itemStack -> itemStack.isEmpty()
         || !this.restrictToToolsOnly()
-        || ArtisanAPI.getModuleWorktablesInstance().containsRecipeWithTool(itemStack);
+        || ArtisanAPI.containsRecipeWithTool(itemStack);
 
     this.itemHandler = new ToolboxItemStackHandler(predicate, 27) {
 

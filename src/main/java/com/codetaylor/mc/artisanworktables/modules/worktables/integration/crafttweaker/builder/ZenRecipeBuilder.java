@@ -1,14 +1,12 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanItemStack;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IRecipeBuilderCopyStrategy;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.EnumGameStageRequire;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderException;
-import com.codetaylor.mc.athenaeum.integration.crafttweaker.PluginDelegate;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.ZenRecipeBuilderCopyStrategy;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.api.item.IIngredient;
@@ -22,18 +20,11 @@ import java.util.List;
 public class ZenRecipeBuilder
     implements IZenRecipeBuilder {
 
-  private final String tableName;
+  private RecipeBuilderInternal recipeBuilder;
 
-  private RecipeBuilder recipeBuilder;
-  private boolean invalid;
-  private boolean inputSet;
-  private boolean outputSet;
-  private IRecipeBuilderCopyStrategy recipeCopyStrategy;
+  public ZenRecipeBuilder(String tableName) throws RecipeBuilderException {
 
-  public ZenRecipeBuilder(String tableName) {
-
-    this.tableName = tableName;
-    this.recipeBuilder = new RecipeBuilder();
+    this.recipeBuilder = RecipeBuilderInternal.get(tableName);
   }
 
   // --------------------------------------------------------------------------
@@ -42,26 +33,21 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setShaped(IIngredient[][] ingredients) {
 
-    if (this.inputSet) {
-      return this.setInvalid("Recipe input already set");
-    }
-
     for (IIngredient[] ingredientArray : ingredients) {
 
       for (IIngredient ingredient : ingredientArray) {
 
         if (ingredient instanceof ILiquidStack) {
-          return this.setInvalid("Liquids are not supported in ingredients");
+          return this.logError("Liquids are not supported in ingredients");
         }
       }
     }
 
     try {
       this.recipeBuilder.setIngredients(CTArtisanIngredient.fromMatrix(ingredients));
-      this.inputSet = true;
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -77,23 +63,18 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setShapeless(IIngredient[] ingredients) {
 
-    if (this.inputSet) {
-      return this.setInvalid("Recipe input already set");
-    }
-
     for (IIngredient ingredient : ingredients) {
 
       if (ingredient instanceof ILiquidStack) {
-        return this.setInvalid("Liquids are not supported in ingredients");
+        return this.logError("Liquids are not supported in ingredients");
       }
     }
 
     try {
       this.recipeBuilder.setIngredients(CTArtisanIngredient.fromArray(ingredients));
-      this.inputSet = true;
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -109,7 +90,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setFluidIngredient(CTInputHelper.toFluid(fluidIngredient));
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -122,10 +103,7 @@ public class ZenRecipeBuilder
   public IZenRecipeBuilder setSecondaryIngredients(IIngredient[] ingredients) {
 
     if (ingredients == null || ingredients.length == 0) {
-      return this.setInvalid("Secondary ingredients parameter can't be null or zero length");
-
-    } else if (ingredients.length > 9) {
-      return this.setInvalid("Exceeded max allowed 9 secondary ingredients: " + ingredients.length);
+      return this.logError("Secondary ingredients parameter can't be null or zero length");
     }
 
     List<IIngredient> adjustedList = new ArrayList<>();
@@ -133,7 +111,7 @@ public class ZenRecipeBuilder
     for (IIngredient ingredient : ingredients) {
 
       if (ingredient instanceof ILiquidStack) {
-        return this.setInvalid("Liquids are not supported in ingredients");
+        return this.logError("Liquids are not supported in secondary ingredients");
       }
 
       if (ingredient != null) {
@@ -147,7 +125,7 @@ public class ZenRecipeBuilder
       );
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -174,19 +152,15 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder addTool(IIngredient tool, int damage) {
 
-    if (tool == null) {
-      return this.setInvalid("Tools can't be null");
-    }
-
     if (tool instanceof ILiquidStack) {
-      return this.setInvalid("Tools can't be liquids");
+      return this.logError("Tools can't be liquids");
     }
 
     try {
       this.recipeBuilder.addTool(CTArtisanIngredient.from(tool), damage);
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -198,20 +172,17 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder addOutput(IItemStack output, int weight) {
 
-    if (output == null) {
-      return this.setInvalid("Output can't be null");
-    }
-
-    if (weight <= 0) { // weight is optional, may be 0
+    if (weight <= 0) {
+      // Since the weight is an optional parameter, it may be zero
+      // so we set it to 1 here.
       weight = 1;
     }
 
     try {
       this.recipeBuilder.addOutput(CTArtisanItemStack.from(output), weight);
-      this.outputSet = true;
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -223,21 +194,39 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setExtraOutputOne(IItemStack output, float chance) {
 
-    this.recipeBuilder.setExtraOutput(0, CTArtisanItemStack.from(output), chance);
+    try {
+      this.recipeBuilder.setExtraOutput(0, CTArtisanItemStack.from(output), chance);
+
+    } catch (RecipeBuilderException e) {
+      return this.logError(e.getMessage());
+    }
+
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setExtraOutputTwo(IItemStack output, float chance) {
 
-    this.recipeBuilder.setExtraOutput(1, CTArtisanItemStack.from(output), chance);
+    try {
+      this.recipeBuilder.setExtraOutput(1, CTArtisanItemStack.from(output), chance);
+
+    } catch (RecipeBuilderException e) {
+      return this.logError(e.getMessage());
+    }
+
     return this;
   }
 
   @Override
   public IZenRecipeBuilder setExtraOutputThree(IItemStack output, float chance) {
 
-    this.recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(output), chance);
+    try {
+      this.recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(output), chance);
+
+    } catch (RecipeBuilderException e) {
+      return this.logError(e.getMessage());
+    }
+
     return this;
   }
 
@@ -250,15 +239,15 @@ public class ZenRecipeBuilder
     EnumGameStageRequire enumGameStageRequire = EnumGameStageRequire.fromName(require);
 
     if (enumGameStageRequire == null) {
-      return this.setInvalid("Invalid gamestage requirement enum: " + require + ". Valid enums are: " + Arrays
+      return this.logError("Invalid gamestage requirement enum: " + require + ". Valid enums are: " + Arrays
           .toString(EnumGameStageRequire.values()));
     }
 
     try {
-      this.recipeBuilder.requireGamestages(enumGameStageRequire, stages);
+      this.recipeBuilder.requireGameStages(enumGameStageRequire, stages);
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -268,10 +257,10 @@ public class ZenRecipeBuilder
   public IZenRecipeBuilder excludeGameStages(String[] stages) {
 
     try {
-      this.recipeBuilder.excludeGamestages(stages);
+      this.recipeBuilder.excludeGameStages(stages);
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -287,7 +276,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setMinimumTier(minimumTier);
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -300,7 +289,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setMaximumTier(maximumTier);
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -316,7 +305,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setExperienceRequired(experienceRequired);
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -329,7 +318,7 @@ public class ZenRecipeBuilder
       this.recipeBuilder.setLevelRequired(levelRequired);
 
     } catch (RecipeBuilderException e) {
-      return this.setInvalid(e.getMessage());
+      return this.logError(e.getMessage());
     }
 
     return this;
@@ -348,16 +337,8 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder setCopy(IZenRecipeBuilderCopyStrategy copyStrategy) {
 
-    this.recipeCopyStrategy = (IRecipeBuilderCopyStrategy) copyStrategy;
-
-    if (!this.recipeCopyStrategy.isExcludeInput()) {
-      this.inputSet = true;
-    }
-
-    if (!this.recipeCopyStrategy.isExcludeOutput()) {
-      this.outputSet = true;
-    }
-
+    ZenRecipeBuilderCopyStrategy strategy = (ZenRecipeBuilderCopyStrategy) copyStrategy;
+    this.recipeBuilder.setCopy(strategy.getStrategy());
     return this;
   }
 
@@ -367,61 +348,28 @@ public class ZenRecipeBuilder
   @Override
   public IZenRecipeBuilder create() {
 
-    if (this.invalid) {
-      CTLogHelper.logErrorFromZenMethod("Failed to create recipe");
+    try {
+      this.recipeBuilder.create();
 
-    } else {
-
-      try {
-
-        if (this.recipeCopyStrategy != null) {
-
-          if (this.recipeCopyStrategy.isValid()) {
-
-            if (!this.inputSet && this.recipeCopyStrategy.isExcludeInput()) {
-              this.setInvalid("Recipe missing input");
-
-            } else if (!this.outputSet && this.recipeCopyStrategy.isExcludeOutput()) {
-              this.setInvalid("Recipe missing output");
-
-            } else {
-              this.recipeCopyStrategy.onCreate(this.tableName, this.recipeBuilder);
-            }
-
-          } else {
-            CTLogHelper.logErrorFromZenMethod("Recipe copy strategy failed validation");
-          }
-
-        } else {
-          this.recipeBuilder.validate();
-          PluginDelegate.addAddition(ModuleWorktables.MOD_ID, new ZenWorktable.Add(this.tableName, this.recipeBuilder));
-        }
-
-      } catch (RecipeBuilderException e) {
-        CTLogHelper.logErrorFromZenMethod("Recipe failed validation: " + e.getMessage());
-      }
+    } catch (RecipeBuilderException e) {
+      this.logError("Failed to create recipe");
+      this.logError(e.getMessage());
     }
 
-    this.reset();
+    this.recipeBuilder = new RecipeBuilderInternal(
+        this.recipeBuilder.getTableName(),
+        this.recipeBuilder.getRecipeAdditionQueue()
+    );
+
     return this;
-  }
-
-  private void reset() {
-
-    this.invalid = false;
-    this.inputSet = false;
-    this.outputSet = false;
-    this.recipeCopyStrategy = null;
-    this.recipeBuilder = new RecipeBuilder();
   }
 
   // --------------------------------------------------------------------------
   // - Internal
 
-  private IZenRecipeBuilder setInvalid(String message) {
+  private IZenRecipeBuilder logError(String message) {
 
     CTLogHelper.logErrorFromZenMethod(message);
-    this.invalid = true;
     return this;
   }
 }

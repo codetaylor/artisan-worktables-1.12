@@ -4,7 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredien
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import mezz.jei.api.ingredients.IIngredients;

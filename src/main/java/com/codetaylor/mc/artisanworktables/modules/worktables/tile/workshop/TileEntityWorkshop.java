@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop;
 
-import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;

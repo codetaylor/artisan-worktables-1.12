@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -22,11 +24,11 @@ public interface IZenRecipeBuilder {
 
     table = table.toLowerCase();
 
-    if (!ArtisanAPI.getModuleWorktablesInstance().isWorktableNameValid(table)) {
+    if (!ArtisanAPI.isWorktableNameValid(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",
-          ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()
+          ArtisanAPI.getWorktableNames()
       ));
       return ZenRecipeBuilderNoOp.INSTANCE;
     }
@@ -34,8 +36,15 @@ public interface IZenRecipeBuilder {
     IZenRecipeBuilder builder = BUILDER_MAP.get(table);
 
     if (builder == null) {
-      builder = new ZenRecipeBuilder(table);
-      BUILDER_MAP.put(table, builder);
+
+      try {
+        builder = new ZenRecipeBuilder(table);
+        BUILDER_MAP.put(table, builder);
+
+      } catch (RecipeBuilderException e) {
+        CTLogHelper.logErrorFromZenMethod(e.getMessage());
+        return ZenRecipeBuilderNoOp.INSTANCE;
+      }
     }
 
     return builder;

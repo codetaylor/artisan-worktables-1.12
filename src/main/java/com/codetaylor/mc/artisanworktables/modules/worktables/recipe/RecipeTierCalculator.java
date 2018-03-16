@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 
 import javax.annotation.Nullable;
 

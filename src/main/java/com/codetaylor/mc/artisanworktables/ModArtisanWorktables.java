@@ -1,15 +1,21 @@
 package com.codetaylor.mc.artisanworktables;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfigAPIWrapper;
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleTools;
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfig;
+import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfigAPIWrapper;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfigAPIWrapper;
 import com.codetaylor.mc.athenaeum.gui.GuiHandler;
 import com.codetaylor.mc.athenaeum.module.ModuleManager;
+import com.codetaylor.mc.athenaeum.util.Injector;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -59,6 +65,12 @@ public class ModArtisanWorktables {
 
   @Mod.EventHandler
   public void onConstructionEvent(FMLConstructionEvent event) {
+
+    Injector injector = new Injector();
+    injector.inject(ArtisanAPI.class, "IS_MOD_LOADED_GAMESTAGES", Loader.isModLoaded("gamestages"));
+    injector.inject(ArtisanAPI.class, "MODULE_WORKTABLES_CONFIG", new ModuleWorktablesConfigAPIWrapper());
+    injector.inject(ArtisanAPI.class, "MODULE_TOOLS_CONFIG", new ModuleToolsConfigAPIWrapper());
+    injector.inject(ArtisanAPI.class, "MODULE_TOOLBOX_CONFIG", new ModuleToolboxConfigAPIWrapper());
 
     this.moduleManager.onConstructionEvent();
     this.moduleManager.routeFMLStateEvent(event);

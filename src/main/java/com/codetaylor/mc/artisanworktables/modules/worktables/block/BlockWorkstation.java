@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
-import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;

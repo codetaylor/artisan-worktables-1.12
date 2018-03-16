@@ -2,8 +2,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.games
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
@@ -65,8 +65,8 @@ public class PluginGameStages {
     Collection<String> unlockedStages = PlayerDataHandler.getStageData(Minecraft.getMinecraft().player)
         .getUnlockedStages();
 
-    for (String name : ArtisanAPI.getModuleWorktablesInstance().getWorktableNames()) {
-      RecipeRegistry registry = ArtisanAPI.getModuleWorktablesInstance().getWorktableRecipeRegistry(name);
+    for (String name : ArtisanAPI.getWorktableNames()) {
+      RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
 
       if (registry != null) {
 

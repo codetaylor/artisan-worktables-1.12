@@ -2,14 +2,22 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
-import com.codetaylor.mc.artisanworktables.modules.worktables.api.ModuleWorktablesAPI_Impl;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderCopyStrategy;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderCopyStrategyProvider;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderProvider;
+import com.codetaylor.mc.artisanworktables.api.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTRecipeAdditionQueue;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeAdditionQueue;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeAdditionQueue;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshopMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
@@ -20,13 +28,15 @@ import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
+import com.codetaylor.mc.athenaeum.util.Injector;
+import crafttweaker.api.recipes.ICraftingRecipe;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ModuleWorktables
     extends ModuleBase {
@@ -35,6 +45,7 @@ public class ModuleWorktables
   public static final String MOD_ID = ModArtisanWorktables.MOD_ID;
   public static final CreativeTabs CREATIVE_TAB = ModArtisanWorktables.CREATIVE_TAB;
   public static final ModArtisanWorktables MOD_INSTANCE = ModArtisanWorktables.INSTANCE;
+  public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
   public static class Lang {
 
@@ -68,6 +79,7 @@ public class ModuleWorktables
   }
 
   public static IPacketService PACKET_SERVICE;
+  public static IRecipeAdditionQueue RECIPE_ADDITION_QUEUE;
 
   public ModuleWorktables() {
 
@@ -90,7 +102,7 @@ public class ModuleWorktables
 
     this.registerIntegrationPlugin(
         "crafttweaker",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilderCopyStrategy"
+        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy"
     );
 
     this.registerIntegrationPlugin(
@@ -107,21 +119,15 @@ public class ModuleWorktables
   @Override
   public void onConstructionEvent(FMLConstructionEvent event) {
 
-    try {
-      Field field = ArtisanAPI.class.getDeclaredField("MODULE_WORKTABLES_INSTANCE");
-      field.setAccessible(true);
+    this.injectAPI();
 
-      Field modifiersField = Field.class.getDeclaredField("modifiers");
-      modifiersField.setAccessible(true);
-      modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+    if (Loader.isModLoaded("crafttweaker")) {
+      RECIPE_ADDITION_QUEUE = new CTRecipeAdditionQueue();
+      MinecraftForge.EVENT_BUS.register(RECIPE_ADDITION_QUEUE);
 
-      field.set(null, new ModuleWorktablesAPI_Impl(
-          Loader.isModLoaded("gamestages"),
-          ModuleWorktablesConfig.getAPIWrapper()
-      ));
-
-    } catch (Exception e) {
-      throw new RuntimeException("Unable to inject module worktables API into ArtisanAPI", e);
+    } else {
+      RECIPE_ADDITION_QUEUE = new RecipeAdditionQueue();
+      MinecraftForge.EVENT_BUS.register(RECIPE_ADDITION_QUEUE);
     }
 
     super.onConstructionEvent(event);
@@ -198,6 +204,42 @@ public class ModuleWorktables
     if (ModuleWorktablesConfig.ENABLE_WORKSHOPS) {
       registry.registerClientModelRegistrationStrategy(Blocks.WORKSHOP.getModelRegistrationStrategy());
     }
+  }
+
+  private void injectAPI() {
+
+    Injector injector = new Injector();
+
+    injector.inject(
+        RecipeBuilder.class,
+        "RECIPE_BUILDER_PROVIDER",
+        (IRecipeBuilderProvider) RecipeBuilderInternal::get
+    );
+
+    injector.inject(
+        RecipeBuilder.Copy.class,
+        "RECIPE_BUILDER_COPY_STRATEGY_PROVIDER",
+        new IRecipeBuilderCopyStrategyProvider() {
+
+          @Override
+          public IRecipeBuilderCopyStrategy byName(String recipeName) {
+
+            return RecipeBuilder.Copy.byName(recipeName);
+          }
+
+          @Override
+          public IRecipeBuilderCopyStrategy byRecipe(ICraftingRecipe recipe) {
+
+            return RecipeBuilder.Copy.byRecipe(recipe);
+          }
+
+          @Override
+          public IRecipeBuilderCopyStrategy byOutput(IArtisanIngredient[] outputs) {
+
+            return RecipeBuilder.Copy.byOutput(outputs);
+          }
+        }
+    );
   }
 
 }

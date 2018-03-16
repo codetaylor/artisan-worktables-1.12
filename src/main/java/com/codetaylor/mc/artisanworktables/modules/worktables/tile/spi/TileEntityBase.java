@@ -5,9 +5,9 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
@@ -342,7 +342,7 @@ public abstract class TileEntityBase
       playerLevels = player.experienceLevel;
       isPlayerCreative = player.isCreative();
 
-      if (ArtisanAPI.getModuleWorktablesInstance().isModLoadedGameStages()) {
+      if (ArtisanAPI.IS_MOD_LOADED_GAMESTAGES) {
         unlockedStages = GameStagesHelper.getUnlockedStages(player);
       }
     }
@@ -498,7 +498,7 @@ public abstract class TileEntityBase
 
   public RecipeRegistry getWorktableRecipeRegistry() {
 
-    return ArtisanAPI.getModuleWorktablesInstance().getWorktableRecipeRegistry(this.getWorktableName());
+    return ArtisanAPI.getWorktableRecipeRegistry(this.getWorktableName());
   }
 
   public ItemStack getItemStackForTabDisplay(IBlockState state) {

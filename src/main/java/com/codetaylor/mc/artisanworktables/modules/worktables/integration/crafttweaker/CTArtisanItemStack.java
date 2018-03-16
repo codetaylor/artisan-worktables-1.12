@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
-import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanItemStack;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanItemStack;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.Item;
