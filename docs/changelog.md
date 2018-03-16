@@ -6,55 +6,55 @@
 
 1.17.1
 
- * Changed: updated de_de.lang (PR#90 Xaikii)
+  * Changed: updated de_de.lang (PR#90 Xaikii)
 
 ---
 
 1.17.0
 
- * Note: you will need to refresh the tool config or manually add the new tools to the list
- * Added: new tables!
+  * Note: you will need to refresh the tool config or manually add the new tools to the list
+  * Added: new tables!
     * Farmer's Worktable, Workstation, and Workshop
     * Chef's Worktable, Workstation, and Workshop
- * Added: new tools!
+  * Added: new tools!
     * Lens
     * Sifter
     * Cutting Board
     * Pan
     * Mortar
     * Knife
- * Added: new recipe builder methods!
+  * Added: new recipe builder methods!
     * `RecipeBuilder setMaximumTier(int maximumTier);`
     * `RecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients);`
- * Added: new copy builder methods!
+  * Added: new copy builder methods!
     * `Copy replaceInput(@Nullable IIngredient toReplace, @Nullable IIngredient replacement);`
     * `Copy replaceShapedInput(int col, int row, @Nullable IIngredient replacement);`
- * Added: item handler capability for secondary ingredients
+  * Added: item handler capability for secondary ingredients
     * This adds the ability to pipe items in and out of the secondary ingredient slots, with a caveat: only one stack of any given item type will be accepted by the slots when piping items in. This means that you can have a chest of nine different items piping into a table and the internal handler will only allow one stack of each item into the slots. This is useful to keep secondary ingredients stocked for manual crafting and will be useful for automation support in a future update.
- * Changed: added emboss effect to all GUI result slot textures
- * Changed: Athame tool texture is now squiggly - the old texture was repurposed for the Knife tool
- * Changed: Athame tool recipe now requires a piece of lapis
- * Fixed: snow should not gather on top of Worktables
- * Fixed: copying shaped recipes rotates and flips ingredient layout
- * Requires: Athenaeum >= 1.13.0
+  * Changed: added emboss effect to all GUI result slot textures
+  * Changed: Athame tool texture is now squiggly - the old texture was repurposed for the Knife tool
+  * Changed: Athame tool recipe now requires a piece of lapis
+  * Fixed: snow should not gather on top of Worktables
+  * Fixed: copying shaped recipes rotates and flips ingredient layout
+  * Requires: Athenaeum >= 1.13.0
 
 ---
 
 1.16.2
 
- * Fixed: Fluid tank GUI display not updating when piping fluids in / out (#89)
+  * Fixed: Fluid tank GUI display not updating when piping fluids in / out (#89)
  
 ---
 
 1.16.1
 
- * Fixed: Workshop GUI tab arrow in the wrong position (#88)
+  * Fixed: Workshop GUI tab arrow in the wrong position (#88)
 
 ---
 
 1.16.0
 
- * NOTES:
+  * NOTES:
     * This beta release has many changes. I encourage you to read the changelog, regen your configs, and reference the new documentation.
     * http://artisan-worktables.readthedocs.io
   * BREAKING CHANGES:
