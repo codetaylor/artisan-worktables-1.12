@@ -117,4 +117,9 @@ public class CTArtisanIngredient
 
     return CTInputHelper.toIngredient(this.ingredient);
   }
+
+  public IIngredient getIngredient() {
+
+    return this.ingredient;
+  }
 }

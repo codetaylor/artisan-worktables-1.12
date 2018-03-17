@@ -2,9 +2,9 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
-import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanItemStack;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.ZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
@@ -25,7 +25,7 @@ public class ZenRecipeBuilder
 
   /* package */ ZenRecipeBuilder(String tableName) throws RecipeBuilderException {
 
-    this.recipeBuilder = RecipeBuilderInternal.get(tableName, IRecipeFactory.DEFAULT);
+    this.recipeBuilder = RecipeBuilderInternal.get(tableName, new CTArtisanRecipeFactory());
   }
 
   // --------------------------------------------------------------------------
@@ -352,7 +352,7 @@ public class ZenRecipeBuilder
     this.recipeBuilder = new RecipeBuilderInternal(
         this.recipeBuilder.getTableName(),
         this.recipeBuilder.getRecipeAdditionQueue(),
-        this.recipeBuilder.getRecipeFactory()
+        new CTArtisanRecipeFactory()
     );
 
     return this;

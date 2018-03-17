@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
+import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
@@ -47,8 +48,10 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
-          recipeFactory
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(
+          table,
+          ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          IRecipeFactory.DEFAULT
       );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
@@ -108,8 +111,10 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
-          recipeFactory
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(
+          table,
+          ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          IRecipeFactory.DEFAULT
       );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
@@ -172,8 +177,10 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
-          recipeFactory
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(
+          table,
+          ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          IRecipeFactory.DEFAULT
       );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
@@ -228,8 +235,10 @@ public class ZenWorktable {
     }
 
     try {
-      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(table, ModuleWorktables.RECIPE_ADDITION_QUEUE,
-          recipeFactory
+      RecipeBuilderInternal recipeBuilder = new RecipeBuilderInternal(
+          table,
+          ModuleWorktables.RECIPE_ADDITION_QUEUE,
+          IRecipeFactory.DEFAULT
       );
       recipeBuilder.addOutput(CTArtisanItemStack.from(result), 1);
       recipeBuilder.addTool(CTArtisanIngredient.from(tool), toolDamage);
