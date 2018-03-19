@@ -3,6 +3,9 @@
   * BREAKING CHANGES:
     * API: `AWItemCraftEvent` renamed to `ArtisanCraftEvent`
   * Added: proper API - `ArtisanAPI`
+  * Added: builder methods to support CraftTweaker recipe functions and actions
+    * `setRecipeFunction(IRecipeFunction)`
+    * `setRecipeAction(IRecipeAction)`
   * Changed: removed deprecated builder method `setTool(IIngredient, int)`, use `addTool(IIngredient, int)` instead
   * Deprecated:
     * the entire import `mods.artisanworktables.Worktable` and all its methods will be removed in a future version - use the recipe builder instead
