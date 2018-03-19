@@ -3,8 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
-import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -188,72 +188,18 @@ public class JEIRecipeWrapper
       }
     }
 
+    if (experienceString != null) {
+      this.drawExperienceString(minecraft, recipeHeight, experienceString);
+    }
+
     if (CATEGORY_TIER == EnumTier.WORKTABLE) {
-
-      String label = "-" + this.artisanRecipe.getToolDamage(0);
-      minecraft.fontRenderer.drawString(
-          label,
-          (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-          (55 - 3),
-          0xFFFFFFFF,
-          true
-      );
-
-      if (experienceString != null) {
-        minecraft.fontRenderer.drawString(
-            experienceString,
-            5,
-            recipeHeight - 10,
-            0xFF80FF20,
-            true
-        );
-      }
+      this.drawToolDamageString(minecraft, 83, 52);
 
     } else if (CATEGORY_TIER == EnumTier.WORKSTATION) {
-
-      for (int i = 0; i < this.artisanRecipe.getToolCount(); i++) {
-        String label = "-" + this.artisanRecipe.getToolDamage(i);
-        minecraft.fontRenderer.drawString(
-            label,
-            (80 - 3 + 6) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            (55 - 3) - 19 + (22 * i),
-            0xFFFFFFFF,
-            true
-        );
-      }
-
-      if (experienceString != null) {
-        minecraft.fontRenderer.drawString(
-            experienceString,
-            5,
-            recipeHeight - 10,
-            0xFF80FF20,
-            true
-        );
-      }
+      this.drawToolDamageString(minecraft, 83, 33);
 
     } else if (CATEGORY_TIER == EnumTier.WORKSHOP) {
-
-      for (int i = 0; i < this.artisanRecipe.getToolCount(); i++) {
-        String label = "-" + this.artisanRecipe.getToolDamage(i);
-        minecraft.fontRenderer.drawString(
-            label,
-            (119) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            (39) + (22 * i),
-            0xFFFFFFFF,
-            true
-        );
-      }
-
-      if (experienceString != null) {
-        minecraft.fontRenderer.drawString(
-            experienceString,
-            5,
-            recipeHeight - 10,
-            0xFF80FF20,
-            true
-        );
-      }
+      this.drawToolDamageString(minecraft, 119, 39);
     }
     GlStateManager.popMatrix();
 
@@ -265,74 +211,42 @@ public class JEIRecipeWrapper
 
     if (CATEGORY_TIER == EnumTier.WORKSHOP) {
 
+      int xPos = 256;
+      int yPos = 12;
+
       if (!this.artisanRecipe.getSecondaryOutput().isEmpty()) {
-        String label = (int) (this.artisanRecipe.getSecondaryOutputChance() * 100) + "%";
-        minecraft.fontRenderer.drawString(
-            label,
-            (256) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            12,
-            0xFFFFFFFF,
-            true
-        );
+        float chance = this.artisanRecipe.getSecondaryOutputChance();
+        this.drawSecondaryOutputChanceString(minecraft, chance, xPos, yPos);
       }
 
       if (!this.artisanRecipe.getTertiaryOutput().isEmpty()) {
-        String label = (int) (this.artisanRecipe.getTertiaryOutputChance() * 100) + "%";
-        minecraft.fontRenderer.drawString(
-            label,
-            (256 + 36) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            12,
-            0xFFFFFFFF,
-            true
-        );
+        float chance = this.artisanRecipe.getTertiaryOutputChance();
+        this.drawSecondaryOutputChanceString(minecraft, chance, (xPos + 36), yPos);
       }
 
       if (!this.artisanRecipe.getQuaternaryOutput().isEmpty()) {
-        String label = (int) (this.artisanRecipe.getQuaternaryOutputChance() * 100) + "%";
-        minecraft.fontRenderer.drawString(
-            label,
-            (256 + 72) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            12,
-            0xFFFFFFFF,
-            true
-        );
+        float chance = this.artisanRecipe.getQuaternaryOutputChance();
+        this.drawSecondaryOutputChanceString(minecraft, chance, (xPos + 72), yPos);
       }
+
     } else {
 
-      int xPos = 334;
+      int xPos = 331;
       int yPos = 32;
 
       if (!this.artisanRecipe.getSecondaryOutput().isEmpty()) {
-        String label = (int) (this.artisanRecipe.getSecondaryOutputChance() * 100) + "%";
-        minecraft.fontRenderer.drawString(
-            label,
-            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            yPos,
-            0xFFFFFFFF,
-            true
-        );
+        float chance = this.artisanRecipe.getSecondaryOutputChance();
+        this.drawSecondaryOutputChanceString(minecraft, chance, xPos, yPos);
       }
 
       if (!this.artisanRecipe.getTertiaryOutput().isEmpty()) {
-        String label = (int) (this.artisanRecipe.getTertiaryOutputChance() * 100) + "%";
-        minecraft.fontRenderer.drawString(
-            label,
-            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            (yPos + 36),
-            0xFFFFFFFF,
-            true
-        );
+        float chance = this.artisanRecipe.getTertiaryOutputChance();
+        this.drawSecondaryOutputChanceString(minecraft, chance, xPos, (yPos + 36));
       }
 
       if (!this.artisanRecipe.getQuaternaryOutput().isEmpty()) {
-        String label = (int) (this.artisanRecipe.getQuaternaryOutputChance() * 100) + "%";
-        minecraft.fontRenderer.drawString(
-            label,
-            (xPos - 3) - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
-            (yPos + 72),
-            0xFFFFFFFF,
-            true
-        );
+        float chance = this.artisanRecipe.getQuaternaryOutputChance();
+        this.drawSecondaryOutputChanceString(minecraft, chance, xPos, (yPos + 72));
       }
     }
 
@@ -379,5 +293,47 @@ public class JEIRecipeWrapper
       }
     }
     GlStateManager.popMatrix();
+  }
+
+  private void drawSecondaryOutputChanceString(
+      Minecraft minecraft,
+      float secondaryOutputChance,
+      int positionX,
+      int positionY
+  ) {
+
+    String label = (int) (secondaryOutputChance * 100) + "%";
+    minecraft.fontRenderer.drawString(
+        label,
+        positionX - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+        positionY,
+        0xFFFFFFFF,
+        true
+    );
+  }
+
+  private void drawExperienceString(Minecraft minecraft, int recipeHeight, String experienceString) {
+
+    minecraft.fontRenderer.drawString(
+        experienceString,
+        5,
+        recipeHeight - 10,
+        0xFF80FF20,
+        true
+    );
+  }
+
+  private void drawToolDamageString(Minecraft minecraft, int offsetX, int offsetY) {
+
+    for (int i = 0; i < this.artisanRecipe.getToolCount(); i++) {
+      String label = "-" + this.artisanRecipe.getToolDamage(i);
+      minecraft.fontRenderer.drawString(
+          label,
+          offsetX - minecraft.fontRenderer.getStringWidth(label) * 0.5f,
+          offsetY + (22 * i),
+          0xFFFFFFFF,
+          true
+      );
+    }
   }
 }
