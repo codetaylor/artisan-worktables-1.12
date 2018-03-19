@@ -17,6 +17,7 @@ pages:
     - Experience Requirements: recipes/experiencerequirements.md
     - GameStages: recipes/gamestages.md
     - Copying Recipes: recipes/copying.md
+    - Recipe Functions: recipes/functions.md
   - Tools:
     - Custom Tool Materials: tools/custommaterials.md
   - Developer Notes:

@@ -49,6 +49,10 @@ RecipeBuilder setLevelRequired(int levelRequired);
 
 RecipeBuilder setConsumeExperience(boolean consumeExperience);
 
+RecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction);
+
+RecipeBuilder setRecipeAction(IRecipeAction recipeAction);
+
 RecipeBuilder setCopy(Copy copyTask);
 
 RecipeBuilder create();

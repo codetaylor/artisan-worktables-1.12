@@ -15,6 +15,7 @@ Artisan Worktables contains a variety of unique features that include:
   * experience requirements
   * gamestages integration
   * recipe copy capabilities
+  * support for CraftTweaker recipe functions and actions
 
 ---
 
