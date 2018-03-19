@@ -7,6 +7,8 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.recipes.IRecipeAction;
+import crafttweaker.api.recipes.IRecipeFunction;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -103,6 +105,15 @@ public interface IZenRecipeBuilder {
 
   @ZenMethod
   IZenRecipeBuilder setConsumeExperience(boolean consumeExperience);
+
+  // --------------------------------------------------------------------------
+  // - Recipe Function / Action
+
+  @ZenMethod
+  IZenRecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction);
+
+  @ZenMethod
+  IZenRecipeBuilder setRecipeAction(IRecipeAction recipeAction);
 
   // --------------------------------------------------------------------------
   // - Copy

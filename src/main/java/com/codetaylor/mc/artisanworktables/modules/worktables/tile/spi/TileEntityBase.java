@@ -313,7 +313,7 @@ public abstract class TileEntityBase
     }
   }
 
-  protected ICraftingContext getCraftingContext(EntityPlayer player) {
+  public ICraftingContext getCraftingContext(EntityPlayer player) {
 
     return CraftingContextFactory.createContext(this, player, null);
   }

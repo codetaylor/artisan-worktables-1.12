@@ -19,7 +19,7 @@ public interface ICraftingContext {
 
   EntityPlayer getPlayer();
 
-  IItemHandlerModifiable getCraftingMatrixHandler();
+  ICraftingMatrixStackHandler getCraftingMatrixHandler();
 
   IItemHandlerModifiable getToolHandler();
 

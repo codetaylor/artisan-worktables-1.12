@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.SecondaryIngredientMatcher;
@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,7 +48,7 @@ public abstract class TileEntitySecondaryInputBase
     });
   }
 
-  public IItemHandler getSecondaryIngredientHandler() {
+  public IItemHandlerModifiable getSecondaryIngredientHandler() {
 
     return this.secondaryIngredientHandler;
   }
@@ -78,7 +78,7 @@ public abstract class TileEntitySecondaryInputBase
   }
 
   @Override
-  protected ICraftingContext getCraftingContext(EntityPlayer player) {
+  public ICraftingContext getCraftingContext(EntityPlayer player) {
 
     return CraftingContextFactory.createContext(this, player, this.secondaryIngredientHandler);
   }

@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ArtisanItemStack;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import crafttweaker.api.item.IIngredient;
 import net.minecraft.item.ItemStack;
@@ -57,6 +57,12 @@ public class CTArtisanIngredient
   private CTArtisanIngredient(@Nonnull IIngredient ingredient) {
 
     this.ingredient = ingredient;
+  }
+
+  @Override
+  public boolean isEmpty() {
+
+    return false;
   }
 
   @Override

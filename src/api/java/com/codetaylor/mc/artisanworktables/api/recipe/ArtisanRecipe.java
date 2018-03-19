@@ -202,7 +202,7 @@ public class ArtisanRecipe
   }
 
   @Override
-  public IArtisanItemStack getBaseOutput() {
+  public IArtisanItemStack getBaseOutput(ICraftingContext context) {
 
     return this.output.get(0).getOutput();
   }
@@ -308,9 +308,12 @@ public class ArtisanRecipe
   }
 
   @Override
-  public IArtisanItemStack selectOutput(Random random) {
+  public IArtisanItemStack selectOutput(
+      ICraftingContext context,
+      Random random
+  ) {
 
-    if (this.output.size() > 1) {
+    if (this.hasMultipleWeightedOutputs()) {
       WeightedPicker<IArtisanItemStack> picker = new WeightedPicker<>(random);
 
       for (OutputWeightPair pair : this.output) {
@@ -320,7 +323,7 @@ public class ArtisanRecipe
       return picker.get();
 
     } else {
-      return this.getBaseOutput();
+      return this.getBaseOutput(context);
     }
   }
 
@@ -435,20 +438,29 @@ public class ArtisanRecipe
     }
 
     if (!world.isRemote && !craftedItem.isEmpty()) {
-      List<ItemStack> extraOutputConvertedList = new ArrayList<>(extraOutputList.size());
-
-      for (IArtisanItemStack artisanItemStack : extraOutputList) {
-        extraOutputConvertedList.add(artisanItemStack.toItemStack());
-      }
-
-      MinecraftForge.EVENT_BUS.post(new ArtisanCraftEvent.Post(
-          player,
-          context.getType(),
-          context.getTier(),
-          craftedItem.copy(),
-          extraOutputConvertedList
-      ));
+      this.onCraftCompleteServer(craftedItem, extraOutputList, context);
     }
+  }
+
+  protected void onCraftCompleteServer(
+      ItemStack craftedItem,
+      List<IArtisanItemStack> extraOutputList,
+      ICraftingContext context
+  ) {
+
+    List<ItemStack> extraOutputConvertedList = new ArrayList<>(extraOutputList.size());
+
+    for (IArtisanItemStack artisanItemStack : extraOutputList) {
+      extraOutputConvertedList.add(artisanItemStack.toItemStack());
+    }
+
+    MinecraftForge.EVENT_BUS.post(new ArtisanCraftEvent.Post(
+        context.getPlayer(),
+        context.getType(),
+        context.getTier(),
+        craftedItem.copy(),
+        extraOutputConvertedList
+    ));
   }
 
   protected void onCraftReduceIngredients(ICraftingContext context) {
@@ -571,7 +583,7 @@ public class ArtisanRecipe
     if (!player.inventory.getItemStack().isEmpty()) {
 
       if (this.hasMultipleWeightedOutputs()) {
-        ItemStack itemStack = this.selectOutput(Util.RANDOM).toItemStack();
+        ItemStack itemStack = this.selectOutput(context, Util.RANDOM).toItemStack();
         player.inventory.setItemStack(itemStack);
         ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
       }

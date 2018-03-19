@@ -3,6 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
+import crafttweaker.api.recipes.IRecipeAction;
+import crafttweaker.api.recipes.IRecipeFunction;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -10,6 +12,9 @@ import java.util.List;
 
 public class CTArtisanRecipeFactory
     implements IRecipeFactory {
+
+  private IRecipeFunction recipeFunction;
+  private IRecipeAction recipeAction;
 
   @Override
   public IArtisanRecipe create(
@@ -49,8 +54,19 @@ public class CTArtisanRecipeFactory
         width,
         height,
         minimumTier,
-        maximumTier
+        maximumTier,
+        this.recipeAction,
+        this.recipeFunction
     );
   }
 
+  public void setRecipeAction(IRecipeAction recipeAction) {
+
+    this.recipeAction = recipeAction;
+  }
+
+  public void setRecipeFunction(IRecipeFunction recipeFunction) {
+
+    this.recipeFunction = recipeFunction;
+  }
 }

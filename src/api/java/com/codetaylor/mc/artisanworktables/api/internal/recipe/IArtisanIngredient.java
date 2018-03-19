@@ -5,6 +5,8 @@ import net.minecraft.item.crafting.Ingredient;
 
 public interface IArtisanIngredient {
 
+  boolean isEmpty();
+
   int getAmount();
 
   boolean matches(IArtisanItemStack itemStack);

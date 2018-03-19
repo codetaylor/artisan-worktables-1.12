@@ -13,6 +13,8 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.recipes.IRecipeAction;
+import crafttweaker.api.recipes.IRecipeFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -321,6 +323,25 @@ public class ZenRecipeBuilder
   public IZenRecipeBuilder setConsumeExperience(boolean consumeExperience) {
 
     this.recipeBuilder.setConsumeExperience(consumeExperience);
+    return this;
+  }
+
+  // --------------------------------------------------------------------------
+  // - Recipe Function / Action
+
+  @Override
+  public IZenRecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction) {
+
+    CTArtisanRecipeFactory recipeFactory = (CTArtisanRecipeFactory) this.recipeBuilder.getRecipeFactory();
+    recipeFactory.setRecipeFunction(recipeFunction);
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setRecipeAction(IRecipeAction recipeAction) {
+
+    CTArtisanRecipeFactory recipeFactory = (CTArtisanRecipeFactory) this.recipeBuilder.getRecipeFactory();
+    recipeFactory.setRecipeAction(recipeAction);
     return this;
   }
 

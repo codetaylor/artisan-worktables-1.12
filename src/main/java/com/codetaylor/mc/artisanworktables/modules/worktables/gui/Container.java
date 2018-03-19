@@ -1,10 +1,12 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
@@ -337,7 +339,8 @@ public class Container
     IArtisanRecipe recipe = this.tile.getRecipe(this.player);
 
     if (recipe != null) {
-      this.resultHandler.setStackInSlot(0, recipe.getBaseOutput().toItemStack());
+      ICraftingContext context = this.tile.getCraftingContext(this.player);
+      this.resultHandler.setStackInSlot(0, recipe.getBaseOutput(context).toItemStack());
 
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);

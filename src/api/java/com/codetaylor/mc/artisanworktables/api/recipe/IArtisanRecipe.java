@@ -69,9 +69,12 @@ public interface IArtisanRecipe {
 
   List<OutputWeightPair> getOutputWeightPairList();
 
-  IArtisanItemStack selectOutput(Random random);
+  IArtisanItemStack selectOutput(
+      ICraftingContext context,
+      Random random
+  );
 
-  IArtisanItemStack getBaseOutput();
+  IArtisanItemStack getBaseOutput(ICraftingContext context);
 
   boolean hasMultipleWeightedOutputs();
 

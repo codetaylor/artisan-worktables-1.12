@@ -28,6 +28,12 @@ public class ArtisanIngredient
   }
 
   @Override
+  public boolean isEmpty() {
+
+    return this == EMPTY || this.ingredient == Ingredient.EMPTY;
+  }
+
+  @Override
   public int getAmount() {
 
     return 1;

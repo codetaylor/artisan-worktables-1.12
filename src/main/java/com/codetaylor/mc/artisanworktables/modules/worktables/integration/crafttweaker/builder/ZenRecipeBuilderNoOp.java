@@ -5,6 +5,8 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.recipes.IRecipeAction;
+import crafttweaker.api.recipes.IRecipeFunction;
 
 public class ZenRecipeBuilderNoOp
     implements IZenRecipeBuilder {
@@ -119,6 +121,18 @@ public class ZenRecipeBuilderNoOp
 
   @Override
   public IZenRecipeBuilder setConsumeExperience(boolean consumeExperience) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction) {
+
+    return this;
+  }
+
+  @Override
+  public IZenRecipeBuilder setRecipeAction(IRecipeAction recipeAction) {
 
     return this;
   }
