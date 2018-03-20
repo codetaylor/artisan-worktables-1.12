@@ -14,7 +14,7 @@ The reason temporary `release` branches are used, as opposed to a second eternal
 
 ### Creating the Release Branch
 
-```text
+```
 $ git checkout -b release/version master
 ```
 
@@ -22,7 +22,7 @@ $ git checkout -b release/version master
 
 Keeping the release branch current is as simple as rebasing on `master` any time `master` changes.
 
-```text
+```
 $ git checkout release/version
 $ git rebase master
 $ git push --force-with-lease
@@ -30,7 +30,7 @@ $ git push --force-with-lease
 
 ### Finishing the Release Branch
 
-```text
+```
 $ git checkout release/version
 $ git rebase -i master
 $ git checkout master
@@ -43,13 +43,13 @@ By using `rebase` instead of `merge --no-ff`, the linear history keeps the `mast
 
 If the release branch exists on remote, which it almost always should, remove it.
 
-```text
+```
 $ git push origin :release/version
 ```
 
 At this time, the release must be versioned by using the version tool to bump the version file and tag.
 
-```text
+```
 $ version set version
 ```
 
@@ -61,7 +61,7 @@ Feature branches are used instead of direct commits to the `release` branch in o
 
 ### Creating a Feature Branch
 
-```text
+```
 $ git checkout -b feature/the-feature release/version
 ```
 
@@ -69,7 +69,7 @@ $ git checkout -b feature/the-feature release/version
 
 Updating a feature branch is done with `rebase` similar to updating the release branch.
 
-```text
+```
 $ git checkout feature/the-feature
 $ git rebase release/version
 $ git push --force-with-lease
@@ -77,7 +77,7 @@ $ git push --force-with-lease
 
 ### Finishing a Feature Branch
 
-```text
+```
 $ git checkout feature/the-feature
 $ git rebase -i release/version
 $ git checkout release/version
@@ -88,7 +88,7 @@ $ git branch -d feature/the-feature
 
 If the feature branch was pushed to remote, it will need to be removed.
 
-```text
+```
 $ git push origin :feature/the-feature
 ```
 
@@ -100,7 +100,7 @@ A hotfix will always increase the patch version.
 
 ### Creating a Hotfix Branch
 
-```text
+```
 $ git checkout -b hotfix/fix master
 ```
 
@@ -110,14 +110,14 @@ Hotfix branches are so short-lived, they shouldn't ever need to be updated. If a
 
 If you must update a hotfix branch, rebase it on top of `master`.
 
-```text
+```
 $ git checkout hotfix/fix
 $ git rebase master
 ```
 
 ### Finishing a Hotfix Branch
 
-```text
+```
 $ git checkout hotfix/fix
 $ git rebase -i master
 $ git checkout master
@@ -128,7 +128,7 @@ $ git branch -d hotfix/fix
 
 At this time, the patch release must be versioned by using the version tool to bump the version file and tag.
 
-```text
+```
 $ version set version
 ```
 
@@ -150,7 +150,7 @@ Final branches are never rebased, finalized, or deleted.
 
 ### Creating a Final Branch
 
-```text
+```
 $ git checkout -b final/version
 ```
 
@@ -160,12 +160,12 @@ Alpha releases are compiled and released from the current `release` branch.
 
 First, tag the branch using the next release version number and the alpha suffix:
 
-```text
+```
 $ version set 1.0.0-alpha0
 ```
 
 Then compile and release:
 
-```text
+```
 $ gradle clean build
 ```
