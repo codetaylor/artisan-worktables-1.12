@@ -71,7 +71,7 @@ public class ArtisanRecipe
     this.output = output;
     this.tools = tools;
     this.ingredients = ingredients;
-    this.secondaryIngredients = secondaryIngredients;
+    this.secondaryIngredients = Collections.unmodifiableList(secondaryIngredients);
     this.consumeSecondaryIngredients = consumeSecondaryIngredients;
     this.fluidIngredient = fluidIngredient;
     this.experienceRequired = experienceRequired;

@@ -6,6 +6,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface IRecipeMatrixMatcher {
     public boolean matches(
         IArtisanRecipe recipe,
         ICraftingMatrixStackHandler craftingMatrix,
-        FluidStack fluidStack
+        @Nullable FluidStack fluidStack
     ) {
 
       int width = recipe.getWidth();
@@ -127,6 +128,6 @@ public interface IRecipeMatrixMatcher {
   boolean matches(
       IArtisanRecipe recipe,
       ICraftingMatrixStackHandler craftingMatrix,
-      FluidStack fluidStack
+      @Nullable FluidStack fluidStack
   );
 }
