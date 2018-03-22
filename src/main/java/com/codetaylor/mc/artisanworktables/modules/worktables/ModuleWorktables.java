@@ -115,13 +115,6 @@ public class ModuleWorktables
         "gamestages",
         "com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.PluginGameStages"
     );
-
-    if (Loader.isModLoaded("gamestages")) {
-      this.registerIntegrationPlugin(
-          "crafttweaker",
-          "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.integration.requirement.ZenGameStagesRequirement"
-      );
-    }
   }
 
   @Override
