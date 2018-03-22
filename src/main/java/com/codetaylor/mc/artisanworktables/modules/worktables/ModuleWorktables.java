@@ -98,11 +98,6 @@ public class ModuleWorktables
 
     this.registerIntegrationPlugin(
         "crafttweaker",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZenWorktable"
-    );
-
-    this.registerIntegrationPlugin(
-        "crafttweaker",
         "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.IZenRecipeBuilder"
     );
 
