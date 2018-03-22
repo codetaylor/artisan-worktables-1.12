@@ -65,10 +65,6 @@ public class ModArtisanWorktables {
     if (ModuleToolboxConfig.ENABLE_MODULE) {
       this.moduleManager.registerModules(ModuleToolbox.class);
     }
-
-    if (Loader.isModLoaded("gamestages")) {
-      this.moduleManager.registerModules(ModuleRequirementGameStages.class);
-    }
   }
 
   @Mod.EventHandler
@@ -79,6 +75,10 @@ public class ModArtisanWorktables {
     injector.inject(ArtisanConfig.class, "MODULE_WORKTABLES_CONFIG", new ModuleWorktablesConfigAPIWrapper());
     injector.inject(ArtisanConfig.class, "MODULE_TOOLS_CONFIG", new ModuleToolsConfigAPIWrapper());
     injector.inject(ArtisanConfig.class, "MODULE_TOOLBOX_CONFIG", new ModuleToolboxConfigAPIWrapper());
+
+    if (Loader.isModLoaded("gamestages")) {
+      this.moduleManager.registerModules(ModuleRequirementGameStages.class);
+    }
 
     this.moduleManager.onConstructionEvent();
     this.moduleManager.routeFMLStateEvent(event);
