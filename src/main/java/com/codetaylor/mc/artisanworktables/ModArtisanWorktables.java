@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.ModuleRequirementGameStages;
+import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.ModuleRequirementReskillable;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfigAPIWrapper;
@@ -78,6 +79,10 @@ public class ModArtisanWorktables {
 
     if (Loader.isModLoaded("gamestages")) {
       this.moduleManager.registerModules(ModuleRequirementGameStages.class);
+    }
+
+    if (Loader.isModLoaded("reskillable")) {
+      this.moduleManager.registerModules(ModuleRequirementReskillable.class);
     }
 
     this.moduleManager.onConstructionEvent();
