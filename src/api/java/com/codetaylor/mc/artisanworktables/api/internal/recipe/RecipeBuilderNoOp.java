@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementBuilder;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeBuilderNoOp
@@ -110,6 +111,12 @@ public class RecipeBuilderNoOp
 
   @Override
   public IRecipeBuilder setCopy(IRecipeBuilderCopyStrategy copyStrategy) {
+
+    return this;
+  }
+
+  @Override
+  public IRecipeBuilder addRequirement(IMatchRequirementBuilder matchRequirementBuilder) {
 
     return this;
   }

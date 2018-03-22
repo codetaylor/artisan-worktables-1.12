@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderCopyStrategyProvider;
@@ -10,6 +11,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorksho
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTRecipeAdditionQueue;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesMatchRequirementContext;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
@@ -113,6 +115,15 @@ public class ModuleWorktables
         "gamestages",
         "com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.PluginGameStages"
     );
+
+    if (Loader.isModLoaded("gamestages")) {
+      this.registerIntegrationPlugin(
+          "crafttweaker",
+          "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.integration.requirement.ZenGameStagesRequirement"
+      );
+
+      ArtisanAPI.registerRequirementContextSupplier("gamestages", GameStagesMatchRequirementContext::new);
+    }
   }
 
   @Override

@@ -3,16 +3,13 @@ package com.codetaylor.mc.artisanworktables.api;
 import com.codetaylor.mc.artisanworktables.api.internal.config.*;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementContext;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public class ArtisanAPI {
-
-  // --------------------------------------------------------------------------
-  // - Integration
-
-  public static final boolean IS_MOD_LOADED_GAMESTAGES = false;
 
   // --------------------------------------------------------------------------
   // - Module Configs
@@ -99,4 +96,45 @@ public class ArtisanAPI {
     return false;
   }
 
+  // --------------------------------------------------------------------------
+  // - Match Requirement Context Suppliers
+
+  private static final Map<String, Supplier<IMatchRequirementContext>> REQUIREMENT_CONTEXT_SUPPLIER_MAP;
+
+  static {
+    REQUIREMENT_CONTEXT_SUPPLIER_MAP = new HashMap<>();
+  }
+
+  /**
+   * Register a requirement context supplier for your mod here. Only one
+   * registration per mod is allowed and each supplier should return a
+   * new instance of your mod's requirement context.
+   *
+   * @param modId    the mod id
+   * @param supplier the context supplier
+   */
+  public static void registerRequirementContextSupplier(String modId, Supplier<IMatchRequirementContext> supplier) {
+
+    if (REQUIREMENT_CONTEXT_SUPPLIER_MAP.containsKey(modId)) {
+      throw new IllegalStateException("Requirement context supplier already registered for mod id: " + modId);
+    }
+
+    REQUIREMENT_CONTEXT_SUPPLIER_MAP.put(modId, supplier);
+  }
+
+  public static Map<String, Supplier<IMatchRequirementContext>> getRequirementContextSupplierMap() {
+
+    return Collections.unmodifiableMap(REQUIREMENT_CONTEXT_SUPPLIER_MAP);
+  }
+
+  public static IMatchRequirementContext getRequirementContext(String modId) {
+
+    Supplier<IMatchRequirementContext> supplier = REQUIREMENT_CONTEXT_SUPPLIER_MAP.get(modId);
+
+    if (supplier == null) {
+      throw new IllegalStateException("No requirement context supplier registered for mod id: " + modId);
+    }
+
+    return supplier.get();
+  }
 }

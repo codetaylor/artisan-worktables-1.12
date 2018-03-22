@@ -5,13 +5,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 public interface IRecipeFactory {
 
   IRecipeFactory DEFAULT = ArtisanRecipe::new;
 
   IArtisanRecipe create(
-      IGameStageMatcher gameStageMatcher,
+      Map<String, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,

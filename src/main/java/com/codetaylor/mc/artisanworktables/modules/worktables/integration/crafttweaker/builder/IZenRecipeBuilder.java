@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder.copy.IZenRecipeBuilderCopyStrategy;
 import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import crafttweaker.api.item.IIngredient;
@@ -120,6 +121,12 @@ public interface IZenRecipeBuilder {
 
   @ZenMethod
   IZenRecipeBuilder setCopy(IZenRecipeBuilderCopyStrategy copyStrategy);
+
+  // --------------------------------------------------------------------------
+  // - Requirement
+
+  @ZenMethod
+  IZenRecipeBuilder addRequirement(IMatchRequirementBuilder builder);
 
   // --------------------------------------------------------------------------
   // - Create

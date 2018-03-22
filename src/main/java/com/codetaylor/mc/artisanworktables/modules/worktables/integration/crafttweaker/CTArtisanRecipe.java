@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -27,7 +28,7 @@ public class CTArtisanRecipe
   private final IRecipeFunction recipeFunction;
 
   /* package */ CTArtisanRecipe(
-      IGameStageMatcher gameStageMatcher,
+      Map<String, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,
@@ -49,7 +50,7 @@ public class CTArtisanRecipe
   ) {
 
     super(
-        gameStageMatcher,
+        requirementMap,
         output,
         tools,
         ingredients,

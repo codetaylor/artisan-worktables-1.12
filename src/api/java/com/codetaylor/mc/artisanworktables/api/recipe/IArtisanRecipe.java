@@ -7,8 +7,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public interface IArtisanRecipe {
@@ -16,7 +16,7 @@ public interface IArtisanRecipe {
   /**
    * Return true if this recipe matches the given criteria.
    *
-   * @param unlockedStages             the stages the player has unlocked
+   * @param requirementContextMap      the requirement context map
    * @param playerExperienceTotal      the player's total experience
    * @param playerLevels               the player's total level count
    * @param isPlayerCreative           is the player in creative mode?
@@ -28,7 +28,7 @@ public interface IArtisanRecipe {
    * @return true if this recipe matches the given criteria
    */
   boolean matches(
-      Collection<String> unlockedStages,
+      Map<String, IMatchRequirementContext> requirementContextMap,
       int playerExperienceTotal,
       int playerLevels,
       boolean isPlayerCreative,
@@ -40,10 +40,11 @@ public interface IArtisanRecipe {
   );
 
   /**
-   * @param unlockedStages the unlocked stages
-   * @return true if this recipe can be crafted with the given collection of game stages unlocked
+   * @param modId the mod id
+   * @return the recipe's requirement for the given mod id or null if none exists
    */
-  boolean matchGameStages(Collection<String> unlockedStages);
+  @Nullable
+  IMatchRequirement getRequirement(String modId);
 
   /**
    * @param tool      the tool to check

@@ -4,8 +4,11 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesMatchRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
@@ -13,11 +16,9 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.Recipe
 import crafttweaker.api.recipes.ICraftingRecipe;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class RecipeBuilderInternal
     implements IRecipeBuilder,
@@ -74,14 +75,21 @@ public class RecipeBuilderInternal
   private List<ToolIngredientEntry> tools;
   private List<OutputWeightPair> outputWeightPairList;
   private ExtraOutputChancePair[] extraOutputs;
-  private EnumGameStageRequire gameStageRequire;
-  private String[] includeGameStages;
-  private String[] excludeGameStages;
   private int minimumTier;
   private int maximumTier;
   private int experienceRequired;
   private int levelRequired;
   private boolean consumeExperience;
+  private Map<String, IMatchRequirement> requirementMap;
+
+  @Deprecated
+  private EnumGameStageRequire gameStageRequire;
+
+  @Deprecated
+  private String[] includeGameStages;
+
+  @Deprecated
+  private String[] excludeGameStages;
 
   // --------------------------------------------------------------------------
   // - Copy
@@ -116,15 +124,19 @@ public class RecipeBuilderInternal
     this.outputWeightPairList = new ArrayList<>();
     this.extraOutputs = new ExtraOutputChancePair[3];
     Arrays.fill(this.extraOutputs, new ExtraOutputChancePair(ArtisanItemStack.EMPTY, 0));
-    this.gameStageRequire = EnumGameStageRequire.ANY;
-    this.includeGameStages = new String[0];
-    this.excludeGameStages = new String[0];
     this.tools = new ArrayList<>();
     this.minimumTier = 0;
     this.maximumTier = Integer.MAX_VALUE;
     this.experienceRequired = 0;
     this.levelRequired = 0;
     this.consumeExperience = true;
+
+    this.requirementMap = new HashMap<>();
+
+    // Deprecated
+    this.gameStageRequire = EnumGameStageRequire.ANY;
+    this.includeGameStages = new String[0];
+    this.excludeGameStages = new String[0];
   }
 
   // --------------------------------------------------------------------------
@@ -384,6 +396,19 @@ public class RecipeBuilderInternal
     return this;
   }
 
+  @Override
+  public IRecipeBuilder addRequirement(IMatchRequirementBuilder matchRequirementBuilder) {
+
+    String modId = matchRequirementBuilder.getModId();
+
+    if (Loader.isModLoaded(modId.toLowerCase())) {
+      IMatchRequirement requirement = matchRequirementBuilder.create();
+      this.requirementMap.put(modId, requirement);
+    }
+
+    return this;
+  }
+
   public void validate() throws RecipeBuilderException {
 
     if (this.invalid) {
@@ -470,15 +495,19 @@ public class RecipeBuilderInternal
     copy.outputWeightPairList = new ArrayList<>(this.outputWeightPairList);
     copy.extraOutputs = new ExtraOutputChancePair[this.extraOutputs.length];
     System.arraycopy(this.extraOutputs, 0, copy.extraOutputs, 0, this.extraOutputs.length);
+    copy.minimumTier = this.minimumTier;
+    copy.experienceRequired = this.experienceRequired;
+    copy.levelRequired = this.levelRequired;
+    copy.consumeExperience = this.consumeExperience;
+
+    copy.requirementMap = new HashMap<>(this.requirementMap);
+
+    // Deprecated
     copy.gameStageRequire = this.gameStageRequire;
     copy.includeGameStages = new String[this.includeGameStages.length];
     System.arraycopy(this.includeGameStages, 0, copy.includeGameStages, 0, this.includeGameStages.length);
     copy.excludeGameStages = new String[this.excludeGameStages.length];
     System.arraycopy(this.excludeGameStages, 0, copy.excludeGameStages, 0, this.excludeGameStages.length);
-    copy.minimumTier = this.minimumTier;
-    copy.experienceRequired = this.experienceRequired;
-    copy.levelRequired = this.levelRequired;
-    copy.consumeExperience = this.consumeExperience;
 
     return copy;
   }
@@ -505,17 +534,24 @@ public class RecipeBuilderInternal
 
     // Builds the recipe object and adds it to the registry.
 
-    IGameStageMatcher gameStageMatcher;
+    if (Loader.isModLoaded("gamestages")) {
 
-    if (this.includeGameStages.length == 0 && this.excludeGameStages.length == 0) {
-      gameStageMatcher = GameStageMatcher.TRUE;
+      if (this.includeGameStages.length != 0
+          || this.excludeGameStages.length != 0) {
 
-    } else {
-      gameStageMatcher = new GameStageMatcher(
-          this.gameStageRequire,
-          Arrays.asList(this.includeGameStages),
-          Arrays.asList(this.excludeGameStages)
-      );
+        GameStagesMatchRequirementBuilder builder = new GameStagesMatchRequirementBuilder();
+
+        if (this.gameStageRequire == EnumGameStageRequire.ALL) {
+          builder.all(this.includeGameStages);
+
+        } else {
+          builder.one(this.includeGameStages);
+        }
+
+        builder.exclude(this.excludeGameStages);
+
+        this.requirementMap.put(builder.getModId(), builder.create());
+      }
     }
 
     IRecipeMatrixMatcher recipeMatcher;
@@ -538,7 +574,7 @@ public class RecipeBuilderInternal
     }
 
     ArtisanAPI.getWorktableRecipeRegistry(this.tableName).addRecipe(this.recipeFactory.create(
-        gameStageMatcher,
+        new HashMap<>(this.requirementMap),
         this.outputWeightPairList,
         tools,
         this.ingredients,

@@ -8,12 +8,12 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementContext;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesHelper;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -44,6 +44,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class TileEntityBase
     extends TileEntity
@@ -169,10 +170,7 @@ public abstract class TileEntityBase
     return ModuleWorktablesConfig.CLIENT.getTextHighlightColor(this.type.getName());
   }
 
-  public boolean canHandleRecipeTransferJEI(
-      String name,
-      EnumTier tier
-  ) {
+  public boolean canHandleRecipeTransferJEI(String name, EnumTier tier) {
 
     return this.type.getName().equals(name) && tier.getId() <= this.getTier().getId();
   }
@@ -324,7 +322,7 @@ public abstract class TileEntityBase
     BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
   }
 
-  public IArtisanRecipe getRecipe(EntityPlayer player) {
+  public IArtisanRecipe getRecipe(@Nonnull EntityPlayer player) {
 
     FluidStack fluidStack = this.getTank().getFluid();
 
@@ -332,23 +330,22 @@ public abstract class TileEntityBase
       fluidStack = fluidStack.copy();
     }
 
-    int playerExperience = 0;
-    int playerLevels = 0;
-    boolean isPlayerCreative = false;
-    Collection<String> unlockedStages = Collections.emptySet();
+    int playerExperience = EnchantmentHelper.getPlayerExperienceTotal(player);
+    int playerLevels = player.experienceLevel;
+    boolean isPlayerCreative = player.isCreative();
 
-    if (player != null) {
-      playerExperience = EnchantmentHelper.getPlayerExperienceTotal(player);
-      playerLevels = player.experienceLevel;
-      isPlayerCreative = player.isCreative();
+    Map<String, Supplier<IMatchRequirementContext>> contextSupplierMap = ArtisanAPI.getRequirementContextSupplierMap();
+    Map<String, IMatchRequirementContext> contextMap = new HashMap<>();
+    ICraftingContext craftingContext = this.getCraftingContext(player);
 
-      if (ArtisanAPI.IS_MOD_LOADED_GAMESTAGES) {
-        unlockedStages = GameStagesHelper.getUnlockedStages(player);
-      }
+    for (Map.Entry<String, Supplier<IMatchRequirementContext>> entry : contextSupplierMap.entrySet()) {
+      Supplier<IMatchRequirementContext> contextSupplier = entry.getValue();
+      IMatchRequirementContext context = contextSupplier.get();
+      context.initialize(craftingContext);
+      contextMap.put(entry.getKey(), context);
     }
 
-    RecipeRegistry registry = this.getWorktableRecipeRegistry();
-    return registry.findRecipe(
+    return this.getWorktableRecipeRegistry().findRecipe(
         playerExperience,
         playerLevels,
         isPlayerCreative,
@@ -357,7 +354,7 @@ public abstract class TileEntityBase
         fluidStack,
         this.getSecondaryIngredientMatcher(),
         this.getTier(),
-        unlockedStages
+        contextMap
     );
   }
 

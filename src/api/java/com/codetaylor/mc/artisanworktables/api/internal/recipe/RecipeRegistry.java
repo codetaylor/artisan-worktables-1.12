@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,6 +10,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeRegistry {
 
@@ -53,7 +55,7 @@ public class RecipeRegistry {
       @Nullable FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier,
-      Collection<String> unlockedPlayerStages
+      Map<String, IMatchRequirementContext> requirementContextMap
   ) {
 
     // If the recipe list is empty, short-circuit.
@@ -64,7 +66,7 @@ public class RecipeRegistry {
     // Next, check the last recipe first.
     IArtisanRecipe lastRecipe = this.recipeList.get(this.recipeList.size() - 1);
     boolean lastRecipeMatches = lastRecipe.matches(
-        unlockedPlayerStages,
+        requirementContextMap,
         playerExperience,
         playerLevels,
         isPlayerCreative,
@@ -84,7 +86,7 @@ public class RecipeRegistry {
       IArtisanRecipe recipe = this.recipeList.get(i);
 
       boolean matches = recipe.matches(
-          unlockedPlayerStages,
+          requirementContextMap,
           playerExperience,
           playerLevels,
           isPlayerCreative,

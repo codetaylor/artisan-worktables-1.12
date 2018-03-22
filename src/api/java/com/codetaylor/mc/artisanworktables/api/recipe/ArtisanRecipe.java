@@ -28,8 +28,8 @@ import java.util.*;
 public class ArtisanRecipe
     implements IArtisanRecipe {
 
-  private IGameStageMatcher gameStageMatcher;
   private ToolEntry[] tools;
+  private Map<String, IMatchRequirement> requirementMap;
   private List<OutputWeightPair> output;
   private List<IArtisanIngredient> ingredients;
   private List<IArtisanIngredient> secondaryIngredients;
@@ -48,7 +48,7 @@ public class ArtisanRecipe
 
   @ParametersAreNonnullByDefault
   public ArtisanRecipe(
-      IGameStageMatcher gameStageMatcher,
+      Map<String, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,
@@ -67,7 +67,7 @@ public class ArtisanRecipe
       int maximumTier
   ) {
 
-    this.gameStageMatcher = gameStageMatcher;
+    this.requirementMap = requirementMap;
     this.output = output;
     this.tools = tools;
     this.ingredients = ingredients;
@@ -253,14 +253,15 @@ public class ArtisanRecipe
     return this.tools.length;
   }
 
+  @Nullable
+  @Override
+  public IMatchRequirement getRequirement(String modId) {
+
+    return this.requirementMap.get(modId);
+  }
+
   // --------------------------------------------------------------------------
   // - Matching
-
-  @Override
-  public boolean matchGameStages(Collection<String> unlockedStages) {
-
-    return this.gameStageMatcher.matches(unlockedStages);
-  }
 
   @Override
   public boolean isValidTool(ItemStack tool, int toolIndex) {
@@ -329,7 +330,7 @@ public class ArtisanRecipe
 
   @Override
   public boolean matches(
-      Collection<String> unlockedStages,
+      Map<String, IMatchRequirementContext> requirementContextMap,
       int playerExperienceTotal,
       int playerLevels,
       boolean isPlayerCreative,
@@ -370,10 +371,18 @@ public class ArtisanRecipe
       }
     }
 
-    // match gamestages
-    if (ArtisanAPI.IS_MOD_LOADED_GAMESTAGES) {
+    // match requirements
+    for (IMatchRequirement requirement : this.requirementMap.values()) {
 
-      if (!this.gameStageMatcher.matches(unlockedStages)) {
+      String modId = requirement.getModId();
+      IMatchRequirementContext context = requirementContextMap.get(modId);
+
+      if (context == null) {
+        return false;
+      }
+
+      //noinspection unchecked
+      if (!requirement.match(context)) {
         return false;
       }
     }

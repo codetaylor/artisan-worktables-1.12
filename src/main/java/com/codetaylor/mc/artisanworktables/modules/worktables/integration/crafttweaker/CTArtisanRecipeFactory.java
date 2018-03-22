@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import crafttweaker.api.recipes.IRecipeAction;
 import crafttweaker.api.recipes.IRecipeFunction;
@@ -9,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 public class CTArtisanRecipeFactory
     implements IRecipeFactory {
@@ -18,7 +20,7 @@ public class CTArtisanRecipeFactory
 
   @Override
   public IArtisanRecipe create(
-      IGameStageMatcher gameStageMatcher,
+      Map<String, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,
@@ -38,7 +40,7 @@ public class CTArtisanRecipeFactory
   ) {
 
     return new CTArtisanRecipe(
-        gameStageMatcher,
+        requirementMap,
         output,
         tools,
         ingredients,

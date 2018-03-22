@@ -4,11 +4,12 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.darkhax.gamestages.event.GameStageEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -62,8 +63,11 @@ public class PluginGameStages {
       return;
     }
 
-    Collection<String> unlockedStages = PlayerDataHandler.getStageData(Minecraft.getMinecraft().player)
-        .getUnlockedStages();
+    EntityPlayerSP player = Minecraft.getMinecraft().player;
+    Collection<String> unlockedStages = GameStagesHelper.getUnlockedStages(player);
+    GameStagesMatchRequirementContext context = (GameStagesMatchRequirementContext) ArtisanAPI
+        .getRequirementContext("gamestages");
+    context.setUnlockedStages(unlockedStages);
 
     for (String name : ArtisanAPI.getWorktableNames()) {
       RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
@@ -81,7 +85,10 @@ public class PluginGameStages {
               continue;
             }
 
-            if (recipe.matchGameStages(unlockedStages)) {
+            IMatchRequirement requirement = recipe.getRequirement("gamestages");
+
+            //noinspection unchecked
+            if (requirement != null && requirement.match(context)) {
               PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper);
 
             } else {

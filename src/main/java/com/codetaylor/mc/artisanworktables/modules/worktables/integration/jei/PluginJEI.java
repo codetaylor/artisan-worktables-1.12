@@ -16,11 +16,10 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class PluginJEI
     implements IModPlugin {
@@ -93,8 +92,7 @@ public class PluginJEI
     RECIPE_REGISTRY = jeiRuntime.getRecipeRegistry();
 
     // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
-    if (ArtisanAPI.IS_MOD_LOADED_GAMESTAGES) {
-      Set<String> unlockedStages = Collections.emptySet();
+    if (Loader.isModLoaded("gamestages")) {
 
       for (String name : ArtisanAPI.getWorktableNames()) {
         RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
@@ -106,7 +104,7 @@ public class PluginJEI
 
             for (IArtisanRecipe recipe : recipeList) {
 
-              if (!recipe.matchGameStages(unlockedStages)) {
+              if (recipe.getRequirement("gamestages") != null) {
                 IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
                     recipe,
                     PluginJEI.createUID(name, tier)
