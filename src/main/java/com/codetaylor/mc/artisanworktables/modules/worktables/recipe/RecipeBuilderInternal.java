@@ -402,7 +402,7 @@ public class RecipeBuilderInternal
 
     ResourceLocation location = matchRequirementBuilder.getResourceLocation();
 
-    if (Loader.isModLoaded(matchRequirementBuilder.getModId().toLowerCase())) {
+    if (Loader.isModLoaded(matchRequirementBuilder.getRequirementId().toLowerCase())) {
       IMatchRequirement requirement = matchRequirementBuilder.create();
       this.requirementMap.put(location, requirement);
     }

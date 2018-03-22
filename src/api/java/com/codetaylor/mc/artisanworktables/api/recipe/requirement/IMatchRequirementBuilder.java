@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 public interface IMatchRequirementBuilder<C extends IMatchRequirementContext, R extends IMatchRequirement<C>> {
 
   @Nonnull
-  String getModId();
+  String getRequirementId();
 
   @Nonnull
   ResourceLocation getResourceLocation();

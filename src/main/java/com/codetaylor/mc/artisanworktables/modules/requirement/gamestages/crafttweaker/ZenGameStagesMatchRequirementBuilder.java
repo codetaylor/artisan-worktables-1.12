@@ -43,7 +43,7 @@ public class ZenGameStagesMatchRequirementBuilder
 
   @Nonnull
   @Override
-  public String getModId() {
+  public String getRequirementId() {
 
     return GameStagesMatchRequirement.REQUIREMENT_ID;
   }
