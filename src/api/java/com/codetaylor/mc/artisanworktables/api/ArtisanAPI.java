@@ -4,9 +4,9 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -91,7 +91,7 @@ public class ArtisanAPI {
   // --------------------------------------------------------------------------
   // - Match Requirement
 
-  public static IMatchRequirementContext getRequirementContext(ResourceLocation key) {
+  public static IRequirementContext getRequirementContext(ResourceLocation key) {
 
     RequirementContextSupplier supplier = ArtisanRegistries.REQUIREMENT_CONTEXT_SUPPLIER.getValue(key);
 
@@ -102,7 +102,7 @@ public class ArtisanAPI {
     return supplier.get();
   }
 
-  public static <C extends IMatchRequirementContext, R extends IMatchRequirement<C>> IMatchRequirementBuilder<C, R> getRequirementBuilder(
+  public static <C extends IRequirementContext, R extends IRequirement<C>> IRequirementBuilder<C, R> getRequirementBuilder(
       ResourceLocation key
   ) {
 

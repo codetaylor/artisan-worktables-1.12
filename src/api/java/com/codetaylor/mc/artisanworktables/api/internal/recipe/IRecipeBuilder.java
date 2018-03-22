@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings({"UnusedReturnValue", "unused"})
@@ -46,7 +46,7 @@ public interface IRecipeBuilder {
 
   IRecipeBuilder setCopy(IRecipeBuilderCopyStrategy copyStrategy);
 
-  IRecipeBuilder addRequirement(IMatchRequirementBuilder matchRequirementBuilder);
+  IRecipeBuilder addRequirement(IRequirementBuilder matchRequirementBuilder);
 
   IRecipeBuilder create() throws RecipeBuilderException;
 }

@@ -6,18 +6,18 @@ import java.util.function.Supplier;
 
 public class RequirementBuilderSupplier
     extends IForgeRegistryEntry.Impl<RequirementBuilderSupplier>
-    implements Supplier<IMatchRequirementBuilder> {
+    implements Supplier<IRequirementBuilder> {
 
-  private Supplier<IMatchRequirementBuilder> supplier;
+  private Supplier<IRequirementBuilder> supplier;
 
-  public RequirementBuilderSupplier(String modId, String name, Supplier<IMatchRequirementBuilder> supplier) {
+  public RequirementBuilderSupplier(String modId, String name, Supplier<IRequirementBuilder> supplier) {
 
     this.supplier = supplier;
     this.setRegistryName(modId, name);
   }
 
   @Override
-  public IMatchRequirementBuilder get() {
+  public IRequirementBuilder get() {
 
     return this.supplier.get();
   }

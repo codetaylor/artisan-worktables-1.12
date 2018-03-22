@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -58,7 +58,7 @@ public class RecipeRegistry
       @Nullable FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier,
-      Map<ResourceLocation, IMatchRequirementContext> requirementContextMap
+      Map<ResourceLocation, IRequirementContext> requirementContextMap
   ) {
 
     // If the recipe list is empty, short-circuit.

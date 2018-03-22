@@ -3,10 +3,10 @@ package com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requ
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 
 public class ReskillableRequirementContext
-    implements IMatchRequirementContext {
+    implements IRequirementContext {
 
   private PlayerData playerData;
 

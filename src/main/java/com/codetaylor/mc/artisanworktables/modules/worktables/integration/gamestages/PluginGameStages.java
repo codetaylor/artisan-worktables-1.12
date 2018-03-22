@@ -5,7 +5,7 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementContext;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -88,7 +88,7 @@ public class PluginGameStages {
               continue;
             }
 
-            IMatchRequirement requirement = recipe.getRequirement("gamestages");
+            IRequirement requirement = recipe.getRequirement("gamestages");
 
             //noinspection unchecked
             if (requirement == null || requirement.match(context)) {

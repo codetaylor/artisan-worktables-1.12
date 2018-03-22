@@ -6,7 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
@@ -334,12 +334,12 @@ public abstract class TileEntityBase
     boolean isPlayerCreative = player.isCreative();
 
     IForgeRegistry<RequirementContextSupplier> contextSupplierRegistry = ArtisanRegistries.REQUIREMENT_CONTEXT_SUPPLIER;
-    Map<ResourceLocation, IMatchRequirementContext> contextMap = new HashMap<>();
+    Map<ResourceLocation, IRequirementContext> contextMap = new HashMap<>();
     ICraftingContext craftingContext = this.getCraftingContext(player);
 
     for (Map.Entry<ResourceLocation, RequirementContextSupplier> entry : contextSupplierRegistry.getEntries()) {
       RequirementContextSupplier contextSupplier = entry.getValue();
-      IMatchRequirementContext context = contextSupplier.get();
+      IRequirementContext context = contextSupplier.get();
       context.initialize(craftingContext);
       contextMap.put(entry.getKey(), context);
     }

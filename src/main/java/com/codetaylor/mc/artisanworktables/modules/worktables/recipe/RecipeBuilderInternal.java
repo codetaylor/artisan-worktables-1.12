@@ -4,8 +4,8 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementBuilder;
@@ -81,7 +81,7 @@ public class RecipeBuilderInternal
   private int experienceRequired;
   private int levelRequired;
   private boolean consumeExperience;
-  private Map<ResourceLocation, IMatchRequirement> requirementMap;
+  private Map<ResourceLocation, IRequirement> requirementMap;
 
   @Deprecated
   private EnumGameStageRequire gameStageRequire;
@@ -398,12 +398,12 @@ public class RecipeBuilderInternal
   }
 
   @Override
-  public IRecipeBuilder addRequirement(IMatchRequirementBuilder matchRequirementBuilder) {
+  public IRecipeBuilder addRequirement(IRequirementBuilder matchRequirementBuilder) {
 
     ResourceLocation location = matchRequirementBuilder.getResourceLocation();
 
     if (Loader.isModLoaded(matchRequirementBuilder.getRequirementId().toLowerCase())) {
-      IMatchRequirement requirement = matchRequirementBuilder.create();
+      IRequirement requirement = matchRequirementBuilder.create();
       this.requirementMap.put(location, requirement);
     }
 

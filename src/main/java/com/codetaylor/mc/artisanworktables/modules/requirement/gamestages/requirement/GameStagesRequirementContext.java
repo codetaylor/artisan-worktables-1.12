@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesHelper;
 
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GameStagesRequirementContext
-    implements IMatchRequirementContext {
+    implements IRequirementContext {
 
   private Set<String> unlockedStages;
 

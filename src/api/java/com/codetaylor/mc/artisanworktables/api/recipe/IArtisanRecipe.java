@@ -2,8 +2,8 @@ package com.codetaylor.mc.artisanworktables.api.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,7 +31,7 @@ public interface IArtisanRecipe {
    * @return true if this recipe matches the given criteria
    */
   boolean matches(
-      Map<ResourceLocation, IMatchRequirementContext> requirementContextMap,
+      Map<ResourceLocation, IRequirementContext> requirementContextMap,
       int playerExperienceTotal,
       int playerLevels,
       boolean isPlayerCreative,
@@ -47,7 +47,7 @@ public interface IArtisanRecipe {
    * @return the recipe's requirement for the given mod id or null if none exists
    */
   @Nullable
-  IMatchRequirement getRequirement(String modId);
+  IRequirement getRequirement(String modId);
 
   /**
    * @param tool      the tool to check

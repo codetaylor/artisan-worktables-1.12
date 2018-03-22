@@ -6,8 +6,8 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.util.EnchantmentHelper;
 import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
@@ -32,7 +32,7 @@ public class ArtisanRecipe
     implements IArtisanRecipe {
 
   private ToolEntry[] tools;
-  private Map<ResourceLocation, IMatchRequirement> requirementMap;
+  private Map<ResourceLocation, IRequirement> requirementMap;
   private List<OutputWeightPair> output;
   private List<IArtisanIngredient> ingredients;
   private List<IArtisanIngredient> secondaryIngredients;
@@ -51,7 +51,7 @@ public class ArtisanRecipe
 
   @ParametersAreNonnullByDefault
   public ArtisanRecipe(
-      Map<ResourceLocation, IMatchRequirement> requirementMap,
+      Map<ResourceLocation, IRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,
@@ -258,7 +258,7 @@ public class ArtisanRecipe
 
   @Nullable
   @Override
-  public IMatchRequirement getRequirement(String modId) {
+  public IRequirement getRequirement(String modId) {
 
     return this.requirementMap.get(modId);
   }
@@ -333,7 +333,7 @@ public class ArtisanRecipe
 
   @Override
   public boolean matches(
-      Map<ResourceLocation, IMatchRequirementContext> requirementContextMap,
+      Map<ResourceLocation, IRequirementContext> requirementContextMap,
       int playerExperienceTotal,
       int playerLevels,
       boolean isPlayerCreative,
@@ -375,10 +375,10 @@ public class ArtisanRecipe
     }
 
     // match requirements
-    for (IMatchRequirement requirement : this.requirementMap.values()) {
+    for (IRequirement requirement : this.requirementMap.values()) {
 
       ResourceLocation location = requirement.getResourceLocation();
-      IMatchRequirementContext context = requirementContextMap.get(location);
+      IRequirementContext context = requirementContextMap.get(location);
 
       if (context == null) {
         return false;

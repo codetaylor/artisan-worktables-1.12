@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.api.recipe.requirement;
 
 import net.minecraft.util.ResourceLocation;
 
-public interface IMatchRequirement<C extends IMatchRequirementContext> {
+public interface IRequirement<C extends IRequirementContext> {
 
   ResourceLocation getResourceLocation();
 

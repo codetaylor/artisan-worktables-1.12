@@ -6,18 +6,18 @@ import java.util.function.Supplier;
 
 public class RequirementContextSupplier
     extends IForgeRegistryEntry.Impl<RequirementContextSupplier>
-    implements Supplier<IMatchRequirementContext> {
+    implements Supplier<IRequirementContext> {
 
-  private Supplier<IMatchRequirementContext> supplier;
+  private Supplier<IRequirementContext> supplier;
 
-  public RequirementContextSupplier(String modId, String name, Supplier<IMatchRequirementContext> supplier) {
+  public RequirementContextSupplier(String modId, String name, Supplier<IRequirementContext> supplier) {
 
     this.supplier = supplier;
     this.setRegistryName(modId, name);
   }
 
   @Override
-  public IMatchRequirementContext get() {
+  public IRequirementContext get() {
 
     return this.supplier.get();
   }

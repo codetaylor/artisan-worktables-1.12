@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.crafttweaker;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requirement.ReskillableRequirement;
 import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requirement.ReskillableRequirementBuilder;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ZenReskillableRequirementBuilder
-    implements IMatchRequirementBuilder {
+    implements IRequirementBuilder {
 
   private ReskillableRequirementBuilder builder;
 
@@ -50,7 +50,7 @@ public class ZenReskillableRequirementBuilder
 
   @Nullable
   @Override
-  public IMatchRequirement create() {
+  public IRequirement create() {
 
     return this.builder.create();
   }

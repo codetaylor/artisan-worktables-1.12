@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.crafttweaker;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirement;
 import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementBuilder;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ZenGameStagesRequirementBuilder
-    implements IMatchRequirementBuilder {
+    implements IRequirementBuilder {
 
   private GameStagesRequirementBuilder builder;
 
@@ -57,7 +57,7 @@ public class ZenGameStagesRequirementBuilder
 
   @Nullable
   @Override
-  public IMatchRequirement create() {
+  public IRequirement create() {
 
     return this.builder.create();
   }

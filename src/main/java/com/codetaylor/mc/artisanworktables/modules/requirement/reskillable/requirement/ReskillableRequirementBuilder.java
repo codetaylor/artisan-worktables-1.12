@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requirement;
 
 import codersafterdark.reskillable.api.data.RequirementHolder;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ReskillableRequirementBuilder
-    implements IMatchRequirementBuilder<ReskillableRequirementContext, ReskillableRequirement> {
+    implements IRequirementBuilder<ReskillableRequirementContext, ReskillableRequirement> {
 
   private List<String> requirementStringList;
 

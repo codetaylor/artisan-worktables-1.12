@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GameStagesRequirementBuilder
-    implements IMatchRequirementBuilder<GameStagesRequirementContext, GameStagesRequirement> {
+    implements IRequirementBuilder<GameStagesRequirementContext, GameStagesRequirement> {
 
   private Set<String> excludeStages;
   private Set<String> requireOneStage;

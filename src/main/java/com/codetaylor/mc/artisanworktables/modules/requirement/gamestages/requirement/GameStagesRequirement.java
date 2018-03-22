@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.ModuleRequirementGameStages;
 import net.minecraft.util.ResourceLocation;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GameStagesRequirement
-    implements IMatchRequirement<GameStagesRequirementContext> {
+    implements IRequirement<GameStagesRequirementContext> {
 
   public static final String REQUIREMENT_ID = "gamestages";
   public static final ResourceLocation LOCATION = new ResourceLocation(
