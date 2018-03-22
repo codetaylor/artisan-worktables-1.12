@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.api.recipe;
+package com.codetaylor.mc.artisanworktables.api.recipe.requirement;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 

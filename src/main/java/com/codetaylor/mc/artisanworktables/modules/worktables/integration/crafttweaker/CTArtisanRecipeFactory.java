@@ -2,10 +2,11 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import crafttweaker.api.recipes.IRecipeAction;
 import crafttweaker.api.recipes.IRecipeFunction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -20,7 +21,7 @@ public class CTArtisanRecipeFactory
 
   @Override
   public IArtisanRecipe create(
-      Map<String, IMatchRequirement> requirementMap,
+      Map<ResourceLocation, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,

@@ -1,24 +1,24 @@
 package com.codetaylor.mc.artisanworktables.api;
 
-import com.codetaylor.mc.artisanworktables.api.internal.config.*;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ArtisanAPI {
 
-  // --------------------------------------------------------------------------
-  // - Module Configs
-
-  public static final IModuleWorktablesConfig MODULE_WORKTABLES_CONFIG = ModuleWorktablesConfigNoOp.INSTANCE;
-
-  public static final IModuleToolsConfig MODULE_TOOLS_CONFIG = ModuleToolsConfigNoOp.INSTANCE;
-
-  public static final IModuleToolboxConfig MODULE_TOOLBOX_CONFIG = ModuleToolboxConfigNoOp.INSTANCE;
+  public static final Supplier<String> MOD_ID = () -> "";
 
   // --------------------------------------------------------------------------
   // - Worktable Names
@@ -51,17 +51,6 @@ public class ArtisanAPI {
   // --------------------------------------------------------------------------
   // - Worktable Recipe Registries
 
-  private static final Map<String, RecipeRegistry> RECIPE_REGISTRY_MAP;
-
-  static {
-    Map<String, RecipeRegistry> map = new HashMap<>();
-
-    for (String name : WORKTABLE_NAME_LIST) {
-      map.put(name, new RecipeRegistry());
-    }
-    RECIPE_REGISTRY_MAP = Collections.unmodifiableMap(new HashMap<>(map));
-  }
-
   /**
    * Throws an {@link IllegalStateException} if there is no {@link RecipeRegistry}
    * for the given table name.
@@ -71,7 +60,10 @@ public class ArtisanAPI {
    */
   public static RecipeRegistry getWorktableRecipeRegistry(String tableName) {
 
-    RecipeRegistry recipeRegistry = RECIPE_REGISTRY_MAP.get(tableName);
+    RecipeRegistry recipeRegistry = ArtisanRegistries.RECIPE_REGISTRY.getValue(new ResourceLocation(
+        MOD_ID.get(),
+        tableName
+    ));
 
     if (recipeRegistry == null) {
       throw new IllegalStateException("Can't find recipe registry for table: " + tableName);
@@ -86,7 +78,7 @@ public class ArtisanAPI {
    */
   public static boolean containsRecipeWithTool(ItemStack itemStack) {
 
-    for (RecipeRegistry registry : RECIPE_REGISTRY_MAP.values()) {
+    for (RecipeRegistry registry : ArtisanRegistries.RECIPE_REGISTRY.getValuesCollection()) {
 
       if (registry.containsRecipeWithToolInAnySlot(itemStack)) {
         return true;
@@ -97,44 +89,37 @@ public class ArtisanAPI {
   }
 
   // --------------------------------------------------------------------------
-  // - Match Requirement Context Suppliers
+  // - Match Requirement
 
-  private static final Map<String, Supplier<IMatchRequirementContext>> REQUIREMENT_CONTEXT_SUPPLIER_MAP;
+  public static IMatchRequirementContext getRequirementContext(ResourceLocation key) {
 
-  static {
-    REQUIREMENT_CONTEXT_SUPPLIER_MAP = new HashMap<>();
-  }
-
-  /**
-   * Register a requirement context supplier for your mod here. Only one
-   * registration per mod is allowed and each supplier should return a
-   * new instance of your mod's requirement context.
-   *
-   * @param modId    the mod id
-   * @param supplier the context supplier
-   */
-  public static void registerRequirementContextSupplier(String modId, Supplier<IMatchRequirementContext> supplier) {
-
-    if (REQUIREMENT_CONTEXT_SUPPLIER_MAP.containsKey(modId)) {
-      throw new IllegalStateException("Requirement context supplier already registered for mod id: " + modId);
-    }
-
-    REQUIREMENT_CONTEXT_SUPPLIER_MAP.put(modId, supplier);
-  }
-
-  public static Map<String, Supplier<IMatchRequirementContext>> getRequirementContextSupplierMap() {
-
-    return Collections.unmodifiableMap(REQUIREMENT_CONTEXT_SUPPLIER_MAP);
-  }
-
-  public static IMatchRequirementContext getRequirementContext(String modId) {
-
-    Supplier<IMatchRequirementContext> supplier = REQUIREMENT_CONTEXT_SUPPLIER_MAP.get(modId);
+    RequirementContextSupplier supplier = ArtisanRegistries.REQUIREMENT_CONTEXT_SUPPLIER.getValue(key);
 
     if (supplier == null) {
-      throw new IllegalStateException("No requirement context supplier registered for mod id: " + modId);
+      throw new IllegalStateException("No requirement context supplier registered for: " + key);
     }
 
     return supplier.get();
   }
+
+  public static <C extends IMatchRequirementContext, R extends IMatchRequirement<C>> IMatchRequirementBuilder<C, R> getRequirementBuilder(
+      ResourceLocation key
+  ) {
+
+    RequirementBuilderSupplier supplier = ArtisanRegistries.REQUIREMENT_BUILDER_SUPPLIER.getValue(key);
+
+    if (supplier == null) {
+      throw new IllegalStateException("No requirement builder supplier registered for: " + key);
+    }
+
+    return supplier.get();
+  }
+
+  // --------------------------------------------------------------------------
+  // - Internal
+
+  private ArtisanAPI() {
+    //
+  }
+
 }

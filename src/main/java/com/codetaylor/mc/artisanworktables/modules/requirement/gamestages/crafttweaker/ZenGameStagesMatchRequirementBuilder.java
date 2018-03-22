@@ -1,9 +1,10 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.integration.requirement;
+package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.crafttweaker;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesMatchRequirement;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirement;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementBuilder;
+import net.minecraft.util.ResourceLocation;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nonnull;
@@ -14,7 +15,7 @@ public class ZenGameStagesMatchRequirementBuilder
 
   private GameStagesMatchRequirementBuilder builder;
 
-  public ZenGameStagesMatchRequirementBuilder() {
+  /* package */ ZenGameStagesMatchRequirementBuilder() {
 
     this.builder = new GameStagesMatchRequirementBuilder();
   }
@@ -45,6 +46,13 @@ public class ZenGameStagesMatchRequirementBuilder
   public String getModId() {
 
     return GameStagesMatchRequirement.MOD_ID;
+  }
+
+  @Nonnull
+  @Override
+  public ResourceLocation getResourceLocation() {
+
+    return GameStagesMatchRequirement.LOCATION;
   }
 
   @Nullable

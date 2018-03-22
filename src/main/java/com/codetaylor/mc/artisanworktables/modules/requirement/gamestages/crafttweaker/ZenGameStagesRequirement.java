@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.integration.requirement;
+package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.crafttweaker;
 
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

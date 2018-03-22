@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
 import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings({"UnusedReturnValue", "unused"})

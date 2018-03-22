@@ -1,15 +1,18 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
 
+import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementContext;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.event.GameStageEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -66,7 +69,7 @@ public class PluginGameStages {
     EntityPlayerSP player = Minecraft.getMinecraft().player;
     Collection<String> unlockedStages = GameStagesHelper.getUnlockedStages(player);
     GameStagesMatchRequirementContext context = (GameStagesMatchRequirementContext) ArtisanAPI
-        .getRequirementContext("gamestages");
+        .getRequirementContext(new ResourceLocation(ModArtisanWorktables.MOD_ID, "gamestages"));
     context.setUnlockedStages(unlockedStages);
 
     for (String name : ArtisanAPI.getWorktableNames()) {
@@ -76,9 +79,9 @@ public class PluginGameStages {
 
         for (EnumTier tier : EnumTier.values()) {
           List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
+          String uid = PluginJEI.createUID(name, tier);
 
           for (IArtisanRecipe recipe : recipeList) {
-            String uid = PluginJEI.createUID(name, tier);
             IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 
             if (recipeWrapper == null) {
@@ -88,7 +91,7 @@ public class PluginGameStages {
             IMatchRequirement requirement = recipe.getRequirement("gamestages");
 
             //noinspection unchecked
-            if (requirement != null && requirement.match(context)) {
+            if (requirement == null || requirement.match(context)) {
               PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper);
 
             } else {

@@ -1,7 +1,8 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
+package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesHelper;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +26,7 @@ public class GameStagesMatchRequirementContext
     return this.unlockedStages;
   }
 
-  /* package */ void setUnlockedStages(Collection<String> unlockedStages) {
+  public void setUnlockedStages(Collection<String> unlockedStages) {
 
     this.unlockedStages = Collections.unmodifiableSet(new HashSet<>(unlockedStages));
   }

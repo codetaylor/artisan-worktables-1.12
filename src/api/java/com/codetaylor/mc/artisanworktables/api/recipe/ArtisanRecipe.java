@@ -1,16 +1,19 @@
 package com.codetaylor.mc.artisanworktables.api.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.event.ArtisanCraftEvent;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.util.EnchantmentHelper;
 import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSetSlot;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,7 +32,7 @@ public class ArtisanRecipe
     implements IArtisanRecipe {
 
   private ToolEntry[] tools;
-  private Map<String, IMatchRequirement> requirementMap;
+  private Map<ResourceLocation, IMatchRequirement> requirementMap;
   private List<OutputWeightPair> output;
   private List<IArtisanIngredient> ingredients;
   private List<IArtisanIngredient> secondaryIngredients;
@@ -48,7 +51,7 @@ public class ArtisanRecipe
 
   @ParametersAreNonnullByDefault
   public ArtisanRecipe(
-      Map<String, IMatchRequirement> requirementMap,
+      Map<ResourceLocation, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,
@@ -296,7 +299,7 @@ public class ArtisanRecipe
       return false;
     }
 
-    if (ArtisanAPI.MODULE_WORKTABLES_CONFIG.restrictCraftMinimumDurability()) {
+    if (ArtisanConfig.MODULE_WORKTABLES_CONFIG.restrictCraftMinimumDurability()) {
 
       // Note: this may fail with tinker's tools because as far as I know,
       // tinker's tools don't have a max damage value set
@@ -330,7 +333,7 @@ public class ArtisanRecipe
 
   @Override
   public boolean matches(
-      Map<String, IMatchRequirementContext> requirementContextMap,
+      Map<ResourceLocation, IMatchRequirementContext> requirementContextMap,
       int playerExperienceTotal,
       int playerLevels,
       boolean isPlayerCreative,
@@ -374,8 +377,8 @@ public class ArtisanRecipe
     // match requirements
     for (IMatchRequirement requirement : this.requirementMap.values()) {
 
-      String modId = requirement.getModId();
-      IMatchRequirementContext context = requirementContextMap.get(modId);
+      ResourceLocation location = requirement.getResourceLocation();
+      IMatchRequirementContext context = requirementContextMap.get(location);
 
       if (context == null) {
         return false;
@@ -414,7 +417,6 @@ public class ArtisanRecipe
   ) {
 
     World world = context.getWorld();
-    EntityPlayer player = context.getPlayer();
 
     // Reduce player experience
     this.onCraftReduceExperience(context);

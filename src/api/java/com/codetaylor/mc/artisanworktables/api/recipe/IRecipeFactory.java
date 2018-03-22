@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.api.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -12,7 +14,7 @@ public interface IRecipeFactory {
   IRecipeFactory DEFAULT = ArtisanRecipe::new;
 
   IArtisanRecipe create(
-      Map<String, IMatchRequirement> requirementMap,
+      Map<ResourceLocation, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,

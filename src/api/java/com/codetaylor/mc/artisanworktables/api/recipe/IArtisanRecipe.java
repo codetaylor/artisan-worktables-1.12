@@ -2,7 +2,10 @@ package com.codetaylor.mc.artisanworktables.api.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -28,7 +31,7 @@ public interface IArtisanRecipe {
    * @return true if this recipe matches the given criteria
    */
   boolean matches(
-      Map<String, IMatchRequirementContext> requirementContextMap,
+      Map<ResourceLocation, IMatchRequirementContext> requirementContextMap,
       int playerExperienceTotal,
       int playerLevels,
       boolean isPlayerCreative,

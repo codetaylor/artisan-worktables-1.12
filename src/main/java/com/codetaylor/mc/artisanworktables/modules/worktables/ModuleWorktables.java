@@ -2,16 +2,14 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderCopyStrategy;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderCopyStrategyProvider;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IRecipeBuilderProvider;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.RecipeBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTRecipeAdditionQueue;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesMatchRequirementContext;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
@@ -32,10 +30,15 @@ import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.Injector;
 import crafttweaker.api.recipes.ICraftingRecipe;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -89,6 +92,8 @@ public class ModuleWorktables
     this.setRegistry(new Registry(MOD_ID, CREATIVE_TAB));
     this.enableAutoRegistry();
 
+    MinecraftForge.EVENT_BUS.register(this);
+
     PACKET_SERVICE = this.enableNetwork();
 
     this.registerIntegrationPlugin(
@@ -121,8 +126,6 @@ public class ModuleWorktables
           "crafttweaker",
           "com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.integration.requirement.ZenGameStagesRequirement"
       );
-
-      ArtisanAPI.registerRequirementContextSupplier("gamestages", GameStagesMatchRequirementContext::new);
     }
   }
 
@@ -141,6 +144,36 @@ public class ModuleWorktables
     }
 
     super.onConstructionEvent(event);
+  }
+
+  @SubscribeEvent
+  public void onNewRegistryEvent(RegistryEvent.NewRegistry event) {
+
+    new RegistryBuilder<RequirementContextSupplier>()
+        .setName(new ResourceLocation(MOD_ID, "requirement_context_supplier"))
+        .setType(RequirementContextSupplier.class)
+        .create();
+
+    new RegistryBuilder<RequirementBuilderSupplier>()
+        .setName(new ResourceLocation(MOD_ID, "requirement_builder_supplier"))
+        .setType(RequirementBuilderSupplier.class)
+        .create();
+
+    new RegistryBuilder<RecipeRegistry>()
+        .setName(new ResourceLocation(MOD_ID, "recipe_registry"))
+        .setType(RecipeRegistry.class)
+        .create();
+
+  }
+
+  @SubscribeEvent
+  public void onRegisterRecipeRegistryEvent(RegistryEvent.Register<RecipeRegistry> event) {
+
+    IForgeRegistry<RecipeRegistry> registry = event.getRegistry();
+
+    for (String name : ArtisanAPI.getWorktableNames()) {
+      registry.register(new RecipeRegistry(MOD_ID, name));
+    }
   }
 
   @Override

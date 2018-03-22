@@ -1,14 +1,13 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
+import com.codetaylor.mc.artisanworktables.api.ArtisanRegistries;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
@@ -40,11 +39,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Supplier;
 
 public abstract class TileEntityBase
     extends TileEntity
@@ -334,12 +333,12 @@ public abstract class TileEntityBase
     int playerLevels = player.experienceLevel;
     boolean isPlayerCreative = player.isCreative();
 
-    Map<String, Supplier<IMatchRequirementContext>> contextSupplierMap = ArtisanAPI.getRequirementContextSupplierMap();
-    Map<String, IMatchRequirementContext> contextMap = new HashMap<>();
+    IForgeRegistry<RequirementContextSupplier> contextSupplierRegistry = ArtisanRegistries.REQUIREMENT_CONTEXT_SUPPLIER;
+    Map<ResourceLocation, IMatchRequirementContext> contextMap = new HashMap<>();
     ICraftingContext craftingContext = this.getCraftingContext(player);
 
-    for (Map.Entry<String, Supplier<IMatchRequirementContext>> entry : contextSupplierMap.entrySet()) {
-      Supplier<IMatchRequirementContext> contextSupplier = entry.getValue();
+    for (Map.Entry<ResourceLocation, RequirementContextSupplier> entry : contextSupplierRegistry.getEntries()) {
+      RequirementContextSupplier contextSupplier = entry.getValue();
       IMatchRequirementContext context = contextSupplier.get();
       context.initialize(craftingContext);
       contextMap.put(entry.getKey(), context);

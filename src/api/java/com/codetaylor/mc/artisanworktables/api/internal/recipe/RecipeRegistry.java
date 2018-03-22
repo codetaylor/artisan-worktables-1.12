@@ -1,23 +1,26 @@
 package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class RecipeRegistry {
+public class RecipeRegistry
+    extends IForgeRegistryEntry.Impl<RecipeRegistry> {
 
   private List<IArtisanRecipe> recipeList;
 
-  public RecipeRegistry() {
+  public RecipeRegistry(String modId, String name) {
 
+    this.setRegistryName(modId, name);
     this.recipeList = new ArrayList<>();
   }
 
@@ -55,7 +58,7 @@ public class RecipeRegistry {
       @Nullable FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier,
-      Map<String, IMatchRequirementContext> requirementContextMap
+      Map<ResourceLocation, IMatchRequirementContext> requirementContextMap
   ) {
 
     // If the recipe list is empty, short-circuit.

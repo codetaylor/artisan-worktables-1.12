@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -11,6 +11,7 @@ import crafttweaker.api.recipes.IRecipeAction;
 import crafttweaker.api.recipes.IRecipeFunction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,7 +29,7 @@ public class CTArtisanRecipe
   private final IRecipeFunction recipeFunction;
 
   /* package */ CTArtisanRecipe(
-      Map<String, IMatchRequirement> requirementMap,
+      Map<ResourceLocation, IMatchRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
       List<IArtisanIngredient> ingredients,

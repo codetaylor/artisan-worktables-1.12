@@ -4,16 +4,17 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.GameStagesMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByRecipe;
 import crafttweaker.api.recipes.ICraftingRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
@@ -80,7 +81,7 @@ public class RecipeBuilderInternal
   private int experienceRequired;
   private int levelRequired;
   private boolean consumeExperience;
-  private Map<String, IMatchRequirement> requirementMap;
+  private Map<ResourceLocation, IMatchRequirement> requirementMap;
 
   @Deprecated
   private EnumGameStageRequire gameStageRequire;
@@ -399,11 +400,11 @@ public class RecipeBuilderInternal
   @Override
   public IRecipeBuilder addRequirement(IMatchRequirementBuilder matchRequirementBuilder) {
 
-    String modId = matchRequirementBuilder.getModId();
+    ResourceLocation location = matchRequirementBuilder.getResourceLocation();
 
-    if (Loader.isModLoaded(modId.toLowerCase())) {
+    if (Loader.isModLoaded(matchRequirementBuilder.getModId().toLowerCase())) {
       IMatchRequirement requirement = matchRequirementBuilder.create();
-      this.requirementMap.put(modId, requirement);
+      this.requirementMap.put(location, requirement);
     }
 
     return this;
@@ -550,7 +551,7 @@ public class RecipeBuilderInternal
 
         builder.exclude(this.excludeGameStages);
 
-        this.requirementMap.put(builder.getModId(), builder.create());
+        this.requirementMap.put(builder.getResourceLocation(), builder.create());
       }
     }
 

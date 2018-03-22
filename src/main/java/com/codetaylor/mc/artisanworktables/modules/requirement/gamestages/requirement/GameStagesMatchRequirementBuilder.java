@@ -1,6 +1,7 @@
-package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
+package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement;
 
-import com.codetaylor.mc.artisanworktables.api.recipe.IMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -22,10 +23,18 @@ public class GameStagesMatchRequirementBuilder
     this.requireAllStages = Collections.emptySet();
   }
 
+  @Nonnull
   @Override
   public String getModId() {
 
     return GameStagesMatchRequirement.MOD_ID;
+  }
+
+  @Nonnull
+  @Override
+  public ResourceLocation getResourceLocation() {
+
+    return GameStagesMatchRequirement.LOCATION;
   }
 
   public GameStagesMatchRequirementBuilder all(@Nonnull String... requireAllStages) {
