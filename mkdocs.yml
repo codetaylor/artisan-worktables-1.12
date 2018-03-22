@@ -15,12 +15,16 @@ pages:
     - Weighted Primary Output: recipes/weighted.md
     - Secondary Ingredients: recipes/secondaryingredients.md
     - Experience Requirements: recipes/experiencerequirements.md
-    - GameStages: recipes/gamestages.md
     - Copying Recipes: recipes/copying.md
     - Recipe Functions: recipes/functions.md
+  - Mod Integrations: 
+    - Mod Integrations: integrations/index.md
+    - GameStages: integrations/gamestages.md
+    - Reskillable: integrations/reskillable.md
   - Tools:
     - Custom Tool Materials: tools/custommaterials.md
-  - Developer Notes:
+  - Development:
+    - Contributor's License Agreement: cla.md
     - Workflow: notes/workflow.md
 
 theme: readthedocs

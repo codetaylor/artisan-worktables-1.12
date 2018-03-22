@@ -35,10 +35,6 @@ RecipeBuilder setExtraOutputTwo(IItemStack output, float chance);
 
 RecipeBuilder setExtraOutputThree(IItemStack output, float chance);
 
-RecipeBuilder requireGameStages(String require, String[] stages);
-
-RecipeBuilder excludeGameStages(String[] stages);
-
 RecipeBuilder setMinimumTier(int minimumTier);
 
 RecipeBuilder setMaximumTier(int maximumTier);
@@ -54,6 +50,8 @@ RecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction);
 RecipeBuilder setRecipeAction(IRecipeAction recipeAction);
 
 RecipeBuilder setCopy(Copy copyTask);
+
+RecipeBuilder addRequirement(IMatchRequirementBuilder requirementBuilder);
 
 RecipeBuilder create();
 ```
@@ -82,6 +80,46 @@ Copy replaceShapedInput(int col, int row, @Nullable IIngredient replacement);
 Copy noOutput();
 
 Copy replaceOutput(IItemStack replacement);
+```
+
+## GameStages
+
+```java
+import mods.artisanworktables.integration.requirement.GameStages;
+```
+
+```java
+static GameStagesRequirementBuilder allOf(String[] stages);
+
+static GameStagesRequirementBuilder anyOf(String[] stages);
+
+static GameStagesRequirementBuilder exclude(String[] stages);
+```
+
+```java
+GameStagesRequirementBuilder allOf(String[] stages);
+
+GameStagesRequirementBuilder anyOf(String[] stages);
+
+GameStagesRequirementBuilder exclude(String[] stages);
+```
+
+## Reskillable
+
+```java
+import mods.artisanworktables.integration.requirement.Reskillable;
+```
+
+```java
+static ReskillableRequirementBuilder add(String[] requirement);
+
+static ReskillableRequirementBuilder addAll(String[] requirements);
+```
+
+```java
+ReskillableRequirementBuilder add(String[] requirement);
+
+ReskillableRequirementBuilder addAll(String[] requirements);
 ```
 
 ## Table Names

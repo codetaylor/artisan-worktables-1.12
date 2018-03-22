@@ -13,9 +13,12 @@ Artisan Worktables contains a variety of unique features that include:
   * weighted primary output item pools
   * secondary ingredients
   * experience requirements
-  * gamestages integration
   * recipe copy capabilities
   * support for CraftTweaker recipe functions and actions
+  * support for CraftTweaker item transformers
+  * mod requirement integrations:
+    * GameStages
+    * Reskillable
 
 ---
 

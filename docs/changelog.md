@@ -1,14 +1,28 @@
 1.18.0-SNAPSHOT
 
   * BREAKING CHANGES:
-    * API: `AWItemCraftEvent` renamed to `ArtisanCraftEvent`
-  * Added: proper API - `ArtisanAPI`
+    * Changed: `AWItemCraftEvent` renamed to `ArtisanCraftEvent`
+    * Removed: builder method `RecipeBuilder setTool(IIngredient, int)` - deprecated since 1.13.21 (Feb 8, 2018)
+    * Removed: import `mods.artisanworktables.Worktable` - deprecated since 1.16.0 (Feb 26, 2018)
+  * Added: builder method for new recipe requirement integrations
+    * `RecipeBuilder addRequirement(IMatchRequirementBuilder requirementBuilder)`
+  * Added: GameStages requirement integration
+  * Added: Reskillable requirement integration
   * Added: builder methods to support CraftTweaker recipe functions and actions
     * `setRecipeFunction(IRecipeFunction)`
     * `setRecipeAction(IRecipeAction)`
-  * Changed: removed deprecated builder method `setTool(IIngredient, int)`, use `addTool(IIngredient, int)` instead
-  * Deprecated:
-    * the entire import `mods.artisanworktables.Worktable` and all its methods will be removed in a future version - use the recipe builder instead
+  * Added: support for the following CraftTweaker item transformers:
+    * `item.reuse()`
+    * `item.transformReplace(IItemStack)`
+    * `item.transformDamage()`
+    * `item.transformDamage(int)`
+    * `item.noReturn()`
+  * Changed: updated API (version 2)
+  * Changed: improved tolerance for incomplete recipes (#97)
+  * Changed: removed display of tool damage in JEI when the recipe has no tool
+  * Deprecated: gamestages recipe builder methods - use the new requirement integrations instead
+    * `RecipeBuilder requireGameStages(String require, String[] stages)`
+    * `RecipeBuilder excludeGameStages(String[] stages)`
   * Requires: Athenaeum >= 1.14.0
 
 ---
