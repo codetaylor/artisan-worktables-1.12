@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement;
 
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.ModuleRequirementGameStages;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -12,8 +12,11 @@ import java.util.List;
 public class GameStagesMatchRequirement
     implements IMatchRequirement<GameStagesMatchRequirementContext> {
 
-  public static final String MOD_ID = "gamestages";
-  public static final ResourceLocation LOCATION = new ResourceLocation(ModuleWorktables.MOD_ID, MOD_ID);
+  public static final String REQUIREMENT_ID = "gamestages";
+  public static final ResourceLocation LOCATION = new ResourceLocation(
+      ModuleRequirementGameStages.MOD_ID,
+      REQUIREMENT_ID
+  );
 
   private final List<String> requireAllStages;
   private final List<String> requireOneStage;
