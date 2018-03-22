@@ -5,7 +5,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementContext;
 
-public class ReskillableMatchRequirementContext
+public class ReskillableRequirementContext
     implements IMatchRequirementContext {
 
   private PlayerData playerData;

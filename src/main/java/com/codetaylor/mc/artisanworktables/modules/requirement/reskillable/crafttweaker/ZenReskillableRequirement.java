@@ -7,23 +7,19 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class ZenReskillableRequirement {
 
   @ZenMethod
-  public static ZenReskillableMatchRequirementBuilder add(String requirementString) {
+  public static ZenReskillableRequirementBuilder add(String requirementString) {
 
-    ZenReskillableMatchRequirementBuilder builder = new ZenReskillableMatchRequirementBuilder();
+    ZenReskillableRequirementBuilder builder = new ZenReskillableRequirementBuilder();
     builder.add(requirementString);
     return builder;
   }
 
   @ZenMethod
-  public static ZenReskillableMatchRequirementBuilder addAll(String[] requirementStrings) {
+  public static ZenReskillableRequirementBuilder addAll(String[] requirementStrings) {
 
-    ZenReskillableMatchRequirementBuilder builder = new ZenReskillableMatchRequirementBuilder();
+    ZenReskillableRequirementBuilder builder = new ZenReskillableRequirementBuilder();
     builder.addAll(requirementStrings);
     return builder;
-  }
-
-  private ZenReskillableRequirement() {
-    //
   }
 
 }

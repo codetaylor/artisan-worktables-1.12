@@ -5,8 +5,8 @@ import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirem
 import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.ModuleRequirementReskillable;
 import net.minecraft.util.ResourceLocation;
 
-public class ReskillableMatchRequirement
-    implements IMatchRequirement<ReskillableMatchRequirementContext> {
+public class ReskillableRequirement
+    implements IMatchRequirement<ReskillableRequirementContext> {
 
   public static final String REQUIREMENT_ID = "reskillable";
   public static final ResourceLocation LOCATION = new ResourceLocation(
@@ -16,7 +16,7 @@ public class ReskillableMatchRequirement
 
   private final RequirementHolder requirementHolder;
 
-  public ReskillableMatchRequirement(RequirementHolder requirementHolder) {
+  public ReskillableRequirement(RequirementHolder requirementHolder) {
 
     this.requirementHolder = requirementHolder;
   }
@@ -28,7 +28,7 @@ public class ReskillableMatchRequirement
   }
 
   @Override
-  public boolean match(ReskillableMatchRequirementContext context) {
+  public boolean match(ReskillableRequirementContext context) {
 
     return context.getPlayerData().matchStats(this.requirementHolder);
   }

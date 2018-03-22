@@ -10,23 +10,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReskillableMatchRequirementBuilder
-    implements IMatchRequirementBuilder<ReskillableMatchRequirementContext, ReskillableMatchRequirement> {
+public class ReskillableRequirementBuilder
+    implements IMatchRequirementBuilder<ReskillableRequirementContext, ReskillableRequirement> {
 
   private List<String> requirementStringList;
 
-  public ReskillableMatchRequirementBuilder() {
+  public ReskillableRequirementBuilder() {
 
     this.requirementStringList = new ArrayList<>();
   }
 
-  public ReskillableMatchRequirementBuilder add(@Nonnull String requirementString) {
+  public ReskillableRequirementBuilder add(@Nonnull String requirementString) {
 
     this.requirementStringList.add(requirementString);
     return this;
   }
 
-  public ReskillableMatchRequirementBuilder addAll(@Nonnull String... requirementStrings) {
+  public ReskillableRequirementBuilder addAll(@Nonnull String... requirementStrings) {
 
     this.requirementStringList.addAll(Arrays.asList(requirementStrings));
     return this;
@@ -36,22 +36,22 @@ public class ReskillableMatchRequirementBuilder
   @Override
   public String getRequirementId() {
 
-    return ReskillableMatchRequirement.REQUIREMENT_ID;
+    return ReskillableRequirement.REQUIREMENT_ID;
   }
 
   @Nonnull
   @Override
   public ResourceLocation getResourceLocation() {
 
-    return ReskillableMatchRequirement.LOCATION;
+    return ReskillableRequirement.LOCATION;
   }
 
   @Nullable
   @Override
-  public ReskillableMatchRequirement create() {
+  public ReskillableRequirement create() {
 
     String[] requirementStringArray = this.requirementStringList.toArray(new String[this.requirementStringList.size()]);
     RequirementHolder requirementHolder = RequirementHolder.fromStringList(requirementStringArray);
-    return new ReskillableMatchRequirement(requirementHolder);
+    return new ReskillableRequirement(requirementHolder);
   }
 }

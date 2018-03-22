@@ -2,33 +2,33 @@ package com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.craf
 
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requirement.ReskillableMatchRequirement;
-import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requirement.ReskillableMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requirement.ReskillableRequirement;
+import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.requirement.ReskillableRequirementBuilder;
 import net.minecraft.util.ResourceLocation;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ZenReskillableMatchRequirementBuilder
+public class ZenReskillableRequirementBuilder
     implements IMatchRequirementBuilder {
 
-  private ReskillableMatchRequirementBuilder builder;
+  private ReskillableRequirementBuilder builder;
 
-  /* package */ ZenReskillableMatchRequirementBuilder() {
+  /* package */ ZenReskillableRequirementBuilder() {
 
-    this.builder = new ReskillableMatchRequirementBuilder();
+    this.builder = new ReskillableRequirementBuilder();
   }
 
   @ZenMethod
-  public ZenReskillableMatchRequirementBuilder add(String requirementString) {
+  public ZenReskillableRequirementBuilder add(String requirementString) {
 
     this.builder.add(requirementString);
     return this;
   }
 
   @ZenMethod
-  public ZenReskillableMatchRequirementBuilder addAll(String[] requirementStrings) {
+  public ZenReskillableRequirementBuilder addAll(String[] requirementStrings) {
 
     this.builder.addAll(requirementStrings);
     return this;
@@ -38,14 +38,14 @@ public class ZenReskillableMatchRequirementBuilder
   @Override
   public String getRequirementId() {
 
-    return ReskillableMatchRequirement.REQUIREMENT_ID;
+    return ReskillableRequirement.REQUIREMENT_ID;
   }
 
   @Nonnull
   @Override
   public ResourceLocation getResourceLocation() {
 
-    return ReskillableMatchRequirement.LOCATION;
+    return ReskillableRequirement.LOCATION;
   }
 
   @Nullable
