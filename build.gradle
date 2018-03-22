@@ -25,7 +25,7 @@ group = "com.sudoplay.mc"
 archivesBaseName = "artisanworktables"
 
 project.ext.athenaeum_version = "1.12.2-1.13.0"
-project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker;after:jei@[4.8.5.139,);after:gamestages"'
+project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker;after:jei@[4.8.5.139,);after:gamestages;after:reskillable"'
 
 compileJava.doFirst {
     project.sourceSets.main.java.srcDirs.each { dir ->
@@ -73,6 +73,12 @@ minecraft {
 
 repositories {
 
+    maven {
+        // CraftTweaker
+        // Reskillable
+        url "http://maven.blamejared.com/"
+    }
+
     flatDir {
         dirs 'libs'
     }
@@ -80,6 +86,7 @@ repositories {
 
 dependencies {
     compile project(":athenaeum")
+    deobfCompile "codersafterdark.reskillable:Reskillable:1.12.2-1.0.0-SNAPSHOT.3"
 }
 
 jar {
