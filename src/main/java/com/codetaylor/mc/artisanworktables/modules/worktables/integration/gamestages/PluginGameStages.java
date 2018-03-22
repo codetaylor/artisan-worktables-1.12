@@ -6,7 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementContext;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.event.GameStageEvent;
@@ -68,7 +68,7 @@ public class PluginGameStages {
 
     EntityPlayerSP player = Minecraft.getMinecraft().player;
     Collection<String> unlockedStages = GameStagesHelper.getUnlockedStages(player);
-    GameStagesMatchRequirementContext context = (GameStagesMatchRequirementContext) ArtisanAPI
+    GameStagesRequirementContext context = (GameStagesRequirementContext) ArtisanAPI
         .getRequirementContext(new ResourceLocation(ModArtisanWorktables.MOD_ID, "gamestages"));
     context.setUnlockedStages(unlockedStages);
 

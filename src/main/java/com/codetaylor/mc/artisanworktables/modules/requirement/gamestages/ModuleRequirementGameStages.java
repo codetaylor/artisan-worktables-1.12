@@ -3,8 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementContext;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementContext;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -31,7 +31,7 @@ public class ModuleRequirementGameStages
   public void onRegisterRequirementContextSupplierEvent(RegistryEvent.Register<RequirementContextSupplier> event) {
 
     event.getRegistry().register(
-        new RequirementContextSupplier(MOD_ID, "gamestages", GameStagesMatchRequirementContext::new)
+        new RequirementContextSupplier(MOD_ID, "gamestages", GameStagesRequirementContext::new)
     );
   }
 
@@ -39,7 +39,7 @@ public class ModuleRequirementGameStages
   public void onRegisterRequirementBuilderSupplierEvent(RegistryEvent.Register<RequirementBuilderSupplier> event) {
 
     event.getRegistry().register(
-        new RequirementBuilderSupplier(MOD_ID, "gamestages", GameStagesMatchRequirementBuilder::new)
+        new RequirementBuilderSupplier(MOD_ID, "gamestages", GameStagesRequirementBuilder::new)
     );
   }
 

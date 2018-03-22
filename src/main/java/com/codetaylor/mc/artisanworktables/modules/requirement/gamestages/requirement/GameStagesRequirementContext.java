@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GameStagesMatchRequirementContext
+public class GameStagesRequirementContext
     implements IMatchRequirementContext {
 
   private Set<String> unlockedStages;

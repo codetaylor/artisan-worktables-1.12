@@ -8,7 +8,7 @@ import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirem
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
@@ -540,7 +540,7 @@ public class RecipeBuilderInternal
       if (this.includeGameStages.length != 0
           || this.excludeGameStages.length != 0) {
 
-        GameStagesMatchRequirementBuilder builder = new GameStagesMatchRequirementBuilder();
+        GameStagesRequirementBuilder builder = new GameStagesRequirementBuilder();
 
         if (this.gameStageRequire == EnumGameStageRequire.ALL) {
           builder.all(this.includeGameStages);

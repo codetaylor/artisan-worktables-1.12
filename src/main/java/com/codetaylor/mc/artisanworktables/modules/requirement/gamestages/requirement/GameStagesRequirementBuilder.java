@@ -9,14 +9,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GameStagesMatchRequirementBuilder
-    implements IMatchRequirementBuilder<GameStagesMatchRequirementContext, GameStagesMatchRequirement> {
+public class GameStagesRequirementBuilder
+    implements IMatchRequirementBuilder<GameStagesRequirementContext, GameStagesRequirement> {
 
   private Set<String> excludeStages;
   private Set<String> requireOneStage;
   private Set<String> requireAllStages;
 
-  public GameStagesMatchRequirementBuilder() {
+  public GameStagesRequirementBuilder() {
 
     this.excludeStages = Collections.emptySet();
     this.requireOneStage = Collections.emptySet();
@@ -27,31 +27,31 @@ public class GameStagesMatchRequirementBuilder
   @Override
   public String getRequirementId() {
 
-    return GameStagesMatchRequirement.REQUIREMENT_ID;
+    return GameStagesRequirement.REQUIREMENT_ID;
   }
 
   @Nonnull
   @Override
   public ResourceLocation getResourceLocation() {
 
-    return GameStagesMatchRequirement.LOCATION;
+    return GameStagesRequirement.LOCATION;
   }
 
-  public GameStagesMatchRequirementBuilder all(@Nonnull String... requireAllStages) {
+  public GameStagesRequirementBuilder all(@Nonnull String... requireAllStages) {
 
     this.requireAllStages = new HashSet<>();
     this.requireAllStages.addAll(Arrays.asList(requireAllStages));
     return this;
   }
 
-  public GameStagesMatchRequirementBuilder any(@Nonnull String... requireOneStage) {
+  public GameStagesRequirementBuilder any(@Nonnull String... requireOneStage) {
 
     this.requireOneStage = new HashSet<>();
     this.requireOneStage.addAll(Arrays.asList(requireOneStage));
     return this;
   }
 
-  public GameStagesMatchRequirementBuilder exclude(@Nonnull String... excludeStages) {
+  public GameStagesRequirementBuilder exclude(@Nonnull String... excludeStages) {
 
     this.excludeStages = new HashSet<>();
     this.excludeStages.addAll(Arrays.asList(excludeStages));
@@ -59,8 +59,8 @@ public class GameStagesMatchRequirementBuilder
   }
 
   @Override
-  public GameStagesMatchRequirement create() {
+  public GameStagesRequirement create() {
 
-    return new GameStagesMatchRequirement(this.requireAllStages, this.requireOneStage, this.excludeStages);
+    return new GameStagesRequirement(this.requireAllStages, this.requireOneStage, this.excludeStages);
   }
 }

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class GameStagesMatchRequirement
-    implements IMatchRequirement<GameStagesMatchRequirementContext> {
+public class GameStagesRequirement
+    implements IMatchRequirement<GameStagesRequirementContext> {
 
   public static final String REQUIREMENT_ID = "gamestages";
   public static final ResourceLocation LOCATION = new ResourceLocation(
@@ -22,7 +22,7 @@ public class GameStagesMatchRequirement
   private final List<String> requireOneStage;
   private final List<String> excludeStages;
 
-  /* package */ GameStagesMatchRequirement(
+  /* package */ GameStagesRequirement(
       @Nonnull Collection<String> requireAllStages,
       @Nonnull Collection<String> requireOneStage,
       @Nonnull Collection<String> excludeStages
@@ -40,7 +40,7 @@ public class GameStagesMatchRequirement
   }
 
   @Override
-  public boolean match(GameStagesMatchRequirementContext context) {
+  public boolean match(GameStagesRequirementContext context) {
 
     Collection<String> unlockedStages = context.getUnlockedStages();
 

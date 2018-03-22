@@ -2,40 +2,40 @@ package com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.craft
 
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IMatchRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirement;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesMatchRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirement;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementBuilder;
 import net.minecraft.util.ResourceLocation;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ZenGameStagesMatchRequirementBuilder
+public class ZenGameStagesRequirementBuilder
     implements IMatchRequirementBuilder {
 
-  private GameStagesMatchRequirementBuilder builder;
+  private GameStagesRequirementBuilder builder;
 
-  /* package */ ZenGameStagesMatchRequirementBuilder() {
+  /* package */ ZenGameStagesRequirementBuilder() {
 
-    this.builder = new GameStagesMatchRequirementBuilder();
+    this.builder = new GameStagesRequirementBuilder();
   }
 
   @ZenMethod
-  public ZenGameStagesMatchRequirementBuilder all(String[] requireAllStages) {
+  public ZenGameStagesRequirementBuilder all(String[] requireAllStages) {
 
     this.builder.all(requireAllStages);
     return this;
   }
 
   @ZenMethod
-  public ZenGameStagesMatchRequirementBuilder any(String[] requireAnyStage) {
+  public ZenGameStagesRequirementBuilder any(String[] requireAnyStage) {
 
     this.builder.any(requireAnyStage);
     return this;
   }
 
   @ZenMethod
-  public ZenGameStagesMatchRequirementBuilder exclude(String[] excludeStages) {
+  public ZenGameStagesRequirementBuilder exclude(String[] excludeStages) {
 
     this.builder.exclude(excludeStages);
     return this;
@@ -45,14 +45,14 @@ public class ZenGameStagesMatchRequirementBuilder
   @Override
   public String getRequirementId() {
 
-    return GameStagesMatchRequirement.REQUIREMENT_ID;
+    return GameStagesRequirement.REQUIREMENT_ID;
   }
 
   @Nonnull
   @Override
   public ResourceLocation getResourceLocation() {
 
-    return GameStagesMatchRequirement.LOCATION;
+    return GameStagesRequirement.LOCATION;
   }
 
   @Nullable
