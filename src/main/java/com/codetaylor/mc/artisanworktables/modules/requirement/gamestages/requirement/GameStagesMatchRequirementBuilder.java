@@ -44,7 +44,7 @@ public class GameStagesMatchRequirementBuilder
     return this;
   }
 
-  public GameStagesMatchRequirementBuilder one(@Nonnull String... requireOneStage) {
+  public GameStagesMatchRequirementBuilder any(@Nonnull String... requireOneStage) {
 
     this.requireOneStage = new HashSet<>();
     this.requireOneStage.addAll(Arrays.asList(requireOneStage));

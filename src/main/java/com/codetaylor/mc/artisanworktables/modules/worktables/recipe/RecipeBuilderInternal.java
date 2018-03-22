@@ -546,7 +546,7 @@ public class RecipeBuilderInternal
           builder.all(this.includeGameStages);
 
         } else {
-          builder.one(this.includeGameStages);
+          builder.any(this.includeGameStages);
         }
 
         builder.exclude(this.excludeGameStages);
