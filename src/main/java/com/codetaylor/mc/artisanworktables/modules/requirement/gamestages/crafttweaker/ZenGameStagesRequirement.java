@@ -7,9 +7,24 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class ZenGameStagesRequirement {
 
   @ZenMethod
-  public static ZenGameStagesMatchRequirementBuilder requirement() {
+  public static ZenGameStagesMatchRequirementBuilder all(String[] requireAllStages) {
 
-    return new ZenGameStagesMatchRequirementBuilder();
+    ZenGameStagesMatchRequirementBuilder builder = new ZenGameStagesMatchRequirementBuilder();
+    return builder.all(requireAllStages);
+  }
+
+  @ZenMethod
+  public static ZenGameStagesMatchRequirementBuilder any(String[] requireAnyStage) {
+
+    ZenGameStagesMatchRequirementBuilder builder = new ZenGameStagesMatchRequirementBuilder();
+    return builder.any(requireAnyStage);
+  }
+
+  @ZenMethod
+  public static ZenGameStagesMatchRequirementBuilder exclude(String[] excludeStages) {
+
+    ZenGameStagesMatchRequirementBuilder builder = new ZenGameStagesMatchRequirementBuilder();
+    return builder.exclude(excludeStages);
   }
 
   private ZenGameStagesRequirement() {

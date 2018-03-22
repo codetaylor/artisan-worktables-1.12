@@ -28,9 +28,9 @@ public class ZenGameStagesMatchRequirementBuilder
   }
 
   @ZenMethod
-  public ZenGameStagesMatchRequirementBuilder any(String[] requireOneStage) {
+  public ZenGameStagesMatchRequirementBuilder any(String[] requireAnyStage) {
 
-    this.builder.any(requireOneStage);
+    this.builder.any(requireAnyStage);
     return this;
   }
 
