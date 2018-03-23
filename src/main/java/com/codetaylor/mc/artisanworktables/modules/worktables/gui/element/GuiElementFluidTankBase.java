@@ -5,10 +5,12 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWor
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementFluidTank;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import java.util.List;
@@ -33,6 +35,28 @@ public abstract class GuiElementFluidTankBase
     super(guiBase, fluidTank, elementX, elementY, elementWidth, elementHeight);
     this.overlayColor = overlayColor;
     this.blockPos = blockPos;
+  }
+
+  @Override
+  public void drawBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+
+    FluidStack fluid = this.fluidTank.getFluid();
+
+    if (fluid != null) {
+      int color = fluid.getFluid().getColor();
+      GlStateManager.color(
+          ((color >> 16) & 0xFF) / 255f,
+          ((color >> 8) & 0xFF) / 255f,
+          (color & 0xFF) / 255f,
+          ((color >> 24) & 0xFF) / 255f
+      );
+    }
+
+    super.drawBackgroundLayer(partialTicks, mouseX, mouseY);
+
+    if (fluid != null) {
+      GlStateManager.color(1, 1, 1, 1);
+    }
   }
 
   public void elementClicked(int mouseX, int mouseY, int mouseButton) {
