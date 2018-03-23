@@ -2,6 +2,8 @@
 
  * Fixed: ContentTweaker custom fluids have gray color in GUI (#95)
 
+---
+
 1.17.1
 
  * Changed: updated de_de.lang (PR#90 Xaikii)
