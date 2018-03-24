@@ -144,25 +144,10 @@ public class CTArtisanRecipe
 
   private Map<String, IItemStack> getMarksShapeless(ICraftingContext context, Map<String, IItemStack> marks) {
 
-    List<ItemStack> itemList = new ArrayList<>();
     List<IArtisanIngredient> ingredients = this.getIngredientList();
-    ICraftingMatrixStackHandler matrixHandler = context.getCraftingMatrixHandler();
-
-    for (int i = 0; i < matrixHandler.getSlots(); i++) {
-      ItemStack itemStack = matrixHandler.getStackInSlot(i);
-
-      if (!itemStack.isEmpty()) {
-        itemList.add(itemStack);
-      }
-    }
-
-    List<Ingredient> ingredientList = new ArrayList<>(ingredients.size());
-
-    for (IArtisanIngredient ingredient : ingredients) {
-      ingredientList.add(ingredient.toIngredient());
-    }
-
-    int[] matches = RecipeMatcher.findMatches(itemList, ingredientList);
+    MatchResult matchResult = new MatchResult(context, ingredients).invoke();
+    int[] matches = matchResult.getMatches();
+    IItemStack[] stacks = matchResult.getStacks();
 
     for (int i = 0; i < matches.length; i++) {
       int index = matches[i];
@@ -173,7 +158,7 @@ public class CTArtisanRecipe
         String mark = ingredient.getIngredient().getMark();
 
         if (mark != null) {
-          marks.put(mark, CraftTweakerMC.getIItemStack(itemList.get(i)));
+          marks.put(mark, stacks[i]);
         }
       }
     }
@@ -182,6 +167,34 @@ public class CTArtisanRecipe
   }
 
   private Map<String, IItemStack> getMarksShaped(ICraftingContext context, Map<String, IItemStack> marks) {
+
+    List<IArtisanIngredient> ingredients = this.getIngredientList();
+    IItemStack[] stacks = this.getStacksShaped(context);
+
+    for (int i = 0; i < ingredients.size(); i++) {
+      IArtisanIngredient artisanIngredient = ingredients.get(i);
+
+      if (!artisanIngredient.isEmpty()) {
+        CTArtisanIngredient ctArtisanIngredient = (CTArtisanIngredient) artisanIngredient;
+        String mark = ctArtisanIngredient.getIngredient().getMark();
+
+        if (mark != null) {
+          marks.put(mark, stacks[i]);
+        }
+      }
+    }
+
+    return marks;
+  }
+
+  private IItemStack[] getStacksShapeless(ICraftingContext context) {
+
+    List<IArtisanIngredient> ingredients = this.getIngredientList();
+    MatchResult matchResult = new MatchResult(context, ingredients).invoke();
+    return matchResult.getStacks();
+  }
+
+  private IItemStack[] getStacksShaped(ICraftingContext context) {
 
     int width = this.getWidth();
     int height = this.getHeight();
@@ -205,20 +218,7 @@ public class CTArtisanRecipe
       }
     }
 
-    for (int i = 0; i < ingredients.size(); i++) {
-      IArtisanIngredient artisanIngredient = ingredients.get(i);
-
-      if (!artisanIngredient.isEmpty()) {
-        CTArtisanIngredient ctArtisanIngredient = (CTArtisanIngredient) artisanIngredient;
-        String mark = ctArtisanIngredient.getIngredient().getMark();
-
-        if (mark != null) {
-          marks.put(mark, stacks[i]);
-        }
-      }
-    }
-
-    return marks;
+    return stacks;
   }
 
   private boolean getStacksArray(
@@ -275,5 +275,58 @@ public class CTArtisanRecipe
         ),
         CraftTweakerMC.getIWorld(context.getWorld())
     );
+  }
+
+  private class MatchResult {
+
+    private ICraftingContext context;
+    private List<IArtisanIngredient> ingredients;
+    private int[] matches;
+    private IItemStack[] stacks;
+
+    /* package */ MatchResult(ICraftingContext context, List<IArtisanIngredient> ingredients) {
+
+      this.context = context;
+      this.ingredients = ingredients;
+    }
+
+    /* package */ int[] getMatches() {
+
+      return this.matches;
+    }
+
+    /* package */ IItemStack[] getStacks() {
+
+      return this.stacks;
+    }
+
+    /* package */ MatchResult invoke() {
+
+      List<ItemStack> itemList = new ArrayList<>();
+      ICraftingMatrixStackHandler matrixHandler = this.context.getCraftingMatrixHandler();
+
+      for (int i = 0; i < matrixHandler.getSlots(); i++) {
+        ItemStack itemStack = matrixHandler.getStackInSlot(i);
+
+        if (!itemStack.isEmpty()) {
+          itemList.add(itemStack);
+        }
+      }
+
+      List<Ingredient> ingredientList = new ArrayList<>(this.ingredients.size());
+
+      for (IArtisanIngredient ingredient : this.ingredients) {
+        ingredientList.add(ingredient.toIngredient());
+      }
+
+      this.matches = RecipeMatcher.findMatches(itemList, ingredientList);
+
+      this.stacks = new IItemStack[this.matches.length];
+
+      for (int i = 0; i < this.matches.length; i++) {
+        this.stacks[i] = CraftTweakerMC.getIItemStack(itemList.get(i));
+      }
+      return this;
+    }
   }
 }
