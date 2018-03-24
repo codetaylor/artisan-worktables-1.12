@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class Util {
@@ -67,6 +68,20 @@ public class Util {
     }
 
     return itemStack;
+  }
+
+  @Nonnull
+  public static ItemStack getContainerItem(@Nonnull ItemStack stack) {
+
+    if (stack.getItem().hasContainerItem(stack)) {
+      stack = stack.getItem().getContainerItem(stack);
+
+      if (!stack.isEmpty() && stack.isItemStackDamageable() && stack.getMetadata() > stack.getMaxDamage()) {
+        return ItemStack.EMPTY;
+      }
+      return stack;
+    }
+    return ItemStack.EMPTY;
   }
 
 }
