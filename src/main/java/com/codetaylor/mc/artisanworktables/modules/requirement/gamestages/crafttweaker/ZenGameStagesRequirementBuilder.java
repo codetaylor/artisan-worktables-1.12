@@ -21,16 +21,16 @@ public class ZenGameStagesRequirementBuilder
   }
 
   @ZenMethod
-  public ZenGameStagesRequirementBuilder all(String[] requireAllStages) {
+  public ZenGameStagesRequirementBuilder allOf(String[] requireAllStages) {
 
-    this.builder.all(requireAllStages);
+    this.builder.allOf(requireAllStages);
     return this;
   }
 
   @ZenMethod
-  public ZenGameStagesRequirementBuilder any(String[] requireAnyStage) {
+  public ZenGameStagesRequirementBuilder anyOf(String[] requireAnyStage) {
 
-    this.builder.any(requireAnyStage);
+    this.builder.anyOf(requireAnyStage);
     return this;
   }
 

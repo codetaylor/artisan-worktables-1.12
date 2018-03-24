@@ -7,17 +7,17 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class ZenGameStagesRequirement {
 
   @ZenMethod
-  public static ZenGameStagesRequirementBuilder all(String[] requireAllStages) {
+  public static ZenGameStagesRequirementBuilder allOf(String[] requireAllStages) {
 
     ZenGameStagesRequirementBuilder builder = new ZenGameStagesRequirementBuilder();
-    return builder.all(requireAllStages);
+    return builder.allOf(requireAllStages);
   }
 
   @ZenMethod
-  public static ZenGameStagesRequirementBuilder any(String[] requireAnyStage) {
+  public static ZenGameStagesRequirementBuilder anyOf(String[] requireAnyStage) {
 
     ZenGameStagesRequirementBuilder builder = new ZenGameStagesRequirementBuilder();
-    return builder.any(requireAnyStage);
+    return builder.anyOf(requireAnyStage);
   }
 
   @ZenMethod

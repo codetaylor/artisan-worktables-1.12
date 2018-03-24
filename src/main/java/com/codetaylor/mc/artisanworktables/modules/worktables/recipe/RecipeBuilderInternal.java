@@ -543,10 +543,10 @@ public class RecipeBuilderInternal
         GameStagesRequirementBuilder builder = new GameStagesRequirementBuilder();
 
         if (this.gameStageRequire == EnumGameStageRequire.ALL) {
-          builder.all(this.includeGameStages);
+          builder.allOf(this.includeGameStages);
 
         } else {
-          builder.any(this.includeGameStages);
+          builder.anyOf(this.includeGameStages);
         }
 
         builder.exclude(this.excludeGameStages);

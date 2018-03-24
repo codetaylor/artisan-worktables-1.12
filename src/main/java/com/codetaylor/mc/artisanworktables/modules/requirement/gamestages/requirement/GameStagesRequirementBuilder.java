@@ -37,14 +37,14 @@ public class GameStagesRequirementBuilder
     return GameStagesRequirement.LOCATION;
   }
 
-  public GameStagesRequirementBuilder all(@Nonnull String... requireAllStages) {
+  public GameStagesRequirementBuilder allOf(@Nonnull String... requireAllStages) {
 
     this.requireAllStages = new HashSet<>();
     this.requireAllStages.addAll(Arrays.asList(requireAllStages));
     return this;
   }
 
-  public GameStagesRequirementBuilder any(@Nonnull String... requireOneStage) {
+  public GameStagesRequirementBuilder anyOf(@Nonnull String... requireOneStage) {
 
     this.requireOneStage = new HashSet<>();
     this.requireOneStage.addAll(Arrays.asList(requireOneStage));
