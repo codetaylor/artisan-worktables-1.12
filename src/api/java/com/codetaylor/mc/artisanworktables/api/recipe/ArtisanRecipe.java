@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSetSlot;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -479,20 +480,34 @@ public class ArtisanRecipe
     IItemHandlerModifiable matrixHandler = context.getCraftingMatrixHandler();
     IFluidHandler fluidHandler = context.getFluidHandler();
 
-    int slotCount = matrixHandler.getSlots();
+    List<ItemStack> remainingItems = this.getRemainingItems(
+        matrixHandler,
+        NonNullList.withSize(matrixHandler.getSlots(), ItemStack.EMPTY)
+    );
 
-    for (int i = 0; i < slotCount; i++) {
+    for (int i = 0; i < remainingItems.size(); i++) {
+
       ItemStack itemStack = matrixHandler.getStackInSlot(i);
+      ItemStack remainingItemStack = remainingItems.get(i);
 
       if (!itemStack.isEmpty()) {
+        matrixHandler.setStackInSlot(i, Util.decrease(itemStack.copy(), 1, false));
+        itemStack = matrixHandler.getStackInSlot(i);
+      }
 
-        if (itemStack.getItem().hasContainerItem(itemStack)
-            && itemStack.getCount() == 1) {
-          matrixHandler.setStackInSlot(i, itemStack.getItem().getContainerItem(itemStack));
+      if (!remainingItemStack.isEmpty()) {
 
-        } else {
-          matrixHandler.setStackInSlot(i, Util.decrease(itemStack.copy(), 1, false));
+        if (itemStack.isEmpty()) {
+          matrixHandler.setStackInSlot(i, remainingItemStack);
+
+        } else if (ItemStack.areItemsEqual(itemStack, remainingItemStack)
+            && ItemStack.areItemStackTagsEqual(itemStack, remainingItemStack)) {
+          remainingItemStack.grow(itemStack.getCount());
+
+        } else if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
+          context.getPlayer().dropItem(remainingItemStack, false);
         }
+
       }
     }
 
@@ -501,6 +516,19 @@ public class ArtisanRecipe
     if (fluidIngredient != null) {
       fluidHandler.drain(fluidIngredient, true);
     }
+  }
+
+  @Nonnull
+  protected List<ItemStack> getRemainingItems(
+      IItemHandlerModifiable matrixHandler,
+      NonNullList<ItemStack> itemStacks
+  ) {
+
+    for (int i = 0; i < matrixHandler.getSlots(); i++) {
+      itemStacks.set(i, Util.getContainerItem(matrixHandler.getStackInSlot(i)));
+    }
+
+    return itemStacks;
   }
 
   protected void onCraftReduceSecondaryIngredients(ICraftingContext context) {
