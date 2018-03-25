@@ -4,16 +4,17 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementBuilder;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByRecipe;
 import crafttweaker.api.recipes.ICraftingRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
@@ -199,14 +200,22 @@ public class RecipeBuilderInternal
 
     for (IArtisanIngredient[] row : ingredients) {
 
-      this.isNonnull(row, "Ingredient row can't be null");
-      this.isNotZeroLength(row, "Ingredient row can't be zero length");
-
       if (row.length > this.width) {
         this.width = row.length;
       }
+    }
 
-      Collections.addAll(this.ingredients, row);
+    for (IArtisanIngredient[] row : ingredients) {
+
+      this.isNonnull(row, "Ingredient row can't be null");
+      this.isNotZeroLength(row, "Ingredient row can't be zero length");
+
+      List<IArtisanIngredient> cols = NonNullList.withSize(this.width, ArtisanIngredient.EMPTY);
+
+      for (int i = 0; i < row.length; i++) {
+        cols.set(i, row[i]);
+      }
+      this.ingredients.addAll(cols);
     }
 
     this.height = ingredients.length;
