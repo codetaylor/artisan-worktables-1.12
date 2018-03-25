@@ -7,7 +7,8 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredi
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.SecondaryIngredientMatcher;
-import com.codetaylor.mc.artisanworktables.modules.worktables.tile.MutuallyExclusiveStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.MutuallyExclusiveStackHandlerWrapper;
+import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +25,8 @@ import java.util.List;
 public abstract class TileEntitySecondaryInputBase
     extends TileEntityBase {
 
-  protected MutuallyExclusiveStackHandler secondaryIngredientHandler;
+  protected ObservableStackHandler secondaryIngredientHandler;
+  protected MutuallyExclusiveStackHandlerWrapper wrapper;
 
   protected TileEntitySecondaryInputBase() {
     // serialization
@@ -41,11 +43,12 @@ public abstract class TileEntitySecondaryInputBase
   protected void initialize(EnumType type) {
 
     super.initialize(type);
-    this.secondaryIngredientHandler = new MutuallyExclusiveStackHandler(this.getSecondaryInputSlotCount());
+    this.secondaryIngredientHandler = new ObservableStackHandler(this.getSecondaryInputSlotCount());
     this.secondaryIngredientHandler.addObserver((stackHandler, slotIndex) -> {
       this.markDirty();
       this.triggerContainerRecipeUpdate();
     });
+    this.wrapper = new MutuallyExclusiveStackHandlerWrapper(this.secondaryIngredientHandler);
   }
 
   public IItemHandlerModifiable getSecondaryIngredientHandler() {
@@ -71,7 +74,7 @@ public abstract class TileEntitySecondaryInputBase
 
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       //noinspection unchecked
-      return (T) this.secondaryIngredientHandler;
+      return (T) this.wrapper;
     }
 
     return super.getCapability(capability, facing);
