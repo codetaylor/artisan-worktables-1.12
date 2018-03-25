@@ -37,28 +37,6 @@ public abstract class GuiElementFluidTankBase
     this.blockPos = blockPos;
   }
 
-  @Override
-  public void drawBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-
-    FluidStack fluid = this.fluidTank.getFluid();
-
-    if (fluid != null) {
-      int color = fluid.getFluid().getColor();
-      GlStateManager.color(
-          ((color >> 16) & 0xFF) / 255f,
-          ((color >> 8) & 0xFF) / 255f,
-          (color & 0xFF) / 255f,
-          ((color >> 24) & 0xFF) / 255f
-      );
-    }
-
-    super.drawBackgroundLayer(partialTicks, mouseX, mouseY);
-
-    if (fluid != null) {
-      GlStateManager.color(1, 1, 1, 1);
-    }
-  }
-
   public void elementClicked(int mouseX, int mouseY, int mouseButton) {
 
     if (mouseButton == 0 && GuiScreen.isShiftKeyDown()) {
