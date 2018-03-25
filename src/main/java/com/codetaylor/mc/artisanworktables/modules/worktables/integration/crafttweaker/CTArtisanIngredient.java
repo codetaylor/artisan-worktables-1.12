@@ -84,7 +84,8 @@ public class CTArtisanIngredient
   @Override
   public boolean matches(ItemStack itemStack) {
 
-    return this.ingredient.matches(CTInputHelper.toIItemStack(itemStack));
+    return !itemStack.isEmpty()
+        && this.ingredient.matches(CTInputHelper.toIItemStack(itemStack));
   }
 
   @Override
@@ -99,6 +100,10 @@ public class CTArtisanIngredient
 
   @Override
   public boolean matchesIgnoreAmount(ItemStack itemStack) {
+
+    if (itemStack.isEmpty()) {
+      return false;
+    }
 
     itemStack = itemStack.copy();
     itemStack.setCount(1);
