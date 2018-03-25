@@ -502,8 +502,43 @@ public class ArtisanRecipe
 
         } else if (ItemStack.areItemsEqual(itemStack, remainingItemStack)
             && ItemStack.areItemStackTagsEqual(itemStack, remainingItemStack)) {
-          remainingItemStack.grow(itemStack.getCount());
-          matrixHandler.setStackInSlot(i, remainingItemStack);
+
+          int combinedStackSize = remainingItemStack.getCount() + itemStack.getCount();
+
+          if (combinedStackSize > itemStack.getMaxStackSize()) {
+
+            // Special handling if combined stack size exceeds max stack size.
+            // First, set the existing slot to the maximum stack size. Next,
+            // loop while the combined stack size is larger than the max stack
+            // size and put the items into the player's inventory or on the
+            // ground. Finally, put the remaining items in the player's
+            // inventory or on the ground.
+
+            ItemStack copy = remainingItemStack.copy();
+            copy.setCount(itemStack.getMaxStackSize());
+            matrixHandler.setStackInSlot(i, copy);
+            combinedStackSize -= itemStack.getMaxStackSize();
+
+            while (combinedStackSize > itemStack.getMaxStackSize()) {
+              copy = remainingItemStack.copy();
+              copy.setCount(itemStack.getMaxStackSize());
+
+              if (!context.getPlayer().addItemStackToInventory(copy)) {
+                context.getPlayer().dropItem(copy, false);
+              }
+              combinedStackSize -= itemStack.getMaxStackSize();
+            }
+
+            remainingItemStack.grow(itemStack.getCount());
+
+            if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
+              context.getPlayer().dropItem(remainingItemStack, false);
+            }
+
+          } else {
+            remainingItemStack.grow(itemStack.getCount());
+            matrixHandler.setStackInSlot(i, remainingItemStack);
+          }
 
         } else if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
           context.getPlayer().dropItem(remainingItemStack, false);
