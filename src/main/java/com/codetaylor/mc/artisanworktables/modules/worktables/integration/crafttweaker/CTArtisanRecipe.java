@@ -112,7 +112,6 @@ public class CTArtisanRecipe
     int[] matrixIndices = matchInfo.getMatrixIndices();
 
     for (int i = 0; i < ingredients.size(); i++) {
-      boolean needsContainerItem = true;
       IArtisanIngredient artisanIngredient = ingredients.get(i);
 
       if (artisanIngredient.isEmpty()) {
@@ -132,10 +131,8 @@ public class CTArtisanRecipe
         }
 
         itemStacks.set(matrixIndices[i], CraftTweakerMC.getItemStack(remainingItem));
-        needsContainerItem = false;
-      }
 
-      if (needsContainerItem) {
+      } else {
         itemStacks.set(matrixIndices[i], Util.getContainerItem(matrixHandler.getStackInSlot(matrixIndices[i])));
       }
     }
