@@ -503,6 +503,7 @@ public class ArtisanRecipe
         } else if (ItemStack.areItemsEqual(itemStack, remainingItemStack)
             && ItemStack.areItemStackTagsEqual(itemStack, remainingItemStack)) {
           remainingItemStack.grow(itemStack.getCount());
+          matrixHandler.setStackInSlot(i, remainingItemStack);
 
         } else if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
           context.getPlayer().dropItem(remainingItemStack, false);
