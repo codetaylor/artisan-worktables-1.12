@@ -481,7 +481,7 @@ public class ArtisanRecipe
     IFluidHandler fluidHandler = context.getFluidHandler();
 
     List<ItemStack> remainingItems = this.getRemainingItems(
-        matrixHandler,
+        context,
         NonNullList.withSize(matrixHandler.getSlots(), ItemStack.EMPTY)
     );
 
@@ -520,9 +520,11 @@ public class ArtisanRecipe
 
   @Nonnull
   protected List<ItemStack> getRemainingItems(
-      IItemHandlerModifiable matrixHandler,
+      ICraftingContext context,
       NonNullList<ItemStack> itemStacks
   ) {
+
+    ICraftingMatrixStackHandler matrixHandler = context.getCraftingMatrixHandler();
 
     for (int i = 0; i < matrixHandler.getSlots(); i++) {
       itemStacks.set(i, Util.getContainerItem(matrixHandler.getStackInSlot(i)));
