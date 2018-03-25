@@ -620,6 +620,10 @@ public class ArtisanRecipe
                 remainingItemStack.setCount(existingStackCount);
                 ItemStack itemStack = secondaryIngredientHandler.insertItem(i, remainingItemStack, false);
 
+                for (int j = 0; !itemStack.isEmpty() && j < secondaryIngredientHandler.getSlots() && j != i; j++) {
+                  itemStack = secondaryIngredientHandler.insertItem(j, itemStack, false);
+                }
+
                 if (!itemStack.isEmpty()
                     && !context.getPlayer().addItemStackToInventory(itemStack)) {
                   context.getPlayer().dropItem(itemStack, false);
@@ -644,6 +648,10 @@ public class ArtisanRecipe
               if (!remainingItemStack.isEmpty()) {
                 remainingItemStack.setCount(requiredAmount);
                 ItemStack itemStack = secondaryIngredientHandler.insertItem(i, remainingItemStack, false);
+
+                for (int j = 0; !itemStack.isEmpty() && j < secondaryIngredientHandler.getSlots() && j != i; j++) {
+                  itemStack = secondaryIngredientHandler.insertItem(j, itemStack, false);
+                }
 
                 if (!itemStack.isEmpty()
                     && !context.getPlayer().addItemStackToInventory(itemStack)) {
