@@ -106,8 +106,8 @@ public class CTArtisanIngredient
     }
 
     itemStack = itemStack.copy();
-    itemStack.setCount(1);
-    return this.ingredient.amount(1).matches(CTInputHelper.toIItemStack(itemStack));
+    itemStack.setCount(this.ingredient.getAmount());
+    return this.ingredient.matches(CTInputHelper.toIItemStack(itemStack));
   }
 
   @Override
