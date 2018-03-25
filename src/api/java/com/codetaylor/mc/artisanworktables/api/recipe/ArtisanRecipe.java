@@ -561,15 +561,61 @@ public class ArtisanRecipe
 
           if (requiredIngredient.matchesIgnoreAmount(stackInSlot)) {
 
-            if (stackInSlot.getCount() <= requiredAmount) {
-              requiredAmount -= stackInSlot.getCount();
-              secondaryIngredientHandler.setStackInSlot(i, ItemStack.EMPTY);
+            // get the remaining secondary item
+            ItemStack remainingItemStack = this.getRemainingSecondaryItem(context, requiredIngredient, stackInSlot);
+            int existingStackCount = stackInSlot.getCount();
 
-            } else if (stackInSlot.getCount() > requiredAmount) {
-              secondaryIngredientHandler.setStackInSlot(
-                  i,
-                  Util.decrease(stackInSlot.copy(), requiredAmount, false)
-              );
+            if (existingStackCount <= requiredAmount) {
+
+              // Replace the entire stack in slot with remaining item.
+
+              if (remainingItemStack.isEmpty()) {
+
+                // If the remaining item is empty, empty the slot.
+                secondaryIngredientHandler.setStackInSlot(i, ItemStack.EMPTY);
+
+              } else {
+
+                // First, empty the slot. Next, increase the remaining item count to match
+                // the slot's previous stack count. Finally, attempt to insert the remaining
+                // item into the secondary ingredient slots spilling any overflow into the
+                // player's inventory or onto the ground.
+
+                secondaryIngredientHandler.setStackInSlot(i, ItemStack.EMPTY);
+                remainingItemStack.setCount(existingStackCount);
+                ItemStack itemStack = secondaryIngredientHandler.insertItem(i, remainingItemStack, false);
+
+                if (!itemStack.isEmpty()
+                    && !context.getPlayer().addItemStackToInventory(itemStack)) {
+                  context.getPlayer().dropItem(itemStack, false);
+                }
+              }
+
+              requiredAmount -= existingStackCount;
+
+            } else if (existingStackCount > requiredAmount) {
+
+              // Replace partial stack in slot with remaining item.
+
+              // First, decrease the existing stack size. Next, since we know that the
+              // existing stack has been decreased by the required amount, we increase
+              // the remaining item stack count by the required amount. Finally, attempt
+              // to insert the remaining item stack into the secondary ingredient slots
+              // spilling any overflow into the player's inventory or onto the ground.
+
+              ItemStack decreasedStack = Util.decrease(stackInSlot.copy(), requiredAmount, false);
+              secondaryIngredientHandler.setStackInSlot(i, decreasedStack);
+
+              if (!remainingItemStack.isEmpty()) {
+                remainingItemStack.setCount(requiredAmount);
+                ItemStack itemStack = secondaryIngredientHandler.insertItem(i, remainingItemStack, false);
+
+                if (!itemStack.isEmpty()
+                    && !context.getPlayer().addItemStackToInventory(itemStack)) {
+                  context.getPlayer().dropItem(itemStack, false);
+                }
+              }
+
               requiredAmount = 0;
             }
 
@@ -585,6 +631,15 @@ public class ArtisanRecipe
 
       }
     }
+  }
+
+  protected ItemStack getRemainingSecondaryItem(
+      ICraftingContext context,
+      IArtisanIngredient ingredient,
+      ItemStack stack
+  ) {
+
+    return Util.getContainerItem(stack);
   }
 
   protected void onCraftReduceExperience(ICraftingContext context) {

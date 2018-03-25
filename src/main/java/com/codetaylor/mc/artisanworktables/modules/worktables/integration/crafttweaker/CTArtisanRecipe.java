@@ -141,6 +141,34 @@ public class CTArtisanRecipe
   }
 
   @Override
+  protected ItemStack getRemainingSecondaryItem(
+      ICraftingContext context,
+      IArtisanIngredient artisanIngredient,
+      ItemStack stack
+  ) {
+
+    if (!artisanIngredient.isEmpty()) {
+
+      IIngredient ingredient = ((CTArtisanIngredient) artisanIngredient).getIngredient();
+
+      if (ingredient.hasNewTransformers()) {
+        IItemStack remainingItem = null;
+
+        try {
+          remainingItem = ingredient.applyNewTransform(CraftTweakerMC.getIItemStack(stack));
+
+        } catch (Throwable e) {
+          CraftTweakerAPI.logError("Could not execute NewRecipeTransformer on " + ingredient.toCommandString(), e);
+        }
+
+        return CraftTweakerMC.getItemStack(remainingItem);
+      }
+    }
+
+    return super.getRemainingSecondaryItem(context, artisanIngredient, stack);
+  }
+
+  @Override
   protected void onCraftCompleteServer(
       ItemStack craftedItem,
       List<IArtisanItemStack> extraOutputList,
