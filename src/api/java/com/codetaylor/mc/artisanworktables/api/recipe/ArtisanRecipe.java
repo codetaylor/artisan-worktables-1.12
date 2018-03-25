@@ -549,21 +549,15 @@ public class ArtisanRecipe
 
       for (IArtisanIngredient requiredIngredient : secondaryIngredients) {
         int requiredAmount = requiredIngredient.getAmount();
-
-        // Set the amount to 1 to avoid quantity discrepancies when matching
-        //requiredIngredient = requiredIngredient.amount(1);
-
         int slotCount = secondaryIngredientHandler.getSlots();
 
         for (int i = 0; i < slotCount; i++) {
           ItemStack stackInSlot = secondaryIngredientHandler.getStackInSlot(i);
-          //IItemStack iItemStack = CTInputHelper.toIItemStack(stackInSlot);
 
           if (stackInSlot.isEmpty()) {
             continue;
           }
 
-          //if (requiredIngredient.matchesIgnoreAmount(iItemStack.anyAmount())) {
           if (requiredIngredient.matchesIgnoreAmount(stackInSlot)) {
 
             if (stackInSlot.getCount() <= requiredAmount) {
