@@ -39,7 +39,7 @@ public class MutuallyExclusiveStackHandler
       existingItemStack = this.stacks.get(i);
 
       if (this.matchStacks(stack, existingItemStack)) {
-        this.indexMap.put(stack.getItem(), i);
+        this.indexMap.forcePut(stack.getItem(), i);
         return super.insertItem(i, stack, simulate);
       }
     }
