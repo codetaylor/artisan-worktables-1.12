@@ -1,3 +1,14 @@
+1.18.1
+
+  * BREAKING CHANGES:
+    * API: To correct (#98) an oversight was fixed in the API; the signature of `IRequirement getRequirement(String modId)` has been changed to `IRequirement getRequirement(ResourceLocation resourceLocation)`.
+  * Added: API: `Map<ResourceLocation, IRequirement> getRequirements()` to `IArtisanRecipe`
+  * Added: API: `boolean matchesRequirements(Map<ResourceLocation, IRequirementContext> requirementContextMap)` to `IArtisanRecipe`
+  * Changed: cleaned up Reskillable requirement integration
+  * Changed: updated API (version 3)
+
+---
+
 1.18.0
 
   * BREAKING CHANGES:
