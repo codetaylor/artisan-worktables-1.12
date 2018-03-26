@@ -1,4 +1,4 @@
-1.18.0-SNAPSHOT
+1.18.0
 
   * BREAKING CHANGES:
     * Changed: `AWItemCraftEvent` renamed to `ArtisanCraftEvent`
