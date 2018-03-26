@@ -2,8 +2,8 @@
 
   * BREAKING CHANGES:
     * Changed: `AWItemCraftEvent` renamed to `ArtisanCraftEvent`
-    * Removed: builder method `RecipeBuilder setTool(IIngredient, int)` - deprecated since 1.13.21 (Feb 8, 2018)
-    * Removed: import `mods.artisanworktables.Worktable` - deprecated since 1.16.0 (Feb 26, 2018)
+    * Removed: `RecipeBuilder setTool(IIngredient, int)` - deprecated since 1.13.21 (Feb 8, 2018)
+    * Removed: `mods.artisanworktables.Worktable` - deprecated since 1.16.0 (Feb 26, 2018)
   * Added: builder method for new recipe requirement integrations
     * `RecipeBuilder addRequirement(IMatchRequirementBuilder requirementBuilder)`
   * Added: GameStages requirement integration
