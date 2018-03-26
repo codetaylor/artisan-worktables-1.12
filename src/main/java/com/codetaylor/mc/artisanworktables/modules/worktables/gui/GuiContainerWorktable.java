@@ -2,9 +2,9 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Optional;
+import yalter.mousetweaks.api.MouseTweaksDisableWheelTweak;
 
-@Optional.Interface(iface = "yalter.mousetweaks.api.MouseTweaksDisableWheelTweak", modid = "mousetweaks")
+@MouseTweaksDisableWheelTweak
 public class GuiContainerWorktable
     extends com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase {
 
