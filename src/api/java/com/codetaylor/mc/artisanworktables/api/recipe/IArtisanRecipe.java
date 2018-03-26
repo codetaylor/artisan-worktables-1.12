@@ -43,11 +43,11 @@ public interface IArtisanRecipe {
   );
 
   /**
-   * @param modId the mod id
-   * @return the recipe's requirement for the given mod id or null if none exists
+   * @param resourceLocation requirement resource location
+   * @return the recipe's requirement for the given resource location or null if none exists
    */
   @Nullable
-  IRequirement getRequirement(String modId);
+  IRequirement getRequirement(ResourceLocation resourceLocation);
 
   /**
    * @param tool      the tool to check

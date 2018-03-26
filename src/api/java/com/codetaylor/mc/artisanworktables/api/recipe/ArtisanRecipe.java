@@ -259,9 +259,9 @@ public class ArtisanRecipe
 
   @Nullable
   @Override
-  public IRequirement getRequirement(String modId) {
+  public IRequirement getRequirement(ResourceLocation resourceLocation) {
 
-    return this.requirementMap.get(modId);
+    return this.requirementMap.get(resourceLocation);
   }
 
   // --------------------------------------------------------------------------

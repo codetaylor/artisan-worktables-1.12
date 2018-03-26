@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirement;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import mezz.jei.api.IJeiRuntime;
@@ -104,7 +105,7 @@ public class PluginJEI
 
             for (IArtisanRecipe recipe : recipeList) {
 
-              if (recipe.getRequirement("gamestages") != null) {
+              if (recipe.getRequirement(GameStagesRequirement.LOCATION) != null) {
                 IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
                     recipe,
                     PluginJEI.createUID(name, tier)
