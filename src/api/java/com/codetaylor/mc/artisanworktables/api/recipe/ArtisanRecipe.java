@@ -381,6 +381,24 @@ public class ArtisanRecipe
       }
     }
 
+    if (!this.matchesRequirements(requirementContextMap)) {
+      return false;
+    }
+
+    if (!this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack)) {
+      return false;
+    }
+
+    if (!this.secondaryIngredients.isEmpty()) {
+      return secondaryIngredientMatcher.matches(this.secondaryIngredients);
+    }
+
+    return true;
+  }
+
+  @Override
+  public boolean matchesRequirements(Map<ResourceLocation, IRequirementContext> requirementContextMap) {
+
     // match requirements
     for (IRequirement requirement : this.requirementMap.values()) {
 
@@ -395,14 +413,6 @@ public class ArtisanRecipe
       if (!requirement.match(context)) {
         return false;
       }
-    }
-
-    if (!this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack)) {
-      return false;
-    }
-
-    if (!this.secondaryIngredients.isEmpty()) {
-      return secondaryIngredientMatcher.matches(this.secondaryIngredients);
     }
 
     return true;

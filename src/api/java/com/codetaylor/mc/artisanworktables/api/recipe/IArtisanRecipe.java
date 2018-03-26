@@ -43,6 +43,12 @@ public interface IArtisanRecipe {
   );
 
   /**
+   * @param requirementContextMap requirement contexts
+   * @return true if the recipe's requirements match the given context
+   */
+  boolean matchesRequirements(Map<ResourceLocation, IRequirementContext> requirementContextMap);
+
+  /**
    * @param resourceLocation requirement resource location
    * @return the recipe's requirement for the given resource location or null if none exists
    */
