@@ -71,7 +71,7 @@ public class ArtisanRecipe
       int maximumTier
   ) {
 
-    this.requirementMap = requirementMap;
+    this.requirementMap = Collections.unmodifiableMap(requirementMap);
     this.output = output;
     this.tools = tools;
     this.ingredients = ingredients;
