@@ -50,6 +50,11 @@ public interface IArtisanRecipe {
   IRequirement getRequirement(ResourceLocation resourceLocation);
 
   /**
+   * @return a read-only view of this recipe's requirements
+   */
+  Map<ResourceLocation, IRequirement> getRequirements();
+
+  /**
    * @param tool      the tool to check
    * @param toolIndex the tool index
    * @return true if the given tool is valid for this recipe in the given slot

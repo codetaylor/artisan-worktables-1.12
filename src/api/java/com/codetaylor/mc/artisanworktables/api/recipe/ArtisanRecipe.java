@@ -264,6 +264,12 @@ public class ArtisanRecipe
     return this.requirementMap.get(resourceLocation);
   }
 
+  @Override
+  public Map<ResourceLocation, IRequirement> getRequirements() {
+
+    return this.requirementMap;
+  }
+
   // --------------------------------------------------------------------------
   // - Matching
 
