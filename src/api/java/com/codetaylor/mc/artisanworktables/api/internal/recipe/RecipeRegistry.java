@@ -30,7 +30,7 @@ public class RecipeRegistry
     return result;
   }
 
-  public List<IArtisanRecipe> getRecipeListByTier(List<IArtisanRecipe> result, EnumTier tier) {
+  public List<IArtisanRecipe> getRecipeListByTier(EnumTier tier, List<IArtisanRecipe> result) {
 
     for (IArtisanRecipe recipe : this.recipeList) {
 

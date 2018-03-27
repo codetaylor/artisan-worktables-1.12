@@ -79,7 +79,7 @@ public class PluginGameStages {
       if (registry != null) {
 
         for (EnumTier tier : EnumTier.values()) {
-          List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
+          List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(tier, new ArrayList<>());
           String uid = PluginJEI.createUID(name, tier);
 
           for (IArtisanRecipe recipe : recipeList) {

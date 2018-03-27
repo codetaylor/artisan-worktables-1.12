@@ -80,7 +80,7 @@ public class PluginJEI
       for (String name : ArtisanAPI.getWorktableNames()) {
         List<IArtisanRecipe> recipeList = new ArrayList<>();
         RecipeRegistry recipeRegistry = ArtisanAPI.getWorktableRecipeRegistry(name);
-        recipeList = recipeRegistry.getRecipeListByTier(recipeList, tier);
+        recipeList = recipeRegistry.getRecipeListByTier(tier, recipeList);
         registry.addRecipes(recipeList, PluginJEI.createUID(name, tier));
       }
     }
@@ -101,7 +101,7 @@ public class PluginJEI
         if (registry != null) {
 
           for (EnumTier tier : EnumTier.values()) {
-            List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(new ArrayList<>(), tier);
+            List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(tier, new ArrayList<>());
 
             for (IArtisanRecipe recipe : recipeList) {
 
