@@ -1,15 +1,13 @@
 package com.codetaylor.mc.artisanworktables.api;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,6 +48,18 @@ public class ArtisanAPI {
 
   // --------------------------------------------------------------------------
   // - Worktable Recipe Registries
+
+  /**
+   * @param recipeName the recipe name
+   * @return the recipe with the given name
+   */
+  @Nullable
+  public static IArtisanRecipe getRecipe(String recipeName) {
+
+    String[] split = recipeName.split("_");
+    RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(split[0]);
+    return registry.getRecipe(recipeName);
+  }
 
   /**
    * Throws an {@link IllegalStateException} if there is no {@link RecipeRegistry}

@@ -14,6 +14,7 @@ public interface IRecipeFactory {
   IRecipeFactory DEFAULT = ArtisanRecipe::new;
 
   IArtisanRecipe create(
+      @Nullable String name,
       Map<ResourceLocation, IRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,

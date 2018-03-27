@@ -7,6 +7,8 @@ import net.minecraftforge.fluids.FluidStack;
 @SuppressWarnings({"UnusedReturnValue", "unused"})
 public interface IRecipeBuilder {
 
+  IRecipeBuilder setName(String name) throws RecipeBuilderException;
+
   IRecipeBuilder setIngredients(IArtisanIngredient[][] ingredients) throws RecipeBuilderException;
 
   IRecipeBuilder setIngredients(IArtisanIngredient[] ingredients) throws RecipeBuilderException;

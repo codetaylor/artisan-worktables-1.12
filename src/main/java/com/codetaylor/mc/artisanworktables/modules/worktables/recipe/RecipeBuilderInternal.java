@@ -19,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.*;
 
@@ -67,6 +68,7 @@ public class RecipeBuilderInternal
   // --------------------------------------------------------------------------
   // - Recipe
 
+  private String name;
   private int width;
   private int height;
   private boolean mirrored;
@@ -187,6 +189,16 @@ public class RecipeBuilderInternal
 
   // --------------------------------------------------------------------------
   // - Recipe
+
+  @Override
+  public IRecipeBuilder setName(String name) throws RecipeBuilderException {
+
+    this.isNonnull(name, "Recipe name can't be null");
+    this.isTrue(name.length() > 0, "Recipe name can't be zero length");
+
+    this.name = name;
+    return this;
+  }
 
   @Override
   public IRecipeBuilder setIngredients(IArtisanIngredient[][] ingredients) throws RecipeBuilderException {
@@ -585,7 +597,17 @@ public class RecipeBuilderInternal
       this.secondaryIngredients = Collections.emptyList();
     }
 
-    ArtisanAPI.getWorktableRecipeRegistry(this.tableName).addRecipe(this.recipeFactory.create(
+    RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(this.tableName);
+
+    if (this.name == null) {
+      this.name = this.calculateName(registry);
+
+    } else {
+      this.name = this.tableName + "_" + this.name;
+    }
+
+    registry.addRecipe(this.recipeFactory.create(
+        this.name,
         new HashMap<>(this.requirementMap),
         this.outputWeightPairList,
         tools,
@@ -604,5 +626,63 @@ public class RecipeBuilderInternal
         this.minimumTier,
         this.maximumTier
     ));
+  }
+
+  private String calculateName(RecipeRegistry registry) {
+
+    HashCodeBuilder builder = new HashCodeBuilder(17, 37);
+
+    // Requirements
+    for (ResourceLocation resourceLocation : this.requirementMap.keySet()) {
+      builder.append(resourceLocation.hashCode());
+    }
+
+    // Output
+    for (OutputWeightPair pair : this.outputWeightPairList) {
+      builder.append(HashCodeUtil.get(pair));
+    }
+
+    // Tools
+    for (ToolIngredientEntry entry : this.tools) {
+      builder.append(HashCodeUtil.get(entry));
+    }
+
+    // Ingredients
+    for (IArtisanIngredient ingredient : this.ingredients) {
+      builder.append(HashCodeUtil.get(ingredient));
+    }
+
+    // Secondary Ingredients
+    for (IArtisanIngredient ingredient : this.secondaryIngredients) {
+      builder.append(HashCodeUtil.get(ingredient));
+    }
+
+    builder.append(this.consumeSecondaryIngredients)
+        .append(HashCodeUtil.get(this.fluidIngredient))
+        .append(this.experienceRequired)
+        .append(this.levelRequired)
+        .append(this.consumeExperience);
+
+    // Extra Chance Outputs
+    for (ExtraOutputChancePair pair : this.extraOutputs) {
+      builder.append(HashCodeUtil.get(pair));
+    }
+
+    builder.append(this.mirrored)
+        .append(this.width)
+        .append(this.height)
+        .append(this.minimumTier)
+        .append(this.maximumTier);
+
+    int hash = builder.build();
+    String recipeName = this.tableName + "_" + hash;
+
+    // check for duplicate recipe name
+    while (registry.hasRecipe(recipeName)) {
+      hash += 1;
+      recipeName = this.tableName + "_" + hash;
+    }
+
+    return recipeName;
   }
 }

@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
@@ -7,27 +8,32 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RecipeRegistry
     extends IForgeRegistryEntry.Impl<RecipeRegistry> {
 
   private List<IArtisanRecipe> recipeList;
+  private Map<String, IArtisanRecipe> recipeMap;
 
   public RecipeRegistry(String modId, String name) {
 
     this.setRegistryName(modId, name);
     this.recipeList = new ArrayList<>();
+    this.recipeMap = new HashMap<>();
   }
 
-  public List<IArtisanRecipe> getRecipeList(List<IArtisanRecipe> result) {
+  public List<IArtisanRecipe> getRecipeList() {
 
-    result.addAll(this.recipeList);
-    return result;
+    return Collections.unmodifiableList(this.recipeList);
+  }
+
+  public Map<String, IArtisanRecipe> getRecipeMap() {
+
+    return Collections.unmodifiableMap(this.recipeMap);
   }
 
   public List<IArtisanRecipe> getRecipeListByTier(EnumTier tier, List<IArtisanRecipe> result) {
@@ -42,10 +48,31 @@ public class RecipeRegistry
     return result;
   }
 
+  @Nullable
   public IArtisanRecipe addRecipe(IArtisanRecipe recipe) {
 
-    this.recipeList.add(recipe);
-    return recipe;
+    String recipeName = recipe.getName();
+
+    if (this.recipeMap.containsKey(recipeName)) {
+      LogManager.getLogger(ArtisanAPI.MOD_ID.get()).error("Duplicate recipe registration skipped: " + recipeName);
+      return null;
+
+    } else {
+      this.recipeList.add(recipe);
+      this.recipeMap.put(recipeName, recipe);
+      return recipe;
+    }
+  }
+
+  public boolean hasRecipe(String recipeName) {
+
+    return this.recipeMap.containsKey(recipeName);
+  }
+
+  @Nullable
+  public IArtisanRecipe getRecipe(String recipeName) {
+
+    return this.recipeMap.get(recipeName);
   }
 
   @Nullable

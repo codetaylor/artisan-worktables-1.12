@@ -32,6 +32,7 @@ import java.util.*;
 public class ArtisanRecipe
     implements IArtisanRecipe {
 
+  private String name;
   private ToolEntry[] tools;
   private Map<ResourceLocation, IRequirement> requirementMap;
   private List<OutputWeightPair> output;
@@ -52,6 +53,7 @@ public class ArtisanRecipe
 
   @ParametersAreNonnullByDefault
   public ArtisanRecipe(
+      @Nullable String name,
       Map<ResourceLocation, IRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
@@ -71,6 +73,7 @@ public class ArtisanRecipe
       int maximumTier
   ) {
 
+    this.name = name;
     this.requirementMap = Collections.unmodifiableMap(requirementMap);
     this.output = output;
     this.tools = tools;
@@ -92,6 +95,12 @@ public class ArtisanRecipe
 
   // --------------------------------------------------------------------------
   // - Getters
+
+  @Override
+  public String getName() {
+
+    return this.name;
+  }
 
   @Override
   public int getExperienceRequired() {

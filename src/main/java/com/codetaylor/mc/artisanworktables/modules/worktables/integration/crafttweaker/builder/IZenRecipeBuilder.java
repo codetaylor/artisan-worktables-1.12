@@ -54,6 +54,9 @@ public interface IZenRecipeBuilder {
   }
 
   @ZenMethod
+  IZenRecipeBuilder setName(String recipeName);
+
+  @ZenMethod
   IZenRecipeBuilder setShaped(IIngredient[][] ingredients);
 
   @ZenMethod

@@ -31,6 +31,19 @@ public class ZenRecipeBuilder
     this.recipeBuilder = RecipeBuilderInternal.get(tableName, new CTArtisanRecipeFactory());
   }
 
+  @Override
+  public IZenRecipeBuilder setName(String recipeName) {
+
+    try {
+      this.recipeBuilder.setName(recipeName);
+
+    } catch (RecipeBuilderException e) {
+      return this.logError(e.getMessage());
+    }
+
+    return this;
+  }
+
   // --------------------------------------------------------------------------
   // - Input
 
