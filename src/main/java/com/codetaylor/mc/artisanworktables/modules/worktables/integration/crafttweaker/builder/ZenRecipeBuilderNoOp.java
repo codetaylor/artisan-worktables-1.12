@@ -19,6 +19,12 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder setName(String recipeName) {
+
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setShaped(IIngredient[][] ingredients) {
 
     return this;

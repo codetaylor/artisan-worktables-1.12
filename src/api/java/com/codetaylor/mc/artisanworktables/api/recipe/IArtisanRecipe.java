@@ -17,6 +17,11 @@ import java.util.Random;
 public interface IArtisanRecipe {
 
   /**
+   * @return this recipe's name
+   */
+  String getName();
+
+  /**
    * Return true if this recipe matches the given criteria.
    *
    * @param requirementContextMap      the requirement context map
