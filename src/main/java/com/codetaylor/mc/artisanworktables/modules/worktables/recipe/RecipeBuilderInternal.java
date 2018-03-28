@@ -552,7 +552,7 @@ public class RecipeBuilderInternal
   }
 
   @Override
-  public void apply() throws RecipeBuilderException {
+  public void apply(ILogger logger) throws RecipeBuilderException {
 
     // Builds the recipe object and adds it to the registry.
 
@@ -560,6 +560,8 @@ public class RecipeBuilderInternal
 
       if (this.includeGameStages.length != 0
           || this.excludeGameStages.length != 0) {
+
+        logger.logWarning("Using deprecated GameStages builder methods! Please use the new requirement system instead.");
 
         GameStagesRequirementBuilder builder = new GameStagesRequirementBuilder();
 
@@ -598,7 +600,7 @@ public class RecipeBuilderInternal
     RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(this.tableName);
 
     if (this.name == null) {
-      this.name = this.calculateName(registry);
+      this.name = this.calculateName(registry, logger);
 
     } else {
       this.name = this.tableName + "_" + this.name;
@@ -607,6 +609,7 @@ public class RecipeBuilderInternal
       int i = 0;
 
       while (registry.hasRecipe(this.name)) {
+        logger.logWarning("Duplicate recipe name found: " + this.name);
 
         if (i > 1000) {
           // sanity
@@ -644,7 +647,7 @@ public class RecipeBuilderInternal
     ));
   }
 
-  private String calculateName(RecipeRegistry registry) {
+  private String calculateName(RecipeRegistry registry, ILogger logger) {
 
     HashCodeBuilder builder = new HashCodeBuilder(17, 37);
 
@@ -695,6 +698,7 @@ public class RecipeBuilderInternal
 
     // check for duplicate recipe name
     while (registry.hasRecipe(recipeName)) {
+      logger.logWarning("Duplicate recipe name found: " + recipeName);
       hash += 1;
       recipeName = this.tableName + "_" + hash;
     }

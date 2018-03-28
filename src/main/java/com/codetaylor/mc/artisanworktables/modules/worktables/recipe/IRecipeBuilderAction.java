@@ -4,6 +4,15 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderExce
 
 public interface IRecipeBuilderAction {
 
-  void apply() throws RecipeBuilderException;
+  interface ILogger {
+
+    void logError(String message);
+
+    void logError(String message, Throwable t);
+
+    void logWarning(String message);
+  }
+
+  void apply(ILogger logger) throws RecipeBuilderException;
 
 }
