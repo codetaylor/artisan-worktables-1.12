@@ -8,6 +8,7 @@ pages:
     - Quick Reference: recipes/quickreference.md
     - Getting Started: recipes/gettingstarted.md
     - Basic Recipes: recipes/basic.md
+    - Recipe Names: recipes/names.md
     - Table Tiers: recipes/tiers.md
     - Recipes with Tools: recipes/tools.md
     - Recipes with Fluids: recipes/fluids.md
