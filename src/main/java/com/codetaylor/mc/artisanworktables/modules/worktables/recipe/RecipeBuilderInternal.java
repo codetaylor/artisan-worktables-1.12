@@ -604,6 +604,24 @@ public class RecipeBuilderInternal
 
     } else {
       this.name = this.tableName + "_" + this.name;
+
+      // Ensure the recipe has a unique name.
+      int i = 0;
+
+      while (registry.hasRecipe(this.name)) {
+
+        if (i > 1000) {
+          // sanity
+          break;
+        }
+
+        i += 1;
+        this.name = this.tableName + "_" + this.name + "_" + i;
+      }
+    }
+
+    if (registry.hasRecipe(this.name)) {
+      throw new RecipeBuilderException("Duplicate recipe name: " + this.name);
     }
 
     registry.addRecipe(this.recipeFactory.create(
