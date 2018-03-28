@@ -556,7 +556,10 @@ public class RecipeBuilderInternal
   @Override
   public void apply(ILogger logger) throws RecipeBuilderException {
 
-    // Builds the recipe object and adds it to the registry.
+    // Build the recipe object and add it to the registry.
+
+    // Assemble the GameStages requirement from deprecated fields.
+    // TODO: remove this in future version (2018-03-28)
 
     if (Loader.isModLoaded("gamestages")) {
 
@@ -580,6 +583,8 @@ public class RecipeBuilderInternal
       }
     }
 
+    // Decide which style recipe matcher to use.
+
     IRecipeMatrixMatcher recipeMatcher;
 
     if (this.width > 0 && this.height > 0) {
@@ -589,15 +594,21 @@ public class RecipeBuilderInternal
       recipeMatcher = IRecipeMatrixMatcher.SHAPELESS;
     }
 
+    // Prepare the tool entry array.
+
     ToolEntry[] tools = new ToolEntry[this.tools.size()];
 
     for (int i = 0; i < this.tools.size(); i++) {
       tools[i] = new ToolEntry(this.tools.get(i));
     }
 
+    // Ensure that the secondary ingredient collection is not null.
+
     if (this.secondaryIngredients == null) {
       this.secondaryIngredients = Collections.emptyList();
     }
+
+    // Calculate the recipe name and ensure it is unique.
 
     RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(this.tableName);
 
