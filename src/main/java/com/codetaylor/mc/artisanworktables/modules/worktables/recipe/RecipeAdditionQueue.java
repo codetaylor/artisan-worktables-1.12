@@ -14,6 +14,27 @@ import java.util.List;
 public class RecipeAdditionQueue
     implements IRecipeAdditionQueue {
 
+  private static final IRecipeBuilderAction.ILogger LOGGER = new IRecipeBuilderAction.ILogger() {
+
+    @Override
+    public void logError(String message) {
+
+      ModuleWorktables.LOG.error(message);
+    }
+
+    @Override
+    public void logError(String message, Throwable t) {
+
+      ModuleWorktables.LOG.error(message, t);
+    }
+
+    @Override
+    public void logWarning(String message) {
+
+      ModuleWorktables.LOG.warn(message);
+    }
+  };
+
   private final List<RecipeBuilderInternal> recipeBuilderList = new ArrayList<>();
   private final List<RecipeBuilderInternal> recipeBuilderWithCopyList = new ArrayList<>();
 
@@ -49,7 +70,7 @@ public class RecipeAdditionQueue
     for (RecipeBuilderInternal builder : this.recipeBuilderList) {
 
       try {
-        builder.apply();
+        builder.apply(LOGGER);
 
       } catch (RecipeBuilderException e) {
         ModuleWorktables.LOG.error("", e);
