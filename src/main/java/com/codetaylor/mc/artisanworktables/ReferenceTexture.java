@@ -16,7 +16,7 @@ public class ReferenceTexture {
 
   public static final Texture TEXTURE_FLUID_OVERLAY = new Texture(
       RESOURCE_LOCATION_GUI_ELEMENTS,
-      57,
+      249,
       1,
       TEXTURE_GUI_ELEMENTS_WIDTH,
       TEXTURE_GUI_ELEMENTS_HEIGHT
@@ -44,6 +44,14 @@ public class ReferenceTexture {
       0,
       TEXTURE_TOOLBOX_WIDTH,
       TEXTURE_TOOLBOX_HEIGHT
+  );
+
+  public static final Texture TEXTURE_PATTERN_SIDE = new Texture(
+      RESOURCE_LOCATION_GUI_ELEMENTS,
+      180,
+      0,
+      TEXTURE_GUI_ELEMENTS_WIDTH,
+      TEXTURE_GUI_ELEMENTS_HEIGHT
   );
 
   public static final int TEXTURE_TOOLBOX_MECHANICAL_WIDTH = 256;

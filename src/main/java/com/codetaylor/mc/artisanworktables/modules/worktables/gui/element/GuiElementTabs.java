@@ -32,6 +32,7 @@ public class GuiElementTabs
   private static final int TAB_LEFT_OFFSET = 4;
   private static final int TAB_ITEM_HORIZONTAL_OFFSET = 4;
   private static final int TAB_ITEM_VERTICAL_OFFSET = 4;
+  private static final int BUTTON_WIDTH = 8;
 
   public static boolean RECALCULATE_TAB_OFFSETS = false;
   private static final GuiTabOffset GUI_TAB_OFFSET = new GuiTabOffset(0);
@@ -79,12 +80,14 @@ public class GuiElementTabs
 
     if (GUI_TAB_OFFSET.getOffset() > 0) {
       // draw left button
+      int textureX = (this.worktable.getWorktableGuiTabTextureYOffset() / 12) * TAB_HEIGHT;
+
       Gui.drawModalRectWithCustomSizedTexture(
           this.elementXModifiedGet() + TAB_LEFT_OFFSET + TAB_ITEM_HORIZONTAL_OFFSET - 18,
           tabY,
           TAB_WIDTH,
-          this.worktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
-          8,
+          textureX,
+          BUTTON_WIDTH,
           TAB_HEIGHT,
           ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH,
           ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT
@@ -95,12 +98,14 @@ public class GuiElementTabs
 
     if (GUI_TAB_OFFSET.getOffset() + maximumDisplayedTabCount < actualJoinedTables.size()) {
       // draw right button
+      int textureX = (this.worktable.getWorktableGuiTabTextureYOffset() / 12) * TAB_HEIGHT;
+
       Gui.drawModalRectWithCustomSizedTexture(
           this.elementXModifiedGet() + this.elementWidthModifiedGet() - 12,
           tabY,
-          TAB_WIDTH + 8,
-          this.worktable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT,
-          8,
+          TAB_WIDTH + BUTTON_WIDTH,
+          textureX,
+          BUTTON_WIDTH,
           TAB_HEIGHT,
           ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH,
           ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT
@@ -110,14 +115,14 @@ public class GuiElementTabs
     // draw tabs
 
     for (TileEntityBase joinedTable : joinedTables) {
-      int textureY = joinedTable.getWorktableGuiTabTextureYOffset() * TAB_HEIGHT;
+      int textureX = (joinedTable.getWorktableGuiTabTextureYOffset() / 12) * (TAB_WIDTH + BUTTON_WIDTH * 2);
+      int textureY = (joinedTable.getWorktableGuiTabTextureYOffset() % 12) * TAB_HEIGHT;
 
       if (joinedTable == this.worktable) {
-        //this.drawTexturedModalRect(tabX, tabY + TAB_CURRENT_OFFSET, 0, textureY, TAB_WIDTH, TAB_HEIGHT);
         Gui.drawModalRectWithCustomSizedTexture(
             tabX,
             tabY + TAB_CURRENT_OFFSET,
-            0,
+            textureX,
             textureY,
             TAB_WIDTH,
             TAB_HEIGHT,
@@ -126,11 +131,10 @@ public class GuiElementTabs
         );
 
       } else {
-        //this.drawTexturedModalRect(tabX, tabY, 0, textureY, TAB_WIDTH, 21);
         Gui.drawModalRectWithCustomSizedTexture(
             tabX,
             tabY,
-            0,
+            textureX,
             textureY,
             TAB_WIDTH,
             TAB_HEIGHT,

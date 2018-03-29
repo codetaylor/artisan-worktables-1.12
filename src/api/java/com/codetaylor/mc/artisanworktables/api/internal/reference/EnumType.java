@@ -22,7 +22,8 @@ public enum EnumType
   SCRIBE(8, "scribe", SoundType.WOOD, new Color(182, 136, 79).getRGB(), 8),
   CHEMIST(9, "chemist", SoundType.METAL, new Color(71, 97, 71).getRGB(), 9),
   FARMER(10, "farmer", SoundType.GROUND, new Color(128, 198, 82).getRGB(), 10),
-  CHEF(11, "chef", SoundType.STONE, new Color(255, 255, 255).getRGB(), 11);
+  CHEF(11, "chef", SoundType.STONE, new Color(255, 255, 255).getRGB(), 11),
+  DESIGNER(12, "designer", SoundType.STONE, new Color(255, 255, 255).getRGB(), 12);
 
   private static final EnumType[] META_LOOKUP = Stream.of(EnumType.values())
       .sorted(Comparator.comparing(EnumType::getMeta))

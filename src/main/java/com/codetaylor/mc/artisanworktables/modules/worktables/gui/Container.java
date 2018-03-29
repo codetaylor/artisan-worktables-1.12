@@ -6,7 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
@@ -33,7 +33,9 @@ public class Container
   private World world;
   private TileEntityBase tile;
   private TileEntityToolbox toolbox;
+  private ITileEntityDesigner designersTable;
   private final ItemStackHandler resultHandler;
+  private final ItemStackHandler patternResultHandler;
   private FluidStack lastFluidStack;
   private final EntityPlayer player;
 
@@ -52,6 +54,8 @@ public class Container
   private final int slotIndexToolboxEnd;
   private final int slotIndexSecondaryInputStart;
   private final int slotIndexSecondaryInputEnd;
+  private final int slotIndexPattern;
+  private final int slotIndexPatternResult;
 
   public Container(
       InventoryPlayer playerInventory,
@@ -64,6 +68,7 @@ public class Container
     this.world = world;
     this.tile = tile;
     this.toolbox = this.getToolbox(this.tile);
+    this.designersTable = this.getAdjacentDesignersTable(this.tile);
 
     this.tile.addContainer(this);
 
@@ -184,12 +189,45 @@ public class Container
       this.slotIndexSecondaryInputStart = -1;
       this.slotIndexSecondaryInputEnd = -1;
     }
+    // ------------------------------------------------------------------------
+    // Designer's Table
+    if (this.canPlayerUsePatternSlots()) {
+      // TODO: pattern input
+      this.slotIndexPattern = this.nextSlotIndex;
+      ItemStackHandler itemHandler = this.designersTable.getPatternStackHandler();
+      this.containerSlotAdd(new PatternSlot(
+          () -> {
+          },
+          itemHandler,
+          0,
+          2 * -18 + this.containerToolboxOffsetGetX(),
+          8
+      ));
+
+      // TODO: pattern output
+      this.slotIndexPatternResult = this.nextSlotIndex;
+      this.patternResultHandler = new ItemStackHandler(1);
+      this.containerSlotAdd(new PatternResultSlot(
+          () -> {
+          },
+          this.patternResultHandler,
+          0,
+          this.containerToolboxOffsetGetX(),
+          8
+      ));
+
+    } else {
+      this.patternResultHandler = null;
+      this.slotIndexPattern = -1;
+      this.slotIndexPatternResult = -1;
+    }
 
     // ------------------------------------------------------------------------
     // Side Toolbox
     this.slotIndexToolboxStart = this.nextSlotIndex;
     if (this.canPlayerUseToolbox()) {
       ItemStackHandler itemHandler = this.toolbox.getItemHandler();
+      int offsetY = (this.designersTable != null) ? 33 : 0;
 
       for (int x = 0; x < 3; x++) {
 
@@ -199,7 +237,7 @@ public class Container
               itemHandler,
               y + x * 9,
               x * -18 + this.containerToolboxOffsetGetX(),
-              y * 18 + 8
+              y * 18 + 8 + offsetY
           ));
         }
       }
@@ -306,6 +344,11 @@ public class Container
     return tile.getAdjacentToolbox();
   }
 
+  private ITileEntityDesigner getAdjacentDesignersTable(TileEntityBase tile) {
+
+    return tile.getAdjacentDesignersTable();
+  }
+
   /**
    * @return the adjacent toolbox, or null
    */
@@ -330,6 +373,27 @@ public class Container
     return this.hasValidToolbox() && this.toolbox.canPlayerUse(this.player);
   }
 
+  @Nullable
+  public ITileEntityDesigner getDesignersTable() {
+
+    if (this.hasValidPatternSlots()) {
+
+      return this.designersTable;
+    }
+
+    return null;
+  }
+
+  public boolean hasValidPatternSlots() {
+
+    return this.designersTable != null && !this.designersTable.isInvalid();
+  }
+
+  public boolean canPlayerUsePatternSlots() {
+
+    return this.hasValidPatternSlots() && this.designersTable.canPlayerUse(this.player);
+  }
+
   public void updateRecipeOutput() {
 
     if (this.tile == null) {
@@ -342,8 +406,16 @@ public class Container
       ICraftingContext context = this.tile.getCraftingContext(this.player);
       this.resultHandler.setStackInSlot(0, recipe.getBaseOutput(context).toItemStack());
 
+      if (this.canPlayerUsePatternSlots()) {
+        // TODO: create pattern
+      }
+
     } else {
       this.resultHandler.setStackInSlot(0, ItemStack.EMPTY);
+
+      if (this.canPlayerUsePatternSlots()) {
+        this.patternResultHandler.setStackInSlot(0, ItemStack.EMPTY);
+      }
     }
   }
 
