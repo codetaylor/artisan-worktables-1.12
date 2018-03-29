@@ -21,6 +21,7 @@ public class CTArtisanRecipeFactory
 
   @Override
   public IArtisanRecipe create(
+      String name,
       Map<ResourceLocation, IRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
@@ -41,6 +42,7 @@ public class CTArtisanRecipeFactory
   ) {
 
     return new CTArtisanRecipe(
+        name,
         requirementMap,
         output,
         tools,

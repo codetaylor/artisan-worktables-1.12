@@ -33,6 +33,7 @@ public class CTArtisanRecipe
   private final IRecipeFunction recipeFunction;
 
   /* package */ CTArtisanRecipe(
+      String name,
       Map<ResourceLocation, IRequirement> requirementMap,
       List<OutputWeightPair> output,
       ToolEntry[] tools,
@@ -55,6 +56,7 @@ public class CTArtisanRecipe
   ) {
 
     super(
+        name,
         requirementMap,
         output,
         tools,
