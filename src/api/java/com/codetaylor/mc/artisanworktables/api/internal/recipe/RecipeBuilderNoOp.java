@@ -10,6 +10,12 @@ public class RecipeBuilderNoOp
   public static final IRecipeBuilder INSTANCE = new RecipeBuilderNoOp();
 
   @Override
+  public IRecipeBuilder setName(String name) throws RecipeBuilderException {
+
+    return this;
+  }
+
+  @Override
   public IRecipeBuilder setIngredients(IArtisanIngredient[][] ingredients) throws RecipeBuilderException {
 
     return this;
