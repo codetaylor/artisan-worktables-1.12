@@ -10,6 +10,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorksho
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTRecipeAdditionQueue;
+import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
@@ -18,16 +19,20 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeAddi
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeAdditionQueue;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshopDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshopMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.Injector;
+import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import crafttweaker.api.recipes.ICraftingRecipe;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
@@ -80,6 +85,11 @@ public class ModuleWorktables
     public static final BlockWorktable WORKTABLE = new BlockWorktable();
     public static final BlockWorkstation WORKSTATION = new BlockWorkstation();
     public static final BlockWorkshop WORKSHOP = new BlockWorkshop();
+  }
+
+  public static class Items {
+
+    public static final ItemDesignPattern DESIGN_PATTERN = new ItemDesignPattern();
   }
 
   public static IPacketService PACKET_SERVICE;
@@ -188,7 +198,8 @@ public class ModuleWorktables
 
       registry.registerTileEntities(
           TileEntityWorktable.class,
-          TileEntityWorktableMage.class
+          TileEntityWorktableMage.class,
+          TileEntityWorktableDesigner.class
       );
     }
 
@@ -202,7 +213,8 @@ public class ModuleWorktables
 
       registry.registerTileEntities(
           TileEntityWorkstation.class,
-          TileEntityWorkstationMage.class
+          TileEntityWorkstationMage.class,
+          TileEntityWorkstationDesigner.class
       );
     }
 
@@ -216,9 +228,12 @@ public class ModuleWorktables
 
       registry.registerTileEntities(
           TileEntityWorkshop.class,
-          TileEntityWorkshopMage.class
+          TileEntityWorkshopMage.class,
+          TileEntityWorkshopDesigner.class
       );
     }
+
+    registry.registerItem(Items.DESIGN_PATTERN, ItemDesignPattern.NAME);
   }
 
   @Override
@@ -235,6 +250,14 @@ public class ModuleWorktables
     if (ModuleWorktablesConfig.ENABLE_WORKSHOPS) {
       registry.registerClientModelRegistrationStrategy(Blocks.WORKSHOP.getModelRegistrationStrategy());
     }
+
+    registry.registerClientModelRegistrationStrategy(() -> {
+      ModelRegistrationHelper.registerVariantItemModels(
+          Items.DESIGN_PATTERN,
+          "variant",
+          ItemDesignPattern.EnumType.values()
+      );
+    });
   }
 
   private void injectAPI() {

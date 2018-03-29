@@ -2,7 +2,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanRegistries;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
@@ -484,6 +487,29 @@ public abstract class TileEntityBase
           if (tileEntity instanceof TileEntityToolbox) {
 
             return (TileEntityToolbox) tileEntity;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  @Nullable
+  public ITileEntityDesigner getAdjacentDesignersTable() {
+
+    List<TileEntityBase> joinedTables = this.getJoinedTables(new ArrayList<>());
+
+    for (TileEntityBase joinedTable : joinedTables) {
+      BlockPos pos = joinedTable.getPos();
+      TileEntity tileEntity;
+
+      for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+
+        if ((tileEntity = this.world.getTileEntity(pos.offset(facing))) != null) {
+
+          if (tileEntity instanceof ITileEntityDesigner) {
+            return (ITileEntityDesigner) tileEntity;
           }
         }
       }

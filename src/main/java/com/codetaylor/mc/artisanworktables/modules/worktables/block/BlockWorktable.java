@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.TileEntityWorktableMage;
 import com.codetaylor.mc.athenaeum.spi.IBlockVariant;
 import net.minecraft.block.material.Material;
@@ -52,6 +53,9 @@ public class BlockWorktable
 
     if (type == EnumType.MAGE) {
       return new TileEntityWorktableMage();
+
+    } else if (type == EnumType.DESIGNER) {
+      return new TileEntityWorktableDesigner();
     }
 
     return new TileEntityWorktable(type);

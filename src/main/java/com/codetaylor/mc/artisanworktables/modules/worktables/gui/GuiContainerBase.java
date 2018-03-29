@@ -2,17 +2,18 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementFluidTankSmall;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementMageEffect;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementToolboxSide;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+
+import java.awt.*;
 
 public abstract class GuiContainerBase
     extends com.codetaylor.mc.athenaeum.gui.GuiContainerBase {
@@ -63,14 +64,29 @@ public abstract class GuiContainerBase
     // fluid tank
     this.addFluidTankElement();
 
+    // pattern slots
+    ITileEntityDesigner designersTable = container.getDesignersTable();
+
+    if (designersTable != null && container.canPlayerUsePatternSlots()) {
+      this.guiContainerElementAdd(new GuiElementDesignersSide(
+          this,
+          designersTable,
+          designersTable.getTexturePatternSide(),
+          -70,
+          0
+      ));
+    }
+
     // toolbox side
     TileEntityToolbox toolbox = container.getToolbox();
 
     if (toolbox != null && container.canPlayerUseToolbox()) {
       this.guiContainerElementAdd(new GuiElementToolboxSide(
           this,
+          container,
           toolbox,
           toolbox.getTextureSide(),
+          designersTable,
           -70,
           0
       ));
@@ -133,7 +149,13 @@ public abstract class GuiContainerBase
       fontRenderer = this.mc.standardGalacticFontRenderer;
     }
 
-    GuiHelper.drawStringOutlined(translateKey, x, y, fontRenderer, this.textShadowColor);
+    if (this.tileEntity.getType() == EnumType.DESIGNER) {
+      String displayText = I18n.format(translateKey);
+      fontRenderer.drawString(displayText, x - 1, y, Color.WHITE.getRGB());
+
+    } else {
+      GuiHelper.drawStringOutlined(translateKey, x, y, fontRenderer, this.textShadowColor);
+    }
   }
 
 }

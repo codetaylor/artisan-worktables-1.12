@@ -99,6 +99,13 @@
           "top": "artisanworktables:blocks/chef_top",
           "particle": "artisanworktables:blocks/chef_top"
         }
+      },
+      "designer": {
+        "textures": {
+          "side": "artisanworktables:blocks/designer_side",
+          "top": "artisanworktables:blocks/designer_top",
+          "particle": "artisanworktables:blocks/designer_top"
+        }
       }
     }
   }
