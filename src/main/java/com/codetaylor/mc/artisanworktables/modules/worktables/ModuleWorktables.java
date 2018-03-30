@@ -32,10 +32,11 @@ import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.Injector;
-import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import crafttweaker.api.recipes.ICraftingRecipe;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -252,11 +253,15 @@ public class ModuleWorktables
     }
 
     registry.registerClientModelRegistrationStrategy(() -> {
-      ModelRegistrationHelper.registerVariantItemModels(
+      ModelBakery.registerItemVariants(
           Items.DESIGN_PATTERN,
-          "variant",
-          ItemDesignPattern.EnumType.values()
+          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.BLANK)
       );
+      ModelBakery.registerItemVariants(
+          Items.DESIGN_PATTERN,
+          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN)
+      );
+      ModelLoader.setCustomMeshDefinition(Items.DESIGN_PATTERN, new ItemDesignPattern.MeshDefinition());
     });
   }
 

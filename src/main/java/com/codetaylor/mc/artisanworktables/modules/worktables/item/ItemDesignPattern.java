@@ -1,24 +1,22 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.item;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-// TODO: manage the written model differently
-// reference: http://www.minecraftforge.net/forum/topic/44900-item-with-multiple-models-managed-via-nbt-and-modelloader/
 
 public class ItemDesignPattern
     extends Item {
@@ -29,22 +27,6 @@ public class ItemDesignPattern
   public String getUnlocalizedName(ItemStack stack) {
 
     return super.getUnlocalizedName(stack) + "." + EnumType.fromMeta(stack.getMetadata()).getName();
-  }
-
-  @Override
-  public void getSubItems(
-      CreativeTabs tab,
-      NonNullList<ItemStack> items
-  ) {
-
-    if (this.isInCreativeTab(tab)) {
-
-      List<ItemStack> list = Stream.of(EnumType.values())
-          .map(enumType -> new ItemStack(this, 1, enumType.getMeta()))
-          .collect(Collectors.toList());
-
-      items.addAll(list);
-    }
   }
 
   @Override
@@ -103,6 +85,34 @@ public class ItemDesignPattern
 
       return META_LOOKUP[meta];
     }
+  }
 
+  public static class MeshDefinition
+      implements ItemMeshDefinition {
+
+    private static final ModelResourceLocation MODEL_RESOURCE_LOCATION_BLANK;
+    private static final ModelResourceLocation MODEL_RESOURCE_LOCATION_WRITTEN;
+
+    static {
+      MODEL_RESOURCE_LOCATION_BLANK = new ModelResourceLocation(new ResourceLocation(
+          ModuleWorktables.MOD_ID,
+          NAME + "_" + EnumType.BLANK.getName()
+      ), "inventory");
+      MODEL_RESOURCE_LOCATION_WRITTEN = new ModelResourceLocation(new ResourceLocation(
+          ModuleWorktables.MOD_ID,
+          NAME + "_" + EnumType.WRITTEN.getName()
+      ), "inventory");
+    }
+
+    @Nonnull
+    @Override
+    public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
+
+      if (stack.hasTagCompound()) {
+        return MODEL_RESOURCE_LOCATION_WRITTEN;
+      }
+
+      return MODEL_RESOURCE_LOCATION_BLANK;
+    }
   }
 }
