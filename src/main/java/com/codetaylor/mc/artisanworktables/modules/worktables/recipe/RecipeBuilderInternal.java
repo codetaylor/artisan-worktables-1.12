@@ -638,7 +638,7 @@ public class RecipeBuilderInternal
         }
 
         i += 1;
-        this.name = this.tableName + "_" + this.name + "_" + i;
+        this.name = this.tableName + ":" + this.name + "_" + i;
       }
     }
 
@@ -722,7 +722,7 @@ public class RecipeBuilderInternal
     while (registry.hasRecipe(recipeName)) {
       logger.logWarning("Duplicate recipe name found: " + recipeName);
       hash += 1;
-      recipeName = this.tableName + "_" + hash;
+      recipeName = this.tableName + ":" + hash;
     }
 
     return recipeName;
