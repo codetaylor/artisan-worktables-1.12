@@ -1,3 +1,9 @@
+1.18.2
+
+  * Changed: updated zh_cn.lang (PR#99 DYColdWind)
+
+---
+
 1.18.1
 
   * BREAKING CHANGES:
