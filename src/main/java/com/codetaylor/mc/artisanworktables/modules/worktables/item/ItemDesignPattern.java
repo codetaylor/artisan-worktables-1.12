@@ -4,18 +4,18 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ItemDesignPattern
@@ -26,7 +26,11 @@ public class ItemDesignPattern
   @Override
   public String getUnlocalizedName(ItemStack stack) {
 
-    return super.getUnlocalizedName(stack) + "." + EnumType.fromMeta(stack.getMetadata()).getName();
+    if (stack.hasTagCompound()) {
+      return super.getUnlocalizedName(stack) + "." + EnumType.WRITTEN.getName();
+    }
+
+    return super.getUnlocalizedName(stack) + "." + EnumType.BLANK.getName();
   }
 
   @Override
