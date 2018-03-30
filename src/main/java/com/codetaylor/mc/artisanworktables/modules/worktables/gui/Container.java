@@ -3,8 +3,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
@@ -17,6 +19,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -56,6 +59,7 @@ public class Container
   private final int slotIndexSecondaryInputEnd;
   private final int slotIndexPattern;
   private final int slotIndexPatternResult;
+  private final ItemStackHandler patternHandler;
 
   public Container(
       InventoryPlayer playerInventory,
@@ -194,11 +198,10 @@ public class Container
     if (this.canPlayerUsePatternSlots()) {
       // TODO: pattern input
       this.slotIndexPattern = this.nextSlotIndex;
-      ItemStackHandler itemHandler = this.designersTable.getPatternStackHandler();
+      this.patternHandler = this.designersTable.getPatternStackHandler();
       this.containerSlotAdd(new PatternSlot(
-          () -> {
-          },
-          itemHandler,
+          this::updateRecipeOutput,
+          this.patternHandler,
           0,
           2 * -18 + this.containerToolboxOffsetGetX(),
           8
@@ -209,6 +212,9 @@ public class Container
       this.patternResultHandler = new ItemStackHandler(1);
       this.containerSlotAdd(new PatternResultSlot(
           () -> {
+            ItemStack stackInSlot = this.patternHandler.getStackInSlot(0);
+            this.patternHandler.setStackInSlot(0, Util.decrease(stackInSlot, 1, false));
+            this.updateRecipeOutput();
           },
           this.patternResultHandler,
           0,
@@ -217,6 +223,7 @@ public class Container
       ));
 
     } else {
+      this.patternHandler = null;
       this.patternResultHandler = null;
       this.slotIndexPattern = -1;
       this.slotIndexPatternResult = -1;
@@ -407,7 +414,17 @@ public class Container
       this.resultHandler.setStackInSlot(0, recipe.getBaseOutput(context).toItemStack());
 
       if (this.canPlayerUsePatternSlots()) {
-        // TODO: create pattern
+
+        if (this.patternHandler.getStackInSlot(0).isEmpty()) {
+          this.patternResultHandler.setStackInSlot(0, ItemStack.EMPTY);
+
+        } else {
+          ItemStack stack = new ItemStack(ModuleWorktables.Items.DESIGN_PATTERN);
+          NBTTagCompound tag = new NBTTagCompound();
+          tag.setString("recipe", recipe.getName());
+          stack.setTagCompound(tag);
+          this.patternResultHandler.setStackInSlot(0, stack);
+        }
       }
 
     } else {
