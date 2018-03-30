@@ -56,7 +56,7 @@ public class ArtisanAPI {
   @Nullable
   public static IArtisanRecipe getRecipe(String recipeName) {
 
-    String[] split = recipeName.split("_");
+    String[] split = recipeName.split(":");
     RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(split[0]);
     return registry.getRecipe(recipeName);
   }
