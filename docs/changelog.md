@@ -1,3 +1,9 @@
+1.18.3
+
+  * Fixed: crash with copied recipes (#101)
+
+---
+
 1.18.2
 
   * Changed: updated zh_cn.lang (PR#99 DYColdWind)
