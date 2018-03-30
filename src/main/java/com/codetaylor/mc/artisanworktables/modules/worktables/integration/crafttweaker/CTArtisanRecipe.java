@@ -118,19 +118,21 @@ public class CTArtisanRecipe
         continue;
       }
 
-      IIngredient ingredient = ((CTArtisanIngredient) artisanIngredient).getIngredient();
+      if (artisanIngredient instanceof CTArtisanIngredient) {
+        IIngredient ingredient = ((CTArtisanIngredient) artisanIngredient).getIngredient();
 
-      if (ingredient.hasNewTransformers()) {
-        IItemStack remainingItem = null;
+        if (ingredient.hasNewTransformers()) {
+          IItemStack remainingItem = null;
 
-        try {
-          remainingItem = ingredient.applyNewTransform(stacks[i]);
+          try {
+            remainingItem = ingredient.applyNewTransform(stacks[i]);
 
-        } catch (Throwable e) {
-          CraftTweakerAPI.logError("Could not execute NewRecipeTransformer on " + ingredient.toCommandString(), e);
+          } catch (Throwable e) {
+            CraftTweakerAPI.logError("Could not execute NewRecipeTransformer on " + ingredient.toCommandString(), e);
+          }
+
+          itemStacks.set(matrixIndices[i], CraftTweakerMC.getItemStack(remainingItem));
         }
-
-        itemStacks.set(matrixIndices[i], CraftTweakerMC.getItemStack(remainingItem));
 
       } else {
         itemStacks.set(matrixIndices[i], Util.getContainerItem(matrixHandler.getStackInSlot(matrixIndices[i])));
