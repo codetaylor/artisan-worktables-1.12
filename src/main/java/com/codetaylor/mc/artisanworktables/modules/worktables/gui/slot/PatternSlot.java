@@ -1,7 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -29,7 +28,7 @@ public class PatternSlot
   public boolean isItemValid(@Nonnull ItemStack stack) {
 
     return (stack.getItem() == ModuleWorktables.Items.DESIGN_PATTERN)
-        && (stack.getMetadata() == ItemDesignPattern.EnumType.BLANK.getMeta());
+        && (!stack.hasTagCompound());
   }
 
   @Override
