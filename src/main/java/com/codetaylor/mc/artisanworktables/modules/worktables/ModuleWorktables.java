@@ -33,9 +33,13 @@ import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.Injector;
 import crafttweaker.api.recipes.ICraftingRecipe;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -255,14 +259,35 @@ public class ModuleWorktables
     registry.registerClientModelRegistrationStrategy(() -> {
       ModelBakery.registerItemVariants(
           Items.DESIGN_PATTERN,
-          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.BLANK)
+          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.BLANK.getName())
       );
       ModelBakery.registerItemVariants(
           Items.DESIGN_PATTERN,
-          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN)
+          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN.getName())
       );
       ModelLoader.setCustomMeshDefinition(Items.DESIGN_PATTERN, new ItemDesignPattern.MeshDefinition());
     });
+  }
+
+  @SubscribeEvent
+  public void onModelBakeEvent(ModelBakeEvent event) {
+
+    IRegistry<ModelResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
+    String matchName = ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN.getName();
+
+    for (ModelResourceLocation modelResourceLocation : modelRegistry.getKeys()) {
+
+      if (modelResourceLocation.getResourceDomain().equals(MOD_ID)) {
+
+        if (modelResourceLocation.getResourcePath().equals(matchName)) {
+
+          modelRegistry.putObject(
+              modelResourceLocation,
+              new ItemDesignPattern.BakedModel(modelRegistry.getObject(modelResourceLocation))
+          );
+        }
+      }
+    }
   }
 
   private void injectAPI() {
