@@ -624,7 +624,7 @@ public class RecipeBuilderInternal
       this.name = this.calculateName(registry, logger);
 
     } else {
-      this.name = this.tableName + "_" + this.name;
+      this.name = this.prefixTableName(this.name);
 
       // Ensure the recipe has a unique name.
       int i = 0;
@@ -638,7 +638,7 @@ public class RecipeBuilderInternal
         }
 
         i += 1;
-        this.name = this.tableName + ":" + this.name + "_" + i;
+        this.name = this.prefixTableName(this.name + "_" + i);
       }
     }
 
@@ -722,9 +722,14 @@ public class RecipeBuilderInternal
     while (registry.hasRecipe(recipeName)) {
       logger.logWarning("Duplicate recipe name found: " + recipeName);
       hash += 1;
-      recipeName = this.tableName + ":" + hash;
+      recipeName = this.prefixTableName(String.valueOf(hash));
     }
 
     return recipeName;
+  }
+
+  private String prefixTableName(String name) {
+
+    return this.tableName + ":" + name;
   }
 }
