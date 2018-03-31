@@ -85,6 +85,7 @@ public class RecipeBuilderInternal
   private int levelRequired;
   private boolean consumeExperience;
   private Map<ResourceLocation, IRequirement> requirementMap;
+  private boolean hidden;
 
   @Deprecated
   private EnumGameStageRequire gameStageRequire;
@@ -476,6 +477,13 @@ public class RecipeBuilderInternal
     this.validateRun = true;
   }
 
+  @Override
+  public IRecipeBuilder setHidden(boolean hidden) {
+
+    this.hidden = hidden;
+    return this;
+  }
+
   public IRecipeBuilderCopyStrategyInternal getRecipeCopyStrategy() {
 
     return this.recipeCopyStrategy;
@@ -654,7 +662,8 @@ public class RecipeBuilderInternal
         this.width,
         this.height,
         this.minimumTier,
-        this.maximumTier
+        this.maximumTier,
+        this.hidden
     ));
   }
 

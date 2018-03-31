@@ -340,6 +340,13 @@ public class ZenRecipeBuilder
     return this;
   }
 
+  @Override
+  public IZenRecipeBuilder setHidden(boolean hidden) {
+
+    this.recipeBuilder.setHidden(hidden);
+    return this;
+  }
+
   // --------------------------------------------------------------------------
   // - Recipe Function / Action
 

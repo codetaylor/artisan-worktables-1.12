@@ -92,34 +92,39 @@ public class PluginJEI
     // Expose the recipe registry for use in the game stages event handler.
     RECIPE_REGISTRY = jeiRuntime.getRecipeRegistry();
 
-    // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
-    if (Loader.isModLoaded("gamestages")) {
+    for (String name : ArtisanAPI.getWorktableNames()) {
+      RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
 
-      for (String name : ArtisanAPI.getWorktableNames()) {
-        RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
+      if (registry != null) {
 
-        if (registry != null) {
+        for (EnumTier tier : EnumTier.values()) {
+          List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(tier, new ArrayList<>());
 
-          for (EnumTier tier : EnumTier.values()) {
-            List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(tier, new ArrayList<>());
+          for (IArtisanRecipe recipe : recipeList) {
 
-            for (IArtisanRecipe recipe : recipeList) {
+            if (this.shouldHideRecipe(recipe)) {
+              IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
+                  recipe,
+                  PluginJEI.createUID(name, tier)
+              );
 
-              if (recipe.getRequirement(GameStagesRequirement.LOCATION) != null) {
-                IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
-                    recipe,
-                    PluginJEI.createUID(name, tier)
-                );
-
-                if (recipeWrapper != null) {
-                  RECIPE_REGISTRY.hideRecipe(recipeWrapper);
-                }
+              if (recipeWrapper != null) {
+                RECIPE_REGISTRY.hideRecipe(recipeWrapper);
               }
             }
           }
         }
       }
     }
+  }
+
+  private boolean shouldHideRecipe(IArtisanRecipe recipe) {
+
+    // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
+    boolean isRecipeStaged = Loader.isModLoaded("gamestages")
+        && recipe.getRequirement(GameStagesRequirement.LOCATION) != null;
+
+    return recipe.isHidden() || isRecipeStaged;
   }
 
   public static String createUID(String name, EnumTier tier) {

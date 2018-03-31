@@ -128,6 +128,12 @@ public class RecipeBuilderNoOp
   }
 
   @Override
+  public IRecipeBuilder setHidden(boolean hidden) {
+
+    return this;
+  }
+
+  @Override
   public IRecipeBuilder create() throws RecipeBuilderException {
 
     return this;

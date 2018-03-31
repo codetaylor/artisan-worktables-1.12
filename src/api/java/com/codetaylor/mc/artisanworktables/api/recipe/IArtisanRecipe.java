@@ -219,6 +219,11 @@ public interface IArtisanRecipe {
   boolean consumeExperience();
 
   /**
+   * @return true if the recipe should be hidden by default in JEI
+   */
+  boolean isHidden();
+
+  /**
    * Perform the craft.
    *
    * @param context the crafting context

@@ -133,6 +133,12 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
+  public IZenRecipeBuilder setHidden(boolean hidden) {
+
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction) {
 
     return this;

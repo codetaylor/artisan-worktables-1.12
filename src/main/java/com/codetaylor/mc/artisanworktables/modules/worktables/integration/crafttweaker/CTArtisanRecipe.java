@@ -52,7 +52,8 @@ public class CTArtisanRecipe
       int minimumTier,
       int maximumTier,
       @Nullable IRecipeAction recipeAction,
-      @Nullable IRecipeFunction recipeFunction
+      @Nullable IRecipeFunction recipeFunction,
+      boolean hidden
   ) {
 
     super(
@@ -73,7 +74,8 @@ public class CTArtisanRecipe
         width,
         height,
         minimumTier,
-        maximumTier
+        maximumTier,
+        hidden
     );
 
     this.recipeAction = recipeAction;

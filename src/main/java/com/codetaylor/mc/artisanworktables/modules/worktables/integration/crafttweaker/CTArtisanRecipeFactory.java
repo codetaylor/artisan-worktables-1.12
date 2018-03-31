@@ -2,8 +2,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.integration.craft
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import crafttweaker.api.recipes.IRecipeAction;
 import crafttweaker.api.recipes.IRecipeFunction;
 import net.minecraft.util.ResourceLocation;
@@ -38,7 +38,8 @@ public class CTArtisanRecipeFactory
       int width,
       int height,
       int minimumTier,
-      int maximumTier
+      int maximumTier,
+      boolean hidden
   ) {
 
     return new CTArtisanRecipe(
@@ -61,7 +62,8 @@ public class CTArtisanRecipeFactory
         minimumTier,
         maximumTier,
         this.recipeAction,
-        this.recipeFunction
+        this.recipeFunction,
+        hidden
     );
   }
 
