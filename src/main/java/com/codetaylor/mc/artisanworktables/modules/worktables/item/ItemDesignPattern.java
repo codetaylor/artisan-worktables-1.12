@@ -4,6 +4,7 @@ import com.blamejared.ctgui.api.GuiBase;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.Util;
 import com.codetaylor.mc.athenaeum.spi.IVariant;
 import net.minecraft.block.state.IBlockState;
@@ -16,11 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,21 +46,18 @@ public class ItemDesignPattern
     return super.getUnlocalizedName(stack) + "." + EnumType.BLANK.getName();
   }
 
+  @Nonnull
   @Override
-  public EnumActionResult onItemUse(
-      EntityPlayer player,
-      World worldIn,
-      BlockPos pos,
-      EnumHand hand,
-      EnumFacing facing,
-      float hitX,
-      float hitY,
-      float hitZ
-  ) {
+  public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
 
-    // TODO: shift-use to erase written pattern
+    if (!world.isRemote && player.isSneaking() && ModuleWorktablesConfig.PATTERN.ENABLE_SNEAK_CLICK_TO_CLEAR) {
+      return new ActionResult<>(
+          EnumActionResult.SUCCESS,
+          new ItemStack(ModuleWorktables.Items.DESIGN_PATTERN, player.getHeldItem(hand).getCount())
+      );
+    }
 
-    return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+    return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
   }
 
   public enum EnumType

@@ -96,6 +96,18 @@ public class ModuleWorktablesConfig {
 
   }
 
+  public static Pattern PATTERN = new Pattern();
+
+  public static class Pattern {
+
+    @Config.Comment({
+        "Set to false to prevent players from sneak-clicking to clear the patterns.",
+        "This is useful if you want to provide your own method for clearing patterns."
+    })
+    public boolean ENABLE_SNEAK_CLICK_TO_CLEAR = true;
+
+  }
+
   @Mod.EventBusSubscriber(modid = ModuleWorktables.MOD_ID)
   private static class EventHandler {
 

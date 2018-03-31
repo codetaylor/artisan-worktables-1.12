@@ -59,4 +59,10 @@ public class ModuleWorktablesConfigAPIWrapper
 
     return ModuleWorktablesConfig.isTierEnabled(tier);
   }
+
+  @Override
+  public boolean enableSneakClickClearPattern() {
+
+    return ModuleWorktablesConfig.PATTERN.ENABLE_SNEAK_CLICK_TO_CLEAR;
+  }
 }

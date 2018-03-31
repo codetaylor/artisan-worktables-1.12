@@ -60,4 +60,10 @@ public class ModuleWorktablesConfigNoOp
 
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public boolean enableSneakClickClearPattern() {
+
+    throw new UnsupportedOperationException();
+  }
 }
