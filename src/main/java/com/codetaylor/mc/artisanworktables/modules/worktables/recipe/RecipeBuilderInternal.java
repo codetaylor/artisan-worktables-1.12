@@ -714,7 +714,7 @@ public class RecipeBuilderInternal
         .append(this.maximumTier);
 
     int hash = builder.build();
-    String recipeName = this.tableName + "_" + hash;
+    String recipeName = this.prefixTableName(String.valueOf(hash));
 
     // check for duplicate recipe name
     while (registry.hasRecipe(recipeName)) {
