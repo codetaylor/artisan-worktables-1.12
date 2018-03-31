@@ -27,7 +27,7 @@ RecipeBuilder setMirrored();
 
 RecipeBuilder addTool(IIngredient tool, int damage);
 
-RecipeBuilder addOutput(IItemStack output, @Optional int weight);
+RecipeBuilder addOutput(IItemStack output, @Optional(default = 1) int weight);
 
 RecipeBuilder setExtraOutputOne(IItemStack output, float chance);
 
@@ -44,6 +44,8 @@ RecipeBuilder setExperienceRequired(int experienceRequired);
 RecipeBuilder setLevelRequired(int levelRequired);
 
 RecipeBuilder setConsumeExperience(boolean consumeExperience);
+
+RecipeBuilder setHidden(@Optional(default = true) hidden);
 
 RecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction);
 

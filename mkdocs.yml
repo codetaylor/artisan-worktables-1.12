@@ -16,6 +16,7 @@ pages:
     - Weighted Primary Output: recipes/weighted.md
     - Secondary Ingredients: recipes/secondaryingredients.md
     - Experience Requirements: recipes/experiencerequirements.md
+    - Hiding Recipes: recipes/hiding.md
     - Copying Recipes: recipes/copying.md
     - Recipe Functions: recipes/functions.md
   - Mod Integrations: 
