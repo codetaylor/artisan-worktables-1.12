@@ -22,4 +22,6 @@ public interface IModuleWorktablesConfig {
 
   boolean isTierEnabled(EnumTier tier);
 
+  boolean enableSneakClickClearPattern();
+
 }
