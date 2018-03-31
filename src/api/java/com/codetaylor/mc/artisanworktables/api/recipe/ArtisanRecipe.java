@@ -50,6 +50,7 @@ public class ArtisanRecipe
   private int experienceRequired;
   private int levelRequired;
   private boolean consumeExperience;
+  private boolean hidden;
 
   @ParametersAreNonnullByDefault
   public ArtisanRecipe(
@@ -70,7 +71,8 @@ public class ArtisanRecipe
       int width,
       int height,
       int minimumTier,
-      int maximumTier
+      int maximumTier,
+      boolean hidden
   ) {
 
     this.name = name;
@@ -91,6 +93,7 @@ public class ArtisanRecipe
     this.height = height;
     this.minimumTier = minimumTier;
     this.maximumTier = maximumTier;
+    this.hidden = hidden;
   }
 
   // --------------------------------------------------------------------------
@@ -277,6 +280,12 @@ public class ArtisanRecipe
   public Map<ResourceLocation, IRequirement> getRequirements() {
 
     return this.requirementMap;
+  }
+
+  @Override
+  public boolean isHidden() {
+
+    return this.hidden;
   }
 
   // --------------------------------------------------------------------------

@@ -31,7 +31,8 @@ public interface IRecipeFactory {
       int width,
       int height,
       int minimumTier,
-      int maximumTier
+      int maximumTier,
+      boolean hidden
   );
 
 }

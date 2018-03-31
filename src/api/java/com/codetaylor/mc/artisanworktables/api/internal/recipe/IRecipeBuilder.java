@@ -50,5 +50,7 @@ public interface IRecipeBuilder {
 
   IRecipeBuilder addRequirement(IRequirementBuilder matchRequirementBuilder);
 
+  IRecipeBuilder setHidden(boolean hidden);
+
   IRecipeBuilder create() throws RecipeBuilderException;
 }

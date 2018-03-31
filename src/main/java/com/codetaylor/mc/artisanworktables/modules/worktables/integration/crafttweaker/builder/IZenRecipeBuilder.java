@@ -110,6 +110,9 @@ public interface IZenRecipeBuilder {
   @ZenMethod
   IZenRecipeBuilder setConsumeExperience(boolean consumeExperience);
 
+  @ZenMethod
+  IZenRecipeBuilder setHidden(@Optional(value = "true", valueBoolean = true) boolean hidden);
+
   // --------------------------------------------------------------------------
   // - Recipe Function / Action
 
