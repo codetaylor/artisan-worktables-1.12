@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
+import com.codetaylor.mc.artisanworktables.lib.ISupplierInteger;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -10,24 +10,20 @@ import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 public class GuiElementToolboxSide
     extends GuiElementTextureRectangle {
 
-  private Container container;
   private final TileEntityToolbox toolbox;
-  private ITileEntityDesigner designersTable;
+  private final ISupplierInteger elementY;
 
   public GuiElementToolboxSide(
       GuiContainerBase guiBase,
-      Container container,
       TileEntityToolbox toolbox,
       Texture texture,
-      ITileEntityDesigner designersTable,
       int elementX,
-      int elementY
+      ISupplierInteger elementY
   ) {
 
-    super(guiBase, texture, elementX, elementY, 68, 176);
-    this.container = container;
+    super(guiBase, texture, elementX, 0, 68, 176);
     this.toolbox = toolbox;
-    this.designersTable = designersTable;
+    this.elementY = elementY;
   }
 
   @Override
@@ -41,6 +37,6 @@ public class GuiElementToolboxSide
   @Override
   protected int elementYModifiedGet() {
 
-    return super.elementYModifiedGet() + ((this.designersTable != null && this.container.canPlayerUsePatternSlots()) ? 33 : 0);
+    return super.elementYModifiedGet() + this.elementY.get();
   }
 }
