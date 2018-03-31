@@ -83,12 +83,10 @@ public abstract class GuiContainerBase
     if (toolbox != null && container.canPlayerUseToolbox()) {
       this.guiContainerElementAdd(new GuiElementToolboxSide(
           this,
-          container,
           toolbox,
           toolbox.getTextureSide(),
-          designersTable,
           -70,
-          0
+          () -> ((designersTable != null && container.canPlayerUsePatternSlots()) ? 33 : 0)
       ));
     }
 
