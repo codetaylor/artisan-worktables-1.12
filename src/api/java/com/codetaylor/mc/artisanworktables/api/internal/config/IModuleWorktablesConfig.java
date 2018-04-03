@@ -24,4 +24,6 @@ public interface IModuleWorktablesConfig {
 
   boolean enableSneakClickClearPattern();
 
+  boolean patternSlotsEnabledForTier(EnumTier tier);
+
 }

@@ -65,4 +65,10 @@ public class ModuleWorktablesConfigAPIWrapper
 
     return ModuleWorktablesConfig.PATTERN.ENABLE_SNEAK_CLICK_TO_CLEAR;
   }
+
+  @Override
+  public boolean patternSlotsEnabledForTier(EnumTier tier) {
+
+    return ModuleWorktablesConfig.patternSlotsEnabledForTier(tier);
+  }
 }
