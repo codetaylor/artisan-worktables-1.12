@@ -125,6 +125,13 @@ public abstract class TileEntityBase
     }
   }
 
+  public void onJoinedBlockBreak(BlockPos pos) {
+
+    for (Container container : this.containerList) {
+      container.onJoinedBlockBreak(this.world, pos);
+    }
+  }
+
   public void addContainer(Container container) {
 
     this.containerList.add(container);
@@ -185,6 +192,11 @@ public abstract class TileEntityBase
   public EnumType getType() {
 
     return this.type;
+  }
+
+  public String getUuid() {
+
+    return this.uuid;
   }
 
   @Override

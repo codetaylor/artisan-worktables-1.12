@@ -4,12 +4,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
+
 public class PatternResultSlot
-    extends ResultSlot {
+    extends PredicateEnabledSlot {
 
   private final Runnable slotChangeListener;
 
   public PatternResultSlot(
+      Predicate predicate,
       Runnable slotChangeListener,
       IItemHandler itemHandler,
       int index,
@@ -17,7 +20,7 @@ public class PatternResultSlot
       int yPosition
   ) {
 
-    super(itemHandler, index, xPosition, yPosition);
+    super(predicate, itemHandler, index, xPosition, yPosition);
     this.slotChangeListener = slotChangeListener;
   }
 
@@ -28,5 +31,11 @@ public class PatternResultSlot
 
     this.slotChangeListener.run();
     return stack;
+  }
+
+  @Override
+  public boolean isItemValid(@Nonnull ItemStack stack) {
+
+    return false;
   }
 }

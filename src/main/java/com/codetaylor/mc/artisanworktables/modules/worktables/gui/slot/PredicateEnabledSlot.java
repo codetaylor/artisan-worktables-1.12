@@ -8,7 +8,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class SlotPredicateEnabled
+public class PredicateEnabledSlot
     extends SlotItemHandler {
 
   public interface Predicate {
@@ -18,7 +18,7 @@ public class SlotPredicateEnabled
 
   private final Predicate predicate;
 
-  public SlotPredicateEnabled(
+  public PredicateEnabledSlot(
       Predicate predicate,
       IItemHandler itemHandler,
       int index,
