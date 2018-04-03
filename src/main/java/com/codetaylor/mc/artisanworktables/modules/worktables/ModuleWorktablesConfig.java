@@ -106,6 +106,20 @@ public class ModuleWorktablesConfig {
     })
     public boolean ENABLE_SNEAK_CLICK_TO_CLEAR = true;
 
+    @Config.Comment({
+        "Set to false to disable pattern creation for worktables."
+    })
+    public boolean ENABLE_PATTERN_CREATION_FOR_WORKTABLES = true;
+
+    @Config.Comment({
+        "Set to false to disable pattern creation for workstations."
+    })
+    public boolean ENABLE_PATTERN_CREATION_FOR_WORKSTATIONS = true;
+
+    @Config.Comment({
+        "Set to false to disable pattern creation for workshops."
+    })
+    public boolean ENABLE_PATTERN_CREATION_FOR_WORKSHOPS = true;
   }
 
   @Mod.EventBusSubscriber(modid = ModuleWorktables.MOD_ID)
@@ -131,6 +145,23 @@ public class ModuleWorktablesConfig {
         return ModuleWorktablesConfig.ENABLE_WORKSHOPS;
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
+    }
+  }
+
+  public static boolean patternSlotsEnabledForTier(EnumTier tier) {
+
+    switch (tier) {
+      case WORKTABLE:
+        return ModuleWorktablesConfig.PATTERN.ENABLE_PATTERN_CREATION_FOR_WORKTABLES;
+
+      case WORKSTATION:
+        return ModuleWorktablesConfig.PATTERN.ENABLE_PATTERN_CREATION_FOR_WORKSTATIONS;
+
+      case WORKSHOP:
+        return ModuleWorktablesConfig.PATTERN.ENABLE_PATTERN_CREATION_FOR_WORKSHOPS;
+
+      default:
+        throw new IllegalArgumentException("Unknonw tier: " + tier);
     }
   }
 

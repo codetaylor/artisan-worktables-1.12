@@ -7,6 +7,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -435,12 +436,15 @@ public class Container
 
   public boolean hasValidPatternSlots() {
 
-    return this.designersTable != null && !this.designersTable.isInvalid();
+    return this.designersTable != null
+        && !this.designersTable.isInvalid();
   }
 
   public boolean canPlayerUsePatternSlots() {
 
-    return this.hasValidPatternSlots() && this.designersTable.canPlayerUse(this.player);
+    return this.hasValidPatternSlots()
+        && this.designersTable.canPlayerUse(this.player)
+        && ModuleWorktablesConfig.patternSlotsEnabledForTier(this.tile.getTier());
   }
 
   public void updateRecipeOutput() {

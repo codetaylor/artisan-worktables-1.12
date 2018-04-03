@@ -66,4 +66,10 @@ public class ModuleWorktablesConfigNoOp
 
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public boolean patternSlotsEnabledForTier(EnumTier tier) {
+
+    throw new UnsupportedOperationException();
+  }
 }
