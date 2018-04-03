@@ -580,6 +580,16 @@ public class Container
     );
   }
 
+  private boolean mergeBlankPattern(ItemStack itemStack, boolean reverse) {
+
+    return this.mergeItemStack(
+        itemStack,
+        this.slotIndexPattern,
+        this.slotIndexPattern + 1,
+        reverse
+    );
+  }
+
   private boolean mergeToolbox(ItemStack itemStack, boolean reverse) {
 
     return this.mergeItemStack(itemStack, this.slotIndexToolboxStart, this.slotIndexToolboxEnd + 1, reverse);
@@ -659,26 +669,30 @@ public class Container
         slot.onSlotChange(itemStack, itemStackCopy);
 
       } else if (this.isSlotIndexInventory(slotIndex)) {
-        // Inventory clicked, try to move to tool slot first, then crafting matrix, then secondary, then hotbar
+        // Inventory clicked, try to move to tool slot first, then blank pattern slot,
+        // then crafting matrix, then secondary, then hotbar
 
         if (this.swapTools(slotIndex)) {
           return ItemStack.EMPTY; // swapped tools
         }
 
-        if (!this.mergeCraftingMatrix(itemStack, false)
+        if (!this.mergeBlankPattern(itemStack, false)
+            && !this.mergeCraftingMatrix(itemStack, false)
             && !this.mergeSecondaryInput(itemStack, false)
             && !this.mergeHotbar(itemStack, false)) {
           return ItemStack.EMPTY;
         }
 
       } else if (this.isSlotIndexHotbar(slotIndex)) {
-        // HotBar clicked, try to move to tool slot first, then crafting matrix, then secondary, then inventory
+        // HotBar clicked, try to move to tool slot first, then blank pattern slot,
+        // then crafting matrix, then secondary, then inventory
 
         if (this.swapTools(slotIndex)) {
           return ItemStack.EMPTY; // swapped tools
         }
 
-        if (!this.mergeCraftingMatrix(itemStack, false)
+        if (!this.mergeBlankPattern(itemStack, false)
+            && !this.mergeCraftingMatrix(itemStack, false)
             && !this.mergeSecondaryInput(itemStack, false)
             && !this.mergeInventory(itemStack, false)) {
           return ItemStack.EMPTY;
