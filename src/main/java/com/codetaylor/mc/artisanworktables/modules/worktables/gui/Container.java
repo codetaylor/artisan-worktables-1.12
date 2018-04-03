@@ -239,8 +239,8 @@ public class Container
       for (int x = 0; x < 3; x++) {
 
         for (int y = 0; y < 9; y++) {
-          this.containerSlotAdd(new ToolboxSlot(
-              this,
+          this.containerSlotAdd(new SlotPredicateEnabled(
+              this::canPlayerUseToolbox,
               itemHandler,
               y + x * 9,
               x * -18 + this.containerToolboxOffsetGetX(),
