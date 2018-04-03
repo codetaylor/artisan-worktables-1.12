@@ -2,6 +2,8 @@ package com.codetaylor.mc.artisanworktables.modules.toolbox.block;
 
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.Util;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -20,6 +22,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class BlockToolboxBase
@@ -140,6 +144,20 @@ public abstract class BlockToolboxBase
 
     super.harvestBlock(worldIn, player, pos, state, te, stack);
     worldIn.setBlockToAir(pos);
+  }
+
+  @Override
+  public void breakBlock(World world, BlockPos pos, IBlockState state) {
+
+    if (!world.isRemote) {
+      List<TileEntityBase> joinedTables = Util.getJoinedTables(new ArrayList<>(), world, pos, null);
+
+      for (TileEntityBase table : joinedTables) {
+        table.onJoinedBlockBreak(pos);
+      }
+    }
+
+    super.breakBlock(world, pos, state);
   }
 
   protected abstract boolean keepContentsWhenBroken();

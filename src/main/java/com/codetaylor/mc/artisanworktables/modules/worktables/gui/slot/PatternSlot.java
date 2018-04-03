@@ -3,16 +3,16 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
 public class PatternSlot
-    extends SlotItemHandler {
+    extends PredicateEnabledSlot {
 
   private final Runnable slotChangeListener;
 
   public PatternSlot(
+      Predicate predicate,
       Runnable slotChangeListener,
       IItemHandler itemHandler,
       int index,
@@ -20,14 +20,15 @@ public class PatternSlot
       int yPosition
   ) {
 
-    super(itemHandler, index, xPosition, yPosition);
+    super(predicate, itemHandler, index, xPosition, yPosition);
     this.slotChangeListener = slotChangeListener;
   }
 
   @Override
   public boolean isItemValid(@Nonnull ItemStack stack) {
 
-    return (stack.getItem() == ModuleWorktables.Items.DESIGN_PATTERN)
+    return this.isEnabled()
+        && (stack.getItem() == ModuleWorktables.Items.DESIGN_PATTERN)
         && (!stack.hasTagCompound());
   }
 

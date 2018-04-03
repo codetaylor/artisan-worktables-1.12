@@ -8,6 +8,7 @@ import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableContainerJoinedBlockBreak;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
@@ -15,11 +16,14 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.Tile
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -27,6 +31,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Container
@@ -41,6 +47,7 @@ public class Container
   private final ItemStackHandler patternResultHandler;
   private FluidStack lastFluidStack;
   private final EntityPlayer player;
+  private final List<ToolboxSideSlot> toolboxSideSlotList;
 
   private final int slotIndexResult;
   private final int slotIndexCraftingMatrixStart;
@@ -200,6 +207,7 @@ public class Container
       this.slotIndexPattern = this.nextSlotIndex;
       this.patternHandler = this.designersTable.getPatternStackHandler();
       this.containerSlotAdd(new PatternSlot(
+          this::canPlayerUsePatternSlots,
           this::updateRecipeOutput,
           this.patternHandler,
           0,
@@ -211,6 +219,7 @@ public class Container
       this.slotIndexPatternResult = this.nextSlotIndex;
       this.patternResultHandler = new ItemStackHandler(1);
       this.containerSlotAdd(new PatternResultSlot(
+          this::canPlayerUsePatternSlots,
           () -> {
             ItemStack stackInSlot = this.patternHandler.getStackInSlot(0);
             this.patternHandler.setStackInSlot(0, Util.decrease(stackInSlot, 1, false));
@@ -233,21 +242,28 @@ public class Container
     // Side Toolbox
     this.slotIndexToolboxStart = this.nextSlotIndex;
     if (this.canPlayerUseToolbox()) {
+      this.toolboxSideSlotList = new ArrayList<>(27);
       ItemStackHandler itemHandler = this.toolbox.getItemHandler();
       int offsetY = (this.designersTable != null) ? 33 : 0;
 
       for (int x = 0; x < 3; x++) {
 
         for (int y = 0; y < 9; y++) {
-          this.containerSlotAdd(new SlotPredicateEnabled(
+          ToolboxSideSlot toolboxSideSlot = new ToolboxSideSlot(
               this::canPlayerUseToolbox,
               itemHandler,
               y + x * 9,
               x * -18 + this.containerToolboxOffsetGetX(),
-              y * 18 + 8 + offsetY
-          ));
+              y * 18 + 8
+          );
+          this.toolboxSideSlotList.add(toolboxSideSlot);
+          this.containerSlotAdd(toolboxSideSlot);
+          toolboxSideSlot.move(toolboxSideSlot.xPos, toolboxSideSlot.yPos + offsetY);
         }
       }
+
+    } else {
+      this.toolboxSideSlotList = Collections.emptyList();
     }
     this.slotIndexToolboxEnd = this.nextSlotIndex - 1;
 
@@ -354,6 +370,25 @@ public class Container
   private ITileEntityDesigner getAdjacentDesignersTable(TileEntityBase tile) {
 
     return tile.getAdjacentDesignersTable();
+  }
+
+  public void onJoinedBlockBreak(World world, BlockPos pos) {
+
+    if (!world.isRemote) {
+      ModuleWorktables.PACKET_SERVICE.sendTo(
+          new CPacketWorktableContainerJoinedBlockBreak(pos),
+          (EntityPlayerMP) this.player
+      );
+    }
+
+    TileEntity tileEntity = world.getTileEntity(pos);
+
+    if (tileEntity != null && tileEntity == this.designersTable) {
+
+      for (ToolboxSideSlot slot : this.toolboxSideSlotList) {
+        slot.moveToOrigin();
+      }
+    }
   }
 
   /**

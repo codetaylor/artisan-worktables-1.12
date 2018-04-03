@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.Util;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.registry.strategy.IClientModelRegistrationStrategy;
@@ -35,6 +36,7 @@ import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BlockBase
@@ -105,19 +107,27 @@ public abstract class BlockBase
   }
 
   @Override
-  public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+  public void breakBlock(World world, BlockPos pos, IBlockState state) {
 
-    TileEntity tileEntity = worldIn.getTileEntity(pos);
+    if (!world.isRemote) {
+      List<TileEntityBase> joinedTables = Util.getJoinedTables(new ArrayList<>(), world, pos, null);
+
+      for (TileEntityBase table : joinedTables) {
+        table.onJoinedBlockBreak(pos);
+      }
+    }
+
+    TileEntity tileEntity = world.getTileEntity(pos);
 
     if (tileEntity instanceof IContainer) {
       List<ItemStack> drops = ((IContainer) tileEntity).getBlockBreakDrops();
 
       for (ItemStack drop : drops) {
-        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), drop);
+        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), drop);
       }
     }
 
-    super.breakBlock(worldIn, pos, state);
+    super.breakBlock(world, pos, state);
   }
 
   @Override

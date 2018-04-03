@@ -12,6 +12,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktab
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTRecipeAdditionQueue;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableContainerJoinedBlockBreak;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
@@ -188,6 +189,11 @@ public class ModuleWorktables
 
     // Client
     registry.register(CPacketWorktableFluidUpdate.class, CPacketWorktableFluidUpdate.class, Side.CLIENT);
+    registry.register(
+        CPacketWorktableContainerJoinedBlockBreak.class,
+        CPacketWorktableContainerJoinedBlockBreak.class,
+        Side.CLIENT
+    );
   }
 
   @Override
