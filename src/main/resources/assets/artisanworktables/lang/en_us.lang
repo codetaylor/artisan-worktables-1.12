@@ -77,8 +77,8 @@ item.artisanworktables.artisans.mortar.name=Artisan's %s Mortar
 item.artisanworktables.artisans.knife.name=Artisan's %s Knife
 
 # Patterns
-item.artisanworktables.design.pattern.written.name="Written Design Pattern"
-item.artisanworktables.design.pattern.blank.name="Blank Design Pattern"
+item.artisanworktables.design.pattern.written.name=Design Pattern
+item.artisanworktables.design.pattern.blank.name=Blank Design Pattern
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Shapeless Recipe
