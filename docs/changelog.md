@@ -1,3 +1,18 @@
+1.19.0-SNAPSHOT.1
+
+  * BREAKING CHANGES:
+    * The `gemcutter` has been renamed to `cutter` and, as a result, the oredict name has changed from `artisansGemCutter` to `artisansCutter`. This was done to lift the thematic restriction from the tool. The tool can now be used in other tables, such as the tanner's table or the potter's table.
+  * Added: Potter's Worktable, Workstation, and Workshop
+  * Added: Tanner's Worktable, Workstation, and Workshop
+  * Added: Designer's Worktable, Workstation, and Workshop
+  * Added: Design Pattern item
+  * Added: new tools: punch, groover, carver
+  * Added: builder method to hide recipes in JEI `builder.setHidden(@Optional(default = true) boolean hidden)`
+  * Added: config options to disable pattern creation for each table tier
+  * Changed: updated API (version 4)
+
+---
+
 1.18.11
 
   * Fixed: Clicking an empty output slot in the Mage's Worktable causes a NullPointerException (#126)
@@ -33,7 +48,6 @@
 1.18.6
 
   * Fixed: missing recipes in JEI 4.9.1.188+, (#114)
-
 ---
 
 1.18.5
