@@ -106,6 +106,13 @@
           "top": "artisanworktables:blocks/designer_top",
           "particle": "artisanworktables:blocks/designer_top"
         }
+      },
+      "tanner": {
+        "textures": {
+          "side": "artisanworktables:blocks/tanner_side",
+          "top": "artisanworktables:blocks/tanner_top",
+          "particle": "artisanworktables:blocks/tanner_top"
+        }
       }
     }
   }
