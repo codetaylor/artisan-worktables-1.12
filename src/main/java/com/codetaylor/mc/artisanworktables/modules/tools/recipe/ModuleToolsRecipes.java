@@ -331,6 +331,18 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.POTTERS_CARVER,
+        new Object[]{
+            "  .",
+            "xsx",
+            ".  ",
+            'x', "string",
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**
