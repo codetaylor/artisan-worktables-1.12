@@ -15,6 +15,7 @@ tile.artisanworktables.worktable.mage.name=Mage's Worktable
 tile.artisanworktables.worktable.mason.name=Mason's Worktable
 tile.artisanworktables.worktable.scribe.name=Scribe's Worktable
 tile.artisanworktables.worktable.tailor.name=Tailor's Worktable
+tile.artisanworktables.worktable.tanner.name=Tanner's Worktable
 
 # Workstations
 tile.artisanworktables.workstation.basic.name=Basic Workstation
@@ -30,6 +31,7 @@ tile.artisanworktables.workstation.mage.name=Mage's Workstation
 tile.artisanworktables.workstation.mason.name=Mason's Workstation
 tile.artisanworktables.workstation.scribe.name=Scribe's Workstation
 tile.artisanworktables.workstation.tailor.name=Tailor's Workstation
+tile.artisanworktables.workstation.tanner.name=Tanner's Workstation
 
 # Workshops
 tile.artisanworktables.workshop.basic.name=Basic Workshop
@@ -45,6 +47,7 @@ tile.artisanworktables.workshop.mage.name=Mage's Workshop
 tile.artisanworktables.workshop.mason.name=Mason's Workshop
 tile.artisanworktables.workshop.scribe.name=Scribe's Workshop
 tile.artisanworktables.workshop.tailor.name=Tailor's Workshop
+tile.artisanworktables.workshop.tanner.name=Tanner's Workshop
 
 # Toolbox
 tile.artisanworktables.toolbox.name=Toolbox
