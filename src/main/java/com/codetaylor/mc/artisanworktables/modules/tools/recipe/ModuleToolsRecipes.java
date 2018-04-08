@@ -39,7 +39,7 @@ public class ModuleToolsRecipes {
             ". .",
             " x ",
             "s s",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -51,7 +51,7 @@ public class ModuleToolsRecipes {
             " .x",
             " s.",
             "s  ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -63,7 +63,7 @@ public class ModuleToolsRecipes {
             " ..",
             " sx",
             "s  ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -86,7 +86,7 @@ public class ModuleToolsRecipes {
             "  x",
             " ..",
             "s  ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -98,7 +98,7 @@ public class ModuleToolsRecipes {
             ". .",
             "sxs",
             "s s",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -132,7 +132,7 @@ public class ModuleToolsRecipes {
             "  .",
             " .x",
             "s  ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -144,7 +144,7 @@ public class ModuleToolsRecipes {
             " . ",
             "sx.",
             " s ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -156,7 +156,7 @@ public class ModuleToolsRecipes {
             "  .",
             " . ",
             "sx ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -180,7 +180,7 @@ public class ModuleToolsRecipes {
             "x. ",
             "sl ",
             'l', "gemLapis",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -193,7 +193,7 @@ public class ModuleToolsRecipes {
             "xbx",
             " . ",
             'b', Items.BOOK,
-            'x', Items.STRING,
+            'x', "string",
             '.', MATERIAL_ALIAS
         }
     );
@@ -204,7 +204,7 @@ public class ModuleToolsRecipes {
             " s ",
             "sxs",
             ". .",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -216,7 +216,7 @@ public class ModuleToolsRecipes {
             "  f",
             " .x",
             ".  ",
-            'x', Items.STRING,
+            'x', "string",
             'f', Items.FEATHER,
             '.', MATERIAL_ALIAS
         }
@@ -261,7 +261,7 @@ public class ModuleToolsRecipes {
             "s.s",
             "sxs",
             "s.s",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -308,7 +308,7 @@ public class ModuleToolsRecipes {
             "  .",
             "x. ",
             "sx ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
@@ -320,7 +320,7 @@ public class ModuleToolsRecipes {
             "  .",
             " sx",
             ".x ",
-            'x', Items.STRING,
+            'x', "string",
             's', "stickWood",
             '.', MATERIAL_ALIAS
         }
