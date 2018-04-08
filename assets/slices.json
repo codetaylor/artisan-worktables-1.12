@@ -59,9 +59,9 @@
         { "target": "artisans_pliers_color.png", "position": [5, 0] },
         { "target": "artisans_pliers_highlight.png", "position": [6, 0] },
 
-        { "target": "artisans_gemcutter_base.png", "position": [4, 1] },
-        { "target": "artisans_gemcutter_color.png", "position": [5, 1] },
-        { "target": "artisans_gemcutter_highlight.png", "position": [6, 1] },
+        { "target": "artisans_cutter_base.png", "position": [4, 1] },
+        { "target": "artisans_cutter_color.png", "position": [5, 1] },
+        { "target": "artisans_cutter_highlight.png", "position": [6, 1] },
 
         { "target": "artisans_spanner_base.png", "position": [4, 2] },
         { "target": "artisans_spanner_color.png", "position": [5, 2] },
