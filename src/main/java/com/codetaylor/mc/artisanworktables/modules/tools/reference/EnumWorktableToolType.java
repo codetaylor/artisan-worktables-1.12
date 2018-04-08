@@ -46,6 +46,9 @@ public enum EnumWorktableToolType {
   TAILORS_NEEDLE("artisans_needle", "Needle"),
   TAILORS_SHEARS("artisans_shears", "Shears"),
 
+  // Tanner
+  TANNERS_PUNCH("artisans_punch", "Punch"),
+
   // Universal
   UNIVERSAL_MORTAR("artisans_mortar", "Mortar"),
   UNIVERSAL_KNIFE("artisans_knife", "Knife");

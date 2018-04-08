@@ -55,6 +55,10 @@
         { "target": "artisans_pan_color.png", "position": [1, 11] },
         { "target": "artisans_pan_highlight.png", "position": [2, 11] },
 
+        { "target": "artisans_punch_base.png", "position": [0, 12] },
+        { "target": "artisans_punch_color.png", "position": [1, 12] },
+        { "target": "artisans_punch_highlight.png", "position": [2, 12] },
+
         { "target": "artisans_pliers_base.png", "position": [4, 0] },
         { "target": "artisans_pliers_color.png", "position": [5, 0] },
         { "target": "artisans_pliers_highlight.png", "position": [6, 0] },

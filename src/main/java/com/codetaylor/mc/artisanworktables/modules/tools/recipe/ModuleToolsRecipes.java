@@ -314,6 +314,18 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.TANNERS_PUNCH,
+        new Object[]{
+            "  .",
+            " sx",
+            ".x ",
+            'x', Items.STRING,
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**
