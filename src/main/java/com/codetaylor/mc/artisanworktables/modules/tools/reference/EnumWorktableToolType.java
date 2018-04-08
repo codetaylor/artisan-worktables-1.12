@@ -48,6 +48,7 @@ public enum EnumWorktableToolType {
 
   // Tanner
   TANNERS_PUNCH("artisans_punch", "Punch"),
+  TANNERS_GROOVER("artisans_groover", "Groover"),
 
   // Universal
   UNIVERSAL_MORTAR("artisans_mortar", "Mortar"),
