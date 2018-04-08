@@ -113,6 +113,13 @@
           "top": "artisanworktables:blocks/tanner_top",
           "particle": "artisanworktables:blocks/tanner_top"
         }
+      },
+      "potter": {
+        "textures": {
+          "side": "artisanworktables:blocks/potter_side",
+          "top": "artisanworktables:blocks/potter_top",
+          "particle": "artisanworktables:blocks/potter_top"
+        }
       }
     }
   }

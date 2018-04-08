@@ -24,7 +24,8 @@ public enum EnumType
   FARMER(10, "farmer", SoundType.GROUND, new Color(128, 198, 82).getRGB(), 10),
   CHEF(11, "chef", SoundType.STONE, new Color(255, 255, 255).getRGB(), 11),
   DESIGNER(12, "designer", SoundType.STONE, new Color(255, 255, 255).getRGB(), 12),
-  TANNER(13, "tanner", SoundType.STONE, new Color(199, 125, 79).getRGB(), 13);
+  TANNER(13, "tanner", SoundType.STONE, new Color(199, 125, 79).getRGB(), 13),
+  POTTER(14, "potter", SoundType.STONE, new Color(183, 90, 64).getRGB(), 14);
 
   private static final EnumType[] META_LOOKUP = Stream.of(EnumType.values())
       .sorted(Comparator.comparing(EnumType::getMeta))
