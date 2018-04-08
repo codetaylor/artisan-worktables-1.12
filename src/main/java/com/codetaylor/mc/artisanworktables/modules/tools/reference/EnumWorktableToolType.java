@@ -27,7 +27,7 @@ public enum EnumWorktableToolType {
   FARMERS_SIFTER("artisans_sifter", "Sifter"),
 
   // Jeweler
-  JEWELERS_GEMCUTTER("artisans_gemcutter", "GemCutter"),
+  JEWELERS_CUTTER("artisans_cutter", "Cutter"),
   JEWELERS_PLIERS("artisans_pliers", "Pliers"),
 
   // Mage
