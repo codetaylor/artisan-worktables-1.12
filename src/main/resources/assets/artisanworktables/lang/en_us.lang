@@ -79,6 +79,7 @@ item.artisanworktables.artisans.pan.name=Artisan's %s Pan
 item.artisanworktables.artisans.mortar.name=Artisan's %s Mortar
 item.artisanworktables.artisans.knife.name=Artisan's %s Knife
 item.artisanworktables.artisans.punch.name=Artisan's %s Punch
+item.artisanworktables.artisans.groover.name=Artisan's %s Groover
 
 # Patterns
 item.artisanworktables.design.pattern.written.name=Design Pattern

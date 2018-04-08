@@ -326,6 +326,18 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.TANNERS_GROOVER,
+        new Object[]{
+            ". ",
+            "s.",
+            "w ",
+            'w', "plankWood",
+            's', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**
