@@ -38,6 +38,9 @@ public enum EnumWorktableToolType {
   MASONS_CHISEL("artisans_chisel", "Chisel"),
   MASONS_TROWEL("artisans_trowel", "Trowel"),
 
+  // Potter
+  POTTERS_CARVER("artisans_carver", "Carver"),
+
   // Scribe
   SCRIBES_COMPASS("artisans_compass", "Compass"),
   SCRIBES_QUILL("artisans_quill", "Quill"),
