@@ -1,4 +1,15 @@
+1.19.0-SNAPSHOT.2
+
+  * ALPHA RELEASE - for those who want to explore new features early - expect bugs
+
+  * Fixed: server crash (#104)
+  * Changed: updated de_de.lang (PR#105 Xaikii)
+
+---
+
 1.19.0-SNAPSHOT.1
+
+  * ALPHA RELEASE - for those who want to explore new features early - expect bugs
 
   * BREAKING CHANGES:
     * The `gemcutter` has been renamed to `cutter` and, as a result, the oredict name has changed from `artisansGemCutter` to `artisansCutter`. This was done to lift the thematic restriction from the tool. The tool can now be used in other tables, such as the tanner's table or the potter's table.
@@ -7,8 +18,9 @@
   * Added: Designer's Worktable, Workstation, and Workshop
   * Added: Design Pattern item
   * Added: new tools: punch, groover, carver
-  * Added: builder method to hide recipes in JEI `builder.setHidden(@Optional(default = true) boolean hidden)`
+  * Added: builder method to hide recipes in JEI `RecipeBuilder setHidden(@Optional(default = true) boolean hidden);`
   * Added: config options to disable pattern creation for each table tier
+  * Added: builder method to set recipe names `RecipeBuilder setName(String name);`
   * Changed: updated API (version 4)
 
 ---
