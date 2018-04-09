@@ -8,6 +8,8 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CPacketWorktableContainerJoinedBlockBreak
     extends PacketBlockPosBase<CPacketWorktableContainerJoinedBlockBreak> {
@@ -22,6 +24,7 @@ public class CPacketWorktableContainerJoinedBlockBreak
     super(blockPos);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public IMessage onMessage(
       CPacketWorktableContainerJoinedBlockBreak message, MessageContext ctx

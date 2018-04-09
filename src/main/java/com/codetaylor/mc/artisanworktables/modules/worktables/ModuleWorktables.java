@@ -11,6 +11,8 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorksta
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTRecipeAdditionQueue;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
+import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPatternBakedModel;
+import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPatternMeshDefinition;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableContainerJoinedBlockBreak;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
@@ -48,6 +50,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -247,6 +250,7 @@ public class ModuleWorktables
     registry.registerItem(Items.DESIGN_PATTERN, ItemDesignPattern.NAME);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public void onClientRegister(Registry registry) {
 
@@ -271,10 +275,11 @@ public class ModuleWorktables
           Items.DESIGN_PATTERN,
           new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN.getName())
       );
-      ModelLoader.setCustomMeshDefinition(Items.DESIGN_PATTERN, new ItemDesignPattern.MeshDefinition());
+      ModelLoader.setCustomMeshDefinition(Items.DESIGN_PATTERN, new ItemDesignPatternMeshDefinition());
     });
   }
 
+  @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onModelBakeEvent(ModelBakeEvent event) {
 
@@ -289,7 +294,7 @@ public class ModuleWorktables
 
           modelRegistry.putObject(
               modelResourceLocation,
-              new ItemDesignPattern.BakedModel(modelRegistry.getObject(modelResourceLocation))
+              new ItemDesignPatternBakedModel(modelRegistry.getObject(modelResourceLocation))
           );
         }
       }
