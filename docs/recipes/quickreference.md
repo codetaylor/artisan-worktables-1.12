@@ -13,6 +13,8 @@ static RecipeBuilder get(String table);
 ```
 
 ```java
+RecipeBuilder setName(String name);
+
 RecipeBuilder setShaped(IIngredient[][] ingredients);
 
 RecipeBuilder setShapeless(IIngredient[] ingredients);
@@ -139,8 +141,10 @@ farmer
 jeweler
 mage
 mason
+potter
 scribe
 tailor
+tanner
 ```
 
 ## OreDict Tool Groups
@@ -154,7 +158,7 @@ The complete list of tool type groups is as follows:
 <ore:artisansHandsaw>
 <ore:artisansDriver>
 <ore:artisansSpanner>
-<ore:artisansGemcutter>
+<ore:artisansCutter>
 <ore:artisansPliers>
 <ore:artisansAthame>
 <ore:artisansGrimoire>
@@ -171,4 +175,7 @@ The complete list of tool type groups is as follows:
 <ore:artisansLens>
 <ore:artisansSifter>
 <ore:artisansKnife>
+<ore:artisansPunch>
+<ore:artisansGroover>
+<ore:artisansCarver>
 ```
