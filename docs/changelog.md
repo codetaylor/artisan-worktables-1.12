@@ -2,6 +2,7 @@
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs
 
+  * Fixed: shift-click crash (#107)
   * Fixed: server crash (#104)
   * Changed: updated de_de.lang (PR#105 Xaikii)
 
