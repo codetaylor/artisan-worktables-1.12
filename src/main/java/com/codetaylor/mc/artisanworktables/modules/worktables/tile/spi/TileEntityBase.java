@@ -516,13 +516,10 @@ public abstract class TileEntityBase
       BlockPos pos = joinedTable.getPos();
       TileEntity tileEntity;
 
-      for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+      if ((tileEntity = this.world.getTileEntity(pos)) != null) {
 
-        if ((tileEntity = this.world.getTileEntity(pos.offset(facing))) != null) {
-
-          if (tileEntity instanceof ITileEntityDesigner) {
-            return (ITileEntityDesigner) tileEntity;
-          }
+        if (tileEntity instanceof ITileEntityDesigner) {
+          return (ITileEntityDesigner) tileEntity;
         }
       }
     }

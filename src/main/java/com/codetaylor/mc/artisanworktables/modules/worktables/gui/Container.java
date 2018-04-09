@@ -589,6 +589,10 @@ public class Container
 
   private boolean mergeBlankPattern(ItemStack itemStack, boolean reverse) {
 
+    if (this.slotIndexPattern == -1) {
+      return false;
+    }
+
     return this.mergeItemStack(
         itemStack,
         this.slotIndexPattern,
