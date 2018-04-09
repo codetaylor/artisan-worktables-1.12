@@ -6,7 +6,7 @@ This workflow uses one main branch, `master`. This branch is the main, eternal b
 
 ## The Release Branch
 
-The release branch is branched from the head of the `master` branch as soon as new work starts on the next release version. Features for the next release are developed in feature branches and rebased on top of this branch. This branch is named `release/version` and there can only be one of these branches at any given time.
+The release branch is branched from the head of the `master` branch as soon as new work starts on the next release version. Features for the next release are developed in feature branches and rebased on top of this branch. This branch is named `release/next` and there can only be one of these branches at any given time.
 
 Release branches are almost always pushed to the remote due to their longer-lived nature.
 
@@ -15,7 +15,7 @@ The reason temporary `release` branches are used, as opposed to a second eternal
 ### Creating the Release Branch
 
 ```
-$ git checkout -b release/version master
+$ git checkout -b release/next master
 ```
 
 ### Updating the Release Branch
@@ -23,7 +23,7 @@ $ git checkout -b release/version master
 Keeping the release branch current is as simple as rebasing on `master` any time `master` changes.
 
 ```
-$ git checkout release/version
+$ git checkout release/next
 $ git rebase master
 $ git push --force-with-lease
 ```
@@ -31,12 +31,12 @@ $ git push --force-with-lease
 ### Finishing the Release Branch
 
 ```
-$ git checkout release/version
+$ git checkout release/next
 $ git rebase -i master
 $ git checkout master
-$ git merge --ff-only release/version
+$ git merge --ff-only release/next
 $ git push origin master
-$ git branch -d release/version
+$ git branch -d release/next
 ```
 
 By using `rebase` instead of `merge --no-ff`, the linear history keeps the `master` branch clean and offers the opportunity to clean up the release history before integration.
@@ -44,7 +44,7 @@ By using `rebase` instead of `merge --no-ff`, the linear history keeps the `mast
 If the release branch exists on remote, which it almost always should, remove it.
 
 ```
-$ git push origin :release/version
+$ git push origin :release/next
 ```
 
 At this time, the release must be versioned by using the version tool to bump the version file and tag.
