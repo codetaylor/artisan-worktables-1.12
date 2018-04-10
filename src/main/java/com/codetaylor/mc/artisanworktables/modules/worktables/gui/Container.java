@@ -437,7 +437,7 @@ public class Container
   public boolean hasValidPatternSlots() {
 
     return this.designersTable != null
-        && !this.designersTable.isInvalid();
+        && !this.designersTable.getTileEntity().isInvalid();
   }
 
   public boolean canPlayerUsePatternSlots() {

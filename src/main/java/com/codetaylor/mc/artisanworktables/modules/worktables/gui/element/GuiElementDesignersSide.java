@@ -25,7 +25,7 @@ public class GuiElementDesignersSide
   @Override
   public void drawBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 
-    if (this.tile != null && !this.tile.isInvalid()) {
+    if (this.tile != null && !this.tile.getTileEntity().isInvalid()) {
       super.drawBackgroundLayer(partialTicks, mouseX, mouseY);
     }
   }

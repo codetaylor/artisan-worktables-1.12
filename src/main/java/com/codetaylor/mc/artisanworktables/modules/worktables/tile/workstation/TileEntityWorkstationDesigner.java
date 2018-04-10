@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEnti
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
@@ -45,6 +46,12 @@ public class TileEntityWorkstationDesigner
   public List<ItemStack> getBlockBreakDrops() {
 
     return this.delegate.getBlockBreakDrops(super.getBlockBreakDrops());
+  }
+
+  @Override
+  public TileEntity getTileEntity() {
+
+    return this;
   }
 
   @Override
