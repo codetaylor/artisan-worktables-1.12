@@ -1,6 +1,14 @@
+1.19.0-SNAPSHOT.3
+
+  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
+
+  * Fixed: tables not working with designer's table (#108)
+
+---
+
 1.19.0-SNAPSHOT.2
 
-  * ALPHA RELEASE - for those who want to explore new features early - expect bugs
+  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
 
   * Fixed: shift-click crash (#107)
   * Fixed: server crash (#104)
@@ -10,7 +18,7 @@
 
 1.19.0-SNAPSHOT.1
 
-  * ALPHA RELEASE - for those who want to explore new features early - expect bugs
+  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
 
   * BREAKING CHANGES:
     * The `gemcutter` has been renamed to `cutter` and, as a result, the oredict name has changed from `artisansGemCutter` to `artisansCutter`. This was done to lift the thematic restriction from the tool. The tool can now be used in other tables, such as the tanner's table or the potter's table.
