@@ -67,6 +67,10 @@
         { "target": "artisans_carver_color.png", "position": [1, 14] },
         { "target": "artisans_carver_highlight.png", "position": [2, 14] },
 
+        { "target": "artisans_razor_base.png", "position": [0, 15] },
+        { "target": "artisans_razor_color.png", "position": [1, 15] },
+        { "target": "artisans_razor_highlight.png", "position": [2, 15] },
+
         { "target": "artisans_pliers_base.png", "position": [4, 0] },
         { "target": "artisans_pliers_color.png", "position": [5, 0] },
         { "target": "artisans_pliers_highlight.png", "position": [6, 0] },

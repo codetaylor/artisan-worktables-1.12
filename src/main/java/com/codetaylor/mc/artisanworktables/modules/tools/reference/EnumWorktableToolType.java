@@ -40,6 +40,7 @@ public enum EnumWorktableToolType {
 
   // Potter
   POTTERS_CARVER("artisans_carver", "Carver"),
+  POTTERS_RAZOR("artisans_razor", "Razor"),
 
   // Scribe
   SCRIBES_COMPASS("artisans_compass", "Compass"),

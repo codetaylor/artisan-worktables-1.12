@@ -350,6 +350,18 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.POTTERS_RAZOR,
+        new Object[]{
+            " . ",
+            "x. ",
+            "w  ",
+            'x', "string",
+            'w', "plankWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
   }
 
   /**
