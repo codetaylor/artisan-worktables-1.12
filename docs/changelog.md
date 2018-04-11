@@ -2,7 +2,11 @@
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
 
-  * Fixed: tables not working with designer's table (#108)
+  * Fixed:
+    * Tables inaccessible with adjacent designer's table (#108)
+
+  * Changed:
+    * Reverted changes to `gemcutter` made in 1.19.0-SNAPSHOT.1
 
 ---
 
@@ -10,9 +14,12 @@
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
 
-  * Fixed: shift-click crash (#107)
-  * Fixed: server crash (#104)
-  * Changed: updated de_de.lang (PR#105 Xaikii)
+  * Fixed: 
+    * Shift-click crash (#107)
+    * Server crash (#104)
+
+  * Changed: 
+    * Updated de_de.lang (PR#105 Xaikii)
 
 ---
 
@@ -22,15 +29,19 @@
 
   * BREAKING CHANGES:
     * The `gemcutter` has been renamed to `cutter` and, as a result, the oredict name has changed from `artisansGemCutter` to `artisansCutter`. This was done to lift the thematic restriction from the tool. The tool can now be used in other tables, such as the tanner's table or the potter's table.
-  * Added: Potter's Worktable, Workstation, and Workshop
-  * Added: Tanner's Worktable, Workstation, and Workshop
-  * Added: Designer's Worktable, Workstation, and Workshop
-  * Added: Design Pattern item
-  * Added: new tools: punch, groover, carver
-  * Added: builder method to hide recipes in JEI `RecipeBuilder setHidden(@Optional(default = true) boolean hidden);`
-  * Added: config options to disable pattern creation for each table tier
-  * Added: builder method to set recipe names `RecipeBuilder setName(String name);`
-  * Changed: updated API (version 4)
+
+  * Added: 
+    * Potter's Worktable, Workstation, and Workshop
+    * Tanner's Worktable, Workstation, and Workshop
+    * Designer's Worktable, Workstation, and Workshop
+    * Design Pattern item
+    * New tools: punch, groover, carver
+    * Builder method to hide recipes in JEI `RecipeBuilder setHidden(@Optional(default = true) boolean hidden);`
+    * Config options to disable pattern creation for each table tier
+    * Builder method to set recipe names `RecipeBuilder setName(String name);`
+
+  * Changed:
+    * Updated API (version 4)
 
 ---
 
