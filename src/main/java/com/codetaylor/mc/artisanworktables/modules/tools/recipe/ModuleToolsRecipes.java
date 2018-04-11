@@ -81,7 +81,7 @@ public class ModuleToolsRecipes {
     );
 
     RECIPE_MAP.put(
-        EnumWorktableToolType.JEWELERS_CUTTER,
+        EnumWorktableToolType.JEWELERS_GEMCUTTER,
         new Object[]{
             "  x",
             " ..",
