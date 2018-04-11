@@ -2,11 +2,14 @@
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
 
+  * Added:
+    * New tool: razor
+
   * Fixed:
     * Tables inaccessible with adjacent designer's table (#108)
 
   * Changed:
-    * Reverted changes to `gemcutter` made in 1.19.0-SNAPSHOT.1
+    * Reverted changes to `gemcutter` name made in 1.19.0-SNAPSHOT.1
 
 ---
 
