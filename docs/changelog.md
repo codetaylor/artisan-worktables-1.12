@@ -1,3 +1,9 @@
+1.18.4
+
+  * Fixed: client crash with GameStages 2.0 update (#111)
+
+---
+
 1.18.3
 
   * Fixed: crash with copied recipes (#101)
