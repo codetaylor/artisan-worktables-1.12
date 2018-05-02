@@ -1,3 +1,11 @@
+1.19.0-SNAPSHOT.4
+
+  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
+
+  * This alpha snapshot does not contain any new features. It is simply contains patches 1.18.4 and 1.18.5: code from the master branch that fixes issues when updating to GameStages 2.0.
+
+---
+
 1.19.0-SNAPSHOT.3
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
@@ -17,11 +25,11 @@
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
 
-  * Fixed: 
+  * Fixed:
     * Shift-click crash (#107)
     * Server crash (#104)
 
-  * Changed: 
+  * Changed:
     * Updated de_de.lang (PR#105 Xaikii)
 
 ---
@@ -33,7 +41,7 @@
   * BREAKING CHANGES:
     * The `gemcutter` has been renamed to `cutter` and, as a result, the oredict name has changed from `artisansGemCutter` to `artisansCutter`. This was done to lift the thematic restriction from the tool. The tool can now be used in other tables, such as the tanner's table or the potter's table.
 
-  * Added: 
+  * Added:
     * Potter's Worktable, Workstation, and Workshop
     * Tanner's Worktable, Workstation, and Workshop
     * Designer's Worktable, Workstation, and Workshop
