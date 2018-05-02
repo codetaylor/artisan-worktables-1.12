@@ -1,6 +1,6 @@
 1.18.5
 
-  * Switch PlayerDataHandler with GameStageHelper
+  * Fixed: Switch PlayerDataHandler with GameStageHelper
 
 ---
 
