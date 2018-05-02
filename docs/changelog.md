@@ -1,6 +1,7 @@
 1.18.4
 
   * Fixed: client crash with GameStages 2.0 update (#111)
+  * Optional Requirement: GameStages >= 2.0.90
 
 ---
 
