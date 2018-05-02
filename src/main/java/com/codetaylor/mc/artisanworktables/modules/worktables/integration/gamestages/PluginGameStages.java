@@ -11,6 +11,7 @@ import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requir
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.darkhax.gamestages.event.GameStageEvent;
+import net.darkhax.gamestages.event.StagesSyncedEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.ResourceLocation;
@@ -51,7 +52,7 @@ public class PluginGameStages {
 
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
-  public void gameStageClientSyncEvent(GameStageEvent.ClientSync event) {
+  public void gameStageClientSyncEvent(StagesSyncedEvent event) {
 
     this.processStagedRecipes();
   }
