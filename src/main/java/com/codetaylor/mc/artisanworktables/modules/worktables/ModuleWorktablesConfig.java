@@ -161,7 +161,7 @@ public class ModuleWorktablesConfig {
         return ModuleWorktablesConfig.PATTERN.ENABLE_PATTERN_CREATION_FOR_WORKSHOPS;
 
       default:
-        throw new IllegalArgumentException("Unknonw tier: " + tier);
+        throw new IllegalArgumentException("Unknown tier: " + tier);
     }
   }
 
