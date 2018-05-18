@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.internal.config;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 
 public class ModuleWorktablesConfigNoOp
     implements IModuleWorktablesConfig {
@@ -57,6 +58,12 @@ public class ModuleWorktablesConfigNoOp
 
   @Override
   public boolean isTierEnabled(EnumTier tier) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isTypeEnabled(EnumType type) {
 
     throw new UnsupportedOperationException();
   }

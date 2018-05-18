@@ -13,6 +13,7 @@ import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.IRecipeRegistry;
+import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
@@ -20,12 +21,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class PluginJEI
     implements IModPlugin {
 
   public static IRecipeRegistry RECIPE_REGISTRY;
+
+  private IIngredientRegistry ingredientRegistry;
 
   @Override
   public void registerCategories(IRecipeCategoryRegistration registry) {
@@ -46,6 +51,8 @@ public class PluginJEI
 
   @Override
   public void register(IModRegistry registry) {
+
+    this.ingredientRegistry = registry.getIngredientRegistry();
 
     for (EnumTier tier : EnumTier.values()) {
 
@@ -92,6 +99,35 @@ public class PluginJEI
     // Expose the recipe registry for use in the game stages event handler.
     RECIPE_REGISTRY = jeiRuntime.getRecipeRegistry();
 
+    this.hideTables();
+    this.hideRecipes();
+  }
+
+  private void hideTables() {
+
+    Collection<ItemStack> toRemove = new ArrayList<>();
+
+    for (Map.Entry<String, Boolean> entry : ModuleWorktablesConfig.ENABLE_TABLE_TYPE.entrySet()) {
+
+      if (!entry.getValue()) {
+
+        for (EnumTier tier : EnumTier.values()) {
+
+          if (ModuleWorktablesConfig.isTierEnabled(tier)) {
+            toRemove.add(this.getWorktableAsItemStack(entry.getKey(), tier));
+          }
+        }
+      }
+    }
+
+    if (!toRemove.isEmpty()) {
+      this.ingredientRegistry.removeIngredientsAtRuntime(ItemStack.class, toRemove);
+    }
+  }
+
+  private void hideRecipes() {
+
+    // Hide recipes that should be hidden.
     for (String name : ArtisanAPI.getWorktableNames()) {
       RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
 
@@ -132,7 +168,10 @@ public class PluginJEI
 
   private ItemStack getWorktableAsItemStack(String name, EnumTier tier) {
 
-    EnumType type = EnumType.fromName(name);
+    return this.getWorktableAsItemStack(EnumType.fromName(name), tier);
+  }
+
+  private ItemStack getWorktableAsItemStack(EnumType type, EnumTier tier) {
 
     switch (tier) {
 

@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.internal.config;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 
 public interface IModuleWorktablesConfig {
 
@@ -21,6 +22,8 @@ public interface IModuleWorktablesConfig {
   int getTextHighlightColor(String tableName);
 
   boolean isTierEnabled(EnumTier tier);
+
+  boolean isTypeEnabled(EnumType type);
 
   boolean enableSneakClickClearPattern();
 

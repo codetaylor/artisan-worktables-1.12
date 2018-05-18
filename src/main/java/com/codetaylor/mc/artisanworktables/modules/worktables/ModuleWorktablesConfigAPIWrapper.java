@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 
 import com.codetaylor.mc.artisanworktables.api.internal.config.IModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 
 public class ModuleWorktablesConfigAPIWrapper
     implements IModuleWorktablesConfig {
@@ -58,6 +59,12 @@ public class ModuleWorktablesConfigAPIWrapper
   public boolean isTierEnabled(EnumTier tier) {
 
     return ModuleWorktablesConfig.isTierEnabled(tier);
+  }
+
+  @Override
+  public boolean isTypeEnabled(EnumType type) {
+
+    return ModuleWorktablesConfig.isTypeEnabled(type);
   }
 
   @Override

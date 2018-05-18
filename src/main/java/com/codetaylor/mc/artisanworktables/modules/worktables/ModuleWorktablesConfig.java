@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,18 @@ public class ModuleWorktablesConfig {
   })
   @Config.RequiresMcRestart
   public static boolean ENABLE_WORKSHOPS = true;
+
+  @Config.Comment({
+      "Set to false to selectively disable a table type across all table tiers."
+  })
+  public static Map<String, Boolean> ENABLE_TABLE_TYPE = new HashMap<>();
+
+  static {
+
+    for (EnumType type : EnumType.values()) {
+      ENABLE_TABLE_TYPE.put(type.getName(), true);
+    }
+  }
 
   @Config.Comment({
       "If set to true, crafting tools must have sufficient durability remaining to perform the craft.",
@@ -146,6 +159,11 @@ public class ModuleWorktablesConfig {
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }
+  }
+
+  public static boolean isTypeEnabled(EnumType type) {
+
+    return ENABLE_TABLE_TYPE.get(type.getName());
   }
 
   public static boolean patternSlotsEnabledForTier(EnumTier tier) {
