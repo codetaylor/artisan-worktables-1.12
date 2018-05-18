@@ -104,10 +104,7 @@ public class PluginJEI
 
             if (this.shouldHideRecipe(recipe)) {
               String uid = PluginJEI.createUID(name, tier);
-              IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
-                  recipe,
-                  uid
-              );
+              IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 
               if (recipeWrapper != null) {
                 RECIPE_REGISTRY.hideRecipe(recipeWrapper, uid);
