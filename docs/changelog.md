@@ -1,3 +1,12 @@
+1.19.0-SNAPSHOT.5
+
+  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
+  
+  * Added:
+    * Config option to disable table types. The disabled table types are simply removed from JEI.
+
+---
+
 1.19.0-SNAPSHOT.4
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes

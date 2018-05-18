@@ -124,6 +124,30 @@ general {
     B:RESTRICT_CRAFT_MINIMUM_DURABILITY=true
 
     ##########################################################################################################
+    # enable_table_type
+    #--------------------------------------------------------------------------------------------------------#
+    # Set to false to selectively disable a table type across all table tiers.
+    ##########################################################################################################
+
+    enable_table_type {
+        B:basic=true
+        B:blacksmith=true
+        B:carpenter=true
+        B:chef=true
+        B:chemist=true
+        B:designer=true
+        B:engineer=true
+        B:farmer=true
+        B:jeweler=true
+        B:mage=true
+        B:mason=true
+        B:potter=true
+        B:scribe=true
+        B:tailor=true
+        B:tanner=true
+    }
+
+    ##########################################################################################################
     # fluid_capacity_worktable
     #--------------------------------------------------------------------------------------------------------#
     # Worktable fluid capacity (milli-buckets).
@@ -133,13 +157,18 @@ general {
         I:basic=4000
         I:blacksmith=4000
         I:carpenter=4000
+        I:chef=4000
         I:chemist=4000
+        I:designer=4000
         I:engineer=4000
+        I:farmer=4000
         I:jeweler=4000
         I:mage=4000
         I:mason=4000
+        I:potter=4000
         I:scribe=4000
         I:tailor=4000
+        I:tanner=4000
     }
 
     ##########################################################################################################
@@ -152,13 +181,18 @@ general {
         I:basic=8000
         I:blacksmith=8000
         I:carpenter=8000
+        I:chef=8000
         I:chemist=8000
+        I:designer=8000
         I:engineer=8000
+        I:farmer=8000
         I:jeweler=8000
         I:mage=8000
         I:mason=8000
+        I:potter=8000
         I:scribe=8000
         I:tailor=8000
+        I:tanner=8000
     }
 
     ##########################################################################################################
@@ -171,13 +205,18 @@ general {
         I:basic=16000
         I:blacksmith=16000
         I:carpenter=16000
+        I:chef=16000
         I:chemist=16000
+        I:designer=16000
         I:engineer=16000
+        I:farmer=16000
         I:jeweler=16000
         I:mage=16000
         I:mason=16000
+        I:potter=16000
         I:scribe=16000
         I:tailor=16000
+        I:tanner=16000
     }
 
     client {
@@ -192,15 +231,35 @@ general {
             S:basic=bc9862
             S:blacksmith=a2a2a2
             S:carpenter=bc9862
+            S:chef=ffffff
             S:chemist=476147
+            S:designer=ffffff
             S:engineer=ca671b
+            S:farmer=80c652
             S:jeweler=695985
             S:mage=ac51e3
             S:mason=979797
+            S:potter=b75a40
             S:scribe=b6884f
             S:tailor=ac51e3
+            S:tanner=c77d4f
         }
 
+    }
+
+    pattern {
+        # Set to false to disable pattern creation for workshops.
+        B:ENABLE_PATTERN_CREATION_FOR_WORKSHOPS=true
+
+        # Set to false to disable pattern creation for workstations.
+        B:ENABLE_PATTERN_CREATION_FOR_WORKSTATIONS=true
+
+        # Set to false to disable pattern creation for worktables.
+        B:ENABLE_PATTERN_CREATION_FOR_WORKTABLES=true
+
+        # Set to false to prevent players from sneak-clicking to clear the patterns.
+        # This is useful if you want to provide your own method for clearing patterns.
+        B:ENABLE_SNEAK_CLICK_TO_CLEAR=true
     }
 
 }
