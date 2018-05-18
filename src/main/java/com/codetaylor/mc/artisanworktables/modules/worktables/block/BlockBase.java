@@ -60,7 +60,7 @@ public abstract class BlockBase
       IBlockState state, World world, BlockPos pos, @Nullable Entity entity
   ) {
 
-    return state.getValue(VARIANT).getSoundType();
+    return state.getValue(this.getVariant()).getSoundType();
   }
 
   @Override
@@ -133,19 +133,19 @@ public abstract class BlockBase
   @Override
   protected BlockStateContainer createBlockState() {
 
-    return new BlockStateContainer(this, VARIANT, ACTIVE);
+    return new BlockStateContainer(this, this.getVariant(), ACTIVE);
   }
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
 
-    return this.getDefaultState().withProperty(VARIANT, EnumType.fromMeta(meta));
+    return this.getDefaultState().withProperty(this.getVariant(), EnumType.fromMeta(meta));
   }
 
   @Override
   public int getMetaFromState(IBlockState state) {
 
-    return state.getValue(VARIANT).getMeta();
+    return state.getValue(this.getVariant()).getMeta();
   }
 
   @Override
@@ -159,7 +159,7 @@ public abstract class BlockBase
       IBlockState state, IBlockAccess worldIn, BlockPos pos
   ) {
 
-    if (state.getValue(VARIANT) == EnumType.MAGE) {
+    if (state.getValue(this.getVariant()) == EnumType.MAGE) {
 
       TileEntity tileEntity;
 
@@ -182,7 +182,7 @@ public abstract class BlockBase
   @Override
   public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 
-    if (state.getValue(VARIANT) == EnumType.MAGE) {
+    if (state.getValue(this.getVariant()) == EnumType.MAGE) {
 
       if (this.getActualState(state, world, pos).getValue(ACTIVE)) {
         return 8;
