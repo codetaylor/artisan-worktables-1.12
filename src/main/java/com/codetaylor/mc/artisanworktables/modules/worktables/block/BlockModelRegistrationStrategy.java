@@ -26,6 +26,11 @@ class BlockModelRegistrationStrategy
   public void register() {
 
     BlockBase.VARIANT.getAllowedValues().forEach(type -> {
+
+      if (type == EnumType.MAGE) {
+        return;
+      }
+
       IBlockState state = this.block.getDefaultState()
           .withProperty(BlockBase.VARIANT, type);
       Block block = state.getBlock();
