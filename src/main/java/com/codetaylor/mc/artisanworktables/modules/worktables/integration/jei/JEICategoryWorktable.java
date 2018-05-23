@@ -36,15 +36,15 @@ public class JEICategoryWorktable
     IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
     IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
 
-    JEIRecipeWrapper wrapperWorktable = (JEIRecipeWrapper) recipeWrapper;
-    List<List<ItemStack>> tools = wrapperWorktable.getTools();
-    List<List<ItemStack>> inputs = wrapperWorktable.getInputs();
-    List<ItemStack> outputs = wrapperWorktable.getOutput();
+    JEIRecipeWrapper wrapper = (JEIRecipeWrapper) recipeWrapper;
+    List<List<ItemStack>> tools = wrapper.getTools();
+    List<List<ItemStack>> inputs = wrapper.getInputs();
+    List<ItemStack> outputs = wrapper.getOutput();
 
     stacks.init(0, false, 111, 31);
     stacks.set(0, outputs);
 
-    this.setupTooltip(stacks, wrapperWorktable.getWeightedOutput());
+    this.setupTooltip(stacks, wrapper.getWeightedOutput());
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {
@@ -53,8 +53,8 @@ public class JEICategoryWorktable
       }
     }
 
-    if (wrapperWorktable.isShaped()) {
-      this.craftingGridHelper.setInputs(stacks, inputs, wrapperWorktable.getWidth(), wrapperWorktable.getHeight());
+    if (wrapper.isShaped()) {
+      this.craftingGridHelper.setInputs(stacks, inputs, wrapper.getWidth(), wrapper.getHeight());
 
     } else {
       this.craftingGridHelper.setInputs(stacks, inputs);
@@ -70,19 +70,19 @@ public class JEICategoryWorktable
     stacks.init(12, false, 148, 31);
     stacks.init(13, false, 148, 49);
 
-    ItemStack extraOutput = wrapperWorktable.getSecondaryOutput();
+    ItemStack extraOutput = wrapper.getSecondaryOutput();
 
     if (!extraOutput.isEmpty()) {
       stacks.set(11, extraOutput);
     }
 
-    extraOutput = wrapperWorktable.getTertiaryOutput();
+    extraOutput = wrapper.getTertiaryOutput();
 
     if (!extraOutput.isEmpty()) {
       stacks.set(12, extraOutput);
     }
 
-    extraOutput = wrapperWorktable.getQuaternaryOutput();
+    extraOutput = wrapper.getQuaternaryOutput();
 
     if (!extraOutput.isEmpty()) {
       stacks.set(13, extraOutput);
@@ -91,7 +91,10 @@ public class JEICategoryWorktable
     int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKTABLE.get(this.tableName.toLowerCase());
 
     fluidStacks.init(14, true, 5, 14, 6, 52, capacity, true, null);
-    fluidStacks.set(14, wrapperWorktable.getFluidStack());
+
+    if (wrapper.getFluidStack() != null) {
+      fluidStacks.set(14, wrapper.getFluidStack());
+    }
 
     recipeLayout.setRecipeTransferButton(157, 67);
   }
