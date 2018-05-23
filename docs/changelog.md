@@ -2,61 +2,11 @@
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
   
+  * The changelog for the alpha snapshots has been condensed. This entry contains all cumulative changes in the development branch.
+  
   * Added:
-    * Config option to disable table types. The disabled table types are simply removed from JEI.
-    
-  * Fixed:
-    * Merged fixes from 1.18.6
-
-  * Changed:
-    * Updated API (version 5)
-
----
-
-1.19.0-SNAPSHOT.4
-
-  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
-
-  * This alpha snapshot does not contain any new features. It is simply contains patches 1.18.4 and 1.18.5: code from the master branch that fixes issues when updating to GameStages 2.0.
-
----
-
-1.19.0-SNAPSHOT.3
-
-  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
-
-  * Added:
+    * Config option to hide table types in JEI (#112)
     * New tool: razor
-
-  * Fixed:
-    * Tables inaccessible with adjacent designer's table (#108)
-
-  * Changed:
-    * Reverted changes to `gemcutter` name made in 1.19.0-SNAPSHOT.1
-
----
-
-1.19.0-SNAPSHOT.2
-
-  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
-
-  * Fixed:
-    * Shift-click crash (#107)
-    * Server crash (#104)
-
-  * Changed:
-    * Updated de_de.lang (PR#105 Xaikii)
-
----
-
-1.19.0-SNAPSHOT.1
-
-  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
-
-  * BREAKING CHANGES:
-    * The `gemcutter` has been renamed to `cutter` and, as a result, the oredict name has changed from `artisansGemCutter` to `artisansCutter`. This was done to lift the thematic restriction from the tool. The tool can now be used in other tables, such as the tanner's table or the potter's table.
-
-  * Added:
     * Potter's Worktable, Workstation, and Workshop
     * Tanner's Worktable, Workstation, and Workshop
     * Designer's Worktable, Workstation, and Workshop
@@ -65,9 +15,18 @@
     * Builder method to hide recipes in JEI `RecipeBuilder setHidden(@Optional(default = true) boolean hidden);`
     * Config options to disable pattern creation for each table tier
     * Builder method to set recipe names `RecipeBuilder setName(String name);`
+    
+  * Fixed:
+    * Merged fixes from 1.18.6
+    * Merged fixes from 1.18.5
+    * Merged fixes from 1.18.4
+    * Tables inaccessible with adjacent designer's table (#108)
+    * Shift-click crash (#107)
+    * Server crash (#104)
 
   * Changed:
-    * Updated API (version 4)
+    * Updated API (version 5)
+    * Updated de_de.lang (PR#105 Xaikii)
 
 ---
 
