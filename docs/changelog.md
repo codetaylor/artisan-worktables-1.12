@@ -4,6 +4,9 @@
   
   * Added:
     * Config option to disable table types. The disabled table types are simply removed from JEI.
+    
+  * Fixed:
+    * Merged fixes from 1.18.6
 
   * Changed:
     * Updated API (version 5)
