@@ -1,3 +1,9 @@
+1.18.6
+
+  * Fixed: missing recipes in JEI 4.9.1.188+, (#114)
+
+---
+
 1.18.5
 
   * Fixed: Switch PlayerDataHandler with GameStageHelper
