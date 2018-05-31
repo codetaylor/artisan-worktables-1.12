@@ -361,8 +361,8 @@ public class CTArtisanRecipe
 
         int subX = x - startX;
         int subY = y - startY;
-        IArtisanIngredient ingredient = ArtisanIngredient.EMPTY;
-        int index = 0;
+        IArtisanIngredient ingredient;
+        int index;
 
         if (subX >= 0 && subY >= 0 && subX < width && subY < height) {
 
@@ -374,6 +374,9 @@ public class CTArtisanRecipe
             index = subX + subY * width;
             ingredient = ingredients.get(index);
           }
+
+        } else {
+          continue;
         }
 
         int matrixIndex = x + y * craftingMatrix.getWidth();
