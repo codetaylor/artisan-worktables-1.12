@@ -1,3 +1,9 @@
+1.18.7
+
+  * Fixed: CraftTweaker's 'marked' only returns last marked item in shaped recipes, (#120)
+
+---
+
 1.18.6
 
   * Fixed: missing recipes in JEI 4.9.1.188+, (#114)
