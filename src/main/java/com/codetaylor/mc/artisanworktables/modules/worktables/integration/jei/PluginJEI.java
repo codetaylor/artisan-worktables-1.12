@@ -106,13 +106,14 @@ public class PluginJEI
             for (IArtisanRecipe recipe : recipeList) {
 
               if (recipe.getRequirement(GameStagesRequirement.LOCATION) != null) {
+                String uid = PluginJEI.createUID(name, tier);
                 IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(
                     recipe,
-                    PluginJEI.createUID(name, tier)
+                    uid
                 );
 
                 if (recipeWrapper != null) {
-                  RECIPE_REGISTRY.hideRecipe(recipeWrapper);
+                  RECIPE_REGISTRY.hideRecipe(recipeWrapper, uid);
                 }
               }
             }

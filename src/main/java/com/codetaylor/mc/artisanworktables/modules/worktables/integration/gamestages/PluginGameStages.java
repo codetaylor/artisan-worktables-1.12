@@ -94,10 +94,10 @@ public class PluginGameStages {
 
             //noinspection unchecked
             if (requirement == null || requirement.match(context)) {
-              PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper);
+              PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper, uid);
 
             } else {
-              PluginJEI.RECIPE_REGISTRY.hideRecipe(recipeWrapper);
+              PluginJEI.RECIPE_REGISTRY.hideRecipe(recipeWrapper, uid);
             }
           }
         }
