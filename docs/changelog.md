@@ -1,3 +1,9 @@
+1.18.8
+
+  * Fixed: undesirable behavior with GameStage requirements, (#121)
+
+---
+
 1.18.7
 
   * Fixed: CraftTweaker's 'marked' only returns last marked item in shaped recipes, (#120)
