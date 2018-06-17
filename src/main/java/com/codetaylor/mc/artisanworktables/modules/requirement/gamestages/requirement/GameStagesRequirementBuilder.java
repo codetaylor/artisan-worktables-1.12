@@ -40,21 +40,30 @@ public class GameStagesRequirementBuilder
   public GameStagesRequirementBuilder allOf(@Nonnull String... requireAllStages) {
 
     this.requireAllStages = new HashSet<>();
-    this.requireAllStages.addAll(Arrays.asList(requireAllStages));
+
+    for (String stage : requireAllStages) {
+      this.requireAllStages.add(stage.toLowerCase());
+    }
     return this;
   }
 
   public GameStagesRequirementBuilder anyOf(@Nonnull String... requireOneStage) {
 
     this.requireOneStage = new HashSet<>();
-    this.requireOneStage.addAll(Arrays.asList(requireOneStage));
+
+    for (String stage : requireOneStage) {
+      this.requireOneStage.add(stage.toLowerCase());
+    }
     return this;
   }
 
   public GameStagesRequirementBuilder exclude(@Nonnull String... excludeStages) {
 
     this.excludeStages = new HashSet<>();
-    this.excludeStages.addAll(Arrays.asList(excludeStages));
+
+    for (String stage : excludeStages) {
+      this.excludeStages.add(stage.toLowerCase());
+    }
     return this;
   }
 
