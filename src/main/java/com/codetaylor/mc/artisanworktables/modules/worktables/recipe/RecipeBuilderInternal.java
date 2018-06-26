@@ -448,10 +448,12 @@ public class RecipeBuilderInternal
 
     // Must be able to calculate recipe tier
     EnumTier tier = RecipeTierCalculator.calculateTier(
+        this.tableName,
         this.width,
         this.height,
         this.tools.size(),
-        this.secondaryIngredients.size()
+        this.secondaryIngredients.size(),
+        this.fluidIngredient
     );
 
     if (tier == null) {
