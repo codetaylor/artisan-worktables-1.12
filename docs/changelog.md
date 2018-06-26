@@ -1,4 +1,4 @@
-1.19.0-SNAPSHOT.7
+1.19.0-SNAPSHOT.8
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
   
