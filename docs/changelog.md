@@ -17,6 +17,7 @@
     * Builder method to set recipe names `RecipeBuilder setName(String name);`
     
   * Fixed:
+    * Merged fixes from 1.18.9
     * Merged fixes from 1.18.8
     * Merged fixes from 1.18.7
     * Merged fixes from 1.18.6
