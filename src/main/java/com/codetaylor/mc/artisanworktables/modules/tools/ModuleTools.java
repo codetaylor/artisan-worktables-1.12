@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
@@ -212,14 +213,16 @@ public class ModuleTools
     if (ModuleToolsConfig.ENABLE_TOOL_TYPE_ORE_DICT_GROUPS) {
 
       for (ItemWorktableTool item : this.registeredToolList) {
-        OreDictionary.registerOre(ModuleToolsConfig.TOOL_BY_TYPE_ORE_DICT_PREFIX + item.getType().getOreDictSuffix(), item);
+        ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
+        OreDictionary.registerOre(ModuleToolsConfig.TOOL_BY_TYPE_ORE_DICT_PREFIX + item.getType().getOreDictSuffix(), itemStack);
       }
     }
 
     if (ModuleToolsConfig.ENABLE_TOOL_MATERIAL_ORE_DICT_GROUPS) {
 
       for (ItemWorktableTool item : this.registeredToolList) {
-        OreDictionary.registerOre(item.getMaterial().getDataCustomMaterial().getOreDictKey(), item);
+        ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
+        OreDictionary.registerOre(item.getMaterial().getDataCustomMaterial().getOreDictKey(), itemStack);
       }
     }
   }
