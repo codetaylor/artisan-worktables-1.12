@@ -3,6 +3,8 @@
   * Fixed: JEI displays recipes when tank size is insufficient (#122)
   * Fixed: Damaged artisan tool loses oredict (#123)
 
+---
+
 1.18.8
 
   * Fixed: undesirable behavior with GameStage requirements, (#121)
