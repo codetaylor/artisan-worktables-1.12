@@ -9,14 +9,8 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableContainerJoinedBlockBreak;
->>>>>>> Fix slot display when table is broken while player has container open
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
->>>>>>> Implement designer table and side pattern slots
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
