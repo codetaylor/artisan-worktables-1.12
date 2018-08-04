@@ -1,7 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.builder;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
-import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanItemStack;
@@ -18,7 +17,6 @@ import crafttweaker.api.recipes.IRecipeAction;
 import crafttweaker.api.recipes.IRecipeFunction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ZenRecipeBuilder
@@ -231,42 +229,6 @@ public class ZenRecipeBuilder
 
     try {
       this.recipeBuilder.setExtraOutput(2, CTArtisanItemStack.from(output), chance);
-
-    } catch (RecipeBuilderException e) {
-      return this.logError(e.getMessage());
-    }
-
-    return this;
-  }
-
-  // --------------------------------------------------------------------------
-  // - Game Stages
-
-  @Override
-  public IZenRecipeBuilder requireGameStages(String require, String[] stages) {
-
-    EnumGameStageRequire enumGameStageRequire = EnumGameStageRequire.fromName(require);
-
-    if (enumGameStageRequire == null) {
-      return this.logError("Invalid gamestage requirement enum: " + require + ". Valid enums are: " + Arrays
-          .toString(EnumGameStageRequire.values()));
-    }
-
-    try {
-      this.recipeBuilder.requireGameStages(enumGameStageRequire, stages);
-
-    } catch (RecipeBuilderException e) {
-      return this.logError(e.getMessage());
-    }
-
-    return this;
-  }
-
-  @Override
-  public IZenRecipeBuilder excludeGameStages(String[] stages) {
-
-    try {
-      this.recipeBuilder.excludeGameStages(stages);
 
     } catch (RecipeBuilderException e) {
       return this.logError(e.getMessage());

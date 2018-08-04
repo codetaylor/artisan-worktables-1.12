@@ -90,12 +90,6 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setExtraOutputThree(IItemStack output, float chance);
 
   @ZenMethod
-  IZenRecipeBuilder requireGameStages(String require, String[] stages);
-
-  @ZenMethod
-  IZenRecipeBuilder excludeGameStages(String[] stages);
-
-  @ZenMethod
   IZenRecipeBuilder setMinimumTier(int minimumTier);
 
   @ZenMethod

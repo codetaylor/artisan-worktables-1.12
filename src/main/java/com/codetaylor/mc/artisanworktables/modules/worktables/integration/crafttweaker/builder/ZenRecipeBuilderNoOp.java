@@ -91,18 +91,6 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
-  public IZenRecipeBuilder requireGameStages(String require, String[] stages) {
-
-    return this;
-  }
-
-  @Override
-  public IZenRecipeBuilder excludeGameStages(String[] stages) {
-
-    return this;
-  }
-
-  @Override
   public IZenRecipeBuilder setMinimumTier(int minimumTier) {
 
     return this;
