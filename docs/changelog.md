@@ -1,4 +1,4 @@
-1.19.0-SNAPSHOT.8
+1.19.0-SNAPSHOT.9
 
   * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
   
@@ -17,6 +17,7 @@
     * Builder method to set recipe names `RecipeBuilder setName(String name);`
     
   * Fixed:
+    * Merged fixes from 1.18.10
     * Merged fixes from 1.18.9
     * Merged fixes from 1.18.8
     * Merged fixes from 1.18.7
