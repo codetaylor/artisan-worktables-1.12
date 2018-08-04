@@ -37,36 +37,7 @@ public class CustomMaterialConverter {
     Integer colorInt = Integer.decode("0x" + data.getColor());
     int color = new Color(colorInt).getRGB();
 
-    // Convert ingredient
-    ParseResult parseResult = this.recipeItemParser.parse(data.getIngredientString());
-
-    if (parseResult == ParseResult.NULL) {
-      throw new MalformedRecipeItemException("Unable to parse ingredient [" + data.getIngredientString() + "] for material [" + data
-          .getName() + "]");
-    }
-
-    Object ingredient;
-
-    if ("ore".equals(parseResult.getDomain())) {
-      ingredient = parseResult.getPath();
-
-    } else {
-
-      Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(parseResult.getDomain(), parseResult.getPath()));
-
-      if (item == null) {
-        throw new MalformedRecipeItemException("Unable to find registered item: " + parseResult.toString());
-      }
-
-      if (parseResult.getMeta() == OreDictionary.WILDCARD_VALUE) {
-        throw new MalformedRecipeItemException("Wildcard value not accepted for tool material ingredients: " + parseResult
-            .toString());
-      }
-
-      ingredient = new ItemStack(item, 1, parseResult.getMeta());
-    }
-
-    return new CustomMaterial(data, toolMaterial, color, ingredient);
+    return new CustomMaterial(data, toolMaterial, color, data.getIngredientString());
   }
 
 }

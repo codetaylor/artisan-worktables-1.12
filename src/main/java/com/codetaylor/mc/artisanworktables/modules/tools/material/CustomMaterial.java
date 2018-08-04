@@ -7,19 +7,19 @@ public class CustomMaterial {
   private DataCustomMaterial dataCustomMaterial;
   private Item.ToolMaterial toolMaterial;
   private int color;
-  private Object ingredient;
+  private String ingredientString;
 
   public CustomMaterial(
       DataCustomMaterial dataCustomMaterial,
       Item.ToolMaterial toolMaterial,
       int color,
-      Object ingredient
+      String ingredientString
   ) {
 
     this.dataCustomMaterial = dataCustomMaterial;
     this.toolMaterial = toolMaterial;
     this.color = color;
-    this.ingredient = ingredient;
+    this.ingredientString = ingredientString;
   }
 
   public DataCustomMaterial getDataCustomMaterial() {
@@ -37,8 +37,8 @@ public class CustomMaterial {
     return this.color;
   }
 
-  public Object getIngredient() {
+  public String getIngredientString() {
 
-    return this.ingredient;
+    return this.ingredientString;
   }
 }

@@ -2,9 +2,16 @@ package com.codetaylor.mc.artisanworktables.modules.tools.recipe;
 
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
 import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.MalformedRecipeItemException;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.ParseResult;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.RecipeItemParser;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -318,23 +325,62 @@ public class ModuleToolsRecipes {
    */
   public static void register(IForgeRegistry<IRecipe> registry, String modId, List<ItemWorktableTool> toolList) {
 
+    RecipeItemParser recipeItemParser = new RecipeItemParser();
+
     for (ItemWorktableTool item : toolList) {
-      Object[] recipeDefinition = ModuleToolsRecipes.getRecipeDefinition(
-          item.getType(),
-          item.getMaterial().getIngredient()
-      );
 
-      if (recipeDefinition == null) {
-        throw new RuntimeException("Missing recipe definition for tool type: " + item.getType().getName());
+      try {
+        // Convert ingredient
+        String ingredientString = item.getMaterial().getIngredientString();
+
+        ParseResult parseResult = recipeItemParser.parse(ingredientString);
+
+        if (parseResult == ParseResult.NULL) {
+          throw new MalformedRecipeItemException("Unable to parse ingredient [" + item.getMaterial()
+              .getIngredientString() + "] for material [" + item.getMaterial() + "]");
+        }
+
+        Object ingredient;
+
+        if ("ore".equals(parseResult.getDomain())) {
+          ingredient = parseResult.getPath();
+
+        } else {
+
+          Item parsedItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(parseResult.getDomain(), parseResult.getPath()));
+
+          if (parsedItem == null) {
+            throw new MalformedRecipeItemException("Unable to find registered item: " + parseResult.toString());
+          }
+
+          if (parseResult.getMeta() == OreDictionary.WILDCARD_VALUE) {
+            throw new MalformedRecipeItemException("Wildcard value not accepted for tool material ingredients: " + parseResult
+                .toString());
+          }
+
+          ingredient = new ItemStack(parsedItem, 1, parseResult.getMeta());
+        }
+
+        Object[] recipeDefinition = ModuleToolsRecipes.getRecipeDefinition(
+            item.getType(),
+            ingredient
+        );
+
+        if (recipeDefinition == null) {
+          throw new RuntimeException("Missing recipe definition for tool type: " + item.getType().getName());
+        }
+
+        ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
+        recipe.setRegistryName(new ResourceLocation(
+            modId,
+            "recipe." + item.getName() + "." + item.getMaterial().getDataCustomMaterial().getName()
+        ));
+
+        registry.register(recipe);
+
+      } catch (Exception e) {
+        throw new RuntimeException("Error registering recipe", e);
       }
-
-      ShapedOreRecipe recipe = new ShapedOreRecipe(null, item, recipeDefinition);
-      recipe.setRegistryName(new ResourceLocation(
-          modId,
-          "recipe." + item.getName() + "." + item.getMaterial().getDataCustomMaterial().getName()
-      ));
-
-      registry.register(recipe);
     }
   }
 
