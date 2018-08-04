@@ -6,7 +6,6 @@ import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workshop.TileEntityWorkshop;
@@ -14,6 +13,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.T
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -709,5 +709,19 @@ public class Container
 
     super.onContainerClosed(playerIn);
     this.tile.removeContainer(this);
+  }
+
+  @Override
+  public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+
+    // If the player is trying to extract the recipe output from a multi-output recipe
+    // while holding an item in the cursor, don't allow it.
+    if (slotId == this.slotIndexResult
+        && this.tile.getRecipe(player).hasMultipleWeightedOutputs()
+        && !player.inventory.getItemStack().isEmpty()) {
+      return ItemStack.EMPTY;
+    }
+
+    return super.slotClick(slotId, dragType, clickTypeIn, player);
   }
 }
