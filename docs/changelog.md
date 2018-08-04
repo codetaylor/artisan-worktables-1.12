@@ -31,6 +31,9 @@
   * Changed:
     * Updated API (version 5)
     * Updated de_de.lang (PR#105 Xaikii)
+    * Removed gamestages recipe builder methods - deprecated since 1.18.0 (Mar 25, 2018)
+        * `RecipeBuilder requireGameStages(String require, String[] stages)`
+        * `RecipeBuilder excludeGameStages(String[] stages)`
 
 ---
 
