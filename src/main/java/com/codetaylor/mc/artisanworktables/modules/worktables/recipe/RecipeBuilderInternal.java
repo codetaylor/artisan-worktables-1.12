@@ -2,12 +2,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
-import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
@@ -87,15 +85,6 @@ public class RecipeBuilderInternal
   private Map<ResourceLocation, IRequirement> requirementMap;
   private boolean hidden;
 
-  @Deprecated
-  private EnumGameStageRequire gameStageRequire;
-
-  @Deprecated
-  private String[] includeGameStages;
-
-  @Deprecated
-  private String[] excludeGameStages;
-
   // --------------------------------------------------------------------------
   // - Copy
 
@@ -137,11 +126,6 @@ public class RecipeBuilderInternal
     this.consumeExperience = true;
 
     this.requirementMap = new HashMap<>();
-
-    // Deprecated
-    this.gameStageRequire = EnumGameStageRequire.ANY;
-    this.includeGameStages = new String[0];
-    this.excludeGameStages = new String[0];
   }
 
   // --------------------------------------------------------------------------
@@ -321,31 +305,6 @@ public class RecipeBuilderInternal
 
     chance = MathHelper.clamp(chance, 0, 1);
     this.extraOutputs[index] = new ExtraOutputChancePair(output, chance);
-    return this;
-  }
-
-  @Override
-  public IRecipeBuilder requireGameStages(
-      EnumGameStageRequire require,
-      String[] includeGameStages
-  ) throws RecipeBuilderException {
-
-    this.isNonnull(require, "Game stage enum can't be null");
-    this.isNonnull(includeGameStages, "Game stage array can't be null");
-    this.isNotZeroLength(includeGameStages, "Game stage array can't be zero length");
-
-    this.gameStageRequire = require;
-    this.includeGameStages = includeGameStages;
-    return this;
-  }
-
-  @Override
-  public IRecipeBuilder excludeGameStages(String[] excludeGameStages) throws RecipeBuilderException {
-
-    this.isNonnull(excludeGameStages, "Game stage array can't be null");
-    this.isNotZeroLength(excludeGameStages, "Game stage array can't be zero length");
-
-    this.excludeGameStages = excludeGameStages;
     return this;
   }
 
@@ -534,13 +493,6 @@ public class RecipeBuilderInternal
 
     copy.requirementMap = new HashMap<>(this.requirementMap);
 
-    // Deprecated
-    copy.gameStageRequire = this.gameStageRequire;
-    copy.includeGameStages = new String[this.includeGameStages.length];
-    System.arraycopy(this.includeGameStages, 0, copy.includeGameStages, 0, this.includeGameStages.length);
-    copy.excludeGameStages = new String[this.excludeGameStages.length];
-    System.arraycopy(this.excludeGameStages, 0, copy.excludeGameStages, 0, this.excludeGameStages.length);
-
     return copy;
   }
 
@@ -565,32 +517,7 @@ public class RecipeBuilderInternal
   public void apply(ILogger logger) throws RecipeBuilderException {
 
     // Build the recipe object and add it to the registry.
-
-    // Assemble the GameStages requirement from deprecated fields.
-    // TODO: remove this in future version (2018-03-28)
-
-    if (Loader.isModLoaded("gamestages")) {
-
-      if (this.includeGameStages.length != 0
-          || this.excludeGameStages.length != 0) {
-
-        logger.logWarning("Using deprecated GameStages builder methods! Please use the new requirement system instead.");
-
-        GameStagesRequirementBuilder builder = new GameStagesRequirementBuilder();
-
-        if (this.gameStageRequire == EnumGameStageRequire.ALL) {
-          builder.allOf(this.includeGameStages);
-
-        } else {
-          builder.anyOf(this.includeGameStages);
-        }
-
-        builder.exclude(this.excludeGameStages);
-
-        this.requirementMap.put(builder.getResourceLocation(), builder.create());
-      }
-    }
-
+    
     // Decide which style recipe matcher to use.
 
     IRecipeMatrixMatcher recipeMatcher;

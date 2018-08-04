@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
-import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumGameStageRequire;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -26,15 +25,6 @@ public interface IRecipeBuilder {
   IRecipeBuilder addOutput(IArtisanItemStack output, int weight) throws RecipeBuilderException;
 
   IRecipeBuilder setExtraOutput(int index, IArtisanItemStack output, float chance) throws RecipeBuilderException;
-
-  @Deprecated
-  IRecipeBuilder requireGameStages(
-      EnumGameStageRequire require,
-      String[] includeGameStages
-  ) throws RecipeBuilderException;
-
-  @Deprecated
-  IRecipeBuilder excludeGameStages(String[] excludeGameStages) throws RecipeBuilderException;
 
   IRecipeBuilder setMinimumTier(int tier) throws RecipeBuilderException;
 
