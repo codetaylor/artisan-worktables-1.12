@@ -1,3 +1,10 @@
+1.18.10
+
+  * Fixed: Issue when crafting item with weighted primary output (#124)
+  * Fixed: Some custom tools aren't created (#125)
+
+---
+
 1.18.9
 
   * Fixed: JEI displays recipes when tank size is insufficient (#122)
