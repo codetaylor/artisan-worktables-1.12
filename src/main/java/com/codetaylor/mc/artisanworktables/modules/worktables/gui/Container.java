@@ -714,12 +714,17 @@ public class Container
   @Override
   public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
 
-    // If the player is trying to extract the recipe output from a multi-output recipe
-    // while holding an item in the cursor, don't allow it.
     if (slotId == this.slotIndexResult
-        && this.tile.getRecipe(player).hasMultipleWeightedOutputs()
         && !player.inventory.getItemStack().isEmpty()) {
-      return ItemStack.EMPTY;
+      IArtisanRecipe recipe = this.tile.getRecipe(player);
+
+      if (recipe != null
+          && recipe.hasMultipleWeightedOutputs()) {
+        // If the player is trying to extract the recipe output from a multi-output recipe
+        // while holding an item in the cursor, don't allow it.
+
+        return ItemStack.EMPTY;
+      }
     }
 
     return super.slotClick(slotId, dragType, clickTypeIn, player);
