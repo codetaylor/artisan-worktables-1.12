@@ -1,3 +1,9 @@
+1.18.11
+
+  * Fixed: Clicking an empty output slot in the Mage's Worktable causes a NullPointerException (#126)
+
+---
+
 1.18.10
 
   * Fixed: Issue when crafting item with weighted primary output (#124)
