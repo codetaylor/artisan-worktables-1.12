@@ -12,6 +12,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.Recipe
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByRecipe;
 import crafttweaker.api.recipes.ICraftingRecipe;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -46,7 +47,7 @@ public class RecipeBuilderInternal
       return new RecipeBuilderCopyStrategyByName(recipeName);
     }
 
-    public static IRecipeBuilderCopyStrategy byRecipe(ICraftingRecipe recipe) throws RecipeBuilderException {
+    public static IRecipeBuilderCopyStrategy byRecipe(IRecipe recipe) throws RecipeBuilderException {
 
       return new RecipeBuilderCopyStrategyByRecipe(recipe);
     }

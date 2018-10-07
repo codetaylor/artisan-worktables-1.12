@@ -13,17 +13,13 @@ public class RecipeBuilderCopyStrategyByRecipe
 
   private IRecipe recipe;
 
-  public RecipeBuilderCopyStrategyByRecipe(ICraftingRecipe recipe) throws RecipeBuilderException {
+  public RecipeBuilderCopyStrategyByRecipe(IRecipe recipe) throws RecipeBuilderException {
 
     if (recipe == null) {
       throw new RecipeBuilderException("Recipe to copy can't be null");
     }
 
-    if (!(recipe instanceof IRecipe)) {
-      throw new RecipeBuilderException("Recipe is not an instance of IRecipe");
-    }
-
-    this.recipe = (IRecipe) recipe;
+    this.recipe = recipe;
   }
 
   @Override

@@ -7,6 +7,9 @@ import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogH
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.recipes.ICraftingRecipe;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -32,7 +35,9 @@ public interface IZenRecipeBuilderCopyStrategy {
   static IZenRecipeBuilderCopyStrategy byRecipe(ICraftingRecipe recipe) {
 
     try {
-      return new ZenRecipeBuilderCopyStrategy(RecipeBuilderInternal.Copy.byRecipe(recipe));
+      String registryName = recipe.getFullResourceName();
+      IRecipe iRecipe = ForgeRegistries.RECIPES.getValue(new ResourceLocation(registryName));
+      return new ZenRecipeBuilderCopyStrategy(RecipeBuilderInternal.Copy.byRecipe(iRecipe));
 
     } catch (RecipeBuilderException e) {
       CTLogHelper.logErrorFromZenMethod(e.getMessage());
