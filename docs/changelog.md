@@ -1,6 +1,6 @@
 1.19.0
 
-  * Note: This beta release does not contain the planned automation features. Those may come in a future update.
+  * Note: This beta release does not contain the planned automation features. Those will come in a future update, no ETA.
 
   * Added:
     * Config option to hide table types in JEI (#112)
