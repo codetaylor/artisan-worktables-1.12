@@ -1,9 +1,7 @@
-1.19.0-SNAPSHOT.10
+1.19.0
 
-  * ALPHA RELEASE - for those who want to explore new features early - expect bugs, expect changes
-  
-  * The changelog for the alpha snapshots has been condensed. This entry contains all cumulative changes in the development branch.
-  
+  * Note: This beta release does not contain the planned automation features. Those may come in a future update.
+
   * Added:
     * Config option to hide table types in JEI (#112)
     * New tool: razor
@@ -14,20 +12,15 @@
     * New tools: punch, groover, carver
     * Builder method to hide recipes in JEI `RecipeBuilder setHidden(@Optional(default = true) boolean hidden);`
     * Config options to disable pattern creation for each table tier
+    * Config option to enable duplicate recipe name warnings
     * Builder method to set recipe names `RecipeBuilder setName(String name);`
     
   * Fixed:
-    * Merged fixes from 1.18.11
-    * Merged fixes from 1.18.10
-    * Merged fixes from 1.18.9
-    * Merged fixes from 1.18.8
-    * Merged fixes from 1.18.7
-    * Merged fixes from 1.18.6
-    * Merged fixes from 1.18.5
-    * Merged fixes from 1.18.4
     * Tables inaccessible with adjacent designer's table (#108)
     * Shift-click crash (#107)
     * Server crash (#104)
+    * Recipes copied using `Copy.byRecipe` are all shapeless (#129)
+    * Recipes no longer copied after CrT update to 4.1.10 (#132)
 
   * Changed:
     * Updated API (version 5)
