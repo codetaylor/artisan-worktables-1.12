@@ -7,6 +7,7 @@ import com.codetaylor.mc.artisanworktables.api.recipe.IRecipeFactory;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementBuilder;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
@@ -648,7 +649,11 @@ public class RecipeBuilderInternal
 
     // check for duplicate recipe name
     while (registry.hasRecipe(recipeName)) {
-      logger.logWarning("Duplicate recipe name found: " + recipeName);
+
+      if (ModuleWorktablesConfig.ENABLE_DUPLICATE_RECIPE_NAME_WARNINGS) {
+        logger.logWarning("Duplicate recipe name found: " + recipeName);
+      }
+
       hash += 1;
       recipeName = this.prefixTableName(String.valueOf(hash));
     }

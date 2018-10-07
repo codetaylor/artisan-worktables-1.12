@@ -18,6 +18,14 @@ import java.util.Map;
 public class ModuleWorktablesConfig {
 
   @Config.Comment({
+      "Set to true to enable log warnings for duplicate recipe names.",
+      "If you're using a lot of your own recipe names, you can enable this",
+      "from time to time to check that you haven't accidentally used the",
+      "same name twice."
+  })
+  public static boolean ENABLE_DUPLICATE_RECIPE_NAME_WARNINGS = false;
+
+  @Config.Comment({
       "Set to false to disable worktables."
   })
   @Config.RequiresMcRestart
