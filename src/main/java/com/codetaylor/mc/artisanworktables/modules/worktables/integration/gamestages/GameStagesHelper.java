@@ -1,7 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.SidedProxy;
 
