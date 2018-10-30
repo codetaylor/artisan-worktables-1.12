@@ -1,3 +1,7 @@
+1.19.1
+
+  * Fixed client crash when either toolbox is disabled (#135)
+
 1.19.0
 
   * Note: This beta release does not contain the planned automation features. Those will come in a future update, no ETA.
