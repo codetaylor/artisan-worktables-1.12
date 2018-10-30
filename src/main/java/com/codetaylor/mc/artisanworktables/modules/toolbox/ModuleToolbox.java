@@ -67,13 +67,17 @@ public class ModuleToolbox
 
     super.onClientRegister(registry);
 
-    registry.registerClientModelRegistrationStrategy(() -> {
-      ModelRegistrationHelper.registerBlockItemModel(Blocks.TOOLBOX.getDefaultState());
-    });
+    if (ModuleToolboxConfig.TOOLBOX.ENABLED) {
+      registry.registerClientModelRegistrationStrategy(() -> {
+        ModelRegistrationHelper.registerBlockItemModel(Blocks.TOOLBOX.getDefaultState());
+      });
+    }
 
-    registry.registerClientModelRegistrationStrategy(() -> {
-      ModelRegistrationHelper.registerBlockItemModel(Blocks.MECHANICAL_TOOLBOX.getDefaultState());
-    });
+    if (ModuleToolboxConfig.MECHANICAL_TOOLBOX.ENABLED) {
+      registry.registerClientModelRegistrationStrategy(() -> {
+        ModelRegistrationHelper.registerBlockItemModel(Blocks.MECHANICAL_TOOLBOX.getDefaultState());
+      });
+    }
   }
 
 }
