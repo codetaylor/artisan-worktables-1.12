@@ -25,7 +25,7 @@ group = "com.sudoplay.mc"
 archivesBaseName = "artisanworktables"
 
 project.ext.athenaeum_version = "1.12.2-1.14.0"
-project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker;after:jei@[4.8.5.139,);after:gamestages@[2.0.90,);after:reskillable"'
+project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker@[4.1.11.500,);after:jei@[4.8.5.139,);after:gamestages@[2.0.90,);after:reskillable"'
 
 compileJava.doFirst {
     project.sourceSets.main.java.srcDirs.each { dir ->

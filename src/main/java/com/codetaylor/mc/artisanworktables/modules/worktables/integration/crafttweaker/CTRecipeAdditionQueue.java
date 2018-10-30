@@ -6,7 +6,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeAddi
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecipeBuilderCopyStrategyInternal;
 import crafttweaker.mc1120.CraftTweaker;
-import crafttweaker.mc1120.events.ScriptRunEvent;
+import crafttweaker.mc1120.events.ActionApplyEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ public class CTRecipeAdditionQueue
   }
 
   @SubscribeEvent
-  public void onScriptEvent(ScriptRunEvent.Post event) {
+  public void on(ActionApplyEvent.Pre event) {
 
-    // This is intended to run immediately after CrT executes its scripts.
+    // This is intended to run immediately before CrT applies any actions.
 
     // initialize copy recipes
     for (RecipeBuilderInternal builder : CTRecipeAdditionQueue.this.recipeBuilderWithCopyList) {
