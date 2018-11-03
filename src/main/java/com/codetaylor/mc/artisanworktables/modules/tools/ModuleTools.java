@@ -185,6 +185,25 @@ public class ModuleTools
             + "." + typeName.replaceAll("_", "."));
       }
     }
+
+    registry.registerItemRegistrationStrategy(forgeRegistry -> {
+
+      if (ModuleToolsConfig.ENABLE_TOOL_TYPE_ORE_DICT_GROUPS) {
+
+        for (ItemWorktableTool item : this.registeredToolList) {
+          ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
+          OreDictionary.registerOre(ModuleToolsConfig.TOOL_BY_TYPE_ORE_DICT_PREFIX + item.getType().getOreDictSuffix(), itemStack);
+        }
+      }
+
+      if (ModuleToolsConfig.ENABLE_TOOL_MATERIAL_ORE_DICT_GROUPS) {
+
+        for (ItemWorktableTool item : this.registeredToolList) {
+          ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
+          OreDictionary.registerOre(item.getMaterial().getDataCustomMaterial().getOreDictKey(), itemStack);
+        }
+      }
+    });
   }
 
   @Override
@@ -203,28 +222,6 @@ public class ModuleTools
         ModelLoader.setCustomModelResourceLocation(item, 0, modelResourceLocation);
       }
     });
-  }
-
-  @Override
-  public void onInitializationEvent(FMLInitializationEvent event) {
-
-    super.onInitializationEvent(event);
-
-    if (ModuleToolsConfig.ENABLE_TOOL_TYPE_ORE_DICT_GROUPS) {
-
-      for (ItemWorktableTool item : this.registeredToolList) {
-        ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
-        OreDictionary.registerOre(ModuleToolsConfig.TOOL_BY_TYPE_ORE_DICT_PREFIX + item.getType().getOreDictSuffix(), itemStack);
-      }
-    }
-
-    if (ModuleToolsConfig.ENABLE_TOOL_MATERIAL_ORE_DICT_GROUPS) {
-
-      for (ItemWorktableTool item : this.registeredToolList) {
-        ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
-        OreDictionary.registerOre(item.getMaterial().getDataCustomMaterial().getOreDictKey(), itemStack);
-      }
-    }
   }
 
   @SubscribeEvent
