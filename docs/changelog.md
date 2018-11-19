@@ -1,6 +1,20 @@
+1.19.2
+
+  * Fixed:
+    * Some recipes not copying properly (#132)
+
+  * Changed:
+    * Moved oredict registration from init to pre-init
+
+  * Requires: CraftTweaker >= 4.1.11.500
+
+---
+
 1.19.1
 
   * Fixed client crash when either toolbox is disabled (#135)
+
+---
 
 1.19.0
 
