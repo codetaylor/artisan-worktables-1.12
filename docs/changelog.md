@@ -1,3 +1,10 @@
+1.19.3
+
+  * Fixed:
+    * Improved thread-safety of the self-ordering recipe lists (#140)
+
+---
+
 1.19.2
 
   * Fixed:

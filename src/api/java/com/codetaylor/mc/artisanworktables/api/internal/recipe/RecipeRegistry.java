@@ -16,32 +16,25 @@ import java.util.*;
 public class RecipeRegistry
     extends IForgeRegistryEntry.Impl<RecipeRegistry> {
 
-  private List<IArtisanRecipe> recipeList;
-  private Map<String, IArtisanRecipe> recipeMap;
+  private final List<IArtisanRecipe> recipeList;
+  private final Map<String, IArtisanRecipe> recipeMap;
 
   public RecipeRegistry(String modId, String name) {
 
     this.setRegistryName(modId, name);
-    this.recipeList = new ArrayList<>();
+    this.recipeList = Collections.synchronizedList(new ArrayList<>());
     this.recipeMap = new HashMap<>();
-  }
-
-  public List<IArtisanRecipe> getRecipeList() {
-
-    return Collections.unmodifiableList(this.recipeList);
-  }
-
-  public Map<String, IArtisanRecipe> getRecipeMap() {
-
-    return Collections.unmodifiableMap(this.recipeMap);
   }
 
   public List<IArtisanRecipe> getRecipeListByTier(EnumTier tier, List<IArtisanRecipe> result) {
 
-    for (IArtisanRecipe recipe : this.recipeList) {
+    synchronized (this.recipeList) {
 
-      if (recipe.matchTier(tier)) {
-        result.add(recipe);
+      for (IArtisanRecipe recipe : this.recipeList) {
+
+        if (recipe.matchTier(tier)) {
+          result.add(recipe);
+        }
       }
     }
 
@@ -93,29 +86,11 @@ public class RecipeRegistry
       return null;
     }
 
-    // Next, check the last recipe first.
-    IArtisanRecipe lastRecipe = this.recipeList.get(this.recipeList.size() - 1);
-    boolean lastRecipeMatches = lastRecipe.matches(
-        requirementContextMap,
-        playerExperience,
-        playerLevels,
-        isPlayerCreative,
-        tools,
-        craftingMatrix,
-        fluidStack,
-        secondaryIngredientMatcher,
-        tier
-    );
+    synchronized (this.recipeList) {
 
-    if (lastRecipeMatches) {
-      return lastRecipe;
-    }
-
-    // Next, loop through the remaining recipes in reverse.
-    for (int i = this.recipeList.size() - 2; i >= 0; i--) {
-      IArtisanRecipe recipe = this.recipeList.get(i);
-
-      boolean matches = recipe.matches(
+      // Next, check the last recipe first.
+      IArtisanRecipe lastRecipe = this.recipeList.get(this.recipeList.size() - 1);
+      boolean lastRecipeMatches = lastRecipe.matches(
           requirementContextMap,
           playerExperience,
           playerLevels,
@@ -127,16 +102,37 @@ public class RecipeRegistry
           tier
       );
 
-      if (matches) {
-        // If the recipe matches, move it to the end of the list. This ensures that the
-        // recipe will be checked faster next time, increasing performance for shift +
-        // click crafting operations.
-        //
-        // Worst case remove: O(n) for re-indexing.
-        // Worst case add: O(1) because we're adding to the end of the list.
-        this.recipeList.remove(i);
-        this.recipeList.add(recipe);
-        return recipe;
+      if (lastRecipeMatches) {
+        return lastRecipe;
+      }
+
+      // Next, loop through the remaining recipes in reverse.
+      for (int i = this.recipeList.size() - 2; i >= 0; i--) {
+        IArtisanRecipe recipe = this.recipeList.get(i);
+
+        boolean matches = recipe.matches(
+            requirementContextMap,
+            playerExperience,
+            playerLevels,
+            isPlayerCreative,
+            tools,
+            craftingMatrix,
+            fluidStack,
+            secondaryIngredientMatcher,
+            tier
+        );
+
+        if (matches) {
+          // If the recipe matches, move it to the end of the list. This ensures that the
+          // recipe will be checked faster next time, increasing performance for shift +
+          // click crafting operations.
+          //
+          // Worst case remove: O(n) for re-indexing.
+          // Worst case add: O(1) because we're adding to the end of the list.
+          this.recipeList.remove(i);
+          this.recipeList.add(recipe);
+          return recipe;
+        }
       }
     }
 
@@ -146,10 +142,13 @@ public class RecipeRegistry
 
   public boolean containsRecipeWithToolInSlot(ItemStack tool, int toolIndex) {
 
-    for (IArtisanRecipe recipe : this.recipeList) {
+    synchronized (this.recipeList) {
 
-      if (recipe.isValidTool(tool, toolIndex)) {
-        return true;
+      for (IArtisanRecipe recipe : this.recipeList) {
+
+        if (recipe.isValidTool(tool, toolIndex)) {
+          return true;
+        }
       }
     }
 
@@ -158,13 +157,16 @@ public class RecipeRegistry
 
   public boolean containsRecipeWithToolInAnySlot(ItemStack tool) {
 
-    for (IArtisanRecipe recipe : this.recipeList) {
-      int toolCount = recipe.getToolCount();
+    synchronized (this.recipeList) {
 
-      for (int i = 0; i < toolCount; i++) {
+      for (IArtisanRecipe recipe : this.recipeList) {
+        int toolCount = recipe.getToolCount();
 
-        if (recipe.isValidTool(tool, i)) {
-          return true;
+        for (int i = 0; i < toolCount; i++) {
+
+          if (recipe.isValidTool(tool, i)) {
+            return true;
+          }
         }
       }
     }
