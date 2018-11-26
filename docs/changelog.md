@@ -1,3 +1,12 @@
+1.19.4
+
+  * Fixed:
+    * Crash due to missing class in lib (#141)
+
+  * Requires: Athenaeum >= 1.15.0
+
+---
+
 1.19.3
 
   * Fixed:
