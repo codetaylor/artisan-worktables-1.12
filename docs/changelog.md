@@ -1,3 +1,10 @@
+1.19.5
+
+  * Changed:
+    * Added additional ingredient and item stack empty checks on builder input (#144)
+
+---
+
 1.19.4
 
   * Fixed:
