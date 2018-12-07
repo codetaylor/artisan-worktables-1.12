@@ -12,7 +12,6 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.IRecip
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByName;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByOutput;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy.RecipeBuilderCopyStrategyByRecipe;
-import crafttweaker.api.recipes.ICraftingRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -133,6 +132,20 @@ public class RecipeBuilderInternal
   // --------------------------------------------------------------------------
   // - Validation
 
+  private void isNotEmpty(IArtisanIngredient ingredient, String message) throws RecipeBuilderException {
+
+    if (ingredient.isEmpty()) {
+      this.setInvalid(message);
+    }
+  }
+
+  private void isNotEmpty(IArtisanItemStack itemStack, String message) throws RecipeBuilderException {
+
+    if (itemStack.isEmpty()) {
+      this.setInvalid(message);
+    }
+  }
+
   private void isNonnull(Object o, String message) throws RecipeBuilderException {
 
     if (o == null) {
@@ -204,6 +217,8 @@ public class RecipeBuilderInternal
       }
     }
 
+    boolean isValid = false;
+
     for (IArtisanIngredient[] row : ingredients) {
 
       this.isNonnull(row, "Ingredient row can't be null");
@@ -213,8 +228,16 @@ public class RecipeBuilderInternal
 
       for (int i = 0; i < row.length; i++) {
         cols.set(i, row[i]);
+
+        if (!isValid && !row[i].isEmpty()) {
+          isValid = true;
+        }
       }
       this.ingredients.addAll(cols);
+    }
+
+    if (!isValid) {
+      this.setInvalid("Shaped ingredient matrix must contain at minimum one non-empty entry");
     }
 
     this.height = ingredients.length;
@@ -228,6 +251,10 @@ public class RecipeBuilderInternal
     this.isNonnull(ingredients, "Ingredient array can't be null");
     this.isFalse(this.inputSet, "Recipe input already set");
     this.isNull(this.ingredients, "Ingredients already set, can't be set twice");
+
+    for (int i = 0; i < ingredients.length; i++) {
+      this.isNotEmpty(ingredients[i], "Shapeless ingredient array can't contain empty elements, found emtpy element at index: " + i);
+    }
 
     this.ingredients = new ArrayList<>();
     Collections.addAll(this.ingredients, ingredients);
@@ -251,6 +278,10 @@ public class RecipeBuilderInternal
     this.isNotZeroLength(secondaryIngredients, "Secondary ingredients array can't be zero length");
     this.isTrue(this.secondaryIngredients.isEmpty(), "Secondary ingredients already set, can't be set twice");
     this.isTrue(secondaryIngredients.length <= 9, "Exceeded max allowed 9 secondary ingredients");
+
+    for (int i = 0; i < secondaryIngredients.length; i++) {
+      this.isNotEmpty(secondaryIngredients[i], "Secondary ingredient array element can't be empty at index: " + i);
+    }
 
     this.secondaryIngredients = new ArrayList<>();
     Collections.addAll(this.secondaryIngredients, secondaryIngredients);
@@ -276,6 +307,7 @@ public class RecipeBuilderInternal
 
     this.isNonnull(tool, "Tool can't be null");
     this.isTrue(this.tools.size() < MAX_TOOL_COUNT, "Exceeded maximum tool count");
+    this.isNotEmpty(tool, "Tool ingredient can't be empty");
 
     this.tools.add(new ToolIngredientEntry(tool, toolDamage));
     return this;
@@ -285,6 +317,7 @@ public class RecipeBuilderInternal
   public IRecipeBuilder addOutput(IArtisanItemStack output, int weight) throws RecipeBuilderException {
 
     this.isNonnull(output, "Output can't be null");
+    this.isNotEmpty(output, "Output can't be empty");
 
     if (weight < 1) {
       weight = 1;
@@ -301,6 +334,9 @@ public class RecipeBuilderInternal
       IArtisanItemStack output,
       float chance
   ) throws RecipeBuilderException {
+
+    this.isNonnull(output, "Output can't be null");
+    this.isNotEmpty(output, "Output can't be empty");
 
     this.isTrue(index >= 0, "Extra output index out of bounds");
     this.isTrue(index < this.extraOutputs.length, "Extra output index out of bounds");
@@ -519,7 +555,7 @@ public class RecipeBuilderInternal
   public void apply(ILogger logger) throws RecipeBuilderException {
 
     // Build the recipe object and add it to the registry.
-    
+
     // Decide which style recipe matcher to use.
 
     IRecipeMatrixMatcher recipeMatcher;
