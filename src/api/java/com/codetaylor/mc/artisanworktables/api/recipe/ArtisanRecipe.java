@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.api.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.event.ArtisanCraftEvent;
+import com.codetaylor.mc.artisanworktables.api.internal.event.ArtisanInventory;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.util.EnchantmentHelper;
@@ -21,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -506,6 +508,16 @@ public class ArtisanRecipe
         context.getTier(),
         craftedItem.copy(),
         extraOutputConvertedList
+    ));
+
+    MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(
+        context.getPlayer(),
+        craftedItem.copy(),
+        new ArtisanInventory(
+            context.getCraftingMatrixHandler(),
+            context.getCraftingMatrixHandler().getWidth(),
+            context.getCraftingMatrixHandler().getHeight()
+        )
     ));
   }
 
