@@ -1,3 +1,10 @@
+1.20.0
+
+  * Added:
+    * AW now fires a `PlayerEvent.ItemCraftedEvent` on the server when an item is crafted in a table. (#145)
+
+---
+
 1.19.5
 
   * Changed:
