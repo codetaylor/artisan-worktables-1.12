@@ -1,3 +1,10 @@
+1.20.1
+
+  * Fixed:
+    * Craft completion logic not triggering when shift-clicking a recipe (#150)
+
+---
+
 1.20.0
 
   * Added:
@@ -114,6 +121,7 @@
 1.18.6
 
   * Fixed: missing recipes in JEI 4.9.1.188+, (#114)
+
 ---
 
 1.18.5

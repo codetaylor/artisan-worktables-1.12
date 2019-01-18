@@ -485,6 +485,10 @@ public class ArtisanRecipe
       this.onCraftCheckAndReplaceTool(context, i);
     }
 
+    // Issue #150:
+    // When shift-clicking a recipe, craftedItem is empty.
+    // The craftedItem is the return value of calling onCraftCheckAndSwapWeightedOutput
+    // and is only used here to determine if onCraftCompleteServer should be called.
     if (!world.isRemote && !craftedItem.isEmpty()) {
       this.onCraftCompleteServer(craftedItem, extraOutputList, context);
     }
@@ -758,18 +762,23 @@ public class ArtisanRecipe
   @Nonnull
   protected ItemStack onCraftCheckAndSwapWeightedOutput(ICraftingContext context) {
 
+    // Select an output.
+    ItemStack itemStack = this.selectOutput(context, Util.RANDOM).toItemStack();
+
     EntityPlayer player = context.getPlayer();
 
     if (!player.inventory.getItemStack().isEmpty()) {
 
+      // If the player is holding an item under their mouse cursor swap the item accordingly.
+
       if (this.hasMultipleWeightedOutputs()) {
-        ItemStack itemStack = this.selectOutput(context, Util.RANDOM).toItemStack();
         player.inventory.setItemStack(itemStack);
         ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
       }
     }
 
-    return player.inventory.getItemStack();
+    // This is returned if the player has shift-clicked the craft.
+    return itemStack;
   }
 
   @Nonnull
