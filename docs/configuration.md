@@ -56,20 +56,30 @@ general {
         artisans_hammer
         artisans_framing_hammer
         artisans_handsaw
+        artisans_cutting_board
+        artisans_pan
         artisans_beaker
         artisans_burner
         artisans_driver
         artisans_spanner
+        artisans_lens
+        artisans_sifter
         artisans_gemcutter
         artisans_pliers
         artisans_athame
         artisans_grimoire
         artisans_chisel
         artisans_trowel
+        artisans_carver
+        artisans_razor
         artisans_compass
         artisans_quill
         artisans_needle
         artisans_shears
+        artisans_punch
+        artisans_groover
+        artisans_mortar
+        artisans_knife
      >
 
     # Set to false to disable all tools.
@@ -110,6 +120,12 @@ general {
 # Configuration file
 
 general {
+    # Set to true to enable log warnings for duplicate recipe names.
+    # If you're using a lot of your own recipe names, you can enable this
+    # from time to time to check that you haven't accidentally used the
+    # same name twice.
+    B:ENABLE_DUPLICATE_RECIPE_NAME_WARNINGS=false
+
     # Set to false to disable workshops.
     B:ENABLE_WORKSHOPS=true
 
