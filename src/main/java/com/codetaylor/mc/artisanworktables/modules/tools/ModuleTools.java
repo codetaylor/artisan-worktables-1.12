@@ -1,6 +1,8 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
+import com.codetaylor.mc.artisanworktables.modules.tools.handlers.GTCEToolHandler;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
 import com.codetaylor.mc.artisanworktables.modules.tools.material.*;
 import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleToolsRecipes;
@@ -21,10 +23,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -43,6 +48,8 @@ public class ModuleTools
 
   public static final String MOD_ID = ModArtisanWorktables.MOD_ID;
   public static final CreativeTabs CREATIVE_TAB = ModArtisanWorktables.CREATIVE_TAB;
+
+  private static final Logger LOGGER = LogManager.getLogger(ModuleTools.class);
 
   public static final class Lang {
 
@@ -143,6 +150,17 @@ public class ModuleTools
 
     } finally {
       FileHelper.closeSilently(reader);
+    }
+
+    if (Loader.isModLoaded("gregtech")) {
+
+      try {
+        GTCEToolHandler handler = new GTCEToolHandler();
+        ArtisanToolHandlers.register(handler);
+
+      } catch (Throwable t) {
+        LOGGER.error("Error registering GTCE tool handler", t);
+      }
     }
 
     super.onPreInitializationEvent(event);

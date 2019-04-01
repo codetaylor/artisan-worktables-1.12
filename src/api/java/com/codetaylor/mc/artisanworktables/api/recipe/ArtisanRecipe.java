@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
+import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.event.ArtisanCraftEvent;
 import com.codetaylor.mc.artisanworktables.api.internal.event.ArtisanInventory;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
@@ -328,11 +329,9 @@ public class ArtisanRecipe
 
     if (ArtisanConfig.MODULE_WORKTABLES_CONFIG.restrictCraftMinimumDurability()) {
 
-      // Note: this may fail with tinker's tools because as far as I know,
-      // tinker's tools don't have a max damage value set
-      if (tool.getItemDamage() + this.tools[toolIndex].getDamage() > tool.getMaxDamage()) {
-        return false;
-      }
+      IToolHandler handler = ArtisanToolHandlers.get(tool);
+      int toolDamage = this.getToolDamage(toolIndex);
+      return handler.canAcceptAllDamage(tool, toolDamage);
     }
 
     return true;
@@ -825,28 +824,20 @@ public class ArtisanRecipe
     ItemStack itemStack = toolHandler.getStackInSlot(toolIndex);
 
     if (!itemStack.isEmpty() && this.isValidTool(itemStack, toolIndex)) {
-      int itemDamage = itemStack.getMetadata() + this.getToolDamage(toolIndex);
+      IToolHandler handler = ArtisanToolHandlers.get(itemStack);
+      boolean broken = handler.applyDamage(itemStack, this.getToolDamage(toolIndex), false);
 
-      if (itemDamage >= itemStack.getItem().getMaxDamage(itemStack)) {
-        toolHandler.setStackInSlot(toolIndex, ItemStack.EMPTY);
-
-        if (!world.isRemote) {
-          world.playSound(
-              player,
-              player.posX,
-              player.posY,
-              player.posZ,
-              SoundEvents.ENTITY_ITEM_BREAK,
-              SoundCategory.PLAYERS,
-              1.0f,
-              1.0f
-          );
-        }
-
-      } else {
-        ItemStack copy = itemStack.copy();
-        copy.setItemDamage(itemDamage);
-        toolHandler.setStackInSlot(toolIndex, copy);
+      if (broken && !world.isRemote) {
+        world.playSound(
+            null,
+            player.posX,
+            player.posY,
+            player.posZ,
+            SoundEvents.ENTITY_ITEM_BREAK,
+            SoundCategory.PLAYERS,
+            1.0f,
+            1.0f
+        );
       }
     }
   }
