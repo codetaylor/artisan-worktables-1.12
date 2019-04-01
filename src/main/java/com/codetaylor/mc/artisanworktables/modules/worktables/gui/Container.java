@@ -872,6 +872,12 @@ public class Container
 
         return ItemStack.EMPTY;
       }
+
+    } else if (clickTypeIn == ClickType.PICKUP
+        && dragType == 1
+        && this.inventorySlots.get(slotId) instanceof CraftingResultSlot) {
+
+      return super.slotClick(slotId, 0, clickTypeIn, player);
     }
 
     return super.slotClick(slotId, dragType, clickTypeIn, player);

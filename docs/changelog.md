@@ -1,3 +1,10 @@
+1.20.2
+
+  * Fixed:
+    * Right-clicking output only gives half of the stack (#156)
+
+---
+
 1.20.1
 
   * Fixed:
