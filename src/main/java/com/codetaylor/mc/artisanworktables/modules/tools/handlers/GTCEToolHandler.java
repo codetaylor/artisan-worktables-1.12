@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.tools.handlers;
 
 import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,7 +57,24 @@ public class GTCEToolHandler
   }
 
   @Override
-  public boolean applyDamage(ItemStack itemStack, int damage, boolean simulate) {
+  public boolean applyDamage(World world, ItemStack itemStack, int damage, boolean simulate) {
+
+    // The server tag object for the stack is ending up on the client in
+    // a single player setup. The same instance - so any changes made on the
+    // client's tag were also made on the server's tag because it's the same
+    // object.
+    //
+    // TODO: I don't know what is causing this to happen.
+    //  - Is this normal behavior?
+    //  - Is something that AW does causing this?
+    //
+    // Duplicating the tag on the client before it's modified seems to do
+    // the trick.
+    if (!simulate
+        && world.isRemote
+        && itemStack.getTagCompound() != null) {
+      itemStack.setTagCompound(itemStack.getTagCompound().copy());
+    }
 
     return !this.GTUtility_doDamageItem(itemStack, damage, simulate);
   }

@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.recipe;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
@@ -20,7 +21,7 @@ public class DefaultToolHandler
   }
 
   @Override
-  public boolean applyDamage(ItemStack itemStack, int damage, boolean simulate) {
+  public boolean applyDamage(World world, ItemStack itemStack, int damage, boolean simulate) {
 
     if (simulate) {
       return (itemStack.getItemDamage() + damage > itemStack.getMaxDamage());

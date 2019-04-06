@@ -485,7 +485,7 @@ public class ArtisanRecipe
     }
 
     // Issue #150:
-    // When shift-clicking a recipe, craftedItem is empty.
+    // When shift-clicking a recipe, craftedItem was empty. Now, craftedItem should never be empty.
     // The craftedItem is the return value of calling onCraftCheckAndSwapWeightedOutput
     // and is only used here to determine if onCraftCompleteServer should be called.
     if (!world.isRemote && !craftedItem.isEmpty()) {
@@ -776,7 +776,7 @@ public class ArtisanRecipe
       }
     }
 
-    // This is returned if the player has shift-clicked the craft.
+    // This is returned even if the player has shift-clicked the craft.
     return itemStack;
   }
 
@@ -825,7 +825,8 @@ public class ArtisanRecipe
 
     if (!itemStack.isEmpty() && this.isValidTool(itemStack, toolIndex)) {
       IToolHandler handler = ArtisanToolHandlers.get(itemStack);
-      boolean broken = handler.applyDamage(itemStack, this.getToolDamage(toolIndex), false);
+      int toolDamage = this.getToolDamage(toolIndex);
+      boolean broken = handler.applyDamage(world, itemStack, toolDamage, false);
 
       if (broken && !world.isRemote) {
         world.playSound(
