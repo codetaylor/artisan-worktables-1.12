@@ -1,3 +1,10 @@
+1.21.0
+
+  * Added:
+    * Support for GTCE tools
+
+---
+
 1.20.2
 
   * Fixed:
