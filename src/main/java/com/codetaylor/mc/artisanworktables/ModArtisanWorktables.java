@@ -55,6 +55,11 @@ public class ModArtisanWorktables {
   public ModArtisanWorktables() {
 
     this.moduleManager = new ModuleManager(MOD_ID);
+  }
+
+  @Mod.EventHandler
+  public void onConstructionEvent(FMLConstructionEvent event) {
+
     this.moduleManager.registerModules(
         ModuleWorktables.class
     );
@@ -66,10 +71,6 @@ public class ModArtisanWorktables {
     if (ModuleToolboxConfig.ENABLE_MODULE) {
       this.moduleManager.registerModules(ModuleToolbox.class);
     }
-  }
-
-  @Mod.EventHandler
-  public void onConstructionEvent(FMLConstructionEvent event) {
 
     Injector injector = new Injector();
     injector.inject(ArtisanAPI.class, "MOD_ID", (Supplier<String>) () -> MOD_ID);

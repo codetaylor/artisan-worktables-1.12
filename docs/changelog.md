@@ -1,3 +1,10 @@
+1.21.1
+
+  * Fixed:
+    * Disabling a module in config doesn't disable the module (#151, #158)
+
+---
+
 1.21.0
 
   * Added:
