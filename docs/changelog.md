@@ -1,3 +1,10 @@
+1.21.2
+
+  * Fixed:
+    * Cannot remove ingredients from copied shapeless recipes (#160)
+
+---
+
 1.21.1
 
   * Fixed:
