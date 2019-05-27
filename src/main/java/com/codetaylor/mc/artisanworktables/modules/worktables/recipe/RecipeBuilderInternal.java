@@ -253,7 +253,7 @@ public class RecipeBuilderInternal
     this.isNull(this.ingredients, "Ingredients already set, can't be set twice");
 
     for (int i = 0; i < ingredients.length; i++) {
-      this.isNotEmpty(ingredients[i], "Shapeless ingredient array can't contain empty elements, found emtpy element at index: " + i);
+      this.isNotEmpty(ingredients[i], "Shapeless ingredient array can't contain empty elements, found empty element at index: " + i);
     }
 
     this.ingredients = new ArrayList<>();
