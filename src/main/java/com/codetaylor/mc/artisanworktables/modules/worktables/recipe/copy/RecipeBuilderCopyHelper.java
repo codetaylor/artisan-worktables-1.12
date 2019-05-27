@@ -13,6 +13,9 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecipeBuilderCopyHelper {
 
   public static IRecipeBuilder copyRecipeInput(
@@ -88,7 +91,16 @@ public class RecipeBuilderCopyHelper {
       convertedIngredients[i] = inputReplacements.replace(ArtisanIngredient.from(ingredients.get(i)));
     }
 
-    builder.setIngredients(convertedIngredients);
+    List<IArtisanIngredient> finalIngredients = new ArrayList<>(convertedIngredients.length);
+
+    for (int i = 0; i < convertedIngredients.length; i++) {
+
+      if (!convertedIngredients[i].isEmpty()) {
+        finalIngredients.add(convertedIngredients[i]);
+      }
+    }
+
+    builder.setIngredients(finalIngredients.toArray(new IArtisanIngredient[0]));
     return builder;
   }
 
