@@ -19,7 +19,7 @@ public class GTCEToolHandler
   private static final class Reference {
 
     private static final String CLASS_GTUTILITY = "gregtech.api.util.GTUtility";
-    private static final String CLASS_IDAMAGABLEITEM = "gregtech.api.items.IDamagableItem";
+    private static final String CLASS_ITOOLITEM = "gregtech.api.items.IToolItem";
     private static final String CLASS_GREGTECHCAPABILITIES = "gregtech.api.capability.GregtechCapabilities";
     private static final String FIELD_CAPABILITY_ELECTRIC_ITEM = "CAPABILITY_ELECTRIC_ITEM";
     private static final String METHOD_DO_DAMAGE_ITEM = "doDamageItem";
@@ -34,7 +34,7 @@ public class GTCEToolHandler
   public GTCEToolHandler() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
 
     this.classGTUtility = Class.forName(Reference.CLASS_GTUTILITY);
-    this.classIDamagableItem = Class.forName(Reference.CLASS_IDAMAGABLEITEM);
+    this.classIDamagableItem = Class.forName(Reference.CLASS_ITOOLITEM);
     this.classGregtechCapabilities = Class.forName(Reference.CLASS_GREGTECHCAPABILITIES);
 
     Field field = this.classGregtechCapabilities.getField(Reference.FIELD_CAPABILITY_ELECTRIC_ITEM);
