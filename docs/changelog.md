@@ -1,3 +1,12 @@
+1.21.3
+
+  * Fixed:
+    * GTCE compatibility issue (#163)
+
+  * Note: Due to changes in the GTCE api, Artisan Worktables GTCE compat will no longer work with GTCE versions released before April 9, 2019
+
+---
+
 1.21.2
 
   * Fixed:
