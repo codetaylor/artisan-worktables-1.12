@@ -5,6 +5,7 @@ pages:
   - ChangeLog: changelog.md
   - Configuration Files: configuration.md
   - Toolbox: toolbox.md
+  - Design Pattern: designpattern.md
   - Creating Recipes:
     - Quick Reference: recipes/quickreference.md
     - Getting Started: recipes/gettingstarted.md
