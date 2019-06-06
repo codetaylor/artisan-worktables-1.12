@@ -4,6 +4,7 @@ pages:
   - Introduction: index.md
   - ChangeLog: changelog.md
   - Configuration Files: configuration.md
+  - Toolbox: toolbox.md
   - Creating Recipes:
     - Quick Reference: recipes/quickreference.md
     - Getting Started: recipes/gettingstarted.md
