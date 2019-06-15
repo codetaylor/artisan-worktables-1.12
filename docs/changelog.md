@@ -1,3 +1,10 @@
+1.21.4
+
+  * Added:
+      * ko_kr.lang (PR#164 Laniv713)
+
+---
+
 1.21.3
 
   * Fixed:
