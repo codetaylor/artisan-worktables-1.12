@@ -1,3 +1,10 @@
+1.21.5
+
+  * Fixed:
+      * NPE when using CraftTweaker recipe function [(#168)](https://github.com/codetaylor/artisan-worktables/issues/168)
+
+---
+
 1.21.4
 
   * Added:

@@ -457,12 +457,6 @@ public class ArtisanRecipe
     // Reduce player experience
     this.onCraftReduceExperience(context);
 
-    // Decrease stacks in crafting matrix
-    this.onCraftReduceIngredients(context);
-
-    // Decrease stacks in secondary ingredient slots
-    this.onCraftReduceSecondaryIngredients(context);
-
     ItemStack craftedItem = ItemStack.EMPTY;
     List<IArtisanItemStack> extraOutputList = new ArrayList<>(3);
 
@@ -476,6 +470,12 @@ public class ArtisanRecipe
       // Check for and populate secondary, tertiary and quaternary outputs
       extraOutputList = this.onCraftProcessExtraOutput(context, extraOutputList);
     }
+
+    // Decrease stacks in crafting matrix
+    this.onCraftReduceIngredients(context);
+
+    // Decrease stacks in secondary ingredient slots
+    this.onCraftReduceSecondaryIngredients(context);
 
     // Damage or destroy tools
     // Check for replacement tool
