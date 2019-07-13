@@ -152,17 +152,6 @@ public class ModuleTools
       FileHelper.closeSilently(reader);
     }
 
-    if (Loader.isModLoaded("gregtech")) {
-
-      try {
-        GTCEToolHandler handler = new GTCEToolHandler();
-        ArtisanToolHandlers.register(handler);
-
-      } catch (Throwable t) {
-        LOGGER.error("Error registering GTCE tool handler", t);
-      }
-    }
-
     super.onPreInitializationEvent(event);
   }
 
@@ -248,6 +237,23 @@ public class ModuleTools
     if (ModuleToolsConfig.ENABLE_TOOL_RECIPES
         && !this.registeredToolList.isEmpty()) {
       ModuleToolsRecipes.register(event.getRegistry(), MOD_ID, this.registeredToolList);
+    }
+  }
+
+  @Override
+  public void onInitializationEvent(FMLInitializationEvent event) {
+
+    super.onInitializationEvent(event);
+
+    if (Loader.isModLoaded("gregtech")) {
+
+      try {
+        GTCEToolHandler handler = new GTCEToolHandler();
+        ArtisanToolHandlers.register(handler);
+
+      } catch (Throwable t) {
+        LOGGER.error("Error registering GTCE tool handler", t);
+      }
     }
   }
 

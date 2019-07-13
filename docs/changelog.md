@@ -1,3 +1,10 @@
+1.21.6
+
+  * Fixed:
+      * NPE caused by GTCE compat loading before GTCE registered capabilities [(#172)](https://github.com/codetaylor/artisan-worktables/issues/172)
+
+---
+
 1.21.5
 
   * Fixed:
