@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.network;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.spi.packet.SPacketTileEntityBase;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,7 +48,7 @@ public class SPacketWorktableTab
 
     if (tileEntity instanceof TileEntityBase) {
       player.openGui(
-          ModuleWorktables.MOD_INSTANCE,
+          ModArtisanWorktables.INSTANCE,
           1,
           player.getEntityWorld(),
           message.blockPos.getX(),

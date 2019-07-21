@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
+import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.Util;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
@@ -99,7 +99,7 @@ public abstract class BlockBase
         return true;
       }
 
-      playerIn.openGui(ModuleWorktables.MOD_INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+      playerIn.openGui(ModArtisanWorktables.INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
       return true;
     }
 

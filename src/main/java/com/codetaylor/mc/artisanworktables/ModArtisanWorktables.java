@@ -2,8 +2,6 @@ package com.codetaylor.mc.artisanworktables;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.ModuleRequirementGameStages;
-import com.codetaylor.mc.artisanworktables.modules.requirement.reskillable.ModuleRequirementReskillable;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfigAPIWrapper;
@@ -18,7 +16,6 @@ import com.codetaylor.mc.athenaeum.util.Injector;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -77,14 +74,6 @@ public class ModArtisanWorktables {
     injector.inject(ArtisanConfig.class, "MODULE_WORKTABLES_CONFIG", new ModuleWorktablesConfigAPIWrapper());
     injector.inject(ArtisanConfig.class, "MODULE_TOOLS_CONFIG", new ModuleToolsConfigAPIWrapper());
     injector.inject(ArtisanConfig.class, "MODULE_TOOLBOX_CONFIG", new ModuleToolboxConfigAPIWrapper());
-
-    if (Loader.isModLoaded("gamestages")) {
-      this.moduleManager.registerModules(ModuleRequirementGameStages.class);
-    }
-
-    if (Loader.isModLoaded("reskillable")) {
-      this.moduleManager.registerModules(ModuleRequirementReskillable.class);
-    }
 
     this.moduleManager.onConstructionEvent();
     this.moduleManager.routeFMLStateEvent(event);

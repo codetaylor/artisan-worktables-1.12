@@ -86,7 +86,6 @@ repositories {
 
 dependencies {
     compile project(":athenaeum")
-    deobfCompile "codersafterdark.reskillable:Reskillable:1.12.2-1.0.0-SNAPSHOT.13"
 }
 
 jar {

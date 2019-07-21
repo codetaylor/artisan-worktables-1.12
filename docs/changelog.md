@@ -1,3 +1,18 @@
+1.22.0
+
+    * API:
+        * Bumped version to 8
+        * Added new default interface methods to `IRequirement`:
+            * `shouldJEIHideOnLoad`
+            * `shouldJEIHideOnUpdate`
+
+    * Changed:
+        * Moved GT:CE compatibility to Artisan Integrations
+        * Moved GameStages compatibility to Artisan Integrations
+        * Moved Reskillable compatibility to Artisan Integrations
+
+---
+
 1.21.6
 
   * Fixed:

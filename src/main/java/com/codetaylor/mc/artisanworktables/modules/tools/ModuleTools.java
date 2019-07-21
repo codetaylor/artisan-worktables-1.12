@@ -1,8 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
-import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
-import com.codetaylor.mc.artisanworktables.modules.tools.handlers.GTCEToolHandler;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
 import com.codetaylor.mc.artisanworktables.modules.tools.material.*;
 import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleToolsRecipes;
@@ -23,7 +21,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -237,23 +234,6 @@ public class ModuleTools
     if (ModuleToolsConfig.ENABLE_TOOL_RECIPES
         && !this.registeredToolList.isEmpty()) {
       ModuleToolsRecipes.register(event.getRegistry(), MOD_ID, this.registeredToolList);
-    }
-  }
-
-  @Override
-  public void onInitializationEvent(FMLInitializationEvent event) {
-
-    super.onInitializationEvent(event);
-
-    if (Loader.isModLoaded("gregtech")) {
-
-      try {
-        GTCEToolHandler handler = new GTCEToolHandler();
-        ArtisanToolHandlers.register(handler);
-
-      } catch (Throwable t) {
-        LOGGER.error("Error registering GTCE tool handler", t);
-      }
     }
   }
 

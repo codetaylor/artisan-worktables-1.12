@@ -62,7 +62,6 @@ public class ModuleWorktables
   public static final String MOD_NAME = ModArtisanWorktables.NAME;
   public static final String MOD_ID = ModArtisanWorktables.MOD_ID;
   public static final CreativeTabs CREATIVE_TAB = ModArtisanWorktables.CREATIVE_TAB;
-  public static final ModArtisanWorktables MOD_INSTANCE = ModArtisanWorktables.INSTANCE;
   public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
   public static class Lang {
@@ -128,11 +127,6 @@ public class ModuleWorktables
     this.registerIntegrationPlugin(
         "jei",
         "com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei.PluginJEI"
-    );
-
-    this.registerIntegrationPlugin(
-        "gamestages",
-        "com.codetaylor.mc.artisanworktables.modules.worktables.integration.gamestages.PluginGameStages"
     );
   }
 

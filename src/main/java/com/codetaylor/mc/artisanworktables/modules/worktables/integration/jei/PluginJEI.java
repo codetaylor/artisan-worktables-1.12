@@ -6,7 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.modules.requirement.gamestages.requirement.GameStagesRequirement;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import mezz.jei.api.IJeiRuntime;
@@ -18,7 +18,9 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -138,7 +140,7 @@ public class PluginJEI
 
           for (IArtisanRecipe recipe : recipeList) {
 
-            if (this.shouldHideRecipe(recipe)) {
+            if (recipe.isHidden() || this.shouldHideRecipe(recipe)) {
               String uid = PluginJEI.createUID(name, tier);
               IRecipeWrapper recipeWrapper = RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
 
@@ -154,11 +156,68 @@ public class PluginJEI
 
   private boolean shouldHideRecipe(IArtisanRecipe recipe) {
 
-    // If gamestages is loaded, hide all of the staged worktable recipes from JEI.
-    boolean isRecipeStaged = Loader.isModLoaded("gamestages")
-        && recipe.getRequirement(GameStagesRequirement.LOCATION) != null;
+    Collection<IRequirement> values = recipe.getRequirements().values();
 
-    return recipe.isHidden() || isRecipeStaged;
+    for (IRequirement requirement : values) {
+
+      if (requirement.shouldJEIHideOnLoad()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public static void updateRecipeVisibility() {
+
+    if (!FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+      return;
+    }
+
+    if (PluginJEI.RECIPE_REGISTRY == null) {
+      return;
+    }
+
+    // loop through each worktable type, each tier, each recipe
+
+    for (String name : ArtisanAPI.getWorktableNames()) {
+      RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(name);
+
+      if (registry != null) {
+
+        for (EnumTier tier : EnumTier.values()) {
+          List<IArtisanRecipe> recipeList = registry.getRecipeListByTier(tier, new ArrayList<>());
+          String uid = PluginJEI.createUID(name, tier);
+
+          for (IArtisanRecipe recipe : recipeList) {
+            IRecipeWrapper recipeWrapper = PluginJEI.RECIPE_REGISTRY.getRecipeWrapper(recipe, uid);
+
+            if (recipeWrapper == null) {
+              continue;
+            }
+
+            boolean shouldHide = false;
+
+            for (IRequirement requirement : recipe.getRequirements().values()) {
+
+              if (requirement.shouldJEIHideOnUpdate()) {
+                shouldHide = true;
+                break;
+              }
+            }
+
+            //noinspection unchecked
+            if (shouldHide) {
+              PluginJEI.RECIPE_REGISTRY.hideRecipe(recipeWrapper, uid);
+
+            } else {
+              PluginJEI.RECIPE_REGISTRY.unhideRecipe(recipeWrapper, uid);
+            }
+          }
+        }
+      }
+    }
   }
 
   public static String createUID(String name, EnumTier tier) {
