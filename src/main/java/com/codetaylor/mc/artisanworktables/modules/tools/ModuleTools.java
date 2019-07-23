@@ -1,11 +1,18 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
+import com.codetaylor.mc.artisanworktables.api.event.ArtisanCustomToolMaterialRegistrationEvent;
+import com.codetaylor.mc.artisanworktables.api.internal.tool.CustomMaterial;
+import com.codetaylor.mc.artisanworktables.api.tool.CustomToolMaterialRegistrationEntry;
+import com.codetaylor.mc.artisanworktables.api.tool.ICustomToolMaterial;
+import com.codetaylor.mc.artisanworktables.api.tool.ICustomToolProvider;
+import com.codetaylor.mc.artisanworktables.api.tool.ItemWorktableToolBase;
+import com.codetaylor.mc.artisanworktables.api.tool.reference.EnumWorktableToolType;
 import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
 import com.codetaylor.mc.artisanworktables.modules.tools.material.*;
 import com.codetaylor.mc.artisanworktables.modules.tools.recipe.ModuleToolsRecipes;
-import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.MalformedRecipeItemException;
 import com.codetaylor.mc.athenaeum.parser.recipe.item.RecipeItemParser;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.FileHelper;
@@ -48,12 +55,7 @@ public class ModuleTools
 
   private static final Logger LOGGER = LogManager.getLogger(ModuleTools.class);
 
-  public static final class Lang {
-
-    public static final String TOOLTIP_DURABILITY = "item." + MOD_ID + ".tooltip.durability";
-  }
-
-  private final List<ItemWorktableTool> registeredToolList = new ArrayList<>();
+  private final List<ItemWorktableToolBase> registeredToolList = new ArrayList<>();
 
   private List<CustomMaterial> materialList = Collections.emptyList();
 
@@ -157,8 +159,7 @@ public class ModuleTools
 
     super.onRegister(registry);
 
-    List<String> allowedToolTypeList = new ArrayList<>();
-    allowedToolTypeList.addAll(Arrays.asList(ModuleToolsConfig.ENABLED_TOOL_TYPES));
+    List<String> allowedToolTypeList = new ArrayList<>(Arrays.asList(ModuleToolsConfig.ENABLED_TOOL_TYPES));
 
     if (allowedToolTypeList.isEmpty()) {
       // User has disabled all tool types.
@@ -178,15 +179,30 @@ public class ModuleTools
         continue;
       }
 
-      for (CustomMaterial material : materialList) {
+      for (CustomMaterial material : this.materialList) {
         String materialName = material.getDataCustomMaterial().getName();
+        ItemWorktableToolBase item = new ItemWorktableTool(type, material);
+        this.registerTool(registry, typeName, materialName, item);
+      }
 
-        ItemWorktableTool item = new ItemWorktableTool(type, material);
-        this.registeredToolList.add(item);
-        ResourceLocation registryName = new ResourceLocation(MOD_ID, typeName + "_" + materialName);
-        registry.registerItem(item, registryName);
-        item.setUnlocalizedName(registryName.getResourceDomain().replaceAll("_", ".")
-            + "." + typeName.replaceAll("_", "."));
+      ArtisanCustomToolMaterialRegistrationEvent event = new ArtisanCustomToolMaterialRegistrationEvent();
+      MinecraftForge.EVENT_BUS.post(event);
+      List<CustomToolMaterialRegistrationEntry> materialList = event.getMaterialList();
+      CustomMaterialConverter customMaterialConverter = new CustomMaterialConverter(RecipeItemParser.INSTANCE);
+
+      for (CustomToolMaterialRegistrationEntry entry : materialList) {
+
+        try {
+          ICustomToolMaterial material = entry.getMaterial();
+          ICustomToolProvider provider = entry.getProvider();
+          CustomMaterial customMaterial = customMaterialConverter.convert(material);
+          ItemWorktableToolBase item = provider.get(type, customMaterial);
+          String materialName = customMaterial.getDataCustomMaterial().getName();
+          this.registerTool(registry, typeName, materialName, item);
+
+        } catch (MalformedRecipeItemException e) {
+          ModuleTools.LOGGER.error("", e);
+        }
       }
     }
 
@@ -194,7 +210,7 @@ public class ModuleTools
 
       if (ModuleToolsConfig.ENABLE_TOOL_TYPE_ORE_DICT_GROUPS) {
 
-        for (ItemWorktableTool item : this.registeredToolList) {
+        for (ItemWorktableToolBase item : this.registeredToolList) {
           ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
           OreDictionary.registerOre(ModuleToolsConfig.TOOL_BY_TYPE_ORE_DICT_PREFIX + item.getType().getOreDictSuffix(), itemStack);
         }
@@ -202,12 +218,21 @@ public class ModuleTools
 
       if (ModuleToolsConfig.ENABLE_TOOL_MATERIAL_ORE_DICT_GROUPS) {
 
-        for (ItemWorktableTool item : this.registeredToolList) {
+        for (ItemWorktableToolBase item : this.registeredToolList) {
           ItemStack itemStack = new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
           OreDictionary.registerOre(item.getMaterial().getDataCustomMaterial().getOreDictKey(), itemStack);
         }
       }
     });
+  }
+
+  private void registerTool(Registry registry, String typeName, String materialName, ItemWorktableToolBase item) {
+
+    this.registeredToolList.add(item);
+    ResourceLocation registryName = new ResourceLocation(MOD_ID, typeName + "_" + materialName);
+    registry.registerItem(item, registryName);
+    item.setUnlocalizedName(registryName.getResourceDomain().replaceAll("_", ".")
+        + "." + typeName.replaceAll("_", "."));
   }
 
   @Override
@@ -217,7 +242,7 @@ public class ModuleTools
 
     registry.registerClientModelRegistrationStrategy(() -> {
 
-      for (ItemWorktableTool item : ModuleTools.this.registeredToolList) {
+      for (ItemWorktableToolBase item : ModuleTools.this.registeredToolList) {
         String resourcePath = item.getMaterial()
             .getDataCustomMaterial()
             .isShiny() ? item.getName() + "_highlighted" : item.getName();
@@ -254,9 +279,9 @@ public class ModuleTools
 
     itemColors.registerItemColorHandler(
         (stack, tintIndex) -> (tintIndex == 1)
-            ? ((ItemWorktableTool) stack.getItem()).getMaterial().getColor()
+            ? ((ItemWorktableToolBase) stack.getItem()).getMaterial().getColor()
             : 0xFFFFFF,
-        this.registeredToolList.toArray(new ItemWorktableTool[this.registeredToolList.size()])
+        this.registeredToolList.toArray(new ItemWorktableToolBase[this.registeredToolList.size()])
     );
   }
 }

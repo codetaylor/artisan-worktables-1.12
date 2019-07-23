@@ -18,6 +18,14 @@ public class DataCustomMaterialListFactory {
 
     for (EnumMaterial material : EnumMaterial.values()) {
 
+      if (material == EnumMaterial.MANASTEEL
+          || material == EnumMaterial.ELEMENTIUM
+          || material == EnumMaterial.TERRASTEEL) {
+        // 2019-23-07 Moving the Botania flavored tools to Artisan Integrations
+        // in order to provide the mana repair feature.
+        continue;
+      }
+
       Color color = new Color(material.getColor());
 
       Object recipeIngredient = material.getRecipeIngredient();

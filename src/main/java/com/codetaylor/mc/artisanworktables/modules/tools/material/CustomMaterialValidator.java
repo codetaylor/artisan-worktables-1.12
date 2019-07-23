@@ -1,8 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.material;
 
+import com.codetaylor.mc.artisanworktables.api.tool.ICustomToolMaterial;
+
 public class CustomMaterialValidator {
 
-  public void validate(DataCustomMaterial data) throws CustomMaterialValidationException {
+  public void validate(ICustomToolMaterial data) throws CustomMaterialValidationException {
 
     if (data.getName() == null || data.getName().isEmpty()) {
       throw new CustomMaterialValidationException("Missing or empty material name");

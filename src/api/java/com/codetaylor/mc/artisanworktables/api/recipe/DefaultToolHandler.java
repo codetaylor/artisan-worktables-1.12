@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.api.recipe;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -21,7 +22,7 @@ public class DefaultToolHandler
   }
 
   @Override
-  public boolean applyDamage(World world, ItemStack itemStack, int damage, boolean simulate) {
+  public boolean applyDamage(World world, ItemStack itemStack, int damage, EntityPlayer player, boolean simulate) {
 
     if (simulate) {
       return (itemStack.getItemDamage() + damage > itemStack.getMaxDamage());

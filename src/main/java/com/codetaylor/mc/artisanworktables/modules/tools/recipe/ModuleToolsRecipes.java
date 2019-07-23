@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.recipe;
 
-import com.codetaylor.mc.artisanworktables.modules.tools.item.ItemWorktableTool;
-import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
+import com.codetaylor.mc.artisanworktables.api.tool.ItemWorktableToolBase;
+import com.codetaylor.mc.artisanworktables.api.tool.reference.EnumWorktableToolType;
 import com.codetaylor.mc.athenaeum.parser.recipe.item.MalformedRecipeItemException;
 import com.codetaylor.mc.athenaeum.parser.recipe.item.ParseResult;
 import com.codetaylor.mc.athenaeum.parser.recipe.item.RecipeItemParser;
@@ -371,11 +371,11 @@ public class ModuleToolsRecipes {
    * @param modId    the mod id
    * @param toolList the tool list
    */
-  public static void register(IForgeRegistry<IRecipe> registry, String modId, List<ItemWorktableTool> toolList) {
+  public static void register(IForgeRegistry<IRecipe> registry, String modId, List<ItemWorktableToolBase> toolList) {
 
     RecipeItemParser recipeItemParser = new RecipeItemParser();
 
-    for (ItemWorktableTool item : toolList) {
+    for (ItemWorktableToolBase item : toolList) {
 
       try {
         // Convert ingredient

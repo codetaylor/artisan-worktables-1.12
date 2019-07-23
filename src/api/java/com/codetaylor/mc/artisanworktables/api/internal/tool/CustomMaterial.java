@@ -1,16 +1,17 @@
-package com.codetaylor.mc.artisanworktables.modules.tools.material;
+package com.codetaylor.mc.artisanworktables.api.internal.tool;
 
+import com.codetaylor.mc.artisanworktables.api.tool.ICustomToolMaterial;
 import net.minecraft.item.Item;
 
 public class CustomMaterial {
 
-  private DataCustomMaterial dataCustomMaterial;
+  private ICustomToolMaterial dataCustomMaterial;
   private Item.ToolMaterial toolMaterial;
   private int color;
   private String ingredientString;
 
   public CustomMaterial(
-      DataCustomMaterial dataCustomMaterial,
+      ICustomToolMaterial dataCustomMaterial,
       Item.ToolMaterial toolMaterial,
       int color,
       String ingredientString
@@ -22,7 +23,7 @@ public class CustomMaterial {
     this.ingredientString = ingredientString;
   }
 
-  public DataCustomMaterial getDataCustomMaterial() {
+  public ICustomToolMaterial getDataCustomMaterial() {
 
     return this.dataCustomMaterial;
   }

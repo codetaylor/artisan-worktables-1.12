@@ -5,6 +5,10 @@
         * Added new default interface methods to `IRequirement`:
             * `shouldJEIHideOnLoad`
             * `shouldJEIHideOnUpdate`
+        * Added interface `api.tool.ICustomToolMaterial`
+        * Added event `api.event.ArtisanCustomToolMaterialRegistrationEvent`
+        * Added package `api.tool` and classes associated with tool material registration
+        * Added `player` parameter to `IToolHandler#applyDamage`
 
     * Changed:
         * Moved GT:CE compatibility to Artisan Integrations

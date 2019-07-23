@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworktables.modules.tools.reference;
+package com.codetaylor.mc.artisanworktables.api.tool.reference;
 
 public enum EnumWorktableToolType {
 

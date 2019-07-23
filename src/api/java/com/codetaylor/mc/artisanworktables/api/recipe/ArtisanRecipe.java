@@ -827,7 +827,7 @@ public class ArtisanRecipe
       IToolHandler handler = ArtisanToolHandlers.get(itemStack);
       int toolDamage = this.getToolDamage(toolIndex);
       boolean broken = toolDamage > 0
-          && handler.applyDamage(world, itemStack, toolDamage, false);
+          && handler.applyDamage(world, itemStack, toolDamage, player, false);
 
       if (broken && !world.isRemote) {
         world.playSound(

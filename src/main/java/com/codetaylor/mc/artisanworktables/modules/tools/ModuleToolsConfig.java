@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
-import com.codetaylor.mc.artisanworktables.modules.tools.reference.EnumWorktableToolType;
+import com.codetaylor.mc.artisanworktables.api.tool.reference.EnumWorktableToolType;
 import net.minecraftforge.common.config.Config;
 
 @Config(modid = ModuleTools.MOD_ID, name = ModuleTools.MOD_ID + "/" + ModuleTools.MOD_ID + ".module.Tools")

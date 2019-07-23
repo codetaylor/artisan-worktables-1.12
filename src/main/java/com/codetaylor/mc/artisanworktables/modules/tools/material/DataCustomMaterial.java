@@ -1,8 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.tools.material;
 
+import com.codetaylor.mc.artisanworktables.api.tool.ICustomToolMaterial;
 import com.google.gson.annotations.SerializedName;
 
-public class DataCustomMaterial {
+public class DataCustomMaterial
+    implements ICustomToolMaterial {
 
   private String name;
   private int harvestLevel;
@@ -45,56 +47,67 @@ public class DataCustomMaterial {
     this.oreDictKey = oreDictKey;
   }
 
+  @Override
   public String getName() {
 
     return this.name;
   }
 
+  @Override
   public int getHarvestLevel() {
 
     return this.harvestLevel;
   }
 
+  @Override
   public int getMaxUses() {
 
     return this.maxUses;
   }
 
+  @Override
   public float getEfficiency() {
 
     return this.efficiency;
   }
 
+  @Override
   public float getDamage() {
 
     return this.damage;
   }
 
+  @Override
   public int getEnchantability() {
 
     return this.enchantability;
   }
 
+  @Override
   public String getColor() {
 
     return this.color;
   }
 
+  @Override
   public boolean isShiny() {
 
     return this.shiny;
   }
 
+  @Override
   public String getIngredientString() {
 
     return this.ingredientString;
   }
 
+  @Override
   public String getLangKey() {
 
     return this.langKey;
   }
 
+  @Override
   public String getOreDictKey() {
 
     return this.oreDictKey;
