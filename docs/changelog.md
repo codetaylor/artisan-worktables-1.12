@@ -10,6 +10,7 @@
         * Moved GT:CE compatibility to Artisan Integrations
         * Moved GameStages compatibility to Artisan Integrations
         * Moved Reskillable compatibility to Artisan Integrations
+        * Will no longer try to damage or break tool if recipe's tool damage is set to `0`
 
 ---
 
