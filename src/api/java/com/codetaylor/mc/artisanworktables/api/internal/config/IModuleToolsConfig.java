@@ -20,4 +20,6 @@ public interface IModuleToolsConfig {
 
   boolean enableToolTypeOreDictGroups();
 
+  boolean enableToolRepair();
+
 }

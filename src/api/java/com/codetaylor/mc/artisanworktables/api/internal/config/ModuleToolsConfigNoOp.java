@@ -54,4 +54,10 @@ public class ModuleToolsConfigNoOp
 
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public boolean enableToolRepair() {
+
+    throw new UnsupportedOperationException();
+  }
 }

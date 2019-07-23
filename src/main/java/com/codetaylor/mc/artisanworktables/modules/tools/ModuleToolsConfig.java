@@ -69,4 +69,10 @@ public class ModuleToolsConfig {
       "Set to false to prevent creation of ore dict groups for tools by type, ie. 'artisansHammer' or 'artisansChisel'."
   })
   public static boolean ENABLE_TOOL_TYPE_ORE_DICT_GROUPS = true;
+
+  @Config.Comment({
+      "Set to false to prevent tools from being repaired.",
+      "Default: " + true
+  })
+  public static boolean ENABLE_TOOL_REPAIR = true;
 }

@@ -9,6 +9,10 @@
         * Added event `api.event.ArtisanCustomToolMaterialRegistrationEvent`
         * Added package `api.tool` and classes associated with tool material registration
         * Added `player` parameter to `IToolHandler#applyDamage`
+        * Added access to new tool module config parameter `ENABLE_TOOL_REPAIR`
+
+    * Added:
+        * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
 
     * Changed:
         * Moved GT:CE compatibility to Artisan Integrations

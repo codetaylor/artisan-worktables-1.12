@@ -3,16 +3,25 @@ package com.codetaylor.mc.artisanworktables.api.tool;
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.internal.tool.CustomMaterial;
 import com.codetaylor.mc.artisanworktables.api.tool.reference.EnumWorktableToolType;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.MalformedRecipeItemException;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.ParseResult;
+import com.codetaylor.mc.athenaeum.parser.recipe.item.RecipeItemParser;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreIngredient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,12 +35,37 @@ public class ItemWorktableToolBase
 
   protected EnumWorktableToolType type;
   protected CustomMaterial material;
+  protected Ingredient repairIngredient;
+
+  private static final Logger LOGGER = LogManager.getLogger(ItemWorktableToolBase.class);
 
   public ItemWorktableToolBase(ToolMaterial materialIn, Set<Block> effectiveBlocksIn, EnumWorktableToolType type, CustomMaterial material) {
 
     super(materialIn, effectiveBlocksIn);
     this.type = type;
     this.material = material;
+
+    String ingredientString = this.getMaterial().getIngredientString();
+
+    try {
+      ParseResult parseResult = RecipeItemParser.INSTANCE.parse(ingredientString);
+
+      if ("ore".equals(parseResult.getDomain())) {
+        this.repairIngredient = new OreIngredient(parseResult.getPath());
+
+      } else {
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(parseResult.getDomain(), parseResult.getPath()));
+
+        if (item == null) {
+          return;
+        }
+
+        this.repairIngredient = Ingredient.fromStacks(new ItemStack(item, 1, parseResult.getMeta()));
+      }
+
+    } catch (MalformedRecipeItemException e) {
+      LOGGER.error("", e);
+    }
   }
 
   public EnumWorktableToolType getType() {
@@ -47,6 +81,12 @@ public class ItemWorktableToolBase
   public CustomMaterial getMaterial() {
 
     return this.material;
+  }
+
+  @Override
+  public boolean getIsRepairable(ItemStack toRepair, @Nonnull ItemStack repair) {
+
+    return this.repairIngredient != null && this.repairIngredient.apply(repair);
   }
 
   @Nonnull
@@ -82,4 +122,5 @@ public class ItemWorktableToolBase
       ));
     }
   }
+
 }

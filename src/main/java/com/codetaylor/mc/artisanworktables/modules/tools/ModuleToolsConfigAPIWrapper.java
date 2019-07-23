@@ -56,4 +56,10 @@ public class ModuleToolsConfigAPIWrapper
 
     return ModuleToolsConfig.ENABLE_TOOL_TYPE_ORE_DICT_GROUPS;
   }
+
+  @Override
+  public boolean enableToolRepair() {
+
+    return ModuleToolsConfig.ENABLE_TOOL_REPAIR;
+  }
 }
