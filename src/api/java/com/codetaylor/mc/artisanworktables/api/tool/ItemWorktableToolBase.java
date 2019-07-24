@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class ItemWorktableToolBase
+public abstract class ItemWorktableToolBase
     extends ItemTool {
 
   public static final String TOOLTIP_DURABILITY = "item.artisanworktables.tooltip.durability";
@@ -45,27 +45,33 @@ public class ItemWorktableToolBase
     this.type = type;
     this.material = material;
 
-    String ingredientString = this.getMaterial().getIngredientString();
+    if (ArtisanConfig.MODULE_TOOLS_CONFIG.enableToolRepair()) {
+      this.repairIngredient = this.getRepairIngredient(this.getMaterial().getIngredientString());
+    }
+  }
+
+  @Nullable
+  private Ingredient getRepairIngredient(String ingredientString) {
 
     try {
       ParseResult parseResult = RecipeItemParser.INSTANCE.parse(ingredientString);
 
       if ("ore".equals(parseResult.getDomain())) {
-        this.repairIngredient = new OreIngredient(parseResult.getPath());
+        return new OreIngredient(parseResult.getPath());
 
       } else {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(parseResult.getDomain(), parseResult.getPath()));
 
-        if (item == null) {
-          return;
+        if (item != null) {
+          return Ingredient.fromStacks(new ItemStack(item, 1, parseResult.getMeta()));
         }
-
-        this.repairIngredient = Ingredient.fromStacks(new ItemStack(item, 1, parseResult.getMeta()));
       }
 
     } catch (MalformedRecipeItemException e) {
       LOGGER.error("", e);
     }
+
+    return null;
   }
 
   public EnumWorktableToolType getType() {
@@ -122,5 +128,4 @@ public class ItemWorktableToolBase
       ));
     }
   }
-
 }

@@ -13,6 +13,7 @@
 
     * Added:
         * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
+        * Config option to disable anvil tool repair, `ENABLE_TOOL_REPAIR`
 
     * Changed:
         * Moved GT:CE compatibility to Artisan Integrations
