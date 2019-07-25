@@ -9,12 +9,12 @@
         * Added event `api.event.ArtisanCustomToolMaterialRegistrationEvent`
         * Added package `api.tool` and classes associated with tool material registration
         * Added `player` parameter to `IToolHandler#applyDamage`
-        * Added access to new tool module config parameter `ENABLE_TOOL_REPAIR`
+        * Added access to new tool module config parameter `B:ENABLE_TOOL_REPAIR=true`
 
     * Added:
         * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
-        * Config option to disable anvil tool repair, `ENABLE_TOOL_REPAIR`
-        * Config options to disable gui tabs for each tier of table
+        * Config option to disable anvil tool repair, `B:ENABLE_TOOL_REPAIR=true`
+        * Config options to disable gui tabs for each tier of table [(#169)](https://github.com/codetaylor/artisan-worktables/issues/169)
             * `B:ENABLE_TABS_WORKSHOPS=true`
             * `B:ENABLE_TABS_WORKSTATIONS=true`
             * `B:ENABLE_TABS_WORKTABLES=true`
