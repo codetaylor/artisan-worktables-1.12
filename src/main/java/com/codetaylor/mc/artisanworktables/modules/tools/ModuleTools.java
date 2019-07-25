@@ -87,11 +87,11 @@ public class ModuleTools
 
     Path generatedPath = Paths.get(
         configurationPath.toString(),
-        "artisanworktables.module.Tools.Materials.Generated.json"
+        "module.Tools.Materials.Generated.json"
     );
     Path customPath = Paths.get(
         configurationPath.toString(),
-        "artisanworktables.module.Tools.Materials.Custom.json"
+        "module.Tools.Materials.Custom.json"
     );
 
     // Delete the generated file if it exists.

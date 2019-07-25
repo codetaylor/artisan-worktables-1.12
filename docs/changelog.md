@@ -1,5 +1,8 @@
 1.22.0
 
+    * Note:
+        * Config files have been renamed, see below
+
     * API:
         * Bumped version to 8
         * Added new default interface methods to `IRequirement`:
@@ -19,12 +22,12 @@
             * `B:ENABLE_TABS_WORKSTATIONS=true`
             * `B:ENABLE_TABS_WORKTABLES=true`
 
-
     * Changed:
         * Moved GT:CE compatibility to Artisan Integrations
         * Moved GameStages compatibility to Artisan Integrations
         * Moved Reskillable compatibility to Artisan Integrations
         * Will no longer try to damage or break tool if recipe's tool damage is set to `0`
+        * Renamed all config files, no longer prefixed with `artisanworktables.`
 
 ---
 

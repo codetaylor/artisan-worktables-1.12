@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.toolbox;
 
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModuleToolbox.MOD_ID, name = ModuleToolbox.MOD_ID + "/" + ModuleToolbox.MOD_ID + ".module.Toolbox")
+@Config(modid = ModuleToolbox.MOD_ID, name = ModuleToolbox.MOD_ID + "/module.Toolbox")
 public class ModuleToolboxConfig {
 
   @Config.Comment({

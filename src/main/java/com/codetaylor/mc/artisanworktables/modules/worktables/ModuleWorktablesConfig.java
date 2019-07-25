@@ -14,7 +14,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-@Config(modid = ModuleWorktables.MOD_ID, name = ModuleWorktables.MOD_ID + "/" + ModuleWorktables.MOD_ID + ".module.Worktables")
+@Config(modid = ModuleWorktables.MOD_ID, name = ModuleWorktables.MOD_ID + "/module.Worktables")
 public class ModuleWorktablesConfig {
 
   @Config.Comment({
