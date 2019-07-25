@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ArtisanToolHandlers {
 
-  private static final IToolHandler DEFAULT_HANDLER = new DefaultToolHandler();
+  private static final IToolHandler DEFAULT_HANDLER = DefaultToolHandler.INSTANCE;
   private static final List<IToolHandler> HANDLERS = new ArrayList<>();
 
   public static void register(IToolHandler toolHandler) {

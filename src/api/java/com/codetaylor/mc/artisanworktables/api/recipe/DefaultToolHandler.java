@@ -9,6 +9,8 @@ import java.util.Random;
 public class DefaultToolHandler
     implements IToolHandler {
 
+  public static final DefaultToolHandler INSTANCE = new DefaultToolHandler();
+
   @Override
   public boolean matches(ItemStack itemStack) {
 
