@@ -91,11 +91,13 @@ public abstract class GuiContainerBase
     }
 
     // tabs
-    this.guiContainerElementAdd(new GuiElementTabs(
-        this,
-        this.tileEntity,
-        176
-    ));
+    if (this.tileEntity.allowTabs()) {
+      this.guiContainerElementAdd(new GuiElementTabs(
+          this,
+          this.tileEntity,
+          176
+      ));
+    }
   }
 
   protected void addInventoryTitleElement() {

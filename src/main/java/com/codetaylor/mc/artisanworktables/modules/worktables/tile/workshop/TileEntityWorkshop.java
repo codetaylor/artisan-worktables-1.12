@@ -105,4 +105,10 @@ public class TileEntityWorkshop
         225
     );
   }
+
+  @Override
+  public boolean allowTabs() {
+
+    return ModuleWorktablesConfig.ENABLE_TABS_WORKSHOPS;
+  }
 }

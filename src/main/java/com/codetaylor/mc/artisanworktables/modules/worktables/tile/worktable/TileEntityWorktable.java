@@ -92,4 +92,9 @@ public class TileEntityWorktable
     );
   }
 
+  @Override
+  public boolean allowTabs() {
+
+    return ModuleWorktablesConfig.ENABLE_TABS_WORKTABLES;
+  }
 }

@@ -66,7 +66,8 @@ public class GuiElementTabs
 
     List<TileEntityBase> actualJoinedTables = this.worktable.getJoinedTables(
         new ArrayList<>(),
-        Minecraft.getMinecraft().player
+        Minecraft.getMinecraft().player,
+        TileEntityBase::allowTabs
     );
     List<TileEntityBase> joinedTables = this.getJoinedTableOffsetView(
         actualJoinedTables,
@@ -182,7 +183,8 @@ public class GuiElementTabs
 
     List<TileEntityBase> actualJoinedTables = this.worktable.getJoinedTables(
         new ArrayList<>(),
-        Minecraft.getMinecraft().player
+        Minecraft.getMinecraft().player,
+        TileEntityBase::allowTabs
     );
     List<TileEntityBase> joinedTables = this.getJoinedTableOffsetView(
         actualJoinedTables,
@@ -262,7 +264,8 @@ public class GuiElementTabs
 
     List<TileEntityBase> actualJoinedTables = worktableBase.getJoinedTables(
         new ArrayList<>(),
-        Minecraft.getMinecraft().player
+        Minecraft.getMinecraft().player,
+        TileEntityBase::allowTabs
     );
 
     boolean tabInView = false;

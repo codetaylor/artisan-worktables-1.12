@@ -47,6 +47,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Predicate;
 
 public abstract class TileEntityBase
     extends TileEntity
@@ -407,7 +408,7 @@ public abstract class TileEntityBase
 
   public List<TileEntityBase> getJoinedTables(List<TileEntityBase> result) {
 
-    return this.getJoinedTables(result, null);
+    return this.getJoinedTables(result, null, tileEntityBase -> true);
   }
 
   /**
@@ -419,7 +420,7 @@ public abstract class TileEntityBase
    * @param player the player, can be null
    * @return result list
    */
-  public List<TileEntityBase> getJoinedTables(List<TileEntityBase> result, @Nullable EntityPlayer player) {
+  public List<TileEntityBase> getJoinedTables(List<TileEntityBase> result, @Nullable EntityPlayer player, Predicate<TileEntityBase> filter) {
 
     Map<String, TileEntityBase> joinedTableMap = new TreeMap<>();
     joinedTableMap.put(this.uuid, this);
@@ -448,7 +449,8 @@ public abstract class TileEntityBase
       TileEntity tileEntity = this.world.getTileEntity(searchPosition);
 
       if (tileEntity instanceof TileEntityBase) {
-        String key = ((TileEntityBase) tileEntity).uuid;
+        TileEntityBase tileEntityBase = (TileEntityBase) tileEntity;
+        String key = (tileEntityBase).uuid;
 
         if (joinedTableMap.containsKey(key)) {
           // this indicates two tables of the same type joined in the pseudo-multiblock
@@ -457,8 +459,8 @@ public abstract class TileEntityBase
         }
 
         // found a table!
-        if (player == null || ((TileEntityBase) tileEntity).canPlayerUse(player)) {
-          joinedTableMap.put(key, (TileEntityBase) tileEntity);
+        if (filter.test(tileEntityBase) && (player == null || (tileEntityBase).canPlayerUse(player))) {
+          joinedTableMap.put(key, tileEntityBase);
         }
 
         // check around this newly discovered table
@@ -563,6 +565,8 @@ public abstract class TileEntityBase
   protected abstract ObservableStackHandler createSecondaryOutputHandler();
 
   protected abstract int getFluidTankCapacity(EnumType type);
+
+  public abstract boolean allowTabs();
 
   public abstract EnumTier getTier();
 }

@@ -97,4 +97,10 @@ public class TileEntityWorkstation
         189
     );
   }
+
+  @Override
+  public boolean allowTabs() {
+
+    return ModuleWorktablesConfig.ENABLE_TABS_WORKSTATIONS;
+  }
 }

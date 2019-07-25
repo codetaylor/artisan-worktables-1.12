@@ -44,6 +44,24 @@ public class ModuleWorktablesConfig {
   public static boolean ENABLE_WORKSHOPS = true;
 
   @Config.Comment({
+      "Set to false to disable the joined tabs for worktables."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_TABS_WORKTABLES = true;
+
+  @Config.Comment({
+      "Set to false to disable the joined tabs for workstations."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_TABS_WORKSTATIONS = true;
+
+  @Config.Comment({
+      "Set to false to disable the joined tabs for workshops."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_TABS_WORKSHOPS = true;
+
+  @Config.Comment({
       "Set to false to selectively disable a table type across all table tiers."
   })
   public static Map<String, Boolean> ENABLE_TABLE_TYPE = new HashMap<>();
