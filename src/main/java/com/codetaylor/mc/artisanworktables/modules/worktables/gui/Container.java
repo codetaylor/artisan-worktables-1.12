@@ -32,11 +32,13 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class Container
     extends ContainerBase {
 
@@ -86,16 +88,16 @@ public class Container
     this.tile.addContainer(this);
 
     this.player = playerInventory.player;
-    Runnable slotChangeListener = this::updateRecipeOutput;
+    Runnable slotChangeListener = () -> Container.this.tile.setRequiresRecipeUpdate();
 
     // ------------------------------------------------------------------------
     // Result
     this.slotIndexResult = this.nextSlotIndex;
     this.resultHandler = new ItemStackHandler(1);
     this.craftingResultSlot = new CraftingResultSlot(
-        slotChangeListener,
+        this::updateRecipeOutput,
         this.tile,
-        resultHandler,
+        this.resultHandler,
         0,
         this.containerResultPositionGetX(),
         this.containerResultPositionGetY()
@@ -483,7 +485,7 @@ public class Container
   }
 
   @Override
-  public boolean canInteractWith(EntityPlayer playerIn) {
+  public boolean canInteractWith(@Nonnull EntityPlayer playerIn) {
 
     return this.tile.canPlayerUse(playerIn);
   }

@@ -34,6 +34,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -52,7 +53,8 @@ import java.util.function.Predicate;
 public abstract class TileEntityBase
     extends TileEntity
     implements IContainer,
-    IContainerProvider<Container, GuiContainerBase> {
+    IContainerProvider<Container, GuiContainerBase>,
+    ITickable {
 
   private String uuid;
   private EnumType type;
@@ -64,6 +66,9 @@ public abstract class TileEntityBase
   private boolean initialized;
 
   private List<Container> containerList = new ArrayList<>();
+
+  protected boolean requiresRecipeUpdate;
+  private IArtisanRecipe recipe;
 
   protected TileEntityBase() {
     // serialization
@@ -95,7 +100,7 @@ public abstract class TileEntityBase
     ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
     contentsChangedEventHandler = (stackHandler, slotIndex) -> {
       this.markDirty();
-      this.triggerContainerRecipeUpdate();
+      this.requiresRecipeUpdate = true;
     };
     this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
     this.toolHandler.addObserver(contentsChangedEventHandler);
@@ -116,7 +121,7 @@ public abstract class TileEntityBase
 
   protected void onFluidTankContentsChanged() {
 
-    this.triggerContainerRecipeUpdate();
+    this.requiresRecipeUpdate = true;
 
     if (!this.world.isRemote) {
       ModuleWorktables.PACKET_SERVICE.sendToAllAround(
@@ -335,6 +340,20 @@ public abstract class TileEntityBase
 
     this.markDirty();
     BlockHelper.notifyBlockUpdate(this.getWorld(), this.getPos());
+  }
+
+  public void setRequiresRecipeUpdate() {
+
+    this.requiresRecipeUpdate = true;
+  }
+
+  @Override
+  public void update() {
+
+    if (this.requiresRecipeUpdate) {
+      this.triggerContainerRecipeUpdate();
+      this.requiresRecipeUpdate = false;
+    }
   }
 
   public IArtisanRecipe getRecipe(@Nonnull EntityPlayer player) {

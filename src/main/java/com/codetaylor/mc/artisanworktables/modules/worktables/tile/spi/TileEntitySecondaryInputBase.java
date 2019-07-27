@@ -46,7 +46,7 @@ public abstract class TileEntitySecondaryInputBase
     this.secondaryIngredientHandler = new ObservableStackHandler(this.getSecondaryInputSlotCount());
     this.secondaryIngredientHandler.addObserver((stackHandler, slotIndex) -> {
       this.markDirty();
-      this.triggerContainerRecipeUpdate();
+      this.requiresRecipeUpdate = true;
     });
     this.wrapper = new MutuallyExclusiveStackHandlerWrapper(this.secondaryIngredientHandler);
   }

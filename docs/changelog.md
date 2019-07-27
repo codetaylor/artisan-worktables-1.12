@@ -28,6 +28,7 @@
         * Moved Reskillable compatibility to Artisan Integrations
         * Will no longer try to damage or break tool if recipe's tool damage is set to `0`
         * Renamed all config files, no longer prefixed with `artisanworktables.`
+        * Reduced the number of recipe searches the tables perform
 
 ---
 
