@@ -24,6 +24,7 @@
         * Allow any table to act as a vanilla crafting table [(#148)](https://github.com/codetaylor/artisan-worktables/issues/148)
             * By default all tables allow vanilla crafting
             * Remove a table's id from the config to disable `S:ENABLE_VANILLA_CRAFTING <>`
+        * Config options to change the background color of each table type's slots [(#174)](https://github.com/codetaylor/artisan-worktables/issues/174)
 
     * Changed:
         * Moved GT:CE compatibility to Artisan Integrations

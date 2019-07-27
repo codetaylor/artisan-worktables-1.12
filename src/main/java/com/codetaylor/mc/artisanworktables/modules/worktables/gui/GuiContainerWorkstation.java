@@ -12,12 +12,11 @@ public class GuiContainerWorkstation
       Container container,
       ResourceLocation backgroundTexture,
       String titleKey,
-      int textShadowColor,
       TileEntityBase tileEntity,
       int width,
       int height
   ) {
 
-    super(container, backgroundTexture, titleKey, textShadowColor, tileEntity, width, height);
+    super(container, backgroundTexture, titleKey, tileEntity, width, height);
   }
 }

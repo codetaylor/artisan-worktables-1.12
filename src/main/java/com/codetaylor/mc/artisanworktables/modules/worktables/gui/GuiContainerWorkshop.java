@@ -14,13 +14,12 @@ public class GuiContainerWorkshop
       Container container,
       ResourceLocation backgroundTexture,
       String titleKey,
-      int textShadowColor,
       TileEntityBase tileEntity,
       int width,
       int height
   ) {
 
-    super(container, backgroundTexture, titleKey, textShadowColor, tileEntity, width, height);
+    super(container, backgroundTexture, titleKey, tileEntity, width, height);
   }
 
   @Override
@@ -41,7 +40,7 @@ public class GuiContainerWorkshop
         this,
         this.tileEntity.getTank(),
         this.tileEntity.getPos(),
-        this.textShadowColor,
+        this.fluidTankOverlayColor,
         8,
         17
     ));

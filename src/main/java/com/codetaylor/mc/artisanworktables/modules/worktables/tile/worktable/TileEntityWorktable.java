@@ -85,7 +85,6 @@ public class TileEntityWorktable
         this.getContainer(inventoryPlayer, world, state, pos),
         this.getGuiBackgroundTexture(),
         this.getTableTitleKey(),
-        this.getGuiTextShadowColor(),
         this,
         176,
         166

@@ -182,11 +182,6 @@ public abstract class TileEntityBase
     return this.type.getName();
   }
 
-  protected int getGuiTextShadowColor() {
-
-    return ModuleWorktablesConfig.CLIENT.getTextHighlightColor(this.type.getName());
-  }
-
   public boolean canHandleRecipeTransferJEI(String name, EnumTier tier) {
 
     return this.type.getName().equals(name) && tier.getId() <= this.getTier().getId();

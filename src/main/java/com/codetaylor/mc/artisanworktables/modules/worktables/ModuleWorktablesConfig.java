@@ -10,6 +10,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -140,15 +141,77 @@ public class ModuleWorktablesConfig {
 
   public static class Client {
 
-    @Config.Comment("Here you can change the gui text highlight color. (Hexadecimal)")
+    @Config.Comment(
+        "Here you can change the gui text highlight color. (Hexadecimal)"
+    )
     public Map<String, String> TEXT_HIGHLIGHT_COLOR = new HashMap<>();
+
+    @Config.Comment(
+        "Here you can change the gui fluid tank overlay color. (Hexadecimal)"
+    )
+    public Map<String, String> FLUID_TANK_OVERLAY_COLOR = new HashMap<>();
+
+    @Config.Comment({
+        "Here you can change the background color of the crafting grid slots,",
+        "tool slots, secondary input slots, and extra output slots. (Hexadecimal)",
+        "Set to 'off' to use existing background."
+    })
+    public Map<String, String> SLOT_BACKGROUND_COLOR = new HashMap<>();
+
+    @Config.Comment({
+        "Here you can change the background color of the fluid tank. (Hexadecimal)",
+        "Set to 'off' to use existing background."
+    })
+    public Map<String, String> FLUID_TANK_BACKGROUND_COLOR = new HashMap<>();
+
+    @Config.Comment({
+        "Here you can change the background color of the main output slot. (Hexadecimal)",
+        "Set to 'off' to use existing background."
+    })
+    public Map<String, String> MAIN_OUTPUT_SLOT_BACKGROUND_COLOR = new HashMap<>();
+
+    @Config.Comment({
+        "Here you can change the background color of the player's inventory slots. (Hexadecimal)",
+        "Set to 'off' to use existing background."
+    })
+    public Map<String, String> PLAYER_INVENTORY_SLOT_BACKGROUND_COLOR = new HashMap<>();
 
     /* package */ Client() {
 
-      for (String name : ArtisanAPI.getWorktableNames()) {
+      List<String> worktableNames = ArtisanAPI.getWorktableNames();
+
+      // Text highlight color
+      for (String name : worktableNames) {
         Color color = new Color(EnumType.fromName(name).getTextOutlineColor());
         String hex = String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         this.TEXT_HIGHLIGHT_COLOR.put(name, hex);
+      }
+
+      // Fluid tank overlay color
+      for (String name : worktableNames) {
+        Color color = new Color(EnumType.fromName(name).getTextOutlineColor());
+        String hex = String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+        this.FLUID_TANK_OVERLAY_COLOR.put(name, hex);
+      }
+
+      // Crafting grid slot background color
+      for (String name : worktableNames) {
+        this.SLOT_BACKGROUND_COLOR.put(name, "off");
+      }
+
+      // Fluid tank background color
+      for (String name : worktableNames) {
+        this.FLUID_TANK_BACKGROUND_COLOR.put(name, "off");
+      }
+
+      // Main output slot background color
+      for (String name : worktableNames) {
+        this.MAIN_OUTPUT_SLOT_BACKGROUND_COLOR.put(name, "off");
+      }
+
+      // Player inventory slot background color
+      for (String name : worktableNames) {
+        this.PLAYER_INVENTORY_SLOT_BACKGROUND_COLOR.put(name, "off");
       }
     }
 
@@ -157,6 +220,45 @@ public class ModuleWorktablesConfig {
       return Integer.decode("0x" + this.TEXT_HIGHLIGHT_COLOR.get(name));
     }
 
+    public int getFluidTankOverlayColor(String name) {
+
+      return Integer.decode("0x" + this.FLUID_TANK_OVERLAY_COLOR.get(name));
+    }
+
+    private Integer getColorOrNull(Map<String, String> map, String name) {
+
+      String s = map.get(name);
+
+      if ("off".equals(s)) {
+        return null;
+      }
+
+      return Integer.decode("0x" + s);
+    }
+
+    @Nullable
+    public Integer getCraftingGridSlotBackgroundColor(String name) {
+
+      return this.getColorOrNull(this.SLOT_BACKGROUND_COLOR, name);
+    }
+
+    @Nullable
+    public Integer getFluidTankBackgroundColor(String name) {
+
+      return this.getColorOrNull(this.FLUID_TANK_BACKGROUND_COLOR, name);
+    }
+
+    @Nullable
+    public Integer getMainOutputSlotBackgroundColor(String name) {
+
+      return this.getColorOrNull(this.MAIN_OUTPUT_SLOT_BACKGROUND_COLOR, name);
+    }
+
+    @Nullable
+    public Integer getPlayerInventorySlotBackgroundColor(String name) {
+
+      return this.getColorOrNull(this.PLAYER_INVENTORY_SLOT_BACKGROUND_COLOR, name);
+    }
   }
 
   public static Pattern PATTERN = new Pattern();

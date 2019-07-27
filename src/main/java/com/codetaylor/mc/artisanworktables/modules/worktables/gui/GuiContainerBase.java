@@ -1,7 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
@@ -20,12 +22,12 @@ public abstract class GuiContainerBase
 
   protected final int textShadowColor;
   protected final TileEntityBase tileEntity;
+  protected final int fluidTankOverlayColor;
 
   public GuiContainerBase(
       Container container,
       ResourceLocation backgroundTexture,
       String titleKey,
-      int textShadowColor,
       TileEntityBase tileEntity,
       int width,
       int height
@@ -33,7 +35,11 @@ public abstract class GuiContainerBase
 
     super(container, width, height);
     this.tileEntity = tileEntity;
-    this.textShadowColor = textShadowColor;
+
+    EnumType tableType = tileEntity.getType();
+    String tableTypeName = tableType.getName();
+    this.textShadowColor = ModuleWorktablesConfig.CLIENT.getTextHighlightColor(tableTypeName);
+    this.fluidTankOverlayColor = ModuleWorktablesConfig.CLIENT.getFluidTankOverlayColor(tableTypeName);
 
     // worktable title
     this.guiContainerElementAdd(new GuiElementTitle(
@@ -56,8 +62,11 @@ public abstract class GuiContainerBase
         this.ySize
     ));
 
+    // slot background quads
+    this.addSlotBackgrounds();
+
     // mage special effect
-    if (this.tileEntity.getType() == EnumType.MAGE) {
+    if (tableType == EnumType.MAGE) {
       this.addMageEffectElement(container);
     }
 
@@ -100,6 +109,261 @@ public abstract class GuiContainerBase
     }
   }
 
+  protected void addSlotBackgrounds() {
+
+    //if (this.tileEntity.getTier() == EnumTier.WORKTABLE) {
+    String tableTypeName = this.tileEntity.getType().getName();
+
+    // secondary slots
+    {
+      Integer color = ModuleWorktablesConfig.CLIENT.getCraftingGridSlotBackgroundColor(tableTypeName);
+
+      if (color != null) {
+        if (this.tileEntity.getTier() == EnumTier.WORKSTATION) {
+          for (int x = 0; x < 9; x++) {
+            this.guiContainerElementAdd(new GuiElementColoredQuad(
+                this,
+                color,
+                8 + x * 18,
+                75,
+                16,
+                16
+            ));
+          }
+
+        } else if (this.tileEntity.getTier() == EnumTier.WORKSHOP) {
+          for (int x = 0; x < 9; x++) {
+            this.guiContainerElementAdd(new GuiElementColoredQuad(
+                this,
+                color,
+                8 + x * 18,
+                111,
+                16,
+                16
+            ));
+          }
+        }
+      }
+    }
+
+    // player inventory
+    {
+      Integer color = ModuleWorktablesConfig.CLIENT.getPlayerInventorySlotBackgroundColor(tableTypeName);
+
+      int offsetY = 0;
+
+      if (this.tileEntity.getTier() == EnumTier.WORKSTATION) {
+        offsetY = 23;
+
+      } else if (this.tileEntity.getTier() == EnumTier.WORKSHOP) {
+        offsetY = 59;
+      }
+
+      if (color != null) {
+        for (int x = 0; x < 9; x++) {
+          for (int y = 0; y < 3; y++) {
+            this.guiContainerElementAdd(new GuiElementColoredQuad(
+                this,
+                color,
+                8 + x * 18,
+                84 + y * 18 + offsetY,
+                16,
+                16
+            ));
+          }
+        }
+        for (int x = 0; x < 9; x++) {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              8 + x * 18,
+              142 + offsetY,
+              16,
+              16
+          ));
+        }
+      }
+    }
+
+    // crafting grid
+    {
+      Integer color = ModuleWorktablesConfig.CLIENT.getCraftingGridSlotBackgroundColor(tableTypeName);
+
+      if (color != null) {
+
+        int size = 3;
+
+        if (this.tileEntity.getTier() == EnumTier.WORKSHOP) {
+          size = 5;
+        }
+
+        for (int x = 0; x < size; x++) {
+          for (int y = 0; y < size; y++) {
+            this.guiContainerElementAdd(new GuiElementColoredQuad(
+                this,
+                color,
+                20 + x * 18,
+                17 + y * 18,
+                16,
+                16
+            ));
+          }
+        }
+      }
+    }
+
+    // tool slot
+    {
+      Integer color = ModuleWorktablesConfig.CLIENT.getCraftingGridSlotBackgroundColor(tableTypeName);
+
+      if (color != null) {
+        if (this.tileEntity.getTier() == EnumTier.WORKTABLE) {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              78,
+              35,
+              16,
+              16
+          ));
+
+        } else if (this.tileEntity.getTier() == EnumTier.WORKSTATION) {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              78,
+              24,
+              16,
+              16
+          ));
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              78,
+              46,
+              16,
+              16
+          ));
+
+        } else if (this.tileEntity.getTier() == EnumTier.WORKSHOP) {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              114,
+              24 + 16,
+              16,
+              16
+          ));
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              114,
+              46 + 16,
+              16,
+              16
+          ));
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              114,
+              68 + 16,
+              16,
+              16
+          ));
+        }
+      }
+    }
+
+    // fluid tank
+    {
+      Integer color = ModuleWorktablesConfig.CLIENT.getFluidTankBackgroundColor(tableTypeName);
+
+      if (color != null) {
+        if (this.tileEntity.getTier() == EnumTier.WORKSHOP) {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              8,
+              17,
+              6,
+              88
+          ));
+
+        } else {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              8,
+              17,
+              6,
+              52
+          ));
+        }
+      }
+    }
+
+    // main output
+    {
+      Integer color = ModuleWorktablesConfig.CLIENT.getMainOutputSlotBackgroundColor(tableTypeName);
+
+      if (color != null) {
+        if (this.tileEntity.getTier() == EnumTier.WORKSHOP) {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              143,
+              62,
+              16,
+              16
+          ));
+
+        } else {
+          this.guiContainerElementAdd(new GuiElementColoredQuad(
+              this,
+              color,
+              111,
+              31,
+              24,
+              24
+          ));
+        }
+      }
+    }
+
+    // extra outputs
+    {
+      Integer color = ModuleWorktablesConfig.CLIENT.getCraftingGridSlotBackgroundColor(tableTypeName);
+
+      if (color != null) {
+        if (this.tileEntity.getTier() == EnumTier.WORKSHOP) {
+          for (int x = 0; x < 3; x++) {
+            this.guiContainerElementAdd(new GuiElementColoredQuad(
+                this,
+                color,
+                116 + x * 18,
+                17,
+                16,
+                16
+            ));
+          }
+
+        } else {
+          for (int y = 0; y < 3; y++) {
+            this.guiContainerElementAdd(new GuiElementColoredQuad(
+                this,
+                color,
+                135 + 17,
+                17 + y * 18,
+                16,
+                16
+            ));
+          }
+        }
+      }
+    }
+    //}
+  }
+
   protected void addInventoryTitleElement() {
 
     this.guiContainerElementAdd(new GuiElementTitle(
@@ -126,7 +390,7 @@ public abstract class GuiContainerBase
         this,
         this.tileEntity.getTank(),
         this.tileEntity.getPos(),
-        this.textShadowColor,
+        this.fluidTankOverlayColor,
         8,
         17
     ));

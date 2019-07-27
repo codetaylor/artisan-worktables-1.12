@@ -6,18 +6,17 @@ import yalter.mousetweaks.api.MouseTweaksDisableWheelTweak;
 
 @MouseTweaksDisableWheelTweak
 public class GuiContainerWorktable
-    extends com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase {
+    extends GuiContainerBase {
 
   public GuiContainerWorktable(
       Container container,
       ResourceLocation backgroundTexture,
       String titleKey,
-      int textShadowColor,
       TileEntityBase tileEntity,
       int width,
       int height
   ) {
 
-    super(container, backgroundTexture, titleKey, textShadowColor, tileEntity, width, height);
+    super(container, backgroundTexture, titleKey, tileEntity, width, height);
   }
 }
