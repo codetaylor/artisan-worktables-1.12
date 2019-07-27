@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
+import com.codetaylor.mc.athenaeum.util.ArrayHelper;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -10,12 +11,35 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 @Config(modid = ModuleWorktables.MOD_ID, name = ModuleWorktables.MOD_ID + "/module.Worktables")
 public class ModuleWorktablesConfig {
+
+  @Config.Comment({
+      "Tables in this list will allow crafting any of the vanilla recipes.",
+      "Table id format is (type):(tier)",
+      "By default, all tables are allowed."
+  })
+  public static String[] ENABLE_VANILLA_CRAFTING;
+
+  static {
+    List<String> list = new ArrayList<>();
+    for (EnumTier tier : EnumTier.values()) {
+      for (EnumType type : EnumType.values()) {
+        list.add(type.getName() + ":" + tier.getName());
+      }
+    }
+    Collections.sort(list);
+    ENABLE_VANILLA_CRAFTING = list.toArray(new String[0]);
+  }
+
+  public static boolean isVanillaCraftingEnabledFor(EnumType type, EnumTier tier) {
+
+    String key = type.getName() + ":" + tier.getName();
+    return ArrayHelper.contains(ENABLE_VANILLA_CRAFTING, key);
+  }
 
   @Config.Comment({
       "Set to true to enable log warnings for duplicate recipe names.",

@@ -21,6 +21,9 @@
             * `B:ENABLE_TABS_WORKSHOPS=true`
             * `B:ENABLE_TABS_WORKSTATIONS=true`
             * `B:ENABLE_TABS_WORKTABLES=true`
+        * Allow any table to act as a vanilla crafting table [(#148)](https://github.com/codetaylor/artisan-worktables/issues/148)
+            * By default all tables allow vanilla crafting
+            * Remove a table's id from the config to disable `S:ENABLE_VANILLA_CRAFTING <>`
 
     * Changed:
         * Moved GT:CE compatibility to Artisan Integrations

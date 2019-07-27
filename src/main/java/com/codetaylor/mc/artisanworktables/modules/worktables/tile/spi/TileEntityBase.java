@@ -18,6 +18,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
+import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.VanillaRecipeCache;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
@@ -65,6 +66,7 @@ public abstract class TileEntityBase
 
   private boolean initialized;
 
+  private VanillaRecipeCache.InventoryWrapper inventoryWrapper;
   private List<Container> containerList = new ArrayList<>();
 
   protected boolean requiresRecipeUpdate;
@@ -358,6 +360,14 @@ public abstract class TileEntityBase
 
   public IArtisanRecipe getRecipe(@Nonnull EntityPlayer player) {
 
+    if (this.allowVanillaCrafting()) {
+      IArtisanRecipe recipe = this.getVanillaCraftingRecipe();
+
+      if (recipe != null) {
+        return recipe;
+      }
+    }
+
     FluidStack fluidStack = this.getTank().getFluid();
 
     if (fluidStack != null) {
@@ -390,6 +400,28 @@ public abstract class TileEntityBase
         this.getTier(),
         contextMap
     );
+  }
+
+  @Nullable
+  private IArtisanRecipe getVanillaCraftingRecipe() {
+
+    VanillaRecipeCache.InventoryWrapper inventoryWrapper = this.getInventoryWrapper();
+    EnumTier tier = this.getTier();
+    return VanillaRecipeCache.getArtisanRecipe(inventoryWrapper, this.world, tier);
+  }
+
+  private boolean allowVanillaCrafting() {
+
+    return ModuleWorktablesConfig.isVanillaCraftingEnabledFor(this.getType(), this.getTier());
+  }
+
+  public VanillaRecipeCache.InventoryWrapper getInventoryWrapper() {
+
+    if (this.inventoryWrapper == null) {
+      this.inventoryWrapper = new VanillaRecipeCache.InventoryWrapper(this);
+    }
+
+    return this.inventoryWrapper;
   }
 
   public ISecondaryIngredientMatcher getSecondaryIngredientMatcher() {
