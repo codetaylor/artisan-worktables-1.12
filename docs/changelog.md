@@ -12,7 +12,10 @@
         * Added event `api.event.ArtisanCustomToolMaterialRegistrationEvent`
         * Added package `api.tool` and classes associated with tool material registration
         * Added `player` parameter to `IToolHandler#applyDamage`
-        * Added access to new tool module config parameter `B:ENABLE_TOOL_REPAIR=true`
+        * Added new tool module config methods:
+            * `boolean enableToolRepair()`
+            * `boolean enableToolEnchanting()`
+            * `boolean allowToolEnchantment(Enchantment enchantment)`
 
     * Added:
         * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
@@ -25,6 +28,8 @@
             * By default all tables allow vanilla crafting
             * Remove a table's id from the config to disable `S:ENABLE_VANILLA_CRAFTING <>`
         * Config options to change the background color of each table type's slots [(#174)](https://github.com/codetaylor/artisan-worktables/issues/174)
+        * Tools can now be enchanted, by default with mending and unbreaking
+        * Config options to disable tool enchanting and whitelist enchants by resource location
 
     * Changed:
         * Moved GT:CE compatibility to Artisan Integrations

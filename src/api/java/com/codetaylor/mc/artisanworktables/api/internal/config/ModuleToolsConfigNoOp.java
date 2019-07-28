@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.internal.config;
 
+import net.minecraft.enchantment.Enchantment;
+
 import java.util.List;
 
 public class ModuleToolsConfigNoOp
@@ -57,6 +59,18 @@ public class ModuleToolsConfigNoOp
 
   @Override
   public boolean enableToolRepair() {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean enableToolEnchanting() {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean allowToolEnchantment(Enchantment enchantment) {
 
     throw new UnsupportedOperationException();
   }

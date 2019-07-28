@@ -1,6 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.api.tool.reference.EnumWorktableToolType;
+import com.codetaylor.mc.athenaeum.util.ArrayHelper;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 
 @Config(modid = ModuleTools.MOD_ID, name = ModuleTools.MOD_ID + "/module.Tools")
@@ -75,4 +78,29 @@ public class ModuleToolsConfig {
       "Default: " + true
   })
   public static boolean ENABLE_TOOL_REPAIR = true;
+
+  @Config.Comment({
+      "Set to false to disable tool enchanting."
+  })
+  public static boolean ENABLE_TOOL_ENCHANTING = true;
+
+  @Config.Comment({
+      "Resource location of enchantments to allow on tools."
+  })
+  public static String[] TOOL_ENCHANTMENT_TABLE_WHITELIST = new String[]{
+      "minecraft:unbreaking",
+      "minecraft:mending"
+  };
+
+  public static boolean allowToolEnchantment(Enchantment enchantment) {
+
+    ResourceLocation resourceLocation = enchantment.getRegistryName();
+
+    if (resourceLocation == null) {
+      return false;
+    }
+
+    String resourceLocationString = resourceLocation.toString();
+    return ArrayHelper.contains(TOOL_ENCHANTMENT_TABLE_WHITELIST, resourceLocationString);
+  }
 }

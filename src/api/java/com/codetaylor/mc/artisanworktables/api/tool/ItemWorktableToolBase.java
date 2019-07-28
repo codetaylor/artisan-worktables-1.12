@@ -8,6 +8,7 @@ import com.codetaylor.mc.athenaeum.parser.recipe.item.ParseResult;
 import com.codetaylor.mc.athenaeum.parser.recipe.item.RecipeItemParser;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -48,6 +49,20 @@ public abstract class ItemWorktableToolBase
     if (ArtisanConfig.MODULE_TOOLS_CONFIG.enableToolRepair()) {
       this.repairIngredient = this.getRepairIngredient(this.getMaterial().getIngredientString());
     }
+  }
+
+  @Override
+  public boolean isEnchantable(@Nonnull ItemStack stack) {
+
+    return ArtisanConfig.MODULE_TOOLS_CONFIG.enableToolEnchanting();
+  }
+
+  @Override
+  public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+
+    return ArtisanConfig.MODULE_TOOLS_CONFIG.enableToolRepair()
+        && ArtisanConfig.MODULE_TOOLS_CONFIG.allowToolEnchantment(enchantment)
+        && super.canApplyAtEnchantingTable(stack, enchantment);
   }
 
   @Nullable

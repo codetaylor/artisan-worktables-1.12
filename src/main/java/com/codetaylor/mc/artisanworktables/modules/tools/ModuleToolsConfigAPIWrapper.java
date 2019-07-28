@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.tools;
 
 import com.codetaylor.mc.artisanworktables.api.internal.config.IModuleToolsConfig;
+import net.minecraft.enchantment.Enchantment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -61,5 +62,17 @@ public class ModuleToolsConfigAPIWrapper
   public boolean enableToolRepair() {
 
     return ModuleToolsConfig.ENABLE_TOOL_REPAIR;
+  }
+
+  @Override
+  public boolean enableToolEnchanting() {
+
+    return ModuleToolsConfig.ENABLE_TOOL_ENCHANTING;
+  }
+
+  @Override
+  public boolean allowToolEnchantment(Enchantment enchantment) {
+
+    return ModuleToolsConfig.allowToolEnchantment(enchantment);
   }
 }

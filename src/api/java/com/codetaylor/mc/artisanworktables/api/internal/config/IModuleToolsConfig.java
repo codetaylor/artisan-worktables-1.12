@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables.api.internal.config;
 
+import net.minecraft.enchantment.Enchantment;
+
 import java.util.List;
 
 public interface IModuleToolsConfig {
@@ -21,5 +23,9 @@ public interface IModuleToolsConfig {
   boolean enableToolTypeOreDictGroups();
 
   boolean enableToolRepair();
+
+  boolean enableToolEnchanting();
+
+  boolean allowToolEnchantment(Enchantment enchantment);
 
 }
