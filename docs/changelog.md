@@ -41,6 +41,13 @@
 
 ---
 
+1.21.7
+
+  * Fixed:
+      * Crash when right-clicking any position on the worktable gui background that is not a slot while holding an item in the cursor [(#177)](https://github.com/codetaylor/artisan-worktables/issues/177)
+
+---
+
 1.21.6
 
   * Fixed:

@@ -877,6 +877,7 @@ public class Container
 
     } else if (clickTypeIn == ClickType.PICKUP
         && dragType == 1
+        && slotId > -1
         && this.inventorySlots.get(slotId) instanceof CraftingResultSlot) {
 
       return super.slotClick(slotId, 0, clickTypeIn, player);
