@@ -6,6 +6,7 @@ pages:
   - Configuration Files: configuration.md
   - Toolbox: toolbox.md
   - Design Pattern: designpattern.md
+  - Mod Integrations: integrations/index.md
   - Creating Recipes:
     - Quick Reference: recipes/quickreference.md
     - Getting Started: recipes/gettingstarted.md
@@ -21,10 +22,6 @@ pages:
     - Hiding Recipes: recipes/hiding.md
     - Copying Recipes: recipes/copying.md
     - Recipe Functions: recipes/functions.md
-  - Mod Integrations: 
-    - Mod Integrations: integrations/index.md
-    - GameStages: integrations/gamestages.md
-    - Reskillable: integrations/reskillable.md
   - Tools:
     - Custom Tool Materials: tools/custommaterials.md
   - Development:
