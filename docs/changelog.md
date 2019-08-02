@@ -1,43 +1,43 @@
 1.22.0
 
-    * Note:
-        * Config files have been renamed, see below
+  * Note:
+    * Config files have been renamed, see below
 
-    * API:
-        * Bumped version to 8
-        * Added new default interface methods to `IRequirement`:
-            * `shouldJEIHideOnLoad`
-            * `shouldJEIHideOnUpdate`
-        * Added interface `api.tool.ICustomToolMaterial`
-        * Added event `api.event.ArtisanCustomToolMaterialRegistrationEvent`
-        * Added package `api.tool` and classes associated with tool material registration
-        * Added `player` parameter to `IToolHandler#applyDamage`
-        * Added new tool module config methods:
-            * `boolean enableToolRepair()`
-            * `boolean enableToolEnchanting()`
-            * `boolean allowToolEnchantment(Enchantment enchantment)`
+  * API:
+    * Bumped version to 8
+    * Added new default interface methods to `IRequirement`:
+        * `shouldJEIHideOnLoad`
+        * `shouldJEIHideOnUpdate`
+    * Added interface `api.tool.ICustomToolMaterial`
+    * Added event `api.event.ArtisanCustomToolMaterialRegistrationEvent`
+    * Added package `api.tool` and classes associated with tool material registration
+    * Added `player` parameter to `IToolHandler#applyDamage`
+    * Added new tool module config methods:
+        * `boolean enableToolRepair()`
+        * `boolean enableToolEnchanting()`
+        * `boolean allowToolEnchantment(Enchantment enchantment)`
 
-    * Added:
-        * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
-        * Config option to disable anvil tool repair, `B:ENABLE_TOOL_REPAIR=true`
-        * Config options to disable gui tabs for each tier of table [(#169)](https://github.com/codetaylor/artisan-worktables/issues/169)
-            * `B:ENABLE_TABS_WORKSHOPS=true`
-            * `B:ENABLE_TABS_WORKSTATIONS=true`
-            * `B:ENABLE_TABS_WORKTABLES=true`
-        * Allow any table to act as a vanilla crafting table [(#148)](https://github.com/codetaylor/artisan-worktables/issues/148)
-            * By default all tables allow vanilla crafting
-            * Remove a table's id from the config to disable `S:ENABLE_VANILLA_CRAFTING <>`
-        * Config options to change the background color of each table type's slots [(#174)](https://github.com/codetaylor/artisan-worktables/issues/174)
-        * Tools can now be enchanted, by default with mending and unbreaking
-        * Config options to disable tool enchanting and whitelist enchants by resource location
+  * Added:
+    * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
+    * Config option to disable anvil tool repair, `B:ENABLE_TOOL_REPAIR=true`
+    * Config options to disable gui tabs for each tier of table [(#169)](https://github.com/codetaylor/artisan-worktables/issues/169)
+        * `B:ENABLE_TABS_WORKSHOPS=true`
+        * `B:ENABLE_TABS_WORKSTATIONS=true`
+        * `B:ENABLE_TABS_WORKTABLES=true`
+    * Allow any table to act as a vanilla crafting table [(#148)](https://github.com/codetaylor/artisan-worktables/issues/148)
+        * By default all tables allow vanilla crafting
+        * Remove a table's id from the config to disable `S:ENABLE_VANILLA_CRAFTING <>`
+    * Config options to change the background color of each table type's slots [(#174)](https://github.com/codetaylor/artisan-worktables/issues/174)
+    * Tools can now be enchanted, by default with mending and unbreaking
+    * Config options to disable tool enchanting and whitelist enchants by resource location
 
-    * Changed:
-        * Moved GT:CE compatibility to Artisan Integrations
-        * Moved GameStages compatibility to Artisan Integrations
-        * Moved Reskillable compatibility to Artisan Integrations
-        * Will no longer try to damage or break tool if recipe's tool damage is set to `0`
-        * Renamed all config files, no longer prefixed with `artisanworktables.`
-        * Reduced the number of recipe searches the tables perform
+  * Changed:
+    * Moved GT:CE compatibility to Artisan Integrations
+    * Moved GameStages compatibility to Artisan Integrations
+    * Moved Reskillable compatibility to Artisan Integrations
+    * Will no longer try to damage or break tool if recipe's tool damage is set to `0`
+    * Renamed all config files, no longer prefixed with `artisanworktables.`
+    * Reduced the number of recipe searches the tables perform
 
 ---
 
