@@ -4,6 +4,8 @@ import com.codetaylor.mc.artisanworktables.api.internal.config.IModuleWorktables
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 
+import javax.annotation.Nullable;
+
 public class ModuleWorktablesConfigAPIWrapper
     implements IModuleWorktablesConfig {
 
@@ -53,6 +55,40 @@ public class ModuleWorktablesConfigAPIWrapper
   public int getTextHighlightColor(String tableName) {
 
     return ModuleWorktablesConfig.CLIENT.getTextHighlightColor(tableName);
+  }
+
+  @Nullable
+  @Override
+  public Integer getCraftingGridSlotBackgroundColor(String tableName) {
+
+    return ModuleWorktablesConfig.CLIENT.getCraftingGridSlotBackgroundColor(tableName);
+  }
+
+  @Override
+  public int getFluidTankOverlayColor(String tableName) {
+
+    return ModuleWorktablesConfig.CLIENT.getFluidTankOverlayColor(tableName);
+  }
+
+  @Nullable
+  @Override
+  public Integer getFluidTankBackgroundColor(String tableName) {
+
+    return ModuleWorktablesConfig.CLIENT.getFluidTankBackgroundColor(tableName);
+  }
+
+  @Nullable
+  @Override
+  public Integer getMainOutputSlotBackgroundColor(String tableName) {
+
+    return ModuleWorktablesConfig.CLIENT.getMainOutputSlotBackgroundColor(tableName);
+  }
+
+  @Nullable
+  @Override
+  public Integer getPlayerInventorySlotBackgroundColor(String tableName) {
+
+    return ModuleWorktablesConfig.CLIENT.getPlayerInventorySlotBackgroundColor(tableName);
   }
 
   @Override

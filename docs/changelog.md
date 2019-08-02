@@ -16,7 +16,12 @@
         * `boolean enableToolRepair()`
         * `boolean enableToolEnchanting()`
         * `boolean allowToolEnchantment(Enchantment enchantment)`
-
+    * Added new config getters for the new coloring feature:
+        * `int getFluidTankOverlayColor(String tableName)`
+        * `@Nullable Integer getCraftingGridSlotBackgroundColor(String tableName)`
+        * `@Nullable Integer getFluidTankBackgroundColor(String tableName)`
+        * `@Nullable Integer getMainOutputSlotBackgroundColor(String tableName)`
+        * `@Nullable Integer getPlayerInventorySlotBackgroundColor(String tableName)`
   * Added:
     * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
     * Config option to disable anvil tool repair, `B:ENABLE_TOOL_REPAIR=true`

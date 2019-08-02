@@ -3,6 +3,8 @@ package com.codetaylor.mc.artisanworktables.api.internal.config;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 
+import javax.annotation.Nullable;
+
 public class ModuleWorktablesConfigNoOp
     implements IModuleWorktablesConfig {
 
@@ -52,6 +54,40 @@ public class ModuleWorktablesConfigNoOp
 
   @Override
   public int getTextHighlightColor(String tableName) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getFluidTankOverlayColor(String tableName) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Nullable
+  @Override
+  public Integer getCraftingGridSlotBackgroundColor(String tableName) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Nullable
+  @Override
+  public Integer getFluidTankBackgroundColor(String tableName) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Nullable
+  @Override
+  public Integer getMainOutputSlotBackgroundColor(String tableName) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Nullable
+  @Override
+  public Integer getPlayerInventorySlotBackgroundColor(String tableName) {
 
     throw new UnsupportedOperationException();
   }
