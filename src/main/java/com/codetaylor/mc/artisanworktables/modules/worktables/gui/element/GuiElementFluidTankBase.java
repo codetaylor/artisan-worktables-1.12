@@ -1,16 +1,14 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableTankDestroyFluid;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementFluidTank;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import java.util.List;
@@ -40,7 +38,7 @@ public abstract class GuiElementFluidTankBase
   public void elementClicked(int mouseX, int mouseY, int mouseButton) {
 
     if (mouseButton == 0 && GuiScreen.isShiftKeyDown()) {
-      ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTankDestroyFluid(this.blockPos));
+      ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableTankDestroyFluid(this.blockPos));
     }
   }
 

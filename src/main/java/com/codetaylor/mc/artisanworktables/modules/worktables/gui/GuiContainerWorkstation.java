@@ -6,7 +6,7 @@ import yalter.mousetweaks.api.MouseTweaksDisableWheelTweak;
 
 @MouseTweaksDisableWheelTweak
 public class GuiContainerWorkstation
-    extends GuiContainerBase {
+    extends AWGuiContainerBase {
 
   public GuiContainerWorkstation(
       Container container,

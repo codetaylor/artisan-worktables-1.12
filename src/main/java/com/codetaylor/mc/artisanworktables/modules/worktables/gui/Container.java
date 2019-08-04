@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
@@ -9,7 +10,7 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableContainerJoinedBlockBreak;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.SCPacketWorktableContainerJoinedBlockBreak;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
@@ -93,7 +94,7 @@ public class Container
     // ------------------------------------------------------------------------
     // Result
     this.slotIndexResult = this.nextSlotIndex;
-    this.resultHandler = new ItemStackHandler(1);
+    this.resultHandler = this.tile.getResultHandler();
     this.craftingResultSlot = new CraftingResultSlot(
         this::updateRecipeOutput,
         this.tile,
@@ -112,6 +113,7 @@ public class Container
     for (int y = 0; y < craftingMatrixHandler.getHeight(); ++y) {
       for (int x = 0; x < craftingMatrixHandler.getWidth(); ++x) {
         this.containerSlotAdd(new CraftingIngredientSlot(
+            this.tile,
             slotChangeListener,
             craftingMatrixHandler,
             x + y * craftingMatrixHandler.getWidth(),
@@ -143,8 +145,13 @@ public class Container
       for (int i = 0; i < toolHandler.getSlots(); i++) {
         final int slotIndex = i;
         this.containerSlotAdd(new CraftingToolSlot(
+            this.tile,
             slotChangeListener,
-            itemStack -> this.tile.getWorktableRecipeRegistry().containsRecipeWithToolInSlot(itemStack, slotIndex),
+            itemStack -> {
+              RecipeRegistry worktableRecipeRegistry = this.tile.getWorktableRecipeRegistry();
+              return this.tile.isCreative()
+                  || worktableRecipeRegistry.containsRecipeWithToolInSlot(itemStack, slotIndex);
+            },
             toolHandler,
             i,
             78 + this.containerToolOffsetGetX(),
@@ -161,7 +168,8 @@ public class Container
     if (this.tile instanceof TileEntityWorkshop) {
 
       for (int i = 0; i < 3; i++) {
-        this.containerSlotAdd(new ResultSlot(
+        this.containerSlotAdd(new CraftingExtraResultSlot(
+            this.tile,
             this.tile.getSecondaryOutputHandler(),
             i,
             116 + i * 18,
@@ -172,7 +180,8 @@ public class Container
     } else {
 
       for (int i = 0; i < 3; i++) {
-        this.containerSlotAdd(new ResultSlot(
+        this.containerSlotAdd(new CraftingExtraResultSlot(
+            this.tile,
             this.tile.getSecondaryOutputHandler(),
             i,
             152,
@@ -191,6 +200,7 @@ public class Container
 
       for (int i = 0; i < slotCount; i++) {
         this.containerSlotAdd(new CraftingSecondarySlot(
+            this.tile,
             slotChangeListener,
             handler,
             i,
@@ -380,7 +390,7 @@ public class Container
 
     if (!world.isRemote) {
       ModuleWorktables.PACKET_SERVICE.sendTo(
-          new CPacketWorktableContainerJoinedBlockBreak(pos),
+          new SCPacketWorktableContainerJoinedBlockBreak(pos),
           (EntityPlayerMP) this.player
       );
     }
@@ -446,6 +456,10 @@ public class Container
   public void updateRecipeOutput() {
 
     if (this.tile == null) {
+      return;
+    }
+
+    if (this.tile.isCreative()) {
       return;
     }
 
@@ -860,11 +874,25 @@ public class Container
     this.tile.removeContainer(this);
   }
 
+  @Nonnull
   @Override
   public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
 
+    ItemStack playerStack = player.inventory.getItemStack().copy();
+
+    if (this.tile.isCreative()) {
+
+      if (slotId > -1) {
+        Slot slot = this.inventorySlots.get(slotId);
+
+        if (slot instanceof ICreativeSlotClick) {
+          return ((ICreativeSlotClick) slot).creativeSlotClick(slotId, dragType, clickTypeIn, player);
+        }
+      }
+    }
+
     if (slotId == this.slotIndexResult
-        && !player.inventory.getItemStack().isEmpty()) {
+        && !playerStack.isEmpty()) {
       IArtisanRecipe recipe = this.tile.getRecipe(player);
 
       if (recipe != null

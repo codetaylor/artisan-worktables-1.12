@@ -5,19 +5,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class CraftingResultSlot
-    extends SlotItemHandler
+public class CraftingExtraResultSlot
+    extends ResultSlot
     implements ICreativeSlotClick {
 
-  private final Runnable slotChangeListener;
   private final TileEntityBase tile;
 
-  public CraftingResultSlot(
-      Runnable slotChangeListener,
+  public CraftingExtraResultSlot(
       TileEntityBase tile,
       IItemHandler itemHandler,
       int index,
@@ -27,18 +24,6 @@ public class CraftingResultSlot
 
     super(itemHandler, index, xPosition, yPosition);
     this.tile = tile;
-    this.slotChangeListener = slotChangeListener;
-  }
-
-  @Nonnull
-  @Override
-  public ItemStack onTake(
-      EntityPlayer player, @Nonnull ItemStack stack
-  ) {
-
-    this.tile.onTakeResult(player);
-    this.slotChangeListener.run();
-    return stack;
   }
 
   @Override

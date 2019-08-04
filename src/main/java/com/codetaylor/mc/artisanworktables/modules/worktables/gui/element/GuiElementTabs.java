@@ -3,7 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 import com.codetaylor.mc.artisanworktables.ReferenceTexture;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiTabOffset;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableTab;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementBase;
@@ -205,7 +205,7 @@ public class GuiElementTabs
           && mouseY >= yMin) {
         TileEntityBase table = joinedTables.get(i);
         BlockPos pos = table.getPos();
-        ModuleWorktables.PACKET_SERVICE.sendToServer(new SPacketWorktableTab(pos));
+        ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableTab(pos));
         Minecraft.getMinecraft()
             .getSoundHandler()
             .playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1));

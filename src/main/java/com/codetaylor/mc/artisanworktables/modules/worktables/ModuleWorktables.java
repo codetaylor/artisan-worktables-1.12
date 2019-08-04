@@ -14,10 +14,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPat
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPatternBakedModel;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPatternMeshDefinition;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemWorktable;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableContainerJoinedBlockBreak;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTab;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.SPacketWorktableTankDestroyFluid;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.*;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.IRecipeAdditionQueue;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeAdditionQueue;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
@@ -181,14 +178,36 @@ public class ModuleWorktables
   public void onNetworkRegister(IPacketRegistry registry) {
 
     // Server
-    registry.register(SPacketWorktableTab.class, SPacketWorktableTab.class, Side.SERVER);
-    registry.register(SPacketWorktableTankDestroyFluid.class, SPacketWorktableTankDestroyFluid.class, Side.SERVER);
+    registry.register(
+        CSPacketWorktableTab.class,
+        CSPacketWorktableTab.class,
+        Side.SERVER
+    );
+    registry.register(
+        CSPacketWorktableTankDestroyFluid.class,
+        CSPacketWorktableTankDestroyFluid.class,
+        Side.SERVER
+    );
+    registry.register(
+        CSPacketWorktableClear.class,
+        CSPacketWorktableClear.class,
+        Side.SERVER
+    );
+    registry.register(
+        CSPacketWorktableCreateModeToggle.class,
+        CSPacketWorktableCreateModeToggle.class,
+        Side.SERVER
+    );
 
     // Client
-    registry.register(CPacketWorktableFluidUpdate.class, CPacketWorktableFluidUpdate.class, Side.CLIENT);
     registry.register(
-        CPacketWorktableContainerJoinedBlockBreak.class,
-        CPacketWorktableContainerJoinedBlockBreak.class,
+        SCPacketWorktableFluidUpdate.class,
+        SCPacketWorktableFluidUpdate.class,
+        Side.CLIENT
+    );
+    registry.register(
+        SCPacketWorktableContainerJoinedBlockBreak.class,
+        SCPacketWorktableContainerJoinedBlockBreak.class,
         Side.CLIENT
     );
   }

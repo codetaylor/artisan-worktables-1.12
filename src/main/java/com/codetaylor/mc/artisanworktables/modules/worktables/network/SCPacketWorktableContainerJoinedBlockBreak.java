@@ -11,15 +11,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CPacketWorktableContainerJoinedBlockBreak
-    extends PacketBlockPosBase<CPacketWorktableContainerJoinedBlockBreak> {
+public class SCPacketWorktableContainerJoinedBlockBreak
+    extends PacketBlockPosBase<SCPacketWorktableContainerJoinedBlockBreak> {
 
   @SuppressWarnings("unused")
-  public CPacketWorktableContainerJoinedBlockBreak() {
+  public SCPacketWorktableContainerJoinedBlockBreak() {
     // serialization
   }
 
-  public CPacketWorktableContainerJoinedBlockBreak(BlockPos blockPos) {
+  public SCPacketWorktableContainerJoinedBlockBreak(BlockPos blockPos) {
 
     super(blockPos);
   }
@@ -27,7 +27,7 @@ public class CPacketWorktableContainerJoinedBlockBreak
   @SideOnly(Side.CLIENT)
   @Override
   public IMessage onMessage(
-      CPacketWorktableContainerJoinedBlockBreak message, MessageContext ctx
+      SCPacketWorktableContainerJoinedBlockBreak message, MessageContext ctx
   ) {
 
     Minecraft minecraft = Minecraft.getMinecraft();

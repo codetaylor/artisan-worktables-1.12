@@ -11,20 +11,21 @@ import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
-public abstract class GuiContainerBase
+public abstract class AWGuiContainerBase
     extends com.codetaylor.mc.athenaeum.gui.GuiContainerBase {
 
   protected final int textShadowColor;
   protected final TileEntityBase tileEntity;
   protected final int fluidTankOverlayColor;
 
-  public GuiContainerBase(
+  public AWGuiContainerBase(
       Container container,
       ResourceLocation backgroundTexture,
       String titleKey,
@@ -61,6 +62,22 @@ public abstract class GuiContainerBase
         this.xSize,
         this.ySize
     ));
+
+    // export shaped button
+    if (Minecraft.getMinecraft().player.isCreative()) {
+      this.guiContainerElementAdd(new GuiElementExportButtonShaped(
+          this, this.getXSize() - 18, 4
+      ));
+      this.guiContainerElementAdd(new GuiElementExportButtonShapeless(
+          this, this.getXSize() - 18 - 12, 4
+      ));
+      this.guiContainerElementAdd(new GuiElementExportButtonClearAll(
+          this, this.getXSize() - 18 - 12 * 2, 4
+      ));
+      this.guiContainerElementAdd(new GuiElementExportButtonUnlock(
+          this, this.getXSize() - 18 - 12 * 3, 4
+      ));
+    }
 
     // slot background quads
     this.addSlotBackgrounds();
@@ -422,4 +439,8 @@ public abstract class GuiContainerBase
     }
   }
 
+  public TileEntityBase getTileEntity() {
+
+    return this.tileEntity;
+  }
 }

@@ -4,7 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
@@ -77,7 +77,7 @@ public class TileEntityWorktable
 
   @Override
   @SideOnly(Side.CLIENT)
-  public GuiContainerBase getGuiContainer(
+  public AWGuiContainerBase getGuiContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 

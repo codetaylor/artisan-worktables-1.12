@@ -101,6 +101,11 @@ jei.artisanworktables.level.required=Minimum Level: %d
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Empty
 gui.artisanworktables.tooltip.fluid.destroy=%sDestroy fluid: %sSHIFT + LEFT-CLICK
+gui.artisanworktables.tooltip.button.export.shaped=Export Shaped
+gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
+gui.artisanworktables.tooltip.button.clear.table=Clear All
+gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Normal
+gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
 
 # Tooltip
 item.artisanworktables.tooltip.durability=Durability: %d / %d

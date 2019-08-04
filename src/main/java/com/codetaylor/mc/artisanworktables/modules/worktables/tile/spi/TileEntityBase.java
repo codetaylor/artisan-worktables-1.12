@@ -14,9 +14,9 @@ import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementCon
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.GuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CPacketWorktableFluidUpdate;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.SCPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.VanillaRecipeCache;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -54,7 +54,7 @@ import java.util.function.Predicate;
 public abstract class TileEntityBase
     extends TileEntity
     implements IContainer,
-    IContainerProvider<Container, GuiContainerBase>,
+    IContainerProvider<Container, AWGuiContainerBase>,
     ITickable {
 
   private String uuid;
@@ -62,8 +62,9 @@ public abstract class TileEntityBase
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
   private ObservableStackHandler secondaryOutputHandler;
+  private ItemStackHandler resultHandler;
   private FluidTank tank;
-
+  private boolean creative;
   private boolean initialized;
 
   private VanillaRecipeCache.InventoryWrapper inventoryWrapper;
@@ -97,6 +98,7 @@ public abstract class TileEntityBase
     this.craftingMatrixHandler = this.createCraftingMatrixHandler();
     this.toolHandler = this.createToolHandler();
     this.secondaryOutputHandler = this.createSecondaryOutputHandler();
+    this.resultHandler = new ItemStackHandler(1);
     this.tank = this.createFluidTank(type);
 
     ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
@@ -127,7 +129,7 @@ public abstract class TileEntityBase
 
     if (!this.world.isRemote) {
       ModuleWorktables.PACKET_SERVICE.sendToAllAround(
-          new CPacketWorktableFluidUpdate(this.getPos(), this.tank),
+          new SCPacketWorktableFluidUpdate(this.getPos(), this.tank),
           this
       );
     }
@@ -155,6 +157,21 @@ public abstract class TileEntityBase
     for (Container container : this.containerList) {
       container.updateRecipeOutput();
     }
+  }
+
+  public boolean isCreative() {
+
+    return this.creative;
+  }
+
+  public void setCreative(boolean creative) {
+
+    this.creative = creative;
+  }
+
+  public ItemStackHandler getResultHandler() {
+
+    return this.resultHandler;
   }
 
   public FluidTank getTank() {
@@ -278,6 +295,8 @@ public abstract class TileEntityBase
     tag.setTag("toolHandler", this.toolHandler.serializeNBT());
     tag.setTag("secondaryOutputHandler", this.secondaryOutputHandler.serializeNBT());
     tag.setTag("tank", this.tank.writeToNBT(new NBTTagCompound()));
+    tag.setBoolean("creative", this.creative);
+    tag.setTag("resultHandler", this.resultHandler.serializeNBT());
     return tag;
   }
 
@@ -291,6 +310,8 @@ public abstract class TileEntityBase
     this.toolHandler.deserializeNBT(tag.getCompoundTag("toolHandler"));
     this.secondaryOutputHandler.deserializeNBT(tag.getCompoundTag("secondaryOutputHandler"));
     this.tank.readFromNBT(tag.getCompoundTag("tank"));
+    this.creative = tag.getBoolean("creative");
+    this.resultHandler.deserializeNBT(tag.getCompoundTag("resultHandler"));
   }
 
   @Override
@@ -312,6 +333,10 @@ public abstract class TileEntityBase
   }
 
   public void onTakeResult(EntityPlayer player) {
+
+    if (this.isCreative()) {
+      return;
+    }
 
     IArtisanRecipe recipe = this.getRecipe(player);
 

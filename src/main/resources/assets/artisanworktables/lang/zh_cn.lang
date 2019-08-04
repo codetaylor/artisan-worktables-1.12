@@ -84,6 +84,11 @@ jei.artisanworktables.level.required=最低等级：%d
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=空
 gui.artisanworktables.tooltip.fluid.destroy=%s销毁流体： %s Shift + 左击
+gui.artisanworktables.tooltip.button.export.shaped=Export Shaped
+gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
+gui.artisanworktables.tooltip.button.clear.table=Clear All
+gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Normal
+gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
 
 # Tooltip
 item.artisanworktables.tooltip.durability=耐久： %d / %d

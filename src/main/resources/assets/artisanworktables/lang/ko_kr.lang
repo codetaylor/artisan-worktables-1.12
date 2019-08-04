@@ -101,6 +101,11 @@ jei.artisanworktables.level.required=최소 %d 레벨 필요
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=비어 있음
 gui.artisanworktables.tooltip.fluid.destroy=%s 유체를 없애려면 %sSHIFT + LEFT-CLICK
+gui.artisanworktables.tooltip.button.export.shaped=Export Shaped
+gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
+gui.artisanworktables.tooltip.button.clear.table=Clear All
+gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Normal
+gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
 
 # Tooltip
 item.artisanworktables.tooltip.durability=내구도: %d / %d

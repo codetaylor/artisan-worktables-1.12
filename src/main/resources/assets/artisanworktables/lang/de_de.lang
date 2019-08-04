@@ -100,6 +100,11 @@ jei.artisanworktables.level.required=Benötigtes Level: %d
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Leer
 gui.artisanworktables.tooltip.fluid.destroy=%sFlüssigkeiten entleeren: %sUMSCHALTTASTE + LINKSKLICK
+gui.artisanworktables.tooltip.button.export.shaped=Export Shaped
+gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
+gui.artisanworktables.tooltip.button.clear.table=Clear All
+gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Normal
+gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
 
 # Tooltip
 item.artisanworktables.tooltip.durability=Haltbarkeit: %d / %d

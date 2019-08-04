@@ -44,6 +44,11 @@ jei.artisanworktables.tooltip.chance=%s%s%% Chance de Craft
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Vide
 gui.artisanworktables.tooltip.fluid.destroy=%sDestrution du Liquide: %sSHIFT + LEFT-CLICK
+gui.artisanworktables.tooltip.button.export.shaped=Export Shaped
+gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
+gui.artisanworktables.tooltip.button.clear.table=Clear All
+gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Normal
+gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
 
 # Tooltip
 item.artisanworktables.tooltip.durability=Durabilité: %d / %d

@@ -13,17 +13,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.io.IOException;
 
-public class CPacketWorktableFluidUpdate
-    extends CPacketTileEntityBase<CPacketWorktableFluidUpdate> {
+public class SCPacketWorktableFluidUpdate
+    extends CPacketTileEntityBase<SCPacketWorktableFluidUpdate> {
 
   private FluidTank fluidTank;
 
   @SuppressWarnings("unused")
-  public CPacketWorktableFluidUpdate() {
+  public SCPacketWorktableFluidUpdate() {
     // serialization
   }
 
-  public CPacketWorktableFluidUpdate(BlockPos blockPos, FluidTank fluidTank) {
+  public SCPacketWorktableFluidUpdate(BlockPos blockPos, FluidTank fluidTank) {
 
     super(blockPos);
     this.fluidTank = fluidTank;
@@ -61,7 +61,7 @@ public class CPacketWorktableFluidUpdate
 
   @Override
   public IMessage onMessage(
-      CPacketWorktableFluidUpdate message,
+      SCPacketWorktableFluidUpdate message,
       MessageContext ctx,
       TileEntity tileEntity
   ) {

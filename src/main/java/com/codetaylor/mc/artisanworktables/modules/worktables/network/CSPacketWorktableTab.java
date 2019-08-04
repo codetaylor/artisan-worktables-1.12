@@ -15,22 +15,22 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 /**
  * Sent from the client to the server to signal a worktable tab change.
  */
-public class SPacketWorktableTab
-    extends SPacketTileEntityBase<SPacketWorktableTab> {
+public class CSPacketWorktableTab
+    extends SPacketTileEntityBase<CSPacketWorktableTab> {
 
   @SuppressWarnings("unused")
-  public SPacketWorktableTab() {
+  public CSPacketWorktableTab() {
     // Serialization
   }
 
-  public SPacketWorktableTab(BlockPos blockPos) {
+  public CSPacketWorktableTab(BlockPos blockPos) {
 
     super(blockPos);
   }
 
   @Override
   public IMessage onMessage(
-      SPacketWorktableTab message,
+      CSPacketWorktableTab message,
       MessageContext ctx,
       TileEntity tileEntity
   ) {

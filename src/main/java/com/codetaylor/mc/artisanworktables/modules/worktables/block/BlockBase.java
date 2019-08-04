@@ -17,10 +17,12 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -33,11 +35,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class BlockBase
     extends Block {
@@ -244,4 +249,18 @@ public abstract class BlockBase
     return EnumType.fromMeta(itemStack.getMetadata()).getName();
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
+
+    TileEntity tileEntity = world.getTileEntity(pos);
+
+    if (tileEntity instanceof TileEntityBase) {
+      TileEntityBase table = (TileEntityBase) tileEntity;
+
+      if (table.isCreative()) {
+        ItemDye.spawnBonemealParticles(Minecraft.getMinecraft().world, pos.up(), 1);
+      }
+    }
+  }
 }
