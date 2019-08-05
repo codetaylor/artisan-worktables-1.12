@@ -106,6 +106,10 @@ gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
 gui.artisanworktables.tooltip.button.clear.table=Clear All
 gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Normal
 gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
+gui.artisanworktables.tooltip.button.oredict.linked=OreDict Mode: Linked
+gui.artisanworktables.tooltip.button.oredict.unlinked=OreDict Mode: Unlinked
 
 # Tooltip
 item.artisanworktables.tooltip.durability=내구도: %d / %d
+item.artisanworktables.tooltip.creative.table.oredict.header=Oredict: %s(SHIFT + LEFT-CLICK)
+item.artisanworktables.tooltip.creative.table.oredict.none=-none-

@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.network;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.athenaeum.spi.packet.PacketBlockPosBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -34,8 +34,8 @@ public class SCPacketWorktableContainerJoinedBlockBreak
     EntityPlayerSP player = minecraft.player;
     WorldClient world = minecraft.world;
 
-    if (player.openContainer instanceof Container) {
-      ((Container) player.openContainer).onJoinedBlockBreak(world, message.blockPos);
+    if (player.openContainer instanceof AWContainer) {
+      ((AWContainer) player.openContainer).onJoinedBlockBreak(world, message.blockPos);
     }
 
     return null;

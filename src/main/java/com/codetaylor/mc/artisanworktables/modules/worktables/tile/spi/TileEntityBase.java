@@ -14,8 +14,8 @@ import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementCon
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.gui.Container;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SCPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.VanillaRecipeCache;
@@ -36,6 +36,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.IntHashMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -54,7 +55,7 @@ import java.util.function.Predicate;
 public abstract class TileEntityBase
     extends TileEntity
     implements IContainer,
-    IContainerProvider<Container, AWGuiContainerBase>,
+    IContainerProvider<AWContainer, AWGuiContainerBase>,
     ITickable {
 
   private String uuid;
@@ -68,10 +69,13 @@ public abstract class TileEntityBase
   private boolean initialized;
 
   private VanillaRecipeCache.InventoryWrapper inventoryWrapper;
-  private List<Container> containerList = new ArrayList<>();
+  private List<AWContainer> containerList = new ArrayList<>();
 
   protected boolean requiresRecipeUpdate;
-  private IArtisanRecipe recipe;
+
+  // used client-side for storing creative table data
+  public IntHashMap<String> oreDictMap = new IntHashMap<>();
+  private boolean oredictLinked = true;
 
   protected TileEntityBase() {
     // serialization
@@ -137,24 +141,24 @@ public abstract class TileEntityBase
 
   public void onJoinedBlockBreak(BlockPos pos) {
 
-    for (Container container : this.containerList) {
+    for (AWContainer container : this.containerList) {
       container.onJoinedBlockBreak(this.world, pos);
     }
   }
 
-  public void addContainer(Container container) {
+  public void addContainer(AWContainer container) {
 
     this.containerList.add(container);
   }
 
-  public void removeContainer(Container container) {
+  public void removeContainer(AWContainer container) {
 
     this.containerList.remove(container);
   }
 
   public void triggerContainerRecipeUpdate() {
 
-    for (Container container : this.containerList) {
+    for (AWContainer container : this.containerList) {
       container.updateRecipeOutput();
     }
   }
@@ -162,6 +166,16 @@ public abstract class TileEntityBase
   public boolean isCreative() {
 
     return this.creative;
+  }
+
+  public boolean isOreDictLinked() {
+
+    return this.oredictLinked;
+  }
+
+  public void setOredictLinked(boolean oredictLinked) {
+
+    this.oredictLinked = oredictLinked;
   }
 
   public void setCreative(boolean creative) {
@@ -613,11 +627,11 @@ public abstract class TileEntityBase
   }
 
   @Override
-  public Container getContainer(
+  public AWContainer getContainer(
       InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos
   ) {
 
-    return new Container(inventoryPlayer, world, this);
+    return new AWContainer(inventoryPlayer, world, this);
   }
 
   public int getMaximumDisplayedTabCount() {

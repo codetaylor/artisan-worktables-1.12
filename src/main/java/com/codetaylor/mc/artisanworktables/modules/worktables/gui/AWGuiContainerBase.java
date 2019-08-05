@@ -3,8 +3,10 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.ICreativeSlotClick;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -14,9 +16,15 @@ import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class AWGuiContainerBase
     extends com.codetaylor.mc.athenaeum.gui.GuiContainerBase {
@@ -26,7 +34,7 @@ public abstract class AWGuiContainerBase
   protected final int fluidTankOverlayColor;
 
   public AWGuiContainerBase(
-      Container container,
+      AWContainer container,
       ResourceLocation backgroundTexture,
       String titleKey,
       TileEntityBase tileEntity,
@@ -65,17 +73,22 @@ public abstract class AWGuiContainerBase
 
     // export shaped button
     if (Minecraft.getMinecraft().player.isCreative()) {
-      this.guiContainerElementAdd(new GuiElementExportButtonShaped(
+      this.guiContainerElementAdd(new GuiElementExportButtonUnlock(
           this, this.getXSize() - 18, 4
       ));
+
+      int elementY = this.ySize - 95;
+      this.guiContainerElementAdd(new GuiElementExportButtonShaped(
+          this, this.getXSize() - 18, elementY
+      ));
       this.guiContainerElementAdd(new GuiElementExportButtonShapeless(
-          this, this.getXSize() - 18 - 12, 4
+          this, this.getXSize() - 18 - 12, elementY
+      ));
+      this.guiContainerElementAdd(new GuiElementExportButtonOredictLink(
+          this, this.getXSize() - 18 - 12 * 2, elementY
       ));
       this.guiContainerElementAdd(new GuiElementExportButtonClearAll(
-          this, this.getXSize() - 18 - 12 * 2, 4
-      ));
-      this.guiContainerElementAdd(new GuiElementExportButtonUnlock(
-          this, this.getXSize() - 18 - 12 * 3, 4
+          this, this.getXSize() - 18 - 12 * 3, elementY
       ));
     }
 
@@ -391,7 +404,7 @@ public abstract class AWGuiContainerBase
     ));
   }
 
-  protected void addMageEffectElement(Container container) {
+  protected void addMageEffectElement(AWContainer container) {
 
     this.guiContainerElementAdd(new GuiElementMageEffect(
         this,
@@ -442,5 +455,67 @@ public abstract class AWGuiContainerBase
   public TileEntityBase getTileEntity() {
 
     return this.tileEntity;
+  }
+
+  protected void renderToolTip(ItemStack stack, int x, int y) {
+
+    Slot slot = this.getSlotUnderMouse();
+
+    if (!(slot instanceof ICreativeSlotClick)
+        || !((ICreativeSlotClick) slot).allowOredict()) {
+      super.renderToolTip(stack, x, y);
+      return;
+    }
+
+    Item item = stack.getItem();
+    ResourceLocation resourceLocation = item.getRegistryName();
+
+    if (this.tileEntity.isCreative()
+        && resourceLocation != null) {
+
+      FontRenderer font = item.getFontRenderer(stack);
+      net.minecraftforge.fml.client.config.GuiUtils.preItemToolTip(stack);
+
+      int slotNumber = slot.slotNumber;
+      String lookup = this.tileEntity.oreDictMap.lookup(slotNumber);
+
+      ArrayList<String> lines = new ArrayList<>();
+      String suffix = String.format("(#%04d/%d)", Item.getIdFromItem(item), stack.getItemDamage());
+      lines.add(stack.getRarity().rarityColor + stack.getDisplayName() + " " + suffix);
+      lines.add(TextFormatting.DARK_GRAY + resourceLocation.getResourceDomain() + ":" + resourceLocation.getResourcePath());
+
+      int[] oreIDs = OreDictionary.getOreIDs(stack);
+
+      if (oreIDs.length > 0) {
+        lines.add("");
+        lines.add(I18n.format(ModuleWorktables.Lang.ITEM_TOOLTIP_CREATIVE_TABLE_OREDICT_HEADER, TextFormatting.DARK_GRAY));
+
+        if (lookup == null) {
+          lines.add("  " + TextFormatting.GOLD + I18n.format(ModuleWorktables.Lang.ITEM_TOOLTIP_CREATIVE_TABLE_OREDICT_NONE));
+
+        } else {
+          //lines.add(lookup);
+          lines.add("  " + I18n.format(ModuleWorktables.Lang.ITEM_TOOLTIP_CREATIVE_TABLE_OREDICT_NONE));
+        }
+
+        for (int oreID : oreIDs) {
+          String oreName = OreDictionary.getOreName(oreID);
+
+          if (lookup != null
+              && lookup.equals(oreName)) {
+            lines.add("  " + TextFormatting.GOLD + oreName);
+
+          } else {
+            lines.add("  " + oreName);
+          }
+        }
+      }
+
+      this.drawHoveringText(lines, x, y, (font == null ? this.fontRenderer : font));
+      net.minecraftforge.fml.client.config.GuiUtils.postItemToolTip();
+
+    } else {
+      super.renderToolTip(stack, x, y);
+    }
   }
 }

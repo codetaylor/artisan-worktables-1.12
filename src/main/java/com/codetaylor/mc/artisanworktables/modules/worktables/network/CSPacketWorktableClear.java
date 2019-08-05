@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import com.codetaylor.mc.athenaeum.spi.packet.SPacketTileEntityBase;
+import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -67,6 +68,7 @@ public class CSPacketWorktableClear
     if (tileEntity instanceof TileEntityBase) {
       TileEntityBase table = (TileEntityBase) tileEntity;
       CSPacketWorktableClear.clear(table, message.clearFlags);
+      BlockHelper.notifyBlockUpdate(tileEntity.getWorld(), tileEntity.getPos());
     }
 
     return null;

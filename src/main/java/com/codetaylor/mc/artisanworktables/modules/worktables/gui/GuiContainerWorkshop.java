@@ -11,7 +11,7 @@ public class GuiContainerWorkshop
     extends AWGuiContainerBase {
 
   public GuiContainerWorkshop(
-      Container container,
+      AWContainer container,
       ResourceLocation backgroundTexture,
       String titleKey,
       TileEntityBase tileEntity,
@@ -23,7 +23,7 @@ public class GuiContainerWorkshop
   }
 
   @Override
-  protected void addMageEffectElement(Container container) {
+  protected void addMageEffectElement(AWContainer container) {
 
     this.guiContainerElementAdd(new GuiElementMageEffect(
         this,

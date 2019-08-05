@@ -9,7 +9,7 @@ public class GuiContainerWorktable
     extends AWGuiContainerBase {
 
   public GuiContainerWorktable(
-      Container container,
+      AWContainer container,
       ResourceLocation backgroundTexture,
       String titleKey,
       TileEntityBase tileEntity,

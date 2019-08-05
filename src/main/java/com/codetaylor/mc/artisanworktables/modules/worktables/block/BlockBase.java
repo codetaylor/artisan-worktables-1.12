@@ -17,16 +17,15 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
@@ -251,7 +250,7 @@ public abstract class BlockBase
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 
     TileEntity tileEntity = world.getTileEntity(pos);
 
@@ -259,7 +258,14 @@ public abstract class BlockBase
       TileEntityBase table = (TileEntityBase) tileEntity;
 
       if (table.isCreative()) {
-        ItemDye.spawnBonemealParticles(Minecraft.getMinecraft().world, pos.up(), 1);
+        if (state.getMaterial() != Material.AIR) {
+          for (int i = 0; i < 7; ++i) {
+            double d0 = rand.nextGaussian() * 0.02D;
+            double d1 = rand.nextGaussian() * 0.02D;
+            double d2 = rand.nextGaussian() * 0.02D;
+            world.spawnParticle(EnumParticleTypes.END_ROD, (double) ((float) pos.getX() + rand.nextFloat()), (double) pos.getY() + (double) rand.nextFloat() * state.getBoundingBox(world, pos).maxY, (double) ((float) pos.getZ() + rand.nextFloat()), d0, d1, d2);
+          }
+        }
       }
     }
   }

@@ -7,4 +7,9 @@ import net.minecraft.item.ItemStack;
 public interface ICreativeSlotClick {
 
   ItemStack creativeSlotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player);
+
+  default boolean allowOredict() {
+
+    return false;
+  }
 }

@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.inventory.PredicateSlotItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,10 +15,12 @@ public class CraftingToolSlot
     extends PredicateSlotItemHandler
     implements ICreativeSlotClick {
 
+  private final AWContainer container;
   private final TileEntityBase tile;
   private final Runnable slotChangeListener;
 
   public CraftingToolSlot(
+      AWContainer container,
       TileEntityBase tile,
       Runnable slotChangeListener,
       Predicate<ItemStack> predicate,
@@ -28,6 +31,7 @@ public class CraftingToolSlot
   ) {
 
     super(predicate, itemHandler, index, xPosition, yPosition);
+    this.container = container;
     this.tile = tile;
     this.slotChangeListener = slotChangeListener;
   }
@@ -55,11 +59,23 @@ public class CraftingToolSlot
   }
 
   @Override
-  public ItemStack creativeSlotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+  public ItemStack creativeSlotClick(int slotId, int dragType, ClickType clickType, EntityPlayer player) {
 
-    ItemStack copy = player.inventory.getItemStack().copy();
-    copy.setCount(1);
-    this.putStack(copy);
+    ItemStack stack = this.getStack();
+
+    if (!OreDictSlotClickDelegate.slotClick(this.container.inventorySlots, slotId, stack, this.tile.oreDictMap, clickType, player.world.isRemote, this.tile.isOreDictLinked())) {
+      ItemStack copy = player.inventory.getItemStack().copy();
+      copy.setCount(1);
+      this.putStack(copy);
+      this.tile.oreDictMap.removeObject(slotId);
+    }
+
     return ItemStack.EMPTY;
+  }
+
+  @Override
+  public boolean allowOredict() {
+
+    return true;
   }
 }

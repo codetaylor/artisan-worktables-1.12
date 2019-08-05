@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
 import net.minecraft.item.Item;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public final class ZSRecipeExport {
 
-  public static String getExportString(TileEntityBase tileEntity, boolean shaped) {
+  public static String getExportString(AWContainer container, TileEntityBase tileEntity, boolean shaped) {
 
     ICraftingMatrixStackHandler craftingMatrixHandler = tileEntity.getCraftingMatrixHandler();
     int width = craftingMatrixHandler.getWidth();
@@ -37,35 +38,58 @@ public final class ZSRecipeExport {
     if (shaped) {
       out.append("  .setShaped([\n");
 
-      for (int y = 0; y < height; y++) {
-        out.append("    [");
+      for (int i = container.slotIndexCraftingMatrixStart; i <= container.slotIndexCraftingMatrixEnd; i++) {
+        int x = (i - container.slotIndexCraftingMatrixStart) % width;
 
-        for (int x = 0; x < width; x++) {
-          ItemStack stackInSlot = craftingMatrixHandler.getStackInSlot(x + y * width);
-          ZSRecipeExport.getItemString(stackInSlot, out, true, false);
-          out.append((x == width - 1) ? "" : ", ");
+        if (x == 0) {
+          out.append("    [");
         }
-        out.append((y == height - 1) ? "]])\n" : "],\n");
+
+        String oreDict = tileEntity.oreDictMap.lookup(i);
+        ItemStack stackInSlot = container.getSlot(i).getStack();
+
+        if (oreDict == null) {
+          ZSRecipeExport.getItemString(stackInSlot, out, true, false);
+
+        } else {
+          ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, out, true);
+        }
+
+        if (i == container.slotIndexCraftingMatrixEnd) {
+          // finished with the whole thing
+          out.append("]])\n");
+
+        } else if (x == width - 1) {
+          // finished with the row
+          out.append("],\n");
+
+        } else {
+          out.append(", ");
+        }
       }
+
     } else {
-      out.append("  .setShapeless([");
+      List<String> list = new ArrayList<>();
 
-      List<ItemStack> list = new ArrayList<>();
-
-      for (int i = 0; i < craftingMatrixHandler.getSlots(); i++) {
-        ItemStack stackInSlot = craftingMatrixHandler.getStackInSlot(i);
+      for (int i = container.slotIndexCraftingMatrixStart; i <= container.slotIndexCraftingMatrixEnd; i++) {
+        String oreDict = tileEntity.oreDictMap.lookup(i);
+        ItemStack stackInSlot = container.getSlot(i).getStack();
 
         if (!stackInSlot.isEmpty()) {
-          list.add(stackInSlot.copy());
+          StringBuilder builder = new StringBuilder();
+
+          if (oreDict == null) {
+            ZSRecipeExport.getItemString(stackInSlot, builder, true, false);
+
+          } else {
+            ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, builder, true);
+          }
+
+          list.add(builder.toString());
         }
       }
 
-      for (int i = 0; i < list.size(); i++) {
-        ItemStack itemStack = list.get(i);
-        ZSRecipeExport.getItemString(itemStack, out, true, false);
-        out.append((i == list.size() - 1) ? "" : ", ");
-      }
-      out.append("])\n");
+      out.append("  .setShapeless([").append(String.join(", ", list)).append("])\n");
     }
 
     // - setFluid
@@ -81,6 +105,7 @@ public final class ZSRecipeExport {
     // - setSecondaryIngredients
     // -------------------------------------------------------------------------
     if (tileEntity instanceof TileEntitySecondaryInputBase) {
+
       IItemHandlerModifiable secondaryIngredientHandler = ((TileEntitySecondaryInputBase) tileEntity).getSecondaryIngredientHandler();
 
       int total = 0;
@@ -96,15 +121,25 @@ public final class ZSRecipeExport {
       if (total > 0) {
         out.append("  .setSecondaryIngredients([");
 
-        for (int i = 0; i < secondaryIngredientHandler.getSlots(); i++) {
-          ItemStack stackInSlot = secondaryIngredientHandler.getStackInSlot(i);
-          count += 1;
+        for (int i = container.slotIndexSecondaryInputStart; i <= container.slotIndexSecondaryInputEnd; i++) {
+          String oreDict = tileEntity.oreDictMap.lookup(i);
+          ItemStack stackInSlot = container.getSlot(i).getStack();
 
           if (stackInSlot.isEmpty()) {
             continue;
           }
 
-          ZSRecipeExport.getItemString(stackInSlot, out, false, false);
+          StringBuilder builder = new StringBuilder();
+
+          if (oreDict == null) {
+            ZSRecipeExport.getItemString(stackInSlot, builder, true, false);
+
+          } else {
+            ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, builder, true);
+          }
+
+          count += 1;
+          out.append(builder.toString());
           out.append((count == total) ? "" : ", ");
         }
 
@@ -115,12 +150,23 @@ public final class ZSRecipeExport {
     // - addTool
     // -------------------------------------------------------------------------
     {
-      for (int i = 0; i < toolHandler.getSlots(); i++) {
-        ItemStack stackInSlot = toolHandler.getStackInSlot(i);
+      for (int i = container.slotIndexToolsStart; i <= container.slotIndexToolsEnd; i++) {
+        String oreDict = tileEntity.oreDictMap.lookup(i);
+        ItemStack stackInSlot = container.getSlot(i).getStack();
 
         if (!stackInSlot.isEmpty()) {
           out.append("  .addTool(");
-          ZSRecipeExport.getItemString(stackInSlot, out, true, true);
+
+          StringBuilder builder = new StringBuilder();
+
+          if (oreDict == null) {
+            ZSRecipeExport.getItemString(stackInSlot, builder, true, false);
+
+          } else {
+            ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, builder, true);
+          }
+
+          out.append(builder.toString());
           out.append(", 1)\n");
         }
       }
@@ -202,6 +248,18 @@ public final class ZSRecipeExport {
           && itemStack.getCount() > 1) {
         out.append(" * ").append(itemStack.getCount());
       }
+    }
+
+    return out;
+  }
+
+  private static StringBuilder getItemStringOredict(String oreDict, ItemStack itemStack, StringBuilder out, boolean ignoreCount) {
+
+    out.append("<ore:").append(oreDict).append(">");
+
+    if (!ignoreCount
+        && itemStack.getCount() > 1) {
+      out.append(" * ").append(itemStack.getCount());
     }
 
     return out;

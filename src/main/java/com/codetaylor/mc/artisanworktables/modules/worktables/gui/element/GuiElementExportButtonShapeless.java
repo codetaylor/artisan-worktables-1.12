@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
 import com.codetaylor.mc.artisanworktables.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZSRecipeExport;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
@@ -42,7 +43,7 @@ public class GuiElementExportButtonShapeless
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
 
-    String data = ZSRecipeExport.getExportString(tileEntity, false);
+    String data = ZSRecipeExport.getExportString((AWContainer) gui.inventorySlots, tileEntity, false);
     StringSelection contents = new StringSelection(data);
     Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
     Clipboard systemClipboard = defaultToolkit.getSystemClipboard();

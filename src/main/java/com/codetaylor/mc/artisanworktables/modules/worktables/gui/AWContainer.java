@@ -40,7 +40,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
-public class Container
+public class AWContainer
     extends ContainerBase {
 
   private final CraftingResultSlot craftingResultSlot;
@@ -54,26 +54,26 @@ public class Container
   private final EntityPlayer player;
   private final List<ToolboxSideSlot> toolboxSideSlotList;
 
-  private final int slotIndexResult;
-  private final int slotIndexCraftingMatrixStart;
-  private final int slotIndexCraftingMatrixEnd;
-  private final int slotIndexInventoryStart;
-  private final int slotIndexInventoryEnd;
-  private final int slotIndexHotbarStart;
-  private final int slotIndexHotbarEnd;
-  private final int slotIndexToolsStart;
-  private final int slotIndexToolsEnd;
-  private final int slotIndexSecondaryOutputStart;
-  private final int slotIndexSecondaryOutputEnd;
-  private final int slotIndexToolboxStart;
-  private final int slotIndexToolboxEnd;
-  private final int slotIndexSecondaryInputStart;
-  private final int slotIndexSecondaryInputEnd;
-  private final int slotIndexPattern;
-  private final int slotIndexPatternResult;
+  public final int slotIndexResult;
+  public final int slotIndexCraftingMatrixStart;
+  public final int slotIndexCraftingMatrixEnd;
+  public final int slotIndexInventoryStart;
+  public final int slotIndexInventoryEnd;
+  public final int slotIndexHotbarStart;
+  public final int slotIndexHotbarEnd;
+  public final int slotIndexToolsStart;
+  public final int slotIndexToolsEnd;
+  public final int slotIndexSecondaryOutputStart;
+  public final int slotIndexSecondaryOutputEnd;
+  public final int slotIndexToolboxStart;
+  public final int slotIndexToolboxEnd;
+  public final int slotIndexSecondaryInputStart;
+  public final int slotIndexSecondaryInputEnd;
+  public final int slotIndexPattern;
+  public final int slotIndexPatternResult;
   private final ItemStackHandler patternHandler;
 
-  public Container(
+  public AWContainer(
       InventoryPlayer playerInventory,
       World world,
       TileEntityBase tile
@@ -89,7 +89,7 @@ public class Container
     this.tile.addContainer(this);
 
     this.player = playerInventory.player;
-    Runnable slotChangeListener = () -> Container.this.tile.setRequiresRecipeUpdate();
+    Runnable slotChangeListener = () -> AWContainer.this.tile.setRequiresRecipeUpdate();
 
     // ------------------------------------------------------------------------
     // Result
@@ -113,6 +113,7 @@ public class Container
     for (int y = 0; y < craftingMatrixHandler.getHeight(); ++y) {
       for (int x = 0; x < craftingMatrixHandler.getWidth(); ++x) {
         this.containerSlotAdd(new CraftingIngredientSlot(
+            this,
             this.tile,
             slotChangeListener,
             craftingMatrixHandler,
@@ -145,6 +146,7 @@ public class Container
       for (int i = 0; i < toolHandler.getSlots(); i++) {
         final int slotIndex = i;
         this.containerSlotAdd(new CraftingToolSlot(
+            this,
             this.tile,
             slotChangeListener,
             itemStack -> {
@@ -200,6 +202,7 @@ public class Container
 
       for (int i = 0; i < slotCount; i++) {
         this.containerSlotAdd(new CraftingSecondarySlot(
+            this,
             this.tile,
             slotChangeListener,
             handler,

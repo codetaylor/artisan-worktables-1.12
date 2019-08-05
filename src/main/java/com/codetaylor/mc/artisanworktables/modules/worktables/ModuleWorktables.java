@@ -76,6 +76,9 @@ public class ModuleWorktables
 
     public static final String GUI_TOOLTIP_FLUID_DESTROY = "gui." + MOD_ID + ".tooltip.fluid.destroy";
     public static final String GUI_TOOLTIP_FLUID_EMPTY = "gui." + MOD_ID + ".tooltip.fluid.empty";
+
+    public static final String ITEM_TOOLTIP_CREATIVE_TABLE_OREDICT_NONE = "item." + MOD_ID + ".tooltip.creative.table.oredict.none";
+    public static final String ITEM_TOOLTIP_CREATIVE_TABLE_OREDICT_HEADER = "item." + MOD_ID + ".tooltip.creative.table.oredict.header";
   }
 
   public static class Textures {
