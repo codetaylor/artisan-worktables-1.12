@@ -73,6 +73,7 @@ item.artisanworktables.artisans.pan.name=%s 平底锅
 item.artisanworktables.artisans.mortar.name=%s 研钵
 item.artisanworktables.artisans.knife.name=%s 刀
 item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
+item.artisanworktables.artisans.file.name=Artisan's %s File
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=无序合成

@@ -372,6 +372,17 @@ public class ModuleToolsRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.UNIVERSAL_FILE,
+        new Object[]{
+            " /.",
+            "/. ",
+            "/  ",
+            '/', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
   }
 
   /**

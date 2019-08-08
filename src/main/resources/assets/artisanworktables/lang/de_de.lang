@@ -85,6 +85,7 @@ item.artisanworktables.artisans.punch.name=%s Locher
 item.artisanworktables.artisans.groover.name=%s Glättekelle
 item.artisanworktables.artisans.carver.name=%s Tranchiermesser
 item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
+item.artisanworktables.artisans.file.name=Artisan's %s File
 
 # Patterns
 item.artisanworktables.design.pattern.written.name=Mustervorlage

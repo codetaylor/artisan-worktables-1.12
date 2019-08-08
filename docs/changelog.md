@@ -49,6 +49,7 @@
         * Can clear all of the table's contents
     * New tools:
         * Artisan's Hatchet [(#136)](https://github.com/codetaylor/artisan-worktables/issues/136)
+        * Artisan's File [(#162)](https://github.com/codetaylor/artisan-worktables/issues/162)
 
   * Changed:
     * Moved GT:CE compatibility to Artisan Integrations

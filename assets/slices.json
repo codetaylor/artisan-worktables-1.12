@@ -121,7 +121,11 @@
 
         { "target": "artisans_hatchet_base.png", "position": [4, 12] },
         { "target": "artisans_hatchet_color.png", "position": [5, 12] },
-        { "target": "artisans_hatchet_highlight.png", "position": [6, 12] }
+        { "target": "artisans_hatchet_highlight.png", "position": [6, 12] },
+
+        { "target": "artisans_file_base.png", "position": [4, 13] },
+        { "target": "artisans_file_color.png", "position": [5, 13] },
+        { "target": "artisans_file_highlight.png", "position": [6, 13] }
 
       ]
     }
