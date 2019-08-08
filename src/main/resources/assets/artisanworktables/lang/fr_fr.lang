@@ -36,6 +36,7 @@ item.artisanworktables.scribes.compass.name=Compas de l'Ecrivain en %s
 item.artisanworktables.scribes.quill.name==Plume de l'Ecrivain en %s
 item.artisanworktables.tailors.needle.name=Aiguille de Tailleur en %s
 item.artisanworktables.tailors.shears.name=Cisaille de Tailleur en %s
+item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Recette sans modèle

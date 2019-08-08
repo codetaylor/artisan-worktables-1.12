@@ -47,6 +47,8 @@
         * Can change oredict on any item or all items of same type
         * Can export shaped / shapeless recipes
         * Can clear all of the table's contents
+    * New tools:
+        * Artisan's Hatchet [(#136)](https://github.com/codetaylor/artisan-worktables/issues/136)
 
   * Changed:
     * Moved GT:CE compatibility to Artisan Integrations

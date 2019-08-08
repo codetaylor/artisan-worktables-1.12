@@ -117,7 +117,11 @@
 
         { "target": "artisans_knife_base.png", "position": [4, 11] },
         { "target": "artisans_knife_color.png", "position": [5, 11] },
-        { "target": "artisans_knife_highlight.png", "position": [6, 11] }
+        { "target": "artisans_knife_highlight.png", "position": [6, 11] },
+
+        { "target": "artisans_hatchet_base.png", "position": [4, 12] },
+        { "target": "artisans_hatchet_color.png", "position": [5, 12] },
+        { "target": "artisans_hatchet_highlight.png", "position": [6, 12] }
 
       ]
     }

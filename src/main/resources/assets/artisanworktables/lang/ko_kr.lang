@@ -85,6 +85,7 @@ item.artisanworktables.artisans.punch.name=장인의 %s 천공기
 item.artisanworktables.artisans.groover.name=장인의 %s 그루버
 item.artisanworktables.artisans.carver.name=장인의 %s 조각칼
 item.artisanworktables.artisans.razor.name=장인의 %s 면도칼
+item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
 
 # Patterns
 item.artisanworktables.design.pattern.written.name=디자인 패턴

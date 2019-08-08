@@ -362,6 +362,16 @@ public class ModuleToolsRecipes {
         }
     );
 
+    RECIPE_MAP.put(
+        EnumWorktableToolType.UNIVERSAL_HATCHET,
+        new Object[]{
+            " . ",
+            "./ ",
+            "/  ",
+            '/', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
   }
 
   /**
