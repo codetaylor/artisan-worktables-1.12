@@ -87,6 +87,8 @@ item.artisanworktables.artisans.carver.name=장인의 %s 조각칼
 item.artisanworktables.artisans.razor.name=장인의 %s 면도칼
 item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
 item.artisanworktables.artisans.file.name=Artisan's %s File
+item.artisanworktables.artisans.pencil.name=Artisan's %s Pencil
+item.artisanworktables.artisans.tsquare.name=Artisan's %s T-Square
 
 # Patterns
 item.artisanworktables.design.pattern.written.name=디자인 패턴

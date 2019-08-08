@@ -18,6 +18,10 @@ public enum EnumWorktableToolType {
   CHEMISTS_BEAKER("artisans_beaker", "Beaker"),
   CHEMISTS_BURNER("artisans_burner", "Burner"),
 
+  // Designer
+  DESIGNERS_PENCIL("artisans_pencil", "Pencil"),
+  DESIGNERS_TSQUARE("artisans_tsquare", "TSquare"),
+
   // Engineer
   ENGINEERS_DRIVER("artisans_driver", "Driver"),
   ENGINEERS_SPANNER("artisans_spanner", "Spanner"),

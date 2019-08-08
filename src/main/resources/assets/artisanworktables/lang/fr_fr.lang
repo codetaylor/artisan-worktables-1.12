@@ -38,6 +38,8 @@ item.artisanworktables.tailors.needle.name=Aiguille de Tailleur en %s
 item.artisanworktables.tailors.shears.name=Cisaille de Tailleur en %s
 item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
 item.artisanworktables.artisans.file.name=Artisan's %s File
+item.artisanworktables.artisans.pencil.name=Artisan's %s Pencil
+item.artisanworktables.artisans.tsquare.name=Artisan's %s T-Square
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Recette sans modèle

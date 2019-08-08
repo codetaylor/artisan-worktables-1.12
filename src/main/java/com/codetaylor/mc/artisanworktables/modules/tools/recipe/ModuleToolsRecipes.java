@@ -383,6 +383,29 @@ public class ModuleToolsRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.DESIGNERS_PENCIL,
+        new Object[]{
+            "  c",
+            "./.",
+            "/  ",
+            'c', new ItemStack(Items.COAL, 1, 1),
+            '/', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.DESIGNERS_TSQUARE,
+        new Object[]{
+            "///",
+            " . ",
+            " . ",
+            '/', "stickWood",
+            '.', MATERIAL_ALIAS
+        }
+    );
   }
 
   /**

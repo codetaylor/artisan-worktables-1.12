@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "artisanworktables:items/artisans_pencil_base",
+    "layer1": "artisanworktables:items/artisans_pencil_color"
+  }
+}

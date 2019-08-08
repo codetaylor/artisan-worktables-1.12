@@ -125,7 +125,15 @@
 
         { "target": "artisans_file_base.png", "position": [4, 13] },
         { "target": "artisans_file_color.png", "position": [5, 13] },
-        { "target": "artisans_file_highlight.png", "position": [6, 13] }
+        { "target": "artisans_file_highlight.png", "position": [6, 13] },
+
+        { "target": "artisans_pencil_base.png", "position": [4, 14] },
+        { "target": "artisans_pencil_color.png", "position": [5, 14] },
+        { "target": "artisans_pencil_highlight.png", "position": [6, 14] },
+
+        { "target": "artisans_tsquare_base.png", "position": [4, 15] },
+        { "target": "artisans_tsquare_color.png", "position": [5, 15] },
+        { "target": "artisans_tsquare_highlight.png", "position": [6, 15] }
 
       ]
     }

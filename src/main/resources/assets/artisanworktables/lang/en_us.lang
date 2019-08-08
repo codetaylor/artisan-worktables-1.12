@@ -87,6 +87,8 @@ item.artisanworktables.artisans.carver.name=Artisan's %s Carver
 item.artisanworktables.artisans.razor.name=Artisan's %s Razor
 item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
 item.artisanworktables.artisans.file.name=Artisan's %s File
+item.artisanworktables.artisans.pencil.name=Artisan's %s Pencil
+item.artisanworktables.artisans.tsquare.name=Artisan's %s T-Square
 
 # Patterns
 item.artisanworktables.design.pattern.written.name=Design Pattern
