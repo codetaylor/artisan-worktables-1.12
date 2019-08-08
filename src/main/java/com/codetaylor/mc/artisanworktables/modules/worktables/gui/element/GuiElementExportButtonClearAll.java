@@ -39,7 +39,7 @@ public class GuiElementExportButtonClearAll
 
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
-
+    tileEntity.oreDictMap.clearMap();
     ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableClear(tileEntity.getPos(), CSPacketWorktableClear.CLEAR_ALL));
   }
 
@@ -50,4 +50,11 @@ public class GuiElementExportButtonClearAll
     return tooltip;
   }
 
+  @Override
+  public boolean elementIsVisible(int mouseX, int mouseY) {
+
+    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
+    TileEntityBase tileEntity = gui.getTileEntity();
+    return tileEntity.isCreative();
+  }
 }

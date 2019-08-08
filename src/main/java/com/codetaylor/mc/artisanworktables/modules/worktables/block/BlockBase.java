@@ -126,8 +126,12 @@ public abstract class BlockBase
     if (tileEntity instanceof IContainer) {
       List<ItemStack> drops = ((IContainer) tileEntity).getBlockBreakDrops();
 
-      for (ItemStack drop : drops) {
-        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), drop);
+      if (!(tileEntity instanceof TileEntityBase)
+          || !((TileEntityBase) tileEntity).isCreative()) {
+
+        for (ItemStack drop : drops) {
+          InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), drop);
+        }
       }
     }
 

@@ -56,4 +56,12 @@ public class GuiElementExportButtonShapeless
     tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.export.shapeless"));
     return tooltip;
   }
+
+  @Override
+  public boolean elementIsVisible(int mouseX, int mouseY) {
+
+    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
+    TileEntityBase tileEntity = gui.getTileEntity();
+    return tileEntity.isCreative();
+  }
 }
