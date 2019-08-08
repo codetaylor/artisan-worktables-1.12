@@ -41,6 +41,12 @@
     * Config options to change the background color of each table type's slots [(#174)](https://github.com/codetaylor/artisan-worktables/issues/174)
     * Tools can now be enchanted, by default with mending and unbreaking
     * Config options to disable tool enchanting and whitelist enchants by resource location
+    * Creative mode for tables [(#175)](https://github.com/codetaylor/artisan-worktables/issues/175):
+        * Can only be enabled by player in creative mode
+        * Can place ghost items in any item slot
+        * Can change oredict on any item or all items of same type
+        * Can export shaped / shapeless recipes
+        * Can clear all of the table's contents
 
   * Changed:
     * Moved GT:CE compatibility to Artisan Integrations
