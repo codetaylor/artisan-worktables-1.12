@@ -23,9 +23,9 @@ RecipeBuilder setFluid(ILiquidStack fluidIngredient);
 
 RecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
 
-RecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients);
+RecipeBuilder setConsumeSecondaryIngredients(@Optional(default = true) boolean consume);
 
-RecipeBuilder setMirrored();
+RecipeBuilder setMirrored(@Optional(default = true) boolean mirrored);
 
 RecipeBuilder addTool(IIngredient tool, int damage);
 
@@ -45,9 +45,9 @@ RecipeBuilder setExperienceRequired(int experienceRequired);
 
 RecipeBuilder setLevelRequired(int levelRequired);
 
-RecipeBuilder setConsumeExperience(boolean consumeExperience);
+RecipeBuilder setConsumeExperience(@Optional(default = true) boolean consume);
 
-RecipeBuilder setHidden(@Optional(default = true) hidden);
+RecipeBuilder setHidden(@Optional(default = true) boolean hidden);
 
 RecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction);
 

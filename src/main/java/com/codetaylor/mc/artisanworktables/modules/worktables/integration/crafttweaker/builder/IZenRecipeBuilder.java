@@ -69,10 +69,10 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setSecondaryIngredients(IIngredient[] secondaryIngredients);
 
   @ZenMethod
-  IZenRecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients);
+  IZenRecipeBuilder setConsumeSecondaryIngredients(@Optional(value = "true", valueBoolean = true) boolean consumeSecondaryIngredients);
 
   @ZenMethod
-  IZenRecipeBuilder setMirrored();
+  IZenRecipeBuilder setMirrored(@Optional(value = "true", valueBoolean = true) boolean mirrored);
 
   @ZenMethod
   IZenRecipeBuilder addTool(IIngredient tool, int damage);
@@ -102,7 +102,7 @@ public interface IZenRecipeBuilder {
   IZenRecipeBuilder setLevelRequired(int levelRequired);
 
   @ZenMethod
-  IZenRecipeBuilder setConsumeExperience(boolean consumeExperience);
+  IZenRecipeBuilder setConsumeExperience(@Optional(value = "true", valueBoolean = true) boolean consumeExperience);
 
   @ZenMethod
   IZenRecipeBuilder setHidden(@Optional(value = "true", valueBoolean = true) boolean hidden);

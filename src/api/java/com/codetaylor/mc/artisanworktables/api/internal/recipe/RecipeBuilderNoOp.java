@@ -39,6 +39,12 @@ public class RecipeBuilderNoOp
   }
 
   @Override
+  public IRecipeBuilder setConsumeSecondaryIngredients() {
+
+    return this;
+  }
+
+  @Override
   public IRecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients) {
 
     return this;
@@ -46,6 +52,12 @@ public class RecipeBuilderNoOp
 
   @Override
   public IRecipeBuilder setMirrored() {
+
+    return this;
+  }
+
+  @Override
+  public IRecipeBuilder setMirrored(boolean mirrored) {
 
     return this;
   }
@@ -95,6 +107,12 @@ public class RecipeBuilderNoOp
   }
 
   @Override
+  public IRecipeBuilder setConsumeExperience() {
+
+    return this;
+  }
+
+  @Override
   public IRecipeBuilder setConsumeExperience(boolean consumeExperience) {
 
     return this;
@@ -108,6 +126,12 @@ public class RecipeBuilderNoOp
 
   @Override
   public IRecipeBuilder addRequirement(IRequirementBuilder matchRequirementBuilder) {
+
+    return this;
+  }
+
+  @Override
+  public IRecipeBuilder setHidden() {
 
     return this;
   }

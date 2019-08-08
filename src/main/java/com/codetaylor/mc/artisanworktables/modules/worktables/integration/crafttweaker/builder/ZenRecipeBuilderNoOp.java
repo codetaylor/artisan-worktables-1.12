@@ -55,7 +55,7 @@ public class ZenRecipeBuilderNoOp
   }
 
   @Override
-  public IZenRecipeBuilder setMirrored() {
+  public IZenRecipeBuilder setMirrored(boolean mirrored) {
 
     return this;
   }

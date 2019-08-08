@@ -69,9 +69,9 @@ public class ZenRecipeBuilder
   }
 
   @Override
-  public IZenRecipeBuilder setMirrored() {
+  public IZenRecipeBuilder setMirrored(boolean mirrored) {
 
-    this.recipeBuilder.setMirrored();
+    this.recipeBuilder.setMirrored(mirrored);
     return this;
   }
 

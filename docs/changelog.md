@@ -22,6 +22,12 @@
         * `@Nullable Integer getFluidTankBackgroundColor(String tableName)`
         * `@Nullable Integer getMainOutputSlotBackgroundColor(String tableName)`
         * `@Nullable Integer getPlayerInventorySlotBackgroundColor(String tableName)`
+    * Added new, alternative worktable recipe builder methods [(#146)](https://github.com/codetaylor/artisan-worktables/issues/146):
+        * `IRecipeBuilder setMirrored(boolean mirrored)`
+        * `IRecipeBuilder setConsumeSecondaryIngredients()`
+        * `IRecipeBuilder setConsumeExperience()`
+        * `IRecipeBuilder setHidden()`
+
   * Added:
     * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
     * Config option to disable anvil tool repair, `B:ENABLE_TOOL_REPAIR=true`
@@ -43,6 +49,10 @@
     * Will no longer try to damage or break tool if recipe's tool damage is set to `0`
     * Renamed all config files, no longer prefixed with `artisanworktables.`
     * Reduced the number of recipe searches the tables perform
+    * The following CrT worktable recipe builder methods have been changed to allow an optional parameter [(#146)](https://github.com/codetaylor/artisan-worktables/issues/146):
+        * `RecipeBuilder setMirrored(@Optional(default = true) boolean mirrored)`
+        * `RecipeBuilder setConsumeExperience(@Optional(default = true) boolean consumeExperience)`
+        * `RecipeBuilder setConsumeSecondaryIngredients(@Optional(default = true) boolean consumeSecondaryIngredients)`
 
 ---
 

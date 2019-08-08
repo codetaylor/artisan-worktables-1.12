@@ -289,6 +289,12 @@ public class RecipeBuilderInternal
   }
 
   @Override
+  public IRecipeBuilder setConsumeSecondaryIngredients() {
+
+    return this.setConsumeSecondaryIngredients(true);
+  }
+
+  @Override
   public IRecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients) {
 
     this.consumeSecondaryIngredients = consumeSecondaryIngredients;
@@ -298,7 +304,13 @@ public class RecipeBuilderInternal
   @Override
   public IRecipeBuilder setMirrored() {
 
-    this.mirrored = true;
+    return this.setMirrored(true);
+  }
+
+  @Override
+  public IRecipeBuilder setMirrored(boolean mirrored) {
+
+    this.mirrored = mirrored;
     return this;
   }
 
@@ -403,6 +415,12 @@ public class RecipeBuilderInternal
   }
 
   @Override
+  public IRecipeBuilder setConsumeExperience() {
+
+    return this.setConsumeExperience(true);
+  }
+
+  @Override
   public IRecipeBuilder setConsumeExperience(boolean consumeExperience) {
 
     this.consumeExperience = consumeExperience;
@@ -474,6 +492,12 @@ public class RecipeBuilderInternal
     }
 
     this.validateRun = true;
+  }
+
+  @Override
+  public IRecipeBuilder setHidden() {
+
+    return this.setHidden(true);
   }
 
   @Override

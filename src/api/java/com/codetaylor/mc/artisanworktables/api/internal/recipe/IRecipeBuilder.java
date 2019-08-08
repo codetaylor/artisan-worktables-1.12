@@ -16,9 +16,13 @@ public interface IRecipeBuilder {
 
   IRecipeBuilder setSecondaryIngredients(IArtisanIngredient[] secondaryIngredients) throws RecipeBuilderException;
 
+  IRecipeBuilder setConsumeSecondaryIngredients();
+
   IRecipeBuilder setConsumeSecondaryIngredients(boolean consumeSecondaryIngredients);
 
   IRecipeBuilder setMirrored();
+
+  IRecipeBuilder setMirrored(boolean mirrored);
 
   IRecipeBuilder addTool(IArtisanIngredient tool, int toolDamage) throws RecipeBuilderException;
 
@@ -34,11 +38,15 @@ public interface IRecipeBuilder {
 
   IRecipeBuilder setLevelRequired(int cost) throws RecipeBuilderException;
 
+  IRecipeBuilder setConsumeExperience();
+
   IRecipeBuilder setConsumeExperience(boolean consumeExperience);
 
   IRecipeBuilder setCopy(IRecipeBuilderCopyStrategy copyStrategy);
 
   IRecipeBuilder addRequirement(IRequirementBuilder matchRequirementBuilder);
+
+  IRecipeBuilder setHidden();
 
   IRecipeBuilder setHidden(boolean hidden);
 
