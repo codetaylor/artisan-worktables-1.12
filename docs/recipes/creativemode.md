@@ -1,6 +1,6 @@
 # Creative Tools
 
-Artisan Worktables has a number of recipe creation tools that can be unlocked by a player in creative mode.
+Artisan Worktables has some recipe creation tools that can be unlocked by a player in creative mode.
 
 ## Creative Mode
 
@@ -16,7 +16,7 @@ When a table is in creative mode, it will:
 
 * no longer process recipes
 * allow you to place ghost items in any slot
-* shift-click input slots to cycle an item's oredict
+* shift-click input slots to cycle an item's ore-dict
 * click an occupied slot to clear it
 * emit particles to indicate it is in creative mode
 
@@ -45,9 +45,11 @@ If an input item has ore-dict entries, that item's ghost item can be set to use 
 
 ![Table Creative Ore-Dict Button](../images/table-creative-oredict-button.png)
 
-A table has two ore-dict modes that govern how ore-dict entries are cycled on input items: linked and unlinked. To cycle between modes, click the button illustrated above.
+A table has two ore-dict modes that govern how ore-dict entries are cycled on input items: `Linked` and `Unlinked`. To cycle between modes, click the button illustrated above.
 
 By default, the ore-dict mode is `Linked` and will cause all input items of the same type to be assigned the ore-dict of the item currently being cycled.
+
+The `Unlinked` mode will allow the ore-dicts of input items to be cycled independently of one another even if the items are of the same type.
 
 ## Clear All
 
