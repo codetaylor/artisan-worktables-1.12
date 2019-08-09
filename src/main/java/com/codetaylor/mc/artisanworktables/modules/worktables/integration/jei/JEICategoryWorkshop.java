@@ -7,6 +7,7 @@ import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
@@ -89,12 +90,11 @@ public class JEICategoryWorkshop
       stacks.set(29, extraOutput);
     }
 
-    int capacity = ModuleWorktablesConfig.FLUID_CAPACITY_WORKSHOP.get(this.tableName.toLowerCase());
+    FluidStack fluidStack = wrapper.getFluidStack();
 
-    fluidStacks.init(30, true, 5, 4, 6, 88, capacity, true, null);
-
-    if (wrapper.getFluidStack() != null) {
-      fluidStacks.set(30, wrapper.getFluidStack());
+    if (fluidStack != null) {
+      fluidStacks.init(30, true, 5, 4, 6, 88, fluidStack.amount * 2, false, null);
+      fluidStacks.set(30, fluidStack);
     }
 
     stacks.init(31, true, 110, 26 + 22);

@@ -65,6 +65,7 @@
         * `RecipeBuilder setConsumeExperience(@Optional(default = true) boolean consumeExperience)`
         * `RecipeBuilder setConsumeSecondaryIngredients(@Optional(default = true) boolean consumeSecondaryIngredients)`
     * Improved error reporting when recipe copy fails [(#180)](https://github.com/codetaylor/artisan-worktables/issues/180)
+    * AW JEI recipe displays will now always display the fluid height at 50% for improved visibility [(#179)](https://github.com/codetaylor/artisan-worktables/issues/179)
 
 ---
 
