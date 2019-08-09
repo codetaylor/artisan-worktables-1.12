@@ -831,7 +831,8 @@ public class AWContainer
       EnumTier tier
   ) {
 
-    return this.tile.canHandleRecipeTransferJEI(name, tier);
+    return !this.tile.isCreative()
+        && this.tile.canHandleRecipeTransferJEI(name, tier);
   }
 
   @Override
