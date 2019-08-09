@@ -46,7 +46,7 @@ public class CTRecipeAdditionQueue
           recipeCopyStrategy.apply(builder, CTRecipeAdditionQueue.this.recipeBuilderList);
         }
 
-      } catch (RecipeBuilderException e) {
+      } catch (Exception e) {
         ModuleWorktables.LOG.error("", e);
       }
     }

@@ -61,7 +61,7 @@ public class RecipeAdditionQueue
         try {
           recipeCopyStrategy.apply(builder, this.recipeBuilderList);
 
-        } catch (RecipeBuilderException e) {
+        } catch (Exception e) {
           ModuleWorktables.LOG.error("", e);
         }
       }

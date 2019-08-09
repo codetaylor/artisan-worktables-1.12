@@ -29,20 +29,21 @@ public class RecipeBuilderCopyStrategyByName
   @Override
   public void apply(RecipeBuilderInternal recipeBuilder, List<RecipeBuilderInternal> resultList) throws RecipeBuilderException {
 
-    try {
-      Set<Map.Entry<ResourceLocation, IRecipe>> entries = ForgeRegistries.RECIPES.getEntries();
+    Set<Map.Entry<ResourceLocation, IRecipe>> entries = ForgeRegistries.RECIPES.getEntries();
 
-      for (Map.Entry<ResourceLocation, IRecipe> recipeEntry : entries) {
-        String recipeName = recipeEntry.getKey().toString();
+    for (Map.Entry<ResourceLocation, IRecipe> recipeEntry : entries) {
+      String recipeName = recipeEntry.getKey().toString();
 
-        if (recipeName.equals(this.recipeName)) {
+      if (recipeName.equals(this.recipeName)) {
+
+        try {
           this.doCopy(recipeEntry.getValue(), recipeBuilder, resultList);
-          break;
-        }
-      }
 
-    } catch (Exception e) {
-      throw new RecipeBuilderException("Unable to copy and register recipe", e);
+        } catch (Exception e) {
+          throw new RecipeBuilderException("Unable to copy recipe by name: " + this.recipeName, e);
+        }
+        break;
+      }
     }
   }
 

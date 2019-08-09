@@ -64,6 +64,7 @@
         * `RecipeBuilder setMirrored(@Optional(default = true) boolean mirrored)`
         * `RecipeBuilder setConsumeExperience(@Optional(default = true) boolean consumeExperience)`
         * `RecipeBuilder setConsumeSecondaryIngredients(@Optional(default = true) boolean consumeSecondaryIngredients)`
+    * Improved error reporting when recipe copy fails [(#180)](https://github.com/codetaylor/artisan-worktables/issues/180)
 
 ---
 

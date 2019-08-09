@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.recipe.copy;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeBuilderException;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.RecipeBuilderInternal;
-import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTLogHelper;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -34,31 +33,33 @@ public class RecipeBuilderCopyStrategyByOutput
   }
 
   @Override
-  public void apply(RecipeBuilderInternal recipeBuilder, List<RecipeBuilderInternal> resultList) {
+  public void apply(RecipeBuilderInternal recipeBuilder, List<RecipeBuilderInternal> resultList) throws RecipeBuilderException {
 
-    try {
-      Collection<IRecipe> recipes = ForgeRegistries.RECIPES.getValuesCollection();
+    Collection<IRecipe> recipes = ForgeRegistries.RECIPES.getValuesCollection();
 
-      Set<IRecipe> toCopy = new HashSet<>();
+    Set<IRecipe> toCopy = new HashSet<>();
 
-      for (IRecipe recipe : recipes) {
+    for (IRecipe recipe : recipes) {
 
-        for (IArtisanIngredient copyRecipe : this.toCopy) {
+      for (IArtisanIngredient copyRecipe : this.toCopy) {
 
-          if (!recipe.getRecipeOutput().isEmpty()
-              && copyRecipe.matches(recipe.getRecipeOutput())) {
-            toCopy.add(recipe);
-          }
+        if (!recipe.getRecipeOutput().isEmpty()
+            && copyRecipe.matches(recipe.getRecipeOutput())) {
+          toCopy.add(recipe);
         }
       }
-
-      for (IRecipe recipe : toCopy) {
-        this.doCopy(recipe, recipeBuilder.copy(), resultList);
-      }
-
-    } catch (Exception e) {
-      CTLogHelper.logError("Unable to copy and register recipe", e);
     }
+
+    for (IRecipe recipe : toCopy) {
+
+      try {
+        this.doCopy(recipe, recipeBuilder.copy(), resultList);
+
+      } catch (Exception e) {
+        throw new RecipeBuilderException("Unable to copy recipe by output: " + recipe.getRegistryName(), e);
+      }
+    }
+
   }
 
 }
