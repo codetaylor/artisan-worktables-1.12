@@ -9,6 +9,7 @@ pages:
   - Mod Integrations: integrations/index.md
   - Creating Recipes:
     - Quick Reference: recipes/quickreference.md
+    - Creative Tools: recipes/creativemode.md
     - Getting Started: recipes/gettingstarted.md
     - Basic Recipes: recipes/basic.md
     - Recipe Names: recipes/names.md
