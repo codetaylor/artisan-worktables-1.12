@@ -116,3 +116,7 @@ gui.artisanworktables.tooltip.button.oredict.unlinked=OreDict Mode: Unlinked
 item.artisanworktables.tooltip.durability=Haltbarkeit: %d / %d
 item.artisanworktables.tooltip.creative.table.oredict.header=Oredict: %s(SHIFT + LEFT-CLICK)
 item.artisanworktables.tooltip.creative.table.oredict.none=-none-
+
+# Chat
+chat.artisanworktables.message.recipe.copy.success=Recipe copied to clipboard
+chat.artisanworktables.message.recipe.copy.error=Error copying recipe, see log for details

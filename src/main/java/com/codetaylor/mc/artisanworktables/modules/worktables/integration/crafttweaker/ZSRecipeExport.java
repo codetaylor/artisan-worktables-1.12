@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixSt
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -24,7 +25,6 @@ public final class ZSRecipeExport {
     int height = craftingMatrixHandler.getHeight();
 
     ItemStackHandler resultHandler = tileEntity.getResultHandler();
-    ItemStackHandler toolHandler = tileEntity.getToolHandler();
     ItemStackHandler secondaryOutputHandler = tileEntity.getSecondaryOutputHandler();
     FluidTank tank = tileEntity.getTank();
 
@@ -38,15 +38,69 @@ public final class ZSRecipeExport {
     if (shaped) {
       out.append("  .setShaped([\n");
 
+      int xMin = width, xMax = 0;
+      int yMin = height, yMax = 0;
+
       for (int i = container.slotIndexCraftingMatrixStart; i <= container.slotIndexCraftingMatrixEnd; i++) {
         int x = (i - container.slotIndexCraftingMatrixStart) % width;
+        int y = (i - container.slotIndexCraftingMatrixStart) / width;
+
+        if (container.getSlot(i).getHasStack()) {
+
+          if (x < xMin) {
+            xMin = x;
+          }
+
+          if (x > xMax) {
+            xMax = x;
+          }
+
+          if (y < yMin) {
+            yMin = y;
+          }
+
+          if (y > yMax) {
+            yMax = y;
+          }
+        }
+      }
+
+      int actualWidth = xMax - xMin + 1;
+      int actualHeight = yMax - yMin + 1;
+
+      ItemStack[] remappedGrid = new ItemStack[actualWidth * actualHeight];
+
+      for (int i = container.slotIndexCraftingMatrixStart; i <= container.slotIndexCraftingMatrixEnd; i++) {
+        int x = (i - container.slotIndexCraftingMatrixStart) % width;
+        int y = (i - container.slotIndexCraftingMatrixStart) / height;
+
+        if (x < xMin || x > xMax) {
+          continue;
+        }
+
+        if (y < yMin || y > yMax) {
+          continue;
+        }
+
+        Slot slot = container.getSlot(i);
+        ItemStack stack = slot.getStack();
+        int xMapped = x - xMin;
+        int yMapped = y - yMin;
+        remappedGrid[xMapped + yMapped * actualWidth] = stack;
+      }
+
+      for (int i = 0; i < remappedGrid.length; i++) {
+
+        int x = i % actualWidth;
+        int y = i / actualWidth;
 
         if (x == 0) {
           out.append("    [");
         }
 
-        String oreDict = tileEntity.oreDictMap.lookup(i);
-        ItemStack stackInSlot = container.getSlot(i).getStack();
+        int containerIndex = container.slotIndexCraftingMatrixStart + (x + xMin) + (y + yMin) * width;
+        String oreDict = tileEntity.oreDictMap.lookup(containerIndex);
+        ItemStack stackInSlot = remappedGrid[i];
 
         if (oreDict == null) {
           ZSRecipeExport.getItemString(stackInSlot, out, true, false);
@@ -55,11 +109,11 @@ public final class ZSRecipeExport {
           ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, out, true);
         }
 
-        if (i == container.slotIndexCraftingMatrixEnd) {
+        if (i == remappedGrid.length - 1) {
           // finished with the whole thing
           out.append("]])\n");
 
-        } else if (x == width - 1) {
+        } else if (x == actualWidth - 1) {
           // finished with the row
           out.append("],\n");
 

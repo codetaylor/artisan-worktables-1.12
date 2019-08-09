@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
 import com.codetaylor.mc.artisanworktables.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.ZSRecipeExport;
@@ -9,6 +10,8 @@ import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureButtonBase;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
 
 import java.awt.*;
@@ -43,11 +46,18 @@ public class GuiElementExportButtonShaped
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
 
-    String data = ZSRecipeExport.getExportString((AWContainer) gui.inventorySlots, tileEntity, true);
-    StringSelection contents = new StringSelection(data);
-    Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-    Clipboard systemClipboard = defaultToolkit.getSystemClipboard();
-    systemClipboard.setContents(contents, null);
+    try {
+      String data = ZSRecipeExport.getExportString((AWContainer) gui.inventorySlots, tileEntity, true);
+      StringSelection contents = new StringSelection(data);
+      Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+      Clipboard systemClipboard = defaultToolkit.getSystemClipboard();
+      systemClipboard.setContents(contents, null);
+      Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("chat.artisanworktables.message.recipe.copy.success"));
+
+    } catch (Exception e) {
+      Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("chat.artisanworktables.message.recipe.copy.error"));
+      ModuleWorktables.LOG.error("", e);
+    }
   }
 
   @Override
