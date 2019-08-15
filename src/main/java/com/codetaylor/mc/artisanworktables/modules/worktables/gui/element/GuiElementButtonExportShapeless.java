@@ -19,11 +19,11 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.List;
 
-public class GuiElementExportButtonShapeless
+public class GuiElementButtonExportShapeless
     extends GuiElementTextureButtonBase
     implements IGuiElementTooltipProvider {
 
-  public GuiElementExportButtonShapeless(GuiContainerBase guiBase, int elementX, int elementY) {
+  public GuiElementButtonExportShapeless(GuiContainerBase guiBase, int elementX, int elementY) {
 
     super(
         guiBase,

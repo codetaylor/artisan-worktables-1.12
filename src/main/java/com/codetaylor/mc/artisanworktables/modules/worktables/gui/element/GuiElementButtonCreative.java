@@ -1,7 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 
 import com.codetaylor.mc.artisanworktables.ReferenceTexture;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableCreativeToggle;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -11,24 +13,24 @@ import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
 
-public class GuiElementExportButtonOredictLink
+public class GuiElementButtonCreative
     extends GuiElementTextureButtonBase
     implements IGuiElementTooltipProvider {
 
-  private static final int TEXTURE_BASE_UNLINKED_INDEX = 2;
-  private static final int TEXTURE_HOVERED_UNLINKED_INDEX = 3;
+  private static final int TEXTURE_BASE_UNLOCKED_INDEX = 2;
+  private static final int TEXTURE_HOVERED_UNLOCKED_INDEX = 3;
 
-  public GuiElementExportButtonOredictLink(GuiContainerBase guiBase, int elementX, int elementY) {
+  public GuiElementButtonCreative(GuiContainerBase guiBase, int elementX, int elementY) {
 
     super(
         guiBase,
         new Texture[]{
             // locked
-            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158, 55, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT),
-            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158 + 11, 55, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT),
+            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158, 77, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT),
+            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158 + 11, 77, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT),
             // unlocked
-            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158, 66, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT),
-            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158 + 11, 66, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT)
+            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158, 88, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT),
+            new Texture(ReferenceTexture.RESOURCE_LOCATION_GUI_ELEMENTS, 158 + 11, 88, ReferenceTexture.TEXTURE_GUI_ELEMENTS_WIDTH, ReferenceTexture.TEXTURE_GUI_ELEMENTS_HEIGHT)
         },
         elementX,
         elementY,
@@ -37,26 +39,26 @@ public class GuiElementExportButtonOredictLink
     );
   }
 
-  public boolean isOreDictLinked() {
+  private boolean isCreative() {
 
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
-    return tileEntity.isOreDictLinked();
+    return !tileEntity.isCreative();
   }
 
   @Override
   protected int textureIndexGet(int mouseX, int mouseY) {
 
-    if (!this.isOreDictLinked()) {
+    if (this.isCreative()) {
       return super.textureIndexGet(mouseX, mouseY);
 
     } else {
 
       if (this.elementIsMouseInside(mouseX, mouseY)) {
-        return TEXTURE_HOVERED_UNLINKED_INDEX;
+        return TEXTURE_HOVERED_UNLOCKED_INDEX;
       }
 
-      return TEXTURE_BASE_UNLINKED_INDEX;
+      return TEXTURE_BASE_UNLOCKED_INDEX;
     }
   }
 
@@ -67,7 +69,7 @@ public class GuiElementExportButtonOredictLink
 
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
-    tileEntity.setOredictLinked(!tileEntity.isOreDictLinked());
+    ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableCreativeToggle(tileEntity.getPos()));
   }
 
   @Override
@@ -76,20 +78,12 @@ public class GuiElementExportButtonOredictLink
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
 
-    if (tileEntity.isOreDictLinked()) {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.oredict.linked"));
+    if (tileEntity.isCreative()) {
+      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.creative.enabled"));
 
     } else {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.oredict.unlinked"));
+      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.creative.disabled"));
     }
     return tooltip;
-  }
-
-  @Override
-  public boolean elementIsVisible(int mouseX, int mouseY) {
-
-    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
-    TileEntityBase tileEntity = gui.getTileEntity();
-    return tileEntity.isCreative();
   }
 }

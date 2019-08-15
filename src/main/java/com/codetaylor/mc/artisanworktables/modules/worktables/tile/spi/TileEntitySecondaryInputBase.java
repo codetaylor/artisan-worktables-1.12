@@ -61,7 +61,8 @@ public abstract class TileEntitySecondaryInputBase
       @Nonnull Capability<?> capability, @Nullable EnumFacing facing
   ) {
 
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+        && facing == EnumFacing.UP) {
       return true;
     }
 
@@ -72,7 +73,8 @@ public abstract class TileEntitySecondaryInputBase
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
 
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+        && facing == EnumFacing.UP) {
       //noinspection unchecked
       return (T) this.wrapper;
     }

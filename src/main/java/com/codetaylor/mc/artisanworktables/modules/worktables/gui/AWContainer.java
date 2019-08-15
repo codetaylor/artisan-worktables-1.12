@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.lib.RoundRobinHelper;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
@@ -26,6 +27,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -664,6 +666,40 @@ public class AWContainer
       ItemStack itemStack = slot.getStack();
       itemStackCopy = itemStack.copy();
 
+      if (this.tile.isLocked()
+          && (this.isSlotIndexInventory(slotIndex) || this.isSlotIndexHotbar(slotIndex))) {
+
+        // If the table is locked and the player has shift-clicked something in
+        // the inventory or hotbar...
+
+        ICraftingMatrixStackHandler craftingMatrixHandler = this.tile.getCraftingMatrixHandler();
+        ICraftingMatrixStackHandler craftingMatrixHandlerGhost = this.tile.getCraftingMatrixHandlerGhost();
+
+        int count = itemStack.getCount();
+
+        for (int i = 0; i < count; i++) {
+          List<Tuple> list = RoundRobinHelper.getSortedIndices(itemStack, craftingMatrixHandler, craftingMatrixHandlerGhost);
+
+          if (list.isEmpty()) {
+            return ItemStack.EMPTY;
+          }
+
+          ItemStack copy = itemStack.copy();
+          copy.setCount(1);
+          int index = (int) list.get(0).getFirst();
+          ItemStack result = craftingMatrixHandler.insertItem(index, copy, false);
+
+          if (result.isEmpty()) {
+            itemStack.shrink(1);
+
+          } else {
+            return ItemStack.EMPTY;
+          }
+        }
+
+        return ItemStack.EMPTY;
+      }
+
       if (this.isSlotIndexResult(slotIndex)) {
         // Result
 
@@ -892,6 +928,15 @@ public class AWContainer
         if (slot instanceof ICreativeSlotClick) {
           return ((ICreativeSlotClick) slot).creativeSlotClick(slotId, dragType, clickTypeIn, player);
         }
+      }
+
+    } else if (this.tile.isLocked()) {
+
+      if (clickTypeIn == ClickType.QUICK_MOVE
+          && slotId >= this.slotIndexInventoryStart
+          && slotId <= this.slotIndexInventoryEnd) {
+        // TODO: round robin for shift click transfer in
+
       }
     }
 

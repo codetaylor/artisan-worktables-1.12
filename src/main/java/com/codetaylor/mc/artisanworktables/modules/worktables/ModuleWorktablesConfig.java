@@ -87,6 +87,24 @@ public class ModuleWorktablesConfig {
   public static boolean ENABLE_TABS_WORKSHOPS = true;
 
   @Config.Comment({
+      "Set to false to disable the slot-locking feature for worktables."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_SLOT_LOCKING_WORKTABLES = false;
+
+  @Config.Comment({
+      "Set to false to disable the slot-locking feature for workstations."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_SLOT_LOCKING_WORKSTATIONS = true;
+
+  @Config.Comment({
+      "Set to false to disable the slot-locking feature for workshops."
+  })
+  @Config.RequiresMcRestart
+  public static boolean ENABLE_SLOT_LOCKING_WORKSHOPS = true;
+
+  @Config.Comment({
       "Set to false to selectively disable a table type across all table tiers."
   })
   public static Map<String, Boolean> ENABLE_TABLE_TYPE = new HashMap<>();
@@ -308,6 +326,20 @@ public class ModuleWorktablesConfig {
         return ModuleWorktablesConfig.ENABLE_WORKSTATIONS;
       case WORKSHOP:
         return ModuleWorktablesConfig.ENABLE_WORKSHOPS;
+      default:
+        throw new IllegalArgumentException("Unknown tier: " + tier);
+    }
+  }
+
+  public static boolean allowSlotLockingForTier(EnumTier tier) {
+
+    switch (tier) {
+      case WORKTABLE:
+        return ModuleWorktablesConfig.ENABLE_SLOT_LOCKING_WORKTABLES;
+      case WORKSTATION:
+        return ModuleWorktablesConfig.ENABLE_SLOT_LOCKING_WORKSTATIONS;
+      case WORKSHOP:
+        return ModuleWorktablesConfig.ENABLE_SLOT_LOCKING_WORKSHOPS;
       default:
         throw new IllegalArgumentException("Unknown tier: " + tier);
     }

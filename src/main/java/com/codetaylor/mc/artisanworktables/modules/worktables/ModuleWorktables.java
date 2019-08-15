@@ -197,8 +197,13 @@ public class ModuleWorktables
         Side.SERVER
     );
     registry.register(
-        CSPacketWorktableCreateModeToggle.class,
-        CSPacketWorktableCreateModeToggle.class,
+        CSPacketWorktableCreativeToggle.class,
+        CSPacketWorktableCreativeToggle.class,
+        Side.SERVER
+    );
+    registry.register(
+        CSPacketWorktableLockedModeToggle.class,
+        CSPacketWorktableLockedModeToggle.class,
         Side.SERVER
     );
 

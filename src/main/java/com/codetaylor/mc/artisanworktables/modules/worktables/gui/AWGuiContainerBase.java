@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbox;
@@ -50,6 +51,8 @@ public abstract class AWGuiContainerBase
     this.textShadowColor = ModuleWorktablesConfig.CLIENT.getTextHighlightColor(tableTypeName);
     this.fluidTankOverlayColor = ModuleWorktablesConfig.CLIENT.getFluidTankOverlayColor(tableTypeName);
 
+    boolean allowSlotLocking = ModuleWorktablesConfig.allowSlotLockingForTier(this.tileEntity.getTier());
+
     // worktable title
     this.guiContainerElementAdd(new GuiElementTitle(
         this,
@@ -73,27 +76,60 @@ public abstract class AWGuiContainerBase
 
     // export shaped button
     if (Minecraft.getMinecraft().player.isCreative()) {
-      this.guiContainerElementAdd(new GuiElementExportButtonUnlock(
-          this, this.getXSize() - 18, 4
-      ));
-
       int elementY = this.ySize - 95;
-      this.guiContainerElementAdd(new GuiElementExportButtonShaped(
+      this.guiContainerElementAdd(new GuiElementButtonCreative(
           this, this.getXSize() - 18, elementY
       ));
-      this.guiContainerElementAdd(new GuiElementExportButtonShapeless(
+      this.guiContainerElementAdd(new GuiElementButtonExportShaped(
           this, this.getXSize() - 18 - 12, elementY
       ));
-      this.guiContainerElementAdd(new GuiElementExportButtonOredictLink(
+      this.guiContainerElementAdd(new GuiElementButtonExportShapeless(
           this, this.getXSize() - 18 - 12 * 2, elementY
       ));
-      this.guiContainerElementAdd(new GuiElementExportButtonClearAll(
+      this.guiContainerElementAdd(new GuiElementButtonOredictLink(
           this, this.getXSize() - 18 - 12 * 3, elementY
+      ));
+      this.guiContainerElementAdd(new GuiElementButtonClearAll(
+          this, this.getXSize() - 18 - 12 * 4, elementY
+      ));
+    }
+
+    if (allowSlotLocking) {
+      this.guiContainerElementAdd(new GuiElementButtonLocked(
+          this, this.getXSize() - 18, 4
       ));
     }
 
     // slot background quads
     this.addSlotBackgrounds();
+
+    {
+      ICraftingMatrixStackHandler handler = this.tileEntity.getCraftingMatrixHandler();
+      ICraftingMatrixStackHandler handlerGhost = this.tileEntity.getCraftingMatrixHandlerGhost();
+      for (int y = 0; y < handler.getHeight(); ++y) {
+        for (int x = 0; x < handler.getWidth(); ++x) {
+          this.guiContainerElementAdd(new GuiElementGhostItem(
+              this,
+              this.tileEntity,
+              handler,
+              handlerGhost,
+              x + y * handler.getWidth(),
+              20 + x * 18,
+              17 + y * 18,
+              16,
+              16
+          ));
+          if (allowSlotLocking) {
+            this.guiContainerElementAdd(new GuiElementLockedSlotIndicator(
+                this,
+                this.tileEntity,
+                20 + x * 18,
+                17 + y * 18
+            ));
+          }
+        }
+      }
+    }
 
     // mage special effect
     if (tableType == EnumType.MAGE) {

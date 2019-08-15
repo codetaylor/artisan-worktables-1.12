@@ -3,7 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 import com.codetaylor.mc.artisanworktables.ReferenceTexture;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainerBase;
-import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableCreateModeToggle;
+import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableLockedModeToggle;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -13,14 +13,14 @@ import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
 
-public class GuiElementExportButtonUnlock
+public class GuiElementButtonLocked
     extends GuiElementTextureButtonBase
     implements IGuiElementTooltipProvider {
 
   private static final int TEXTURE_BASE_UNLOCKED_INDEX = 2;
   private static final int TEXTURE_HOVERED_UNLOCKED_INDEX = 3;
 
-  public GuiElementExportButtonUnlock(GuiContainerBase guiBase, int elementX, int elementY) {
+  public GuiElementButtonLocked(GuiContainerBase guiBase, int elementX, int elementY) {
 
     super(
         guiBase,
@@ -43,7 +43,7 @@ public class GuiElementExportButtonUnlock
 
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
-    return !tileEntity.isCreative();
+    return tileEntity.isLocked();
   }
 
   @Override
@@ -69,7 +69,7 @@ public class GuiElementExportButtonUnlock
 
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
-    ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableCreateModeToggle(tileEntity.getPos()));
+    ModuleWorktables.PACKET_SERVICE.sendToServer(new CSPacketWorktableLockedModeToggle(tileEntity.getPos()));
   }
 
   @Override
@@ -78,12 +78,20 @@ public class GuiElementExportButtonUnlock
     AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
     TileEntityBase tileEntity = gui.getTileEntity();
 
-    if (tileEntity.isCreative()) {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.creative.enabled"));
+    if (tileEntity.isLocked()) {
+      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.locked.enabled"));
 
     } else {
-      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.creative.disabled"));
+      tooltip.add(I18n.translateToLocal("gui.artisanworktables.tooltip.button.locked.disabled"));
     }
     return tooltip;
+  }
+
+  @Override
+  public boolean elementIsVisible(int mouseX, int mouseY) {
+
+    AWGuiContainerBase gui = (AWGuiContainerBase) this.guiBase;
+    TileEntityBase tileEntity = gui.getTileEntity();
+    return !tileEntity.isCreative();
   }
 }

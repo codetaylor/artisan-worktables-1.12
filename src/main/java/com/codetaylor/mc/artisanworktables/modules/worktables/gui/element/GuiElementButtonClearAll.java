@@ -13,11 +13,11 @@ import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
 
-public class GuiElementExportButtonClearAll
+public class GuiElementButtonClearAll
     extends GuiElementTextureButtonBase
     implements IGuiElementTooltipProvider {
 
-  public GuiElementExportButtonClearAll(GuiContainerBase guiBase, int elementX, int elementY) {
+  public GuiElementButtonClearAll(GuiContainerBase guiBase, int elementX, int elementY) {
 
     super(
         guiBase,

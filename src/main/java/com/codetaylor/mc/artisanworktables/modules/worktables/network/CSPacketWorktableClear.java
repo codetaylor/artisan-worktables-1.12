@@ -16,9 +16,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-/**
- * Sent from the client to the server to signal a fluid destroy.
- */
 public class CSPacketWorktableClear
     extends SPacketTileEntityBase<CSPacketWorktableClear> {
 

@@ -19,6 +19,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWGuiContainer
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SCPacketWorktableFluidUpdate;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.CraftingContextFactory;
 import com.codetaylor.mc.artisanworktables.modules.worktables.recipe.VanillaRecipeCache;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.RoundRobinGhostStackHandler;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
@@ -44,6 +45,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -62,10 +65,13 @@ public abstract class TileEntityBase
   private EnumType type;
   private ObservableStackHandler toolHandler;
   private CraftingMatrixStackHandler craftingMatrixHandler;
+  private CraftingMatrixStackHandler craftingMatrixHandlerGhost;
+  private IItemHandler roundRobinGhostStackHandler;
   private ObservableStackHandler secondaryOutputHandler;
   private ItemStackHandler resultHandler;
   private FluidTank tank;
   private boolean creative;
+  private boolean locked;
   private boolean initialized;
 
   private VanillaRecipeCache.InventoryWrapper inventoryWrapper;
@@ -105,14 +111,45 @@ public abstract class TileEntityBase
     this.resultHandler = new ItemStackHandler(1);
     this.tank = this.createFluidTank(type);
 
-    ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
-    contentsChangedEventHandler = (stackHandler, slotIndex) -> {
-      this.markDirty();
-      this.requiresRecipeUpdate = true;
-    };
-    this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
-    this.toolHandler.addObserver(contentsChangedEventHandler);
-    this.secondaryOutputHandler.addObserver(contentsChangedEventHandler);
+    {
+      ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
+      contentsChangedEventHandler = (stackHandler, slotIndex) -> {
+        this.markDirty();
+        this.requiresRecipeUpdate = true;
+
+        if (this.isLocked()) {
+          ItemStack stackInSlot = stackHandler.getStackInSlot(slotIndex);
+
+          if (!stackInSlot.isEmpty()) {
+            ItemStack copy = stackInSlot.copy();
+            copy.setCount(1);
+            this.craftingMatrixHandlerGhost.setStackInSlot(slotIndex, copy);
+          }
+        }
+      };
+      this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
+      this.toolHandler.addObserver(contentsChangedEventHandler);
+      this.secondaryOutputHandler.addObserver(contentsChangedEventHandler);
+    }
+
+    this.craftingMatrixHandlerGhost = new CraftingMatrixStackHandler(
+        this.craftingMatrixHandler.getWidth(),
+        this.craftingMatrixHandler.getHeight()
+    );
+
+    this.roundRobinGhostStackHandler = new RoundRobinGhostStackHandler(
+        this,
+        this.craftingMatrixHandler,
+        this.craftingMatrixHandlerGhost
+    );
+
+    {
+      ObservableStackHandler.IContentsChangedEventHandler contentsChangedEventHandler;
+      contentsChangedEventHandler = (stackHandler, slotIndex) -> {
+        this.markDirty();
+      };
+      this.craftingMatrixHandlerGhost.addObserver(contentsChangedEventHandler);
+    }
   }
 
   protected FluidTank createFluidTank(EnumType type) {
@@ -163,6 +200,37 @@ public abstract class TileEntityBase
     }
   }
 
+  public boolean isLocked() {
+
+    return this.locked;
+  }
+
+  public void setLocked(boolean locked) {
+
+    this.locked = locked;
+
+    if (locked) {
+
+      for (int i = 0; i < this.craftingMatrixHandler.getSlots(); i++) {
+        ItemStack copy = this.craftingMatrixHandler.getStackInSlot(i).copy();
+
+        if (copy.isEmpty()) {
+          this.craftingMatrixHandlerGhost.setStackInSlot(i, ItemStack.EMPTY);
+
+        } else {
+          copy.setCount(1);
+          this.craftingMatrixHandlerGhost.setStackInSlot(i, copy);
+        }
+      }
+
+    } else {
+
+      for (int i = 0; i < this.craftingMatrixHandlerGhost.getSlots(); i++) {
+        this.craftingMatrixHandlerGhost.setStackInSlot(i, ItemStack.EMPTY);
+      }
+    }
+  }
+
   public boolean isCreative() {
 
     return this.creative;
@@ -203,6 +271,11 @@ public abstract class TileEntityBase
     return this.craftingMatrixHandler;
   }
 
+  public ICraftingMatrixStackHandler getCraftingMatrixHandlerGhost() {
+
+    return this.craftingMatrixHandlerGhost;
+  }
+
   public ItemStackHandler getSecondaryOutputHandler() {
 
     return this.secondaryOutputHandler;
@@ -238,7 +311,9 @@ public abstract class TileEntityBase
       @Nonnull Capability<?> capability, @Nullable EnumFacing facing
   ) {
 
-    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+        || (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != EnumFacing.DOWN)
+        || super.hasCapability(capability, facing);
   }
 
   @Nullable
@@ -248,6 +323,11 @@ public abstract class TileEntityBase
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       //noinspection unchecked
       return (T) this.tank;
+
+    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != EnumFacing.DOWN) {
+
+      //noinspection unchecked
+      return (T) this.roundRobinGhostStackHandler;
     }
 
     return super.getCapability(capability, facing);
@@ -306,11 +386,13 @@ public abstract class TileEntityBase
     tag = super.writeToNBT(tag);
     tag.setInteger("type", this.type.getMeta());
     tag.setTag("craftingMatrixHandler", this.craftingMatrixHandler.serializeNBT());
+    tag.setTag("craftingMatrixHandlerGhost", this.craftingMatrixHandlerGhost.serializeNBT());
     tag.setTag("toolHandler", this.toolHandler.serializeNBT());
     tag.setTag("secondaryOutputHandler", this.secondaryOutputHandler.serializeNBT());
     tag.setTag("tank", this.tank.writeToNBT(new NBTTagCompound()));
     tag.setBoolean("creative", this.creative);
     tag.setTag("resultHandler", this.resultHandler.serializeNBT());
+    tag.setBoolean("locked", this.locked);
     return tag;
   }
 
@@ -321,11 +403,13 @@ public abstract class TileEntityBase
     this.type = EnumType.fromMeta(tag.getInteger("type"));
     this.initializeInternal(this.type);
     this.craftingMatrixHandler.deserializeNBT(tag.getCompoundTag("craftingMatrixHandler"));
+    this.craftingMatrixHandlerGhost.deserializeNBT(tag.getCompoundTag("craftingMatrixHandlerGhost"));
     this.toolHandler.deserializeNBT(tag.getCompoundTag("toolHandler"));
     this.secondaryOutputHandler.deserializeNBT(tag.getCompoundTag("secondaryOutputHandler"));
     this.tank.readFromNBT(tag.getCompoundTag("tank"));
     this.creative = tag.getBoolean("creative");
     this.resultHandler.deserializeNBT(tag.getCompoundTag("resultHandler"));
+    this.locked = tag.getBoolean("locked");
   }
 
   @Override

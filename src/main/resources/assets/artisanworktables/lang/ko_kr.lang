@@ -108,10 +108,12 @@ gui.artisanworktables.tooltip.fluid.destroy=%s 유체를 없애려면 %sSHIFT + 
 gui.artisanworktables.tooltip.button.export.shaped=Export Shaped
 gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
 gui.artisanworktables.tooltip.button.clear.table=Clear All
-gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Normal
+gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Survival
 gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
 gui.artisanworktables.tooltip.button.oredict.linked=OreDict Mode: Linked
 gui.artisanworktables.tooltip.button.oredict.unlinked=OreDict Mode: Unlinked
+gui.artisanworktables.tooltip.button.locked.disabled=Slot Mode: Unlocked
+gui.artisanworktables.tooltip.button.locked.enabled=Slot Mode: Locked
 
 # Tooltip
 item.artisanworktables.tooltip.durability=내구도: %d / %d

@@ -32,9 +32,9 @@
     * Tools can now be repaired in an anvil [(#165)](https://github.com/codetaylor/artisan-worktables/issues/165)
     * Config option to disable anvil tool repair, `B:ENABLE_TOOL_REPAIR=true`
     * Config options to disable gui tabs for each tier of table [(#169)](https://github.com/codetaylor/artisan-worktables/issues/169)
-        * `B:ENABLE_TABS_WORKSHOPS=true`
-        * `B:ENABLE_TABS_WORKSTATIONS=true`
         * `B:ENABLE_TABS_WORKTABLES=true`
+        * `B:ENABLE_TABS_WORKSTATIONS=true`
+        * `B:ENABLE_TABS_WORKSHOPS=true`
     * Allow any table to act as a vanilla crafting table [(#148)](https://github.com/codetaylor/artisan-worktables/issues/148)
         * By default all tables allow vanilla crafting
         * Remove a table's id from the config to disable `S:ENABLE_VANILLA_CRAFTING <>`
@@ -52,6 +52,10 @@
         * Artisan's File [(#162)](https://github.com/codetaylor/artisan-worktables/issues/162)
         * Artisan's Pencil [(#139)](https://github.com/codetaylor/artisan-worktables/issues/139)
         * Artisan's T-Square [(#139)](https://github.com/codetaylor/artisan-worktables/issues/139)
+    * Slot-locking feature [(#166)](https://github.com/codetaylor/artisan-worktables/issues/166)
+        * `B:ENABLE_SLOT_LOCKING_WORKTABLES=false`
+        * `B:ENABLE_SLOT_LOCKING_WORKSTATIONS=true`
+        * `B:ENABLE_SLOT_LOCKING_WORKSHOPS=true`
 
   * Changed:
     * Moved GT:CE compatibility to Artisan Integrations
@@ -66,6 +70,11 @@
         * `RecipeBuilder setConsumeSecondaryIngredients(@Optional(default = true) boolean consumeSecondaryIngredients)`
     * Improved error reporting when recipe copy fails [(#180)](https://github.com/codetaylor/artisan-worktables/issues/180)
     * AW JEI recipe displays will now always display the fluid height at 50% for improved visibility [(#179)](https://github.com/codetaylor/artisan-worktables/issues/179)
+    * Item insertion behavior:
+        * Items can only be inserted into the secondary ingredient slots from the top of a table
+        * If a table is slot-locked, items inserted from the sides that match locked slots in the crafting grid are inserted into the crafting grid
+        * If a Worktable tier table is slot-locked, items inserted from the top that match locked slots in the crafting grid are inserted into the crafting grid
+        * If a table is not slot-locked, items inserted from the sides are not inserted
 
 ---
 
