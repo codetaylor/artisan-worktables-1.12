@@ -3,7 +3,6 @@ site_name: Artisan Worktables
 pages:
   - Introduction: index.md
   - ChangeLog: changelog.md
-  - Configuration Files: configuration.md
   - Toolbox: toolbox.md
   - Design Pattern: designpattern.md
   - Mod Integrations: integrations/index.md
