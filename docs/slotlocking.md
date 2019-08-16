@@ -20,5 +20,5 @@ When slot-locking is enabled, indicators will appear over any locked slot.
 
 When an item is removed from a locked slot, the slot will remember the item that used to be in it.
 
-* Shift + click a stack of items to evenly distribute that stack amongst all locked slots that match
-* Evenly distribute items inserted via capability amongst all locked slots that match
+* Shift + click a stack of items to evenly distribute that stack between all locked slots that match
+* Evenly distribute items inserted via capability between all locked slots that match
