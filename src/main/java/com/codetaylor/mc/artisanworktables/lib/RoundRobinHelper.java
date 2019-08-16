@@ -56,9 +56,9 @@ public final class RoundRobinHelper {
       ItemStack stackInSlot = itemHandler.getStackInSlot(ghostIndex);
       ItemStack ghostStackInSlot = ghostItemHandler.getStackInSlot(ghostIndex);
 
+      // if the slot is empty or the slot's item matches the ghost item
       if (stackInSlot.isEmpty()
-          || (ItemStack.areItemsEqual(stackInSlot, ghostStackInSlot)
-          && ItemStack.areItemStackTagsEqual(stackInSlot, ghostStackInSlot))) {
+          || (ItemStack.areItemsEqual(stackInSlot, ghostStackInSlot) && ItemStack.areItemStackTagsEqual(stackInSlot, ghostStackInSlot))) {
 
         // index, count
         Tuple<Integer, Integer> tuple = new Tuple<>(ghostIndex, stackInSlot.getCount());
