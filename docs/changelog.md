@@ -3,6 +3,27 @@
   * Note:
     * Config files have been renamed, see below
 
+  * Translators:
+    * The following lang keys were added to all lang files with en_us values:
+        * item.artisanworktables.artisans.hatchet.name
+        * item.artisanworktables.artisans.file.name
+        * item.artisanworktables.artisans.pencil.name
+        * item.artisanworktables.artisans.tsquare.name
+        * item.artisanworktables.artisans.solderer.name
+        * gui.artisanworktables.tooltip.button.export.shaped
+        * gui.artisanworktables.tooltip.button.export.shapeless
+        * gui.artisanworktables.tooltip.button.clear.table
+        * gui.artisanworktables.tooltip.button.creative.disabled
+        * gui.artisanworktables.tooltip.button.creative.enabled
+        * gui.artisanworktables.tooltip.button.oredict.linked
+        * gui.artisanworktables.tooltip.button.oredict.unlinked
+        * gui.artisanworktables.tooltip.button.locked.disabled
+        * gui.artisanworktables.tooltip.button.locked.enabled
+        * item.artisanworktables.tooltip.creative.table.oredict.header
+        * item.artisanworktables.tooltip.creative.table.oredict.none
+        * chat.artisanworktables.message.recipe.copy.success
+        * chat.artisanworktables.message.recipe.copy.error
+
   * API:
     * Bumped version to 8
     * Added new default interface methods to `IRequirement`:
