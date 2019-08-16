@@ -10,7 +10,7 @@ To unlock a table's recipe creation tools:
 
 1. First, ensure you are in the `creative` game mode
 2. Next, open a table's GUI
-3. Finally, click the lock icon in the upper-right corner
+3. Finally, click the button indicated in the image
 
 When a table is in creative mode, it will:
 

@@ -6,6 +6,7 @@ pages:
   - Toolbox: toolbox.md
   - Design Pattern: designpattern.md
   - Mod Integrations: integrations/index.md
+  - Slot-Locking: slotlocking.md
   - Creating Recipes:
     - Quick Reference: recipes/quickreference.md
     - Creative Tools: recipes/creativemode.md
