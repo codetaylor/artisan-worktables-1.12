@@ -76,6 +76,7 @@ item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
 item.artisanworktables.artisans.file.name=Artisan's %s File
 item.artisanworktables.artisans.pencil.name=Artisan's %s Pencil
 item.artisanworktables.artisans.tsquare.name=Artisan's %s T-Square
+item.artisanworktables.artisans.solderer.name=Artisan's %s Solderer
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=无序合成

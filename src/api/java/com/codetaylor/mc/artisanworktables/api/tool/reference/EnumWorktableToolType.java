@@ -62,7 +62,8 @@ public enum EnumWorktableToolType {
   UNIVERSAL_MORTAR("artisans_mortar", "Mortar"),
   UNIVERSAL_KNIFE("artisans_knife", "Knife"),
   UNIVERSAL_HATCHET("artisans_hatchet", "Hatchet"),
-  UNIVERSAL_FILE("artisans_file", "File");
+  UNIVERSAL_FILE("artisans_file", "File"),
+  UNIVERSAL_SOLDERER("artisans_solderer", "Solderer");
 
   private final String name;
   private final String oreDictSuffix;

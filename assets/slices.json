@@ -133,7 +133,11 @@
 
         { "target": "artisans_tsquare_base.png", "position": [4, 15] },
         { "target": "artisans_tsquare_color.png", "position": [5, 15] },
-        { "target": "artisans_tsquare_highlight.png", "position": [6, 15] }
+        { "target": "artisans_tsquare_highlight.png", "position": [6, 15] },
+
+        { "target": "artisans_solderer_base.png", "position": [4, 16] },
+        { "target": "artisans_solderer_color.png", "position": [5, 16] },
+        { "target": "artisans_solderer_highlight.png", "position": [6, 16] }
 
       ]
     }

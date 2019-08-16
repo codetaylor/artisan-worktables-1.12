@@ -52,6 +52,7 @@
         * Artisan's File [(#162)](https://github.com/codetaylor/artisan-worktables/issues/162)
         * Artisan's Pencil [(#139)](https://github.com/codetaylor/artisan-worktables/issues/139)
         * Artisan's T-Square [(#139)](https://github.com/codetaylor/artisan-worktables/issues/139)
+        * Artisan's Solderer [(#127)](https://github.com/codetaylor/artisan-worktables/issues/127)
     * Slot-locking feature [(#166)](https://github.com/codetaylor/artisan-worktables/issues/166)
         * `B:ENABLE_SLOT_LOCKING_WORKTABLES=false`
         * `B:ENABLE_SLOT_LOCKING_WORKSTATIONS=true`

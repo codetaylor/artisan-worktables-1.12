@@ -406,6 +406,17 @@ public class ModuleToolsRecipes {
             '.', MATERIAL_ALIAS
         }
     );
+
+    RECIPE_MAP.put(
+        EnumWorktableToolType.UNIVERSAL_SOLDERER,
+        new Object[]{
+            "  .",
+            " . ",
+            "c  ",
+            'c', Items.CLAY_BALL,
+            '.', MATERIAL_ALIAS
+        }
+    );
   }
 
   /**
