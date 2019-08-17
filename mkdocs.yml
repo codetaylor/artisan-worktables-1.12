@@ -34,3 +34,5 @@ theme: readthedocs
 
 markdown_extensions:
   - admonition
+
+extra_css: [custom.css]
