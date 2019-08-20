@@ -126,6 +126,7 @@ public abstract class TileEntityBase
             this.craftingMatrixHandlerGhost.setStackInSlot(slotIndex, copy);
           }
         }
+        this.notifyBlockUpdate();
       };
       this.craftingMatrixHandler.addObserver(contentsChangedEventHandler);
       this.toolHandler.addObserver(contentsChangedEventHandler);
