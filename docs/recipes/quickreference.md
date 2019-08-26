@@ -158,7 +158,7 @@ The complete list of tool type groups is as follows:
 <ore:artisansHandsaw>
 <ore:artisansDriver>
 <ore:artisansSpanner>
-<ore:artisansCutter>
+<ore:artisansGemCutter>
 <ore:artisansPliers>
 <ore:artisansAthame>
 <ore:artisansGrimoire>
