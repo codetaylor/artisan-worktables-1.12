@@ -1,3 +1,10 @@
+1.22.1
+
+  * Fixed:
+    * Worktable crash [(#185)](https://github.com/codetaylor/artisan-worktables/issues/185):
+
+---
+
 1.22.0
 
   * Note:

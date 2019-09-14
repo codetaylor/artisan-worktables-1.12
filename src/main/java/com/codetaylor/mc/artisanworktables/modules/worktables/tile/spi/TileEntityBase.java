@@ -471,6 +471,10 @@ public abstract class TileEntityBase
   @Override
   public void update() {
 
+    if (this.isCreative()) {
+      this.requiresRecipeUpdate = false;
+    }
+
     if (this.requiresRecipeUpdate) {
       this.triggerContainerRecipeUpdate();
       this.requiresRecipeUpdate = false;
