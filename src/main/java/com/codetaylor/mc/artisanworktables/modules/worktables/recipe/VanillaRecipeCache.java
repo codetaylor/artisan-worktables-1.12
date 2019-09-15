@@ -27,7 +27,7 @@ public class VanillaRecipeCache {
   private static final ThreadLocal<IRecipe[]> LAST_RECIPE = ThreadLocal.withInitial(() -> new IRecipe[1]);
 
   @Nullable
-  public static IArtisanRecipe getArtisanRecipe(InventoryWrapper inventoryWrapper, World world, EnumTier tier) {
+  public synchronized static IArtisanRecipe getArtisanRecipe(InventoryWrapper inventoryWrapper, World world, EnumTier tier) {
 
     IRecipe recipe;
 
@@ -47,7 +47,7 @@ public class VanillaRecipeCache {
   }
 
   @Nullable
-  public static IArtisanRecipe getArtisanRecipeWrapped(IRecipe recipe, EnumTier tier) {
+  private static IArtisanRecipe getArtisanRecipeWrapped(IRecipe recipe, EnumTier tier) {
 
     ResourceLocation resourceLocation = recipe.getRegistryName();
 
