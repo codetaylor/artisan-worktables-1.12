@@ -1,3 +1,10 @@
+# 1.22.2
+
+  * **Fixed:**
+    * Workaround for weighted outputs [(#184)](https://github.com/codetaylor/artisan-worktables/issues/184)
+
+---
+
 1.22.1
 
   * Fixed:

@@ -929,35 +929,23 @@ public class AWContainer
           return ((ICreativeSlotClick) slot).creativeSlotClick(slotId, dragType, clickTypeIn, player);
         }
       }
-
-    } else if (this.tile.isLocked()) {
-
-      if (clickTypeIn == ClickType.QUICK_MOVE
-          && slotId >= this.slotIndexInventoryStart
-          && slotId <= this.slotIndexInventoryEnd) {
-        // TODO: round robin for shift click transfer in
-
-      }
     }
 
-    if (slotId == this.slotIndexResult
-        && !playerStack.isEmpty()) {
+    if (slotId == this.slotIndexResult) {
       IArtisanRecipe recipe = this.tile.getRecipe(player);
 
       if (recipe != null
           && recipe.hasMultipleWeightedOutputs()) {
-        // If the player is trying to extract the recipe output from a multi-output recipe
-        // while holding an item in the cursor, don't allow it.
 
-        return ItemStack.EMPTY;
+        if (!playerStack.isEmpty()
+            || clickTypeIn == ClickType.THROW) {
+          return ItemStack.EMPTY;
+
+        } else if (clickTypeIn == ClickType.PICKUP
+            && dragType == 1) {
+          return super.slotClick(slotId, 0, clickTypeIn, player);
+        }
       }
-
-    } else if (clickTypeIn == ClickType.PICKUP
-        && dragType == 1
-        && slotId > -1
-        && this.inventorySlots.get(slotId) instanceof CraftingResultSlot) {
-
-      return super.slotClick(slotId, 0, clickTypeIn, player);
     }
 
     return super.slotClick(slotId, dragType, clickTypeIn, player);
