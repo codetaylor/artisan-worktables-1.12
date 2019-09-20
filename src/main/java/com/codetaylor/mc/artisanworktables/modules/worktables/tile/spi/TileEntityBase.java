@@ -481,15 +481,8 @@ public abstract class TileEntityBase
     }
   }
 
+  @Nullable
   public IArtisanRecipe getRecipe(@Nonnull EntityPlayer player) {
-
-    if (this.allowVanillaCrafting()) {
-      IArtisanRecipe recipe = this.getVanillaCraftingRecipe();
-
-      if (recipe != null) {
-        return recipe;
-      }
-    }
 
     FluidStack fluidStack = this.getTank().getFluid();
 
@@ -512,7 +505,7 @@ public abstract class TileEntityBase
       contextMap.put(entry.getKey(), context);
     }
 
-    return this.getWorktableRecipeRegistry().findRecipe(
+    IArtisanRecipe customRecipe = this.getWorktableRecipeRegistry().findRecipe(
         playerExperience,
         playerLevels,
         isPlayerCreative,
@@ -523,6 +516,12 @@ public abstract class TileEntityBase
         this.getTier(),
         contextMap
     );
+
+    if (customRecipe != null) {
+      return customRecipe;
+    }
+
+    return (this.allowVanillaCrafting()) ? this.getVanillaCraftingRecipe() : null;
   }
 
   @Nullable

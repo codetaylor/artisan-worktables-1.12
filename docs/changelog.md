@@ -1,3 +1,10 @@
+# 1.22.3
+
+  * **Fixed:**
+    * Tables will now search recipes added by CrT before searching vanilla recipes
+
+---
+
 # 1.22.2
 
   * **Fixed:**
