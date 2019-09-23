@@ -479,7 +479,8 @@ public class AWContainer
         if (this.patternHandler.getStackInSlot(0).isEmpty()) {
           this.patternResultHandler.setStackInSlot(0, ItemStack.EMPTY);
 
-        } else {
+        } else if (recipe.getName() != null) {
+          // 2019-09-23 added the null check because vanilla recipes have a null name
           ItemStack stack = new ItemStack(ModuleWorktables.Items.DESIGN_PATTERN);
           NBTTagCompound tag = new NBTTagCompound();
           tag.setString("recipe", recipe.getName());

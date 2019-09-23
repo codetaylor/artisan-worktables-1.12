@@ -1,3 +1,10 @@
+# 1.22.4
+
+  * **Fixed:**
+    * Crash when placing pattern while table has vanilla recipe [(#190)](https://github.com/codetaylor/artisan-worktables/issues/190)
+    
+---
+
 # 1.22.3
 
   * **Fixed:**
