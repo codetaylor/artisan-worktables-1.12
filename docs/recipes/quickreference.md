@@ -86,46 +86,6 @@ Copy noOutput();
 Copy replaceOutput(IItemStack replacement);
 ```
 
-## GameStages
-
-```java
-import mods.artisanworktables.integration.requirement.GameStages;
-```
-
-```java
-static GameStagesRequirementBuilder allOf(String[] stages);
-
-static GameStagesRequirementBuilder anyOf(String[] stages);
-
-static GameStagesRequirementBuilder exclude(String[] stages);
-```
-
-```java
-GameStagesRequirementBuilder allOf(String[] stages);
-
-GameStagesRequirementBuilder anyOf(String[] stages);
-
-GameStagesRequirementBuilder exclude(String[] stages);
-```
-
-## Reskillable
-
-```java
-import mods.artisanworktables.integration.requirement.Reskillable;
-```
-
-```java
-static ReskillableRequirementBuilder add(String[] requirement);
-
-static ReskillableRequirementBuilder addAll(String[] requirements);
-```
-
-```java
-ReskillableRequirementBuilder add(String[] requirement);
-
-ReskillableRequirementBuilder addAll(String[] requirements);
-```
-
 ## Table Names
 
 The list of valid table names is:
