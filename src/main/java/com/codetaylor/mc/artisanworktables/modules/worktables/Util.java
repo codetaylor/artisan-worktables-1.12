@@ -15,15 +15,15 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 import java.util.*;
 
-/**
- * Some utils borrowed from:
- * https://github.com/raoulvdberge/refinedstorage/blob/mc1.12/src/main/java/com/raoulvdberge/refinedstorage/util/RenderUtils.java
- */
 public class Util {
 
   public static final Matrix4f EMPTY_MATRIX_TRANSFORM = getTransform(0, 0, 0, 0, 0, 0, 1.0f).getMatrix();
   public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> DEFAULT_ITEM_TRANSFORM;
 
+  /**
+   * Borrowed from:
+   * https://github.com/raoulvdberge/refinedstorage/blob/mc1.12/src/main/java/com/raoulvdberge/refinedstorage/util/RenderUtils.java
+   */
   public static TRSRTransformation getTransform(
       float tx,
       float ty,
@@ -42,6 +42,10 @@ public class Util {
     );
   }
 
+  /**
+   * Borrowed from:
+   * https://github.com/raoulvdberge/refinedstorage/blob/mc1.12/src/main/java/com/raoulvdberge/refinedstorage/util/RenderUtils.java
+   */
   public static ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> getDefaultItemTransforms() {
 
     if (DEFAULT_ITEM_TRANSFORM != null) {

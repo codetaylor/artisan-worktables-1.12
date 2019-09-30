@@ -1,0 +1,9 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "artisanworktables:automator"
+  },
+  "variants": {
+    "normal": [{}]
+  }
+}
