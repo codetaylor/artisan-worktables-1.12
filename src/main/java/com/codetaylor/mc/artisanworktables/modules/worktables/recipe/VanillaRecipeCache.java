@@ -4,7 +4,12 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanIngredient;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
+import crafttweaker.api.recipes.IRecipeFunction;
+import crafttweaker.mc1120.item.VanillaIngredient;
+import crafttweaker.mc1120.recipes.MCRecipeBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -19,12 +24,27 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 public class VanillaRecipeCache {
 
   private static final ThreadLocal<Map<ResourceLocation, IArtisanRecipe>> CACHE = ThreadLocal.withInitial(HashMap::new);
   private static final ThreadLocal<IRecipe[]> LAST_RECIPE = ThreadLocal.withInitial(() -> new IRecipe[1]);
+
+  private static MethodHandle mcRecipeBase$recipeFunctionGetter;
+
+  static {
+    try {
+      mcRecipeBase$recipeFunctionGetter = MethodHandles.lookup().unreflectGetter(
+          MCRecipeBase.class.getDeclaredField("recipeFunction")
+      );
+
+    } catch (IllegalAccessException | NoSuchFieldException e) {
+      e.printStackTrace();
+    }
+  }
 
   @Nullable
   public synchronized static IArtisanRecipe getArtisanRecipe(InventoryWrapper inventoryWrapper, World world, EnumTier tier) {
@@ -64,14 +84,84 @@ public class VanillaRecipeCache {
     NonNullList<Ingredient> ingredients = recipe.getIngredients();
     List<IArtisanIngredient> artisanIngredients = new ArrayList<>(ingredients.size());
 
-    for (Ingredient ingredient : ingredients) {
-      artisanIngredients.add(ArtisanIngredient.from(ingredient));
-    }
-
     ExtraOutputChancePair[] extraOutputChancePairs = new ExtraOutputChancePair[3];
     Arrays.fill(extraOutputChancePairs, new ExtraOutputChancePair(ArtisanItemStack.EMPTY, 0));
 
-    ArtisanRecipe artisanRecipe = new ArtisanRecipe(
+    boolean isShaped = (recipe instanceof IShapedRecipe);
+    int size = (isShaped) ? (tier == EnumTier.WORKSHOP ? 5 : 3) : 0;
+
+    IArtisanRecipe artisanRecipe;
+
+    if (recipe instanceof MCRecipeBase) {
+      MCRecipeBase mcRecipeBase = (MCRecipeBase) recipe;
+
+      for (Ingredient ingredient : ingredients) {
+
+        if (ingredient instanceof VanillaIngredient) {
+          artisanIngredients.add(CTArtisanIngredient.from(((VanillaIngredient) ingredient).getIngredient()));
+
+        } else {
+          artisanIngredients.add(ArtisanIngredient.from(ingredient));
+        }
+      }
+
+      artisanRecipe = VanillaRecipeCache.createCTArtisanRecipe(recipe, artisanIngredients, extraOutputChancePairs, isShaped, size, mcRecipeBase);
+
+      if (artisanRecipe == null) {
+        return null;
+      }
+
+    } else {
+
+      for (Ingredient ingredient : ingredients) {
+        artisanIngredients.add(ArtisanIngredient.from(ingredient));
+      }
+
+      artisanRecipe = VanillaRecipeCache.createArtisanRecipe(recipe, artisanIngredients, extraOutputChancePairs, isShaped, size);
+    }
+
+    CACHE.get().put(resourceLocation, artisanRecipe);
+    return artisanRecipe;
+  }
+
+  private static IArtisanRecipe createCTArtisanRecipe(IRecipe recipe, List<IArtisanIngredient> artisanIngredients, ExtraOutputChancePair[] extraOutputChancePairs, boolean isShaped, int size, MCRecipeBase mcRecipeBase) {
+
+    IArtisanRecipe artisanRecipe;
+    try {
+      artisanRecipe = new CTArtisanRecipe(
+          null,
+          Collections.emptyMap(),
+          Collections.singletonList(new OutputWeightPair(ArtisanItemStack.from(recipe.getRecipeOutput().copy()), 1)),
+          new ToolEntry[0],
+          artisanIngredients,
+          Collections.emptyList(),
+          false,
+          null,
+          0,
+          0,
+          false,
+          extraOutputChancePairs,
+          isShaped ? IRecipeMatrixMatcher.SHAPED : IRecipeMatrixMatcher.SHAPELESS,
+          true,
+          size,
+          size,
+          EnumTier.WORKTABLE.getId(),
+          EnumTier.WORKSHOP.getId(),
+          mcRecipeBase.getRecipeAction(),
+          mcRecipeBase$recipeFunctionGetter == null ? null : (IRecipeFunction) mcRecipeBase$recipeFunctionGetter.invokeExact(recipe),
+          false
+      );
+
+    } catch (Throwable throwable) {
+      throwable.printStackTrace();
+      return null;
+    }
+    return artisanRecipe;
+  }
+
+  private static ArtisanRecipe createArtisanRecipe(IRecipe recipe, List<IArtisanIngredient> artisanIngredients, ExtraOutputChancePair[] extraOutputChancePairs, boolean isShaped, int size) {
+
+    return new ArtisanRecipe(
         null,
         Collections.emptyMap(),
         Collections.singletonList(new OutputWeightPair(ArtisanItemStack.from(recipe.getRecipeOutput().copy()), 1)),
@@ -84,17 +174,14 @@ public class VanillaRecipeCache {
         0,
         false,
         extraOutputChancePairs,
-        recipe instanceof IShapedRecipe ? IRecipeMatrixMatcher.SHAPED : IRecipeMatrixMatcher.SHAPELESS,
+        isShaped ? IRecipeMatrixMatcher.SHAPED : IRecipeMatrixMatcher.SHAPELESS,
         true,
-        tier == EnumTier.WORKSHOP ? 5 : 3,
-        tier == EnumTier.WORKSHOP ? 5 : 3,
+        size,
+        size,
         EnumTier.WORKTABLE.getId(),
         EnumTier.WORKSHOP.getId(),
         false
     );
-
-    CACHE.get().put(resourceLocation, artisanRecipe);
-    return artisanRecipe;
   }
 
   private VanillaRecipeCache() {
@@ -102,8 +189,8 @@ public class VanillaRecipeCache {
   }
 
   // ---------------------------------------------------------------------------
-// - Inventory
-// ---------------------------------------------------------------------------
+  // - Inventory
+  // ---------------------------------------------------------------------------
 
   public static class InventoryWrapper
       extends InventoryCrafting {
