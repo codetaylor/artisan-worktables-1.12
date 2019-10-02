@@ -32,7 +32,7 @@ public class CTArtisanRecipe
   private final IRecipeAction recipeAction;
   private final IRecipeFunction recipeFunction;
 
-  /* package */ CTArtisanRecipe(
+  public CTArtisanRecipe(
       String name,
       Map<ResourceLocation, IRequirement> requirementMap,
       List<OutputWeightPair> output,

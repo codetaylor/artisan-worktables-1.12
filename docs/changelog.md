@@ -1,3 +1,10 @@
+# 1.22.5
+
+  * **Fixed:**
+    * AW tables don't support CrT transforms [(#193)](https://github.com/codetaylor/artisan-worktables/issues/193)
+    
+---
+
 # 1.22.4
 
   * **Fixed:**
