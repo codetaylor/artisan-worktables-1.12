@@ -1,5 +1,8 @@
 # 1.22.6
 
+  * **Notes:**
+    * This patch version was released on CurseForge with the wrong filename. The filename says `1.22.5`, but it really is `1.22.6`.
+
   * **Fixed:**
     * AW deleting items (items should not be inserted in output slots in survival mode) [(#194)](https://github.com/codetaylor/artisan-worktables/issues/194)
 
