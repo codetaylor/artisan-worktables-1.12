@@ -29,8 +29,7 @@ public class CraftingExtraResultSlot
   @Override
   public boolean isItemValid(@Nonnull ItemStack stack) {
 
-    return !this.tile.isCreative()
-        && super.isItemValid(stack);
+    return this.tile.isCreative();
   }
 
   @Override

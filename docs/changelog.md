@@ -1,3 +1,10 @@
+# 1.22.6
+
+  * **Fixed:**
+    * AW deleting items (items should not be inserted in output slots in survival mode) [(#194)](https://github.com/codetaylor/artisan-worktables/issues/194)
+
+---
+
 # 1.22.5
 
   * **Fixed:**
