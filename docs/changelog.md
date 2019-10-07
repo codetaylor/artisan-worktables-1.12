@@ -1,4 +1,4 @@
-# 1.22.7
+**1.22.7**
 
   * **Fixed:**
     * CrT recipe functions for vanilla recipes are inaccessible
@@ -6,7 +6,7 @@
     
 ---
 
-# 1.22.6
+**1.22.6**
 
   * **Notes:**
     * This patch version was released on CurseForge with the wrong filename. The filename says `1.22.5`, but it really is `1.22.6`.
@@ -16,28 +16,28 @@
 
 ---
 
-# 1.22.5
+**1.22.5**
 
   * **Fixed:**
     * AW tables don't support CrT transforms [(#193)](https://github.com/codetaylor/artisan-worktables/issues/193)
     
 ---
 
-# 1.22.4
+**1.22.4**
 
   * **Fixed:**
     * Crash when placing pattern while table has vanilla recipe [(#190)](https://github.com/codetaylor/artisan-worktables/issues/190)
     
 ---
 
-# 1.22.3
+**1.22.3**
 
   * **Fixed:**
     * Tables will now search recipes added by CrT before searching vanilla recipes
 
 ---
 
-# 1.22.2
+**1.22.2**
 
   * **Fixed:**
     * Workaround for weighted outputs [(#184)](https://github.com/codetaylor/artisan-worktables/issues/184)
