@@ -13,6 +13,7 @@ import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementCo
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.util.NonNullList;
@@ -294,22 +295,35 @@ public class ArtisanRecipe
   // --------------------------------------------------------------------------
   // - Matching
 
-  @Override
-  public boolean isValidTool(ItemStack tool, int toolIndex) {
+  @Nullable
+  private ToolEntry findToolEntry(ItemStack tool) {
 
-    if (toolIndex >= this.tools.length) {
-      return false;
+    for (ToolEntry toolEntry : this.tools) {
+      IArtisanItemStack[] itemStacks = toolEntry.getTool();
+
+      for (IArtisanItemStack itemStack : itemStacks) {
+
+        if (itemStack.getItem() == tool.getItem()) {
+          return toolEntry;
+        }
+      }
     }
+    return null;
+  }
 
-    for (IArtisanItemStack itemStack : this.tools[toolIndex].getTool()) {
+  @Override
+  public boolean isValidTool(ItemStack tool) {
 
-      // We can't use itemStack.isItemEqualIgnoreDurability(tool) here because
-      // apparently Tinker's tools don't set the max durability on the tool
-      // which causes that check to fail because it thinks the item can't be
-      // damaged. Instead, we assume the item being used has durability and
-      // just compare items.
-      if (itemStack.getItem() == tool.getItem()) {
-        return true;
+    Item toolItem = tool.getItem();
+
+    for (ToolEntry toolEntry : this.tools) {
+      IArtisanItemStack[] itemStacks = toolEntry.getTool();
+
+      for (IArtisanItemStack itemStack : itemStacks) {
+
+        if (itemStack.getItem() == toolItem) {
+          return true;
+        }
       }
     }
 
@@ -317,21 +331,22 @@ public class ArtisanRecipe
   }
 
   @Override
-  public boolean hasSufficientToolDurability(ItemStack tool, int toolIndex) {
+  public boolean hasSufficientToolDurability(ItemStack tool) {
 
     if (tool.isEmpty()) {
       return false;
     }
 
-    if (toolIndex >= this.tools.length) {
-      return false;
-    }
-
     if (ArtisanConfig.MODULE_WORKTABLES_CONFIG.restrictCraftMinimumDurability()) {
 
-      IToolHandler handler = ArtisanToolHandlers.get(tool);
-      int toolDamage = this.getToolDamage(toolIndex);
-      return handler.canAcceptAllDamage(tool, toolDamage);
+      ToolEntry toolEntry = this.findToolEntry(tool);
+
+      if (toolEntry != null) {
+
+        IToolHandler handler = ArtisanToolHandlers.get(tool);
+        int toolDamage = toolEntry.getDamage();
+        return handler.canAcceptAllDamage(tool, toolDamage);
+      }
     }
 
     return true;
@@ -394,8 +409,8 @@ public class ArtisanRecipe
     // Do the tools have enough durability for this recipe?
     for (int i = 0; i < this.getToolCount(); i++) {
 
-      if (!this.isValidTool(tools[i], i)
-          || !this.hasSufficientToolDurability(tools[i], i)) {
+      if (!this.isValidTool(tools[i])
+          || !this.hasSufficientToolDurability(tools[i])) {
         return false;
       }
     }
@@ -823,7 +838,7 @@ public class ArtisanRecipe
     IItemHandlerModifiable toolHandler = context.getToolHandler();
     ItemStack itemStack = toolHandler.getStackInSlot(toolIndex);
 
-    if (!itemStack.isEmpty() && this.isValidTool(itemStack, toolIndex)) {
+    if (!itemStack.isEmpty() && this.isValidTool(itemStack)) {
       IToolHandler handler = ArtisanToolHandlers.get(itemStack);
       int toolDamage = this.getToolDamage(toolIndex);
       boolean broken = toolDamage > 0
@@ -849,7 +864,7 @@ public class ArtisanRecipe
     IItemHandlerModifiable toolHandler = context.getToolHandler();
     ItemStack itemStack = toolHandler.getStackInSlot(toolIndex);
 
-    if (!this.hasSufficientToolDurability(itemStack, toolIndex)) {
+    if (!this.hasSufficientToolDurability(itemStack)) {
       // Tool needs to be replaced
       IItemHandler capability = context.getToolReplacementHandler();
 
@@ -866,8 +881,8 @@ public class ArtisanRecipe
           continue;
         }
 
-        if (this.isValidTool(potentialTool, toolIndex)
-            && this.hasSufficientToolDurability(potentialTool, toolIndex)) {
+        if (this.isValidTool(potentialTool)
+            && this.hasSufficientToolDurability(potentialTool)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
           capability.insertItem(i, toolHandler.getStackInSlot(toolIndex), false);

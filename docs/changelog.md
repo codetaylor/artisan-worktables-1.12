@@ -1,3 +1,11 @@
+# 1.22.7
+
+  * **Fixed:**
+    * CrT recipe functions for vanilla recipes are inaccessible
+    * Recipes don't match tools if the tools are in a different order than the recipe specifies
+    
+---
+
 # 1.22.6
 
   * **Notes:**

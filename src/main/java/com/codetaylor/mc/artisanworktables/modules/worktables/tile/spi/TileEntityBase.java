@@ -554,13 +554,17 @@ public abstract class TileEntityBase
   public ItemStack[] getTools() {
 
     int slotCount = this.toolHandler.getSlots();
-    ItemStack[] tools = new ItemStack[slotCount];
+    List<ItemStack> tools = new ArrayList<>(slotCount);
 
     for (int i = 0; i < slotCount; i++) {
-      tools[i] = this.toolHandler.getStackInSlot(i);
+      ItemStack stackInSlot = this.toolHandler.getStackInSlot(i);
+
+      if (!stackInSlot.isEmpty()) {
+        tools.add(stackInSlot);
+      }
     }
 
-    return tools;
+    return tools.toArray(new ItemStack[0]);
   }
 
   public boolean hasTool() {

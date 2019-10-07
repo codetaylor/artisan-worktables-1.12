@@ -146,7 +146,6 @@ public class AWContainer
       ItemStackHandler toolHandler = this.tile.getToolHandler();
 
       for (int i = 0; i < toolHandler.getSlots(); i++) {
-        final int slotIndex = i;
         this.containerSlotAdd(new CraftingToolSlot(
             this,
             this.tile,
@@ -154,7 +153,7 @@ public class AWContainer
             itemStack -> {
               RecipeRegistry worktableRecipeRegistry = this.tile.getWorktableRecipeRegistry();
               return this.tile.isCreative()
-                  || worktableRecipeRegistry.containsRecipeWithToolInSlot(itemStack, slotIndex);
+                  || worktableRecipeRegistry.containsRecipeWithToolInSlot(itemStack);
             },
             toolHandler,
             i,
