@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class VanillaRecipeCache {
@@ -37,8 +38,10 @@ public class VanillaRecipeCache {
 
   static {
     try {
+      Field recipeFunction = MCRecipeBase.class.getDeclaredField("recipeFunction");
+      recipeFunction.setAccessible(true);
       mcRecipeBase$recipeFunctionGetter = MethodHandles.lookup().unreflectGetter(
-          MCRecipeBase.class.getDeclaredField("recipeFunction")
+          recipeFunction
       );
 
     } catch (IllegalAccessException | NoSuchFieldException e) {
