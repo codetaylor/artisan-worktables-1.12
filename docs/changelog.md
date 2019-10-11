@@ -1,4 +1,4 @@
-**1.2i2.8**
+**1.22.8**
 
   * **Fixed:**
     * Items deleted when retrieving craft results with right-click [(#198)](https://github.com/codetaylor/artisan-worktables/issues/198)
