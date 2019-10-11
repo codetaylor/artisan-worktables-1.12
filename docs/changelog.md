@@ -1,3 +1,10 @@
+**1.2.8**
+
+  * **Fixed:**
+    * Crash when CrT vanilla recipe with transforms used in table [(#197)](https://github.com/codetaylor/artisan-worktables/issues/197)
+
+---
+
 **1.22.7**
 
   * **Fixed:**

@@ -10,6 +10,8 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntit
 import crafttweaker.api.recipes.IRecipeFunction;
 import crafttweaker.mc1120.item.VanillaIngredient;
 import crafttweaker.mc1120.recipes.MCRecipeBase;
+import crafttweaker.mc1120.recipes.MCRecipeShaped;
+import crafttweaker.mc1120.recipes.MCRecipeShapeless;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -50,7 +52,7 @@ public class VanillaRecipeCache {
   }
 
   @Nullable
-  public synchronized static IArtisanRecipe getArtisanRecipe(InventoryWrapper inventoryWrapper, World world, EnumTier tier) {
+  public synchronized static IArtisanRecipe getArtisanRecipe(InventoryWrapper inventoryWrapper, World world) {
 
     IRecipe recipe;
 
@@ -66,11 +68,11 @@ public class VanillaRecipeCache {
 
     LAST_RECIPE.get()[0] = recipe;
 
-    return VanillaRecipeCache.getArtisanRecipeWrapped(recipe, tier);
+    return VanillaRecipeCache.getArtisanRecipeWrapped(recipe);
   }
 
   @Nullable
-  private static IArtisanRecipe getArtisanRecipeWrapped(IRecipe recipe, EnumTier tier) {
+  private static IArtisanRecipe getArtisanRecipeWrapped(IRecipe recipe) {
 
     ResourceLocation resourceLocation = recipe.getRegistryName();
 
@@ -90,13 +92,12 @@ public class VanillaRecipeCache {
     ExtraOutputChancePair[] extraOutputChancePairs = new ExtraOutputChancePair[3];
     Arrays.fill(extraOutputChancePairs, new ExtraOutputChancePair(ArtisanItemStack.EMPTY, 0));
 
-    boolean isShaped = (recipe instanceof IShapedRecipe);
-    int size = (isShaped) ? (tier == EnumTier.WORKSHOP ? 5 : 3) : 0;
-
     IArtisanRecipe artisanRecipe;
 
-    if (recipe instanceof MCRecipeBase) {
-      MCRecipeBase mcRecipeBase = (MCRecipeBase) recipe;
+    if (recipe instanceof MCRecipeShaped) {
+      MCRecipeShaped recipeShaped = (MCRecipeShaped) recipe;
+      int recipeWidth = recipeShaped.getRecipeWidth();
+      int recipeHeight = recipeShaped.getRecipeHeight();
 
       for (Ingredient ingredient : ingredients) {
 
@@ -108,7 +109,26 @@ public class VanillaRecipeCache {
         }
       }
 
-      artisanRecipe = VanillaRecipeCache.createCTArtisanRecipe(recipe, artisanIngredients, extraOutputChancePairs, isShaped, size, mcRecipeBase);
+      artisanRecipe = VanillaRecipeCache.createCTArtisanRecipe(recipeShaped, artisanIngredients, extraOutputChancePairs, true, recipeWidth, recipeHeight, recipeShaped);
+
+      if (artisanRecipe == null) {
+        return null;
+      }
+
+    } else if (recipe instanceof MCRecipeShapeless) {
+      MCRecipeShapeless recipeShapeless = (MCRecipeShapeless) recipe;
+
+      for (Ingredient ingredient : ingredients) {
+
+        if (ingredient instanceof VanillaIngredient) {
+          artisanIngredients.add(CTArtisanIngredient.from(((VanillaIngredient) ingredient).getIngredient()));
+
+        } else {
+          artisanIngredients.add(ArtisanIngredient.from(ingredient));
+        }
+      }
+
+      artisanRecipe = VanillaRecipeCache.createCTArtisanRecipe(recipeShapeless, artisanIngredients, extraOutputChancePairs, false, 0, 0, recipeShapeless);
 
       if (artisanRecipe == null) {
         return null;
@@ -120,14 +140,23 @@ public class VanillaRecipeCache {
         artisanIngredients.add(ArtisanIngredient.from(ingredient));
       }
 
-      artisanRecipe = VanillaRecipeCache.createArtisanRecipe(recipe, artisanIngredients, extraOutputChancePairs, isShaped, size);
+      boolean isShaped = (recipe instanceof IShapedRecipe);
+
+      if (isShaped) {
+        int recipeWidth = ((IShapedRecipe) recipe).getRecipeWidth();
+        int recipeHeight = ((IShapedRecipe) recipe).getRecipeHeight();
+        artisanRecipe = VanillaRecipeCache.createArtisanRecipe(recipe, artisanIngredients, extraOutputChancePairs, true, recipeWidth, recipeHeight);
+
+      } else {
+        artisanRecipe = VanillaRecipeCache.createArtisanRecipe(recipe, artisanIngredients, extraOutputChancePairs, false, 0, 0);
+      }
     }
 
     CACHE.get().put(resourceLocation, artisanRecipe);
     return artisanRecipe;
   }
 
-  private static IArtisanRecipe createCTArtisanRecipe(IRecipe recipe, List<IArtisanIngredient> artisanIngredients, ExtraOutputChancePair[] extraOutputChancePairs, boolean isShaped, int size, MCRecipeBase mcRecipeBase) {
+  private static IArtisanRecipe createCTArtisanRecipe(MCRecipeBase recipe, List<IArtisanIngredient> artisanIngredients, ExtraOutputChancePair[] extraOutputChancePairs, boolean isShaped, int recipeWidth, int recipeHeight, MCRecipeBase mcRecipeBase) {
 
     IArtisanRecipe artisanRecipe;
     try {
@@ -146,8 +175,8 @@ public class VanillaRecipeCache {
           extraOutputChancePairs,
           isShaped ? IRecipeMatrixMatcher.SHAPED : IRecipeMatrixMatcher.SHAPELESS,
           true,
-          size,
-          size,
+          recipeWidth,
+          recipeHeight,
           EnumTier.WORKTABLE.getId(),
           EnumTier.WORKSHOP.getId(),
           mcRecipeBase.getRecipeAction(),
@@ -162,7 +191,7 @@ public class VanillaRecipeCache {
     return artisanRecipe;
   }
 
-  private static ArtisanRecipe createArtisanRecipe(IRecipe recipe, List<IArtisanIngredient> artisanIngredients, ExtraOutputChancePair[] extraOutputChancePairs, boolean isShaped, int size) {
+  private static ArtisanRecipe createArtisanRecipe(IRecipe recipe, List<IArtisanIngredient> artisanIngredients, ExtraOutputChancePair[] extraOutputChancePairs, boolean isShaped, int recipeWidth, int recipeHeight) {
 
     return new ArtisanRecipe(
         null,
@@ -179,8 +208,8 @@ public class VanillaRecipeCache {
         extraOutputChancePairs,
         isShaped ? IRecipeMatrixMatcher.SHAPED : IRecipeMatrixMatcher.SHAPELESS,
         true,
-        size,
-        size,
+        recipeWidth,
+        recipeHeight,
         EnumTier.WORKTABLE.getId(),
         EnumTier.WORKSHOP.getId(),
         false

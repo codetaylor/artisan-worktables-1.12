@@ -528,8 +528,7 @@ public abstract class TileEntityBase
   private IArtisanRecipe getVanillaCraftingRecipe() {
 
     VanillaRecipeCache.InventoryWrapper inventoryWrapper = this.getInventoryWrapper();
-    EnumTier tier = this.getTier();
-    return VanillaRecipeCache.getArtisanRecipe(inventoryWrapper, this.world, tier);
+    return VanillaRecipeCache.getArtisanRecipe(inventoryWrapper, this.world);
   }
 
   private boolean allowVanillaCrafting() {
