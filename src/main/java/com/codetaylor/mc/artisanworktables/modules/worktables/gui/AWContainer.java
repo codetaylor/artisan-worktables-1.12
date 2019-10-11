@@ -948,6 +948,12 @@ public class AWContainer
       }
     }
 
+    if (slotId == this.slotIndexResult
+        || (slotId >= this.slotIndexSecondaryOutputStart && slotId <= this.slotIndexSecondaryOutputEnd)) {
+      // prevent deleting half of the stack
+      return super.slotClick(slotId, 0, clickTypeIn, player);
+    }
+
     return super.slotClick(slotId, dragType, clickTypeIn, player);
   }
 }
