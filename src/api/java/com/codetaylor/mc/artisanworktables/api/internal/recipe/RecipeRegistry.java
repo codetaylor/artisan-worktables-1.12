@@ -140,13 +140,13 @@ public class RecipeRegistry
     return null;
   }
 
-  public boolean containsRecipeWithToolInSlot(ItemStack tool, int toolIndex) {
+  public boolean containsRecipeWithToolInSlot(ItemStack tool) {
 
     synchronized (this.recipeList) {
 
       for (IArtisanRecipe recipe : this.recipeList) {
 
-        if (recipe.isValidTool(tool, toolIndex)) {
+        if (recipe.isValidTool(tool)) {
           return true;
         }
       }
@@ -164,7 +164,7 @@ public class RecipeRegistry
 
         for (int i = 0; i < toolCount; i++) {
 
-          if (recipe.isValidTool(tool, i)) {
+          if (recipe.isValidTool(tool)) {
             return true;
           }
         }

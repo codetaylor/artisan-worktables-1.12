@@ -67,17 +67,15 @@ public interface IArtisanRecipe {
 
   /**
    * @param tool      the tool to check
-   * @param toolIndex the tool index
    * @return true if the given tool is valid for this recipe in the given slot
    */
-  boolean isValidTool(ItemStack tool, int toolIndex);
+  boolean isValidTool(ItemStack tool);
 
   /**
    * @param tool      the tool to check
-   * @param toolIndex the tool index
    * @return true if the given tool has sufficient durability to complete the craft
    */
-  boolean hasSufficientToolDurability(ItemStack tool, int toolIndex);
+  boolean hasSufficientToolDurability(ItemStack tool);
 
   /**
    * @param tier the tier to match
