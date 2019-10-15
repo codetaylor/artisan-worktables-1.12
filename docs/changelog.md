@@ -1,3 +1,10 @@
+**1.22.9**
+
+  * **Fixed:**
+    * Using JEI to transfer a small recipe into a large table results in a mess of items in the table [(#196)](https://github.com/codetaylor/artisan-worktables/issues/196)
+
+---
+
 **1.22.8**
 
   * **Fixed:**
