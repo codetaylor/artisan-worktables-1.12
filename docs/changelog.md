@@ -1,3 +1,10 @@
+**1.23.0**
+
+  * **Added:**
+    * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
+
+---
+
 **1.22.9**
 
   * **Fixed:**
