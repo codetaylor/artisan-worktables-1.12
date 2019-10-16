@@ -1,3 +1,18 @@
+**1.22.9**
+
+  * **Fixed:**
+    * Using JEI to transfer a small recipe into a large table results in a mess of items in the table [(#196)](https://github.com/codetaylor/artisan-worktables/issues/196)
+
+---
+
+**1.22.8**
+
+  * **Fixed:**
+    * Items deleted when retrieving craft results with right-click [(#198)](https://github.com/codetaylor/artisan-worktables/issues/198)
+    * Crash when CrT vanilla recipe with transforms used in table [(#197)](https://github.com/codetaylor/artisan-worktables/issues/197)
+
+---
+
 **1.22.7**
 
   * **Fixed:**

@@ -815,11 +815,23 @@ public class AWContainer
     return itemStackCopy;
   }
 
-  public List<Slot> getRecipeSlotsJEI(List<Slot> result) {
+  public List<Slot> getRecipeSlotsJEI(List<Slot> result, int transferGridSize) {
 
     // grid
-    for (int i = this.slotIndexCraftingMatrixStart; i <= this.slotIndexCraftingMatrixEnd; i++) {
-      result.add(this.inventorySlots.get(i));
+
+    /*
+    2019-10-15 - Issue #196
+    A smaller grid size is returned if the transfer handler making the request
+    passes a smaller transferGridSize parameter. This prevents the smaller
+    transfer handlers from making a mess in the larger tables.
+     */
+
+    int rowLength = (this.tile.getTier() == EnumTier.WORKSHOP) ? 5 : 3;
+
+    for (int row = 0; row < transferGridSize; row++) {
+      for (int col = 0; col < transferGridSize; col++) {
+        result.add(this.inventorySlots.get(this.slotIndexCraftingMatrixStart + col + (row * rowLength)));
+      }
     }
 
     // tool
@@ -946,6 +958,12 @@ public class AWContainer
           return super.slotClick(slotId, 0, clickTypeIn, player);
         }
       }
+    }
+
+    if (slotId == this.slotIndexResult
+        || (slotId >= this.slotIndexSecondaryOutputStart && slotId <= this.slotIndexSecondaryOutputEnd)) {
+      // prevent deleting half of the stack
+      return super.slotClick(slotId, 0, clickTypeIn, player);
     }
 
     return super.slotClick(slotId, dragType, clickTypeIn, player);

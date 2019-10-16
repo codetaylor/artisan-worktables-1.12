@@ -47,7 +47,7 @@ public class JEIRecipeTransferInfoWorktable
   @Override
   public List<Slot> getRecipeSlots(AWContainer container) {
 
-    return container.getRecipeSlotsJEI(new ArrayList<>());
+    return container.getRecipeSlotsJEI(new ArrayList<>(), this.tier == EnumTier.WORKSHOP ? 5 : 3);
   }
 
   @Override
