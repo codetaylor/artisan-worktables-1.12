@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixSt
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntitySecondaryInputBase;
+import crafttweaker.mc1120.data.NBTConverter;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class ZSRecipeExport {
 
@@ -103,7 +105,7 @@ public final class ZSRecipeExport {
         ItemStack stackInSlot = remappedGrid[i];
 
         if (oreDict == null) {
-          ZSRecipeExport.getItemString(stackInSlot, out, true, false);
+          ZSRecipeExport.getItemString(stackInSlot, out, true, false, false);
 
         } else {
           ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, out, true);
@@ -133,7 +135,7 @@ public final class ZSRecipeExport {
           StringBuilder builder = new StringBuilder();
 
           if (oreDict == null) {
-            ZSRecipeExport.getItemString(stackInSlot, builder, true, false);
+            ZSRecipeExport.getItemString(stackInSlot, builder, true, false, false);
 
           } else {
             ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, builder, true);
@@ -186,7 +188,7 @@ public final class ZSRecipeExport {
           StringBuilder builder = new StringBuilder();
 
           if (oreDict == null) {
-            ZSRecipeExport.getItemString(stackInSlot, builder, true, false);
+            ZSRecipeExport.getItemString(stackInSlot, builder, true, false, false);
 
           } else {
             ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, builder, true);
@@ -214,7 +216,7 @@ public final class ZSRecipeExport {
           StringBuilder builder = new StringBuilder();
 
           if (oreDict == null) {
-            ZSRecipeExport.getItemString(stackInSlot, builder, true, false);
+            ZSRecipeExport.getItemString(stackInSlot, builder, true, false, false);
 
           } else {
             ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, builder, true);
@@ -231,7 +233,7 @@ public final class ZSRecipeExport {
     {
       ItemStack stackInSlot = resultHandler.getStackInSlot(0);
       out.append("  .addOutput(");
-      ZSRecipeExport.getItemString(stackInSlot, out, false, false);
+      ZSRecipeExport.getItemString(stackInSlot, out, false, false, false);
       out.append(")\n");
     }
 
@@ -250,19 +252,19 @@ public final class ZSRecipeExport {
         if (slot == 0) {
           slot += 1;
           out.append("  .setExtraOutputOne(");
-          ZSRecipeExport.getItemString(stackInSlot, out, false, false);
+          ZSRecipeExport.getItemString(stackInSlot, out, false, false, false);
           out.append(", 1.0)\n");
 
         } else if (slot == 1) {
           slot += 1;
           out.append("  .setExtraOutputTwo(");
-          ZSRecipeExport.getItemString(stackInSlot, out, false, false);
+          ZSRecipeExport.getItemString(stackInSlot, out, false, false, false);
           out.append(", 1.0)\n");
 
         } else if (slot == 2) {
           slot += 1;
           out.append("  .setExtraOutputThree(");
-          ZSRecipeExport.getItemString(stackInSlot, out, false, false);
+          ZSRecipeExport.getItemString(stackInSlot, out, false, false, false);
           out.append(", 1.0)\n");
         }
       }
@@ -277,7 +279,7 @@ public final class ZSRecipeExport {
     return out.toString();
   }
 
-  private static StringBuilder getItemString(ItemStack itemStack, StringBuilder out, boolean ignoreCount, boolean wildcard) {
+  private static StringBuilder getItemString(ItemStack itemStack, StringBuilder out, boolean ignoreCount, boolean wildcard, boolean ignoreNbt) {
 
     Item item = itemStack.getItem();
     ResourceLocation registryName = item.getRegistryName();
@@ -297,6 +299,15 @@ public final class ZSRecipeExport {
       }
 
       out.append(">");
+
+      if (!ignoreNbt
+          && itemStack.hasTagCompound()) {
+        String nbt = Objects.requireNonNull(NBTConverter.from(itemStack.getTagCompound(), false)).toString();
+
+        if (nbt.length() > 0) {
+          out.append(".withTag(").append(nbt).append(")");
+        }
+      }
 
       if (!ignoreCount
           && itemStack.getCount() > 1) {
