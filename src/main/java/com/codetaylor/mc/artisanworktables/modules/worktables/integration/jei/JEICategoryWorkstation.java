@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
@@ -9,6 +8,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 public class JEICategoryWorkstation
@@ -29,10 +29,13 @@ public class JEICategoryWorkstation
     this.craftingGridHelper = guiHelper.createCraftingGridHelper(1, 0);
   }
 
+  @ParametersAreNonnullByDefault
   @Override
   public void setRecipe(
       IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients
   ) {
+
+    super.setRecipe(recipeLayout, recipeWrapper, ingredients);
 
     IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
     IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
@@ -114,6 +117,12 @@ public class JEICategoryWorkstation
     }
 
     recipeLayout.setRecipeTransferButton(157, 67 + 22);
+  }
+
+  @Override
+  protected int getOutputSlotIndex() {
+
+    return 0;
   }
 
 }

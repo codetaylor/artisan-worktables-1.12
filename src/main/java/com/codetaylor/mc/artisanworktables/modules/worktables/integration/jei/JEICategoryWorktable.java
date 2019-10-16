@@ -8,6 +8,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 public class JEICategoryWorktable
@@ -28,10 +29,13 @@ public class JEICategoryWorktable
     this.craftingGridHelper = guiHelper.createCraftingGridHelper(1, 0);
   }
 
+  @ParametersAreNonnullByDefault
   @Override
   public void setRecipe(
       IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients
   ) {
+
+    super.setRecipe(recipeLayout, recipeWrapper, ingredients);
 
     IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
     IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
@@ -96,6 +100,12 @@ public class JEICategoryWorktable
     }
 
     recipeLayout.setRecipeTransferButton(157, 67);
+  }
+
+  @Override
+  protected int getOutputSlotIndex() {
+
+    return 0;
   }
 
 }

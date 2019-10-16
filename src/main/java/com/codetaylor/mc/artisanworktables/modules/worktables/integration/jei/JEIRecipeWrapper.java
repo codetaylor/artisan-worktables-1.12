@@ -73,6 +73,11 @@ public class JEIRecipeWrapper
     }
   }
 
+  public ResourceLocation getRegistryName() {
+
+    return new ResourceLocation(this.artisanRecipe.getName());
+  }
+
   public List<List<ItemStack>> getInputs() {
 
     return this.inputs;

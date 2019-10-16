@@ -6,12 +6,19 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,4 +129,29 @@ public abstract class JEICategoryBase
 
     JEIRecipeWrapper.CATEGORY_TIER = this.tier;
   }
+
+  @ParametersAreNonnullByDefault
+  @Override
+  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
+
+    JEIRecipeWrapper jeiRecipeWrapper = (JEIRecipeWrapper) recipeWrapper;
+    ResourceLocation registryName = jeiRecipeWrapper.getRegistryName();
+
+    if (registryName != null) {
+      IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+
+      guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+        if (slotIndex == this.getOutputSlotIndex()) {
+          boolean showAdvanced = Minecraft.getMinecraft().gameSettings.advancedItemTooltips || GuiScreen.isShiftKeyDown();
+
+          if (showAdvanced) {
+            tooltip.add(TextFormatting.DARK_GRAY + Translator.translateToLocalFormatted("jei.tooltip.recipe.id", registryName.toString()));
+          }
+        }
+      });
+    }
+  }
+
+  protected abstract int getOutputSlotIndex();
 }
