@@ -91,6 +91,7 @@ Copy replaceOutput(IItemStack replacement);
 The list of valid table names is:
 
 ```xml
+all
 basic
 blacksmith
 carpenter

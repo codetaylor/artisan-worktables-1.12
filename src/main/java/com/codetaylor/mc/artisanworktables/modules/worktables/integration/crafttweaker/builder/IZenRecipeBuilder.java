@@ -27,7 +27,7 @@ public interface IZenRecipeBuilder {
 
     table = table.toLowerCase();
 
-    if (!ArtisanAPI.isWorktableNameValid(table)) {
+    if (!ArtisanAPI.isWorktableNameValid(table) && !"all".equals(table)) {
       CTLogHelper.logErrorFromZenMethod("Unknown table type: " + table);
       CTLogHelper.logInfo("Valid table types are: " + String.join(
           ",",

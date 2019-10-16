@@ -30,7 +30,7 @@ public class RecipeBuilderInternal
 
     table = table.toLowerCase();
 
-    if (!ArtisanAPI.isWorktableNameValid(table)) {
+    if (!ArtisanAPI.isWorktableNameValid(table) && !"all".equals(table)) {
       throw new RecipeBuilderException("Unknown table type: " + table + ". Valid table types are: " + String.join(
           ",",
           ArtisanAPI.getWorktableNames()
@@ -475,20 +475,22 @@ public class RecipeBuilderInternal
     }
 
     // Must be able to calculate recipe tier
-    EnumTier tier = RecipeTierCalculator.calculateTier(
-        this.tableName,
-        this.width,
-        this.height,
-        this.tools.size(),
-        this.secondaryIngredients.size(),
-        this.fluidIngredient
-    );
+    if (!"all".equals(this.tableName)) {
+      EnumTier tier = RecipeTierCalculator.calculateTier(
+          this.tableName,
+          this.width,
+          this.height,
+          this.tools.size(),
+          this.secondaryIngredients.size(),
+          this.fluidIngredient
+      );
 
-    if (tier == null) {
-      this.setInvalid("Unable to calculate recipe tier");
+      if (tier == null) {
+        this.setInvalid("Unable to calculate recipe tier");
 
-    } else {
-      this.minimumTier = Math.max(this.minimumTier, tier.getId());
+      } else {
+        this.minimumTier = Math.max(this.minimumTier, tier.getId());
+      }
     }
 
     this.validateRun = true;
@@ -605,9 +607,40 @@ public class RecipeBuilderInternal
       this.secondaryIngredients = Collections.emptyList();
     }
 
+    if ("all".equals(this.tableName)) {
+
+      for (String worktableName : ArtisanAPI.getWorktableNames()) {
+
+        // Must be able to calculate recipe tier
+        EnumTier tier = RecipeTierCalculator.calculateTier(
+            worktableName,
+            this.width,
+            this.height,
+            this.tools.size(),
+            this.secondaryIngredients.size(),
+            this.fluidIngredient
+        );
+
+        if (tier == null) {
+          this.setInvalid("Unable to calculate recipe tier");
+
+        } else {
+          this.minimumTier = Math.max(this.minimumTier, tier.getId());
+        }
+
+        this.addRecipe(logger, recipeMatcher, tools, worktableName);
+      }
+
+    } else {
+      this.addRecipe(logger, recipeMatcher, tools, this.tableName);
+    }
+  }
+
+  private void addRecipe(ILogger logger, IRecipeMatrixMatcher recipeMatcher, ToolEntry[] tools, String tableName) throws RecipeBuilderException {
+
     // Calculate the recipe name and ensure it is unique.
 
-    RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(this.tableName);
+    RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(tableName);
 
     if (this.name == null) {
       this.name = this.calculateName(registry, logger);
