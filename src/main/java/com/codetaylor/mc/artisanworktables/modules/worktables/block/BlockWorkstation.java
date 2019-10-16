@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.workstation.TileEntityWorkstationMage;
@@ -28,6 +29,13 @@ public class BlockWorkstation
     this.setDefaultState(this.blockState.getBaseState()
         .withProperty(VARIANT, EnumType.TAILOR)
         .withProperty(ACTIVE, false));
+  }
+
+  @Nullable
+  @Override
+  public String getHarvestTool(IBlockState state) {
+
+    return ModuleWorktablesConfig.HARVEST_TOOL_WORKSTATION.get(state.getValue(this.getVariant()).toString());
   }
 
   @Nullable

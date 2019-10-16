@@ -116,6 +116,26 @@ public class ModuleWorktablesConfig {
     }
   }
 
+  @Config.Comment("Worktable harvest tool: pickaxe, axe, shovel")
+  @Config.RequiresMcRestart
+  public static Map<String, String> HARVEST_TOOL_WORKTABLE = new TreeMap<>();
+
+  @Config.Comment("Workstation harvest tool: pickaxe, axe, shovel")
+  @Config.RequiresMcRestart
+  public static Map<String, String> HARVEST_TOOL_WORKSTATION = new TreeMap<>();
+
+  @Config.Comment("Workshop harvest tool: pickaxe, axe, shovel")
+  @Config.RequiresMcRestart
+  public static Map<String, String> HARVEST_TOOL_WORKSHOP = new TreeMap<>();
+
+  static {
+    for (String name : ArtisanAPI.getWorktableNames()) {
+      HARVEST_TOOL_WORKTABLE.put(name, "pickaxe");
+      HARVEST_TOOL_WORKSTATION.put(name, "pickaxe");
+      HARVEST_TOOL_WORKSHOP.put(name, "pickaxe");
+    }
+  }
+
   @Config.Comment({
       "If set to true, crafting tools must have sufficient durability remaining to perform the craft.",
       "If set to false, this restriction is ignored."
@@ -124,7 +144,7 @@ public class ModuleWorktablesConfig {
 
   @Config.Comment("Worktable fluid capacity (milli-buckets).")
   @Config.RequiresMcRestart
-  public static Map<String, Integer> FLUID_CAPACITY_WORKTABLE = new HashMap<>();
+  public static Map<String, Integer> FLUID_CAPACITY_WORKTABLE = new TreeMap<>();
 
   static {
 
@@ -135,7 +155,7 @@ public class ModuleWorktablesConfig {
 
   @Config.Comment("Workstation fluid capacity (milli-buckets).")
   @Config.RequiresMcRestart
-  public static Map<String, Integer> FLUID_CAPACITY_WORKSTATION = new HashMap<>();
+  public static Map<String, Integer> FLUID_CAPACITY_WORKSTATION = new TreeMap<>();
 
   static {
 
@@ -146,7 +166,7 @@ public class ModuleWorktablesConfig {
 
   @Config.Comment("Workshop fluid capacity (milli-buckets).")
   @Config.RequiresMcRestart
-  public static Map<String, Integer> FLUID_CAPACITY_WORKSHOP = new HashMap<>();
+  public static Map<String, Integer> FLUID_CAPACITY_WORKSHOP = new TreeMap<>();
 
   static {
 
@@ -162,37 +182,37 @@ public class ModuleWorktablesConfig {
     @Config.Comment(
         "Here you can change the gui text highlight color. (Hexadecimal)"
     )
-    public Map<String, String> TEXT_HIGHLIGHT_COLOR = new HashMap<>();
+    public Map<String, String> TEXT_HIGHLIGHT_COLOR = new TreeMap<>();
 
     @Config.Comment(
         "Here you can change the gui fluid tank overlay color. (Hexadecimal)"
     )
-    public Map<String, String> FLUID_TANK_OVERLAY_COLOR = new HashMap<>();
+    public Map<String, String> FLUID_TANK_OVERLAY_COLOR = new TreeMap<>();
 
     @Config.Comment({
         "Here you can change the background color of the crafting grid slots,",
         "tool slots, secondary input slots, and extra output slots. (Hexadecimal)",
         "Set to 'off' to use existing background."
     })
-    public Map<String, String> SLOT_BACKGROUND_COLOR = new HashMap<>();
+    public Map<String, String> SLOT_BACKGROUND_COLOR = new TreeMap<>();
 
     @Config.Comment({
         "Here you can change the background color of the fluid tank. (Hexadecimal)",
         "Set to 'off' to use existing background."
     })
-    public Map<String, String> FLUID_TANK_BACKGROUND_COLOR = new HashMap<>();
+    public Map<String, String> FLUID_TANK_BACKGROUND_COLOR = new TreeMap<>();
 
     @Config.Comment({
         "Here you can change the background color of the main output slot. (Hexadecimal)",
         "Set to 'off' to use existing background."
     })
-    public Map<String, String> MAIN_OUTPUT_SLOT_BACKGROUND_COLOR = new HashMap<>();
+    public Map<String, String> MAIN_OUTPUT_SLOT_BACKGROUND_COLOR = new TreeMap<>();
 
     @Config.Comment({
         "Here you can change the background color of the player's inventory slots. (Hexadecimal)",
         "Set to 'off' to use existing background."
     })
-    public Map<String, String> PLAYER_INVENTORY_SLOT_BACKGROUND_COLOR = new HashMap<>();
+    public Map<String, String> PLAYER_INVENTORY_SLOT_BACKGROUND_COLOR = new TreeMap<>();
 
     /* package */ Client() {
 
