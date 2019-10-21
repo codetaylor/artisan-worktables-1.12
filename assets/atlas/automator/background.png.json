@@ -1,0 +1,6 @@
+{
+  "sub_images": {
+    "all": {"x": 0, "y": 0, "width": 176, "height": 190},
+    "panel-power": {"x": 5, "y": 35, "width": 166, "height": 58}
+  }
+}

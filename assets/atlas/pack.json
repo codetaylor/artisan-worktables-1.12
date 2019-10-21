@@ -1,0 +1,18 @@
+{
+  "atlas_definitions": {
+    "atlas_automator": {
+      "width": 256,
+      "height": 512
+    }
+  },
+  "paths": {
+    "output": "src/main/resources/assets/artisanworktables/textures/gui/atlas",
+    "resource_path": "textures/gui/atlas",
+    "input": [
+      {
+        "path": "assets/atlas/automator",
+        "atlas": "atlas_automator"
+      }
+    ]
+  }
+}

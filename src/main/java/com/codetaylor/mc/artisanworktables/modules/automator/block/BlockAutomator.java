@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.block;
 
+import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.lib.BlockPartialBase;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.ITileAutomatorPower;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
@@ -7,8 +8,11 @@ import com.codetaylor.mc.athenaeum.util.AABBHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,6 +33,37 @@ public class BlockAutomator
     super(Material.ROCK);
     this.setSoundType(SoundType.GLASS);
     this.setHarvestLevel("pickaxe", 0);
+  }
+
+  // --------------------------------------------------------------------------
+  // - Interaction
+  // --------------------------------------------------------------------------
+
+  @Override
+  public boolean onBlockActivated(
+      World worldIn,
+      BlockPos pos,
+      IBlockState state,
+      EntityPlayer playerIn,
+      EnumHand hand,
+      EnumFacing facing,
+      float hitX,
+      float hitY,
+      float hitZ
+  ) {
+
+    if (worldIn.isRemote) {
+      return true;
+    }
+
+    TileEntity tileEntity = worldIn.getTileEntity(pos);
+
+    if (tileEntity instanceof TileAutomator) {
+      playerIn.openGui(ModArtisanWorktables.INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+      return true;
+    }
+
+    return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
   }
 
   // --------------------------------------------------------------------------
