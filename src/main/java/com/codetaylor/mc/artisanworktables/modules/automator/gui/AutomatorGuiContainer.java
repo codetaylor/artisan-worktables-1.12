@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTab;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -24,6 +25,70 @@ public class AutomatorGuiContainer
         0,
         this.xSize,
         this.ySize
+    ));
+
+    // deselected gear tab
+    {
+      Texture texture = this.getTexture("tab-gear-dark");
+      this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
+          this,
+          texture,
+          12, 21,
+          20, 18
+      ));
+    }
+
+    // deselected pattern tab
+    {
+      Texture texture = this.getTexture("tab-pattern-dark");
+      this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
+          this,
+          texture,
+          12 + 20, 21,
+          20, 18
+      ));
+    }
+
+    // deselected inventory tab
+    {
+      Texture texture = this.getTexture("tab-inventory-dark");
+      this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
+          this,
+          texture,
+          12 + 20 * 2, 21,
+          20, 18
+      ));
+    }
+
+    // deselected fluid tab
+    {
+      Texture texture = this.getTexture("tab-fluid-dark");
+      this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
+          this,
+          texture,
+          12 + 20 * 3, 21,
+          20, 18
+      ));
+    }
+    // deselected tool tab
+    {
+      Texture texture = this.getTexture("tab-tool-dark");
+      this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
+          this,
+          texture,
+          12 + 20 * 4, 21,
+          20, 18
+      ));
+    }
+
+    // temp panel texture
+    this.guiContainerElementAdd(new GuiElementTextureRectangle(
+        this,
+        this.getTexture("background#panel-power"),
+        5,
+        36,
+        166,
+        58
     ));
   }
 
