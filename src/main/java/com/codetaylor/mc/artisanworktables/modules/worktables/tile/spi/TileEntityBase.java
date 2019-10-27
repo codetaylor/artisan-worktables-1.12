@@ -428,6 +428,11 @@ public abstract class TileEntityBase
   @Override
   public final NBTTagCompound getUpdateTag() {
 
+    if (this.requiresRecipeUpdate) {
+      this.triggerContainerRecipeUpdate();
+      this.requiresRecipeUpdate = false;
+    }
+
     return this.writeToNBT(new NBTTagCompound());
   }
 

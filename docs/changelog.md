@@ -1,3 +1,11 @@
+**1.22.10**
+
+  * **Fixed:**
+    * Output item flicker and potential server / client desync
+    * Mage tables don't properly update the recipe
+    
+---
+
 **1.22.9**
 
   * **Fixed:**
