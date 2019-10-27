@@ -23,6 +23,7 @@ public class TileEntityWorkstationMage
   @Override
   public void update() {
 
+    super.update();
     this.delegate.update();
   }
 
