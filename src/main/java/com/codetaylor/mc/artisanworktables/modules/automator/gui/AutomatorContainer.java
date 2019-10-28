@@ -12,6 +12,34 @@ public class AutomatorContainer
   private final World world;
   private final TileEntity tile;
 
+  public enum State {
+    Gear(0), Pattern(1), Inventory(2), Fluid(3), Tool(4);
+
+    private final int index;
+
+    State(int index) {
+
+      this.index = index;
+    }
+
+    public int getIndex() {
+
+      return this.index;
+    }
+
+    public static State fromIndex(int index) {
+
+      for (State value : State.values()) {
+        if (value.index == index) {
+          return value;
+        }
+      }
+      throw new IllegalArgumentException("Unknown index: " + index);
+    }
+  }
+
+  private State state;
+
   public AutomatorContainer(
       InventoryPlayer inventoryPlayer,
       World world,
@@ -21,6 +49,23 @@ public class AutomatorContainer
     super(inventoryPlayer);
     this.world = world;
     this.tile = tile;
+
+    this.state = State.Gear;
+  }
+
+  public boolean setState(State state) {
+
+    if (this.state != state) {
+      this.state = state;
+      return true;
+    }
+
+    return false;
+  }
+
+  public State getState() {
+
+    return this.state;
   }
 
   @Override

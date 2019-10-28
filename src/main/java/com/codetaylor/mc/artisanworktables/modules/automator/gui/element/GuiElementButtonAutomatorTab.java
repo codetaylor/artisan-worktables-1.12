@@ -1,17 +1,23 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui.element;
 
-import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
+import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiContainer;
+import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorTabStateChange;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureButtonBase;
 
 public class GuiElementButtonAutomatorTab
     extends GuiElementTextureButtonBase {
 
+  private final AutomatorContainer.State state;
+  private final AutomatorGuiContainer guiContainer;
   private int mouseX;
   private int mouseY;
 
   public GuiElementButtonAutomatorTab(
-      GuiContainerBase guiBase,
+      AutomatorContainer.State state,
+      AutomatorGuiContainer guiBase,
       Texture texture,
       int elementX,
       int elementY,
@@ -20,6 +26,14 @@ public class GuiElementButtonAutomatorTab
   ) {
 
     super(guiBase, new Texture[]{texture}, elementX, elementY, elementWidth, elementHeight);
+    this.state = state;
+    this.guiContainer = guiBase;
+  }
+
+  @Override
+  public boolean elementIsVisible(int mouseX, int mouseY) {
+
+    return (this.guiContainer.getContainerState() != this.state);
   }
 
   @Override
@@ -58,5 +72,12 @@ public class GuiElementButtonAutomatorTab
         mouseX,
         mouseY
     );
+  }
+
+  @Override
+  public void elementClicked(int mouseX, int mouseY, int mouseButton) {
+
+    super.elementClicked(mouseX, mouseY, mouseButton);
+    ModuleAutomator.PACKET_SERVICE.sendToServer(new CSPacketAutomatorTabStateChange(this.state));
   }
 }

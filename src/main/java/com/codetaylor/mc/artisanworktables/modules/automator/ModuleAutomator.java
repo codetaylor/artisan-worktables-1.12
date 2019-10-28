@@ -3,6 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.automator;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomatorPowerRF;
+import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorTabStateChange;
+import com.codetaylor.mc.artisanworktables.modules.automator.network.SCPacketAutomatorTabStateChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomatorPowerRF;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
@@ -80,6 +82,17 @@ public class ModuleAutomator
   @Override
   public void onNetworkRegister(IPacketRegistry registry) {
 
+    registry.register(
+        CSPacketAutomatorTabStateChange.class,
+        CSPacketAutomatorTabStateChange.class,
+        Side.SERVER
+    );
+
+    registry.register(
+        SCPacketAutomatorTabStateChange.class,
+        SCPacketAutomatorTabStateChange.class,
+        Side.CLIENT
+    );
   }
 
   @Override
