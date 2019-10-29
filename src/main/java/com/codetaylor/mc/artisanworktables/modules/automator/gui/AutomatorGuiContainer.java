@@ -184,6 +184,13 @@ public class AutomatorGuiContainer
     GuiHelper.drawStringOutlined(translateKey, x, y, fontRenderer, TEXT_OUTLINE_COLOR);
   }
 
+  @Override
+  public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
+    super.drawScreen(mouseX, mouseY, partialTicks);
+    this.renderHoveredToolTip(mouseX, mouseY);
+  }
+
   private Texture getTexture(String path) {
 
     PackedData.ImageData imageData = PackAPI.getImageData(new ResourceLocation(ModuleAutomator.MOD_ID, path));
