@@ -94,6 +94,10 @@ item.artisanworktables.artisans.solderer.name=Artisan's %s Solderer
 item.artisanworktables.design.pattern.written.name=Mustervorlage
 item.artisanworktables.design.pattern.blank.name=Leere Mustervorlage
 
+# Mechanical Artisan
+tile.artisanworktables.automator.name=Mechanical Artisan
+tile.artisanworktables.automator_power_rf.name=Artisanal Power Converter (RF)
+
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Formloses Rezept
 jei.artisanworktables.tooltip.chance=%s%s%% Erfolgschance

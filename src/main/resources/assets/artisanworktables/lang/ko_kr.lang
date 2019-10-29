@@ -95,6 +95,10 @@ item.artisanworktables.artisans.solderer.name=Artisan's %s Solderer
 item.artisanworktables.design.pattern.written.name=디자인 패턴
 item.artisanworktables.design.pattern.blank.name=빈 디자인 패턴
 
+# Mechanical Artisan
+tile.artisanworktables.automator.name=Mechanical Artisan
+tile.artisanworktables.automator_power_rf.name=Artisanal Power Converter (RF)
+
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=무형 조합법
 jei.artisanworktables.tooltip.chance=조합 확률 %s%s%%

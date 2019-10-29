@@ -1,5 +1,10 @@
 **1.23.0**
 
+  * **Translators:**
+    * The following lang keys were added to all lang files with en_us values:
+        * tile.artisanworktables.automator.name
+        * tile.artisanworktables.automator_power_rf.name
+
   * **Added:**
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
     * Creative mode recipe exports now include NBT for all items [(#187)](https://github.com/codetaylor/artisan-worktables/issues/187)

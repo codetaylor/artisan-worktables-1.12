@@ -5,15 +5,21 @@ import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElem
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTab;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTabSelected;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
+import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 import com.codetaylor.mc.athenaeum.packer.PackAPI;
 import com.codetaylor.mc.athenaeum.packer.PackedData;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
+
+import java.awt.*;
 
 public class AutomatorGuiContainer
     extends GuiContainerBase {
 
+  public static final int TEXT_OUTLINE_COLOR = new Color(133, 90, 49).getRGB();
   private final AutomatorContainer container;
 
   public AutomatorGuiContainer(AutomatorContainer container, int width, int height) {
@@ -29,6 +35,22 @@ public class AutomatorGuiContainer
         0,
         this.xSize,
         this.ySize
+    ));
+
+    // title
+    this.guiContainerElementAdd(new GuiElementTitle(
+        this,
+        "tile.artisanworktables.automator.name",
+        8,
+        7
+    ));
+
+    // inventory title
+    this.guiContainerElementAdd(new GuiElementTitle(
+        this,
+        "container.inventory",
+        8,
+        this.ySize - 93
     ));
 
     // deselected gear tab
@@ -153,6 +175,13 @@ public class AutomatorGuiContainer
   public AutomatorContainer.State getContainerState() {
 
     return this.container.getState();
+  }
+
+  @Override
+  public void drawString(String translateKey, int x, int y) {
+
+    FontRenderer fontRenderer = this.fontRenderer;
+    GuiHelper.drawStringOutlined(translateKey, x, y, fontRenderer, TEXT_OUTLINE_COLOR);
   }
 
   private Texture getTexture(String path) {
