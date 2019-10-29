@@ -51,6 +51,21 @@ public class AutomatorContainer
     this.tile = tile;
 
     this.state = State.Gear;
+
+    this.containerPlayerInventoryAdd();
+    this.containerPlayerHotbarAdd();
+  }
+
+  @Override
+  protected int containerInventoryPositionGetY() {
+
+    return 108;
+  }
+
+  @Override
+  protected int containerHotbarPositionGetY() {
+
+    return 166;
   }
 
   public boolean setState(State state) {
