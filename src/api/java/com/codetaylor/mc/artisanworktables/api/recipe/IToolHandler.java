@@ -13,6 +13,13 @@ public interface IToolHandler {
   boolean matches(ItemStack itemStack);
 
   /**
+   * @param tool        the tool
+   * @param toolToMatch the tool to match
+   * @return true if the given tool matches the tool to match
+   */
+  boolean matches(ItemStack tool, ItemStack toolToMatch);
+
+  /**
    * @param itemStack the tool
    * @param damage    the damage to be applied to the tool
    * @return true if the tool can accept all given damage
@@ -20,7 +27,6 @@ public interface IToolHandler {
   boolean canAcceptAllDamage(ItemStack itemStack, int damage);
 
   /**
-   *
    * @param world
    * @param itemStack the tool
    * @param damage    the damage

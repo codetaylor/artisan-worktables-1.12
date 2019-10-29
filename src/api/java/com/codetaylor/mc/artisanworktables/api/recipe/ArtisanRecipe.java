@@ -314,6 +314,7 @@ public class ArtisanRecipe
   @Override
   public boolean isValidTool(ItemStack tool) {
 
+    IToolHandler handler = ArtisanToolHandlers.get(tool);
     Item toolItem = tool.getItem();
 
     for (ToolEntry toolEntry : this.tools) {
@@ -321,7 +322,8 @@ public class ArtisanRecipe
 
       for (IArtisanItemStack itemStack : itemStacks) {
 
-        if (itemStack.getItem() == toolItem) {
+        if (handler.matches(tool, itemStack.toItemStack())) {
+        //if (itemStack.getItem() == toolItem) {
           return true;
         }
       }

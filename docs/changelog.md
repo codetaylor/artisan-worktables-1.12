@@ -1,3 +1,15 @@
+**1.22.11**
+
+  * **API:**
+    * Bumped version to 9
+    * Added method to `IToolHandler`
+        * `boolean matches(ItemStack tool, ItemStack toolToMatch)`
+        
+  * **Fixed:**
+    * GregTech meta tools don't match correctly [(#205)](https://github.com/codetaylor/artisan-worktables/issues/205)
+
+---
+
 **1.22.10**
 
   * **Fixed:**
