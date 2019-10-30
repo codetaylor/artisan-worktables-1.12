@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementAutomatorPanel;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTab;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTabSelected;
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementPowerBar;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -112,7 +113,7 @@ public class AutomatorGuiContainer
       ));
     }
 
-    // power panel texture
+    // panel texture
     this.guiContainerElementAdd(new GuiElementAutomatorPanel(
         this,
         new Texture[]{
@@ -124,6 +125,16 @@ public class AutomatorGuiContainer
         },
         5, 35,
         166, 58
+    ));
+
+    // lit power bar
+    this.guiContainerElementAdd(new GuiElementPowerBar(
+        () -> 500,
+        () -> 1000,
+        this,
+        this.getTexture("power-power-bar-lit"),
+        74, 49,
+        83, 7
     ));
 
     // selected gear tab

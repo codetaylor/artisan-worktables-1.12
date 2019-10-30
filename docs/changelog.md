@@ -2,8 +2,9 @@
 
   * **Translators:**
     * The following lang keys were added to all lang files with en_us values:
-        * tile.artisanworktables.automator.name
-        * tile.artisanworktables.automator_power_rf.name
+        * `tile.artisanworktables.automator.name`
+        * `tile.artisanworktables.automator_power_rf.name`
+        * `gui.artisanworktables.tooltip.automator.power`
 
   * **Added:**
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
