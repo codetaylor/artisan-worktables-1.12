@@ -10,6 +10,7 @@ import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnergyStorage;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileData;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataEnergyStorage;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
+import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +30,11 @@ public class TileAutomator
     implements IContainerProvider<AutomatorContainer, AutomatorGuiContainer>,
     ITileAutomatorPowerConsumer {
 
-  private EnergyTank energyStorage;
+  private final TileDataEnergyStorage<EnergyTank> energyStorageData;
+  private final EnergyTank energyStorage;
+
+  @SideOnly(Side.CLIENT)
+  private int previousEnergy;
 
   public TileAutomator() {
 
@@ -41,10 +46,16 @@ public class TileAutomator
         Integer.MAX_VALUE
     );
 
+    this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
+
     this.registerTileDataForNetwork(new ITileData[]{
-        new TileDataEnergyStorage<>(this.energyStorage)
+        this.energyStorageData
     });
   }
+
+  // ---------------------------------------------------------------------------
+  // - Accessors
+  // ---------------------------------------------------------------------------
 
   public int getEnergyAmount() {
 
@@ -122,7 +133,17 @@ public class TileAutomator
   @SideOnly(Side.CLIENT)
   @Override
   public void onTileDataUpdate() {
-    //
+
+    if (this.energyStorageData.isDirty()) {
+      int currentEnergy = this.getEnergyAmount();
+
+      if ((this.previousEnergy == 0 && currentEnergy > 0)
+          || (this.previousEnergy > 0 && currentEnergy == 0)) {
+        BlockHelper.notifyBlockUpdate(this.world, this.pos.down());
+      }
+
+      this.previousEnergy = currentEnergy;
+    }
   }
 
   // ---------------------------------------------------------------------------
