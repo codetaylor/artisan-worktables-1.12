@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.lib.BlockPartialBase;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.ITileAutomatorPowerSupplier;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.util.AABBHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -33,6 +34,18 @@ public class BlockAutomator
     super(Material.ROCK);
     this.setSoundType(SoundType.GLASS);
     this.setHarvestLevel("pickaxe", 0);
+  }
+
+  // --------------------------------------------------------------------------
+  // - Neighbor Changed
+  // --------------------------------------------------------------------------
+
+  @Override
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+
+    if (this.shouldBreak(world, pos)) {
+      world.destroyBlock(pos, true);
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -73,11 +86,16 @@ public class BlockAutomator
   @Override
   public boolean canPlaceBlockAt(World world, @Nonnull BlockPos pos) {
 
-    if (!(world.getTileEntity(pos.down()) instanceof ITileAutomatorPowerSupplier)) {
+    if (this.shouldBreak(world, pos)) {
       return false;
     }
 
     return super.canPlaceBlockAt(world, pos);
+  }
+
+  private boolean shouldBreak(World world, @Nonnull BlockPos pos) {
+
+    return !(world.getTileEntity(pos.down()) instanceof ITileAutomatorPowerSupplier);
   }
 
   // --------------------------------------------------------------------------
