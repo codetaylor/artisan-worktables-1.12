@@ -22,6 +22,10 @@ public class TileAutomatorPowerSupplierRF
     this.energyConverter = new EnergyConverter();
   }
 
+  // --------------------------------------------------------------------------
+  // - Accessors
+  // --------------------------------------------------------------------------
+
   public boolean isPowered() {
 
     TileEntity tileEntity = this.world.getTileEntity(this.pos.up());
@@ -34,21 +38,33 @@ public class TileAutomatorPowerSupplierRF
   }
 
   // --------------------------------------------------------------------------
+  // - Update
+  // --------------------------------------------------------------------------
+
+  public void neighborChanged() {
+
+    this.updateCapabilityWrapper();
+  }
+
+  private void updateCapabilityWrapper() {
+
+    TileEntity tileEntity = this.world.getTileEntity(this.pos.up());
+
+    if (tileEntity instanceof ITileAutomatorPowerConsumer) {
+      this.energyConverter.setEnergyStorage(
+          tileEntity.getCapability(CapabilityEnergy.ENERGY, EnumFacing.DOWN)
+      );
+    }
+  }
+
+  // --------------------------------------------------------------------------
   // - Capabilities
   // --------------------------------------------------------------------------
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
 
-    if (capability == CapabilityEnergy.ENERGY) {
-      TileEntity tileEntity = this.world.getTileEntity(this.pos.up());
-
-      if (tileEntity instanceof ITileAutomatorPowerConsumer) {
-        return tileEntity.hasCapability(capability, EnumFacing.DOWN);
-      }
-    }
-
-    return false;
+    return (capability == CapabilityEnergy.ENERGY);
   }
 
   @Nullable
@@ -56,18 +72,11 @@ public class TileAutomatorPowerSupplierRF
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
 
     if (capability == CapabilityEnergy.ENERGY) {
-
-      TileEntity tileEntity = this.world.getTileEntity(this.pos.up());
-
-      if (tileEntity instanceof ITileAutomatorPowerConsumer) {
-        //noinspection unchecked
-        return (T) this.energyConverter.setEnergyStorage(
-            tileEntity.getCapability(CapabilityEnergy.ENERGY, EnumFacing.DOWN)
-        );
-      }
+      this.updateCapabilityWrapper();
     }
 
-    return null;
+    //noinspection unchecked
+    return (T) this.energyConverter;
   }
 
   public static class EnergyConverter

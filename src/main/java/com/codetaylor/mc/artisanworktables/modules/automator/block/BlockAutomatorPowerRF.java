@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator.block;
 import com.codetaylor.mc.artisanworktables.lib.BlockPartialBase;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomatorPowerSupplierRF;
 import com.codetaylor.mc.athenaeum.util.AABBHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -58,6 +59,20 @@ public class BlockAutomatorPowerRF
         .withProperty(SOUTH, EnumType.NONE)
         .withProperty(EAST, EnumType.NONE)
         .withProperty(WEST, EnumType.NONE));
+  }
+
+  // --------------------------------------------------------------------------
+  // - Neighbor
+  // --------------------------------------------------------------------------
+
+  @Override
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+
+    TileEntity tileEntity = world.getTileEntity(pos);
+
+    if (tileEntity instanceof TileAutomatorPowerSupplierRF) {
+      ((TileAutomatorPowerSupplierRF) tileEntity).neighborChanged();
+    }
   }
 
   // --------------------------------------------------------------------------
