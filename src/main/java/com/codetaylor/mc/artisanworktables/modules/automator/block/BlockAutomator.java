@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator.block;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.lib.BlockPartialBase;
-import com.codetaylor.mc.artisanworktables.modules.automator.tile.ITileAutomatorPower;
+import com.codetaylor.mc.artisanworktables.modules.automator.tile.ITileAutomatorPowerSupplier;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.util.AABBHelper;
 import net.minecraft.block.SoundType;
@@ -73,7 +73,7 @@ public class BlockAutomator
   @Override
   public boolean canPlaceBlockAt(World world, @Nonnull BlockPos pos) {
 
-    if (!(world.getTileEntity(pos.down()) instanceof ITileAutomatorPower)) {
+    if (!(world.getTileEntity(pos.down()) instanceof ITileAutomatorPowerSupplier)) {
       return false;
     }
 

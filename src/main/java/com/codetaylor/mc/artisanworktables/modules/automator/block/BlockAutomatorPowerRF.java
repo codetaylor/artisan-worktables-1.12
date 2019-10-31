@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.block;
 
 import com.codetaylor.mc.artisanworktables.lib.BlockPartialBase;
-import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomatorPowerRF;
+import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomatorPowerSupplierRF;
 import com.codetaylor.mc.athenaeum.util.AABBHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -98,8 +98,8 @@ public class BlockAutomatorPowerRF
       {
         TileEntity tileEntity = world.getTileEntity(pos);
 
-        if (tileEntity instanceof TileAutomatorPowerRF) {
-          boolean powered = ((TileAutomatorPowerRF) tileEntity).isPowered();
+        if (tileEntity instanceof TileAutomatorPowerSupplierRF) {
+          boolean powered = ((TileAutomatorPowerSupplierRF) tileEntity).isPowered();
           state = state.withProperty(POWERED, powered);
         }
       }
@@ -152,7 +152,7 @@ public class BlockAutomatorPowerRF
   @Override
   public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
 
-    return new TileAutomatorPowerRF();
+    return new TileAutomatorPowerSupplierRF();
   }
 
   // --------------------------------------------------------------------------

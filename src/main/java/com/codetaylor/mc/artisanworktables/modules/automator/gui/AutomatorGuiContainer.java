@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElem
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTab;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTabSelected;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementPowerBar;
+import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
@@ -21,11 +22,14 @@ public class AutomatorGuiContainer
     extends GuiContainerBase {
 
   public static final int TEXT_OUTLINE_COLOR = new Color(133, 90, 49).getRGB();
+
+  private final TileAutomator tile;
   private final AutomatorContainer container;
 
-  public AutomatorGuiContainer(AutomatorContainer container, int width, int height) {
+  public AutomatorGuiContainer(TileAutomator tile, AutomatorContainer container, int width, int height) {
 
     super(container, width, height);
+    this.tile = tile;
     this.container = container;
 
     // background texture
@@ -129,8 +133,8 @@ public class AutomatorGuiContainer
 
     // lit power bar
     this.guiContainerElementAdd(new GuiElementPowerBar(
-        () -> 500,
-        () -> 1000,
+        this.tile::getEnergyAmount,
+        this.tile::getEnergyCapacity,
         this,
         this.getTexture("power-power-bar-lit"),
         74, 49,
@@ -198,6 +202,7 @@ public class AutomatorGuiContainer
   @Override
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
+    this.drawDefaultBackground();
     super.drawScreen(mouseX, mouseY, partialTicks);
     this.renderHoveredToolTip(mouseX, mouseY);
   }

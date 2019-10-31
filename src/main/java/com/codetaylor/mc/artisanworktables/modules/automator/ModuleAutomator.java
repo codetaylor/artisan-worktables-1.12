@@ -6,10 +6,12 @@ import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomato
 import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorTabStateChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.network.SCPacketAutomatorTabStateChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
-import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomatorPowerRF;
+import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomatorPowerSupplierRF;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
+import com.codetaylor.mc.athenaeum.network.tile.ITileDataService;
+import com.codetaylor.mc.athenaeum.network.tile.SCPacketTileData;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import net.minecraft.creativetab.CreativeTabs;
@@ -66,6 +68,7 @@ public class ModuleAutomator
   }
 
   public static IPacketService PACKET_SERVICE;
+  public static ITileDataService TILE_DATA_SERVICE;
 
   public ModuleAutomator() {
 
@@ -74,9 +77,8 @@ public class ModuleAutomator
     this.setRegistry(new Registry(MOD_ID, CREATIVE_TAB));
     this.enableAutoRegistry();
 
-//    MinecraftForge.EVENT_BUS.register(this);
-
     PACKET_SERVICE = this.enableNetwork();
+    TILE_DATA_SERVICE = this.enableNetworkTileDataService(PACKET_SERVICE);
   }
 
   @Override
@@ -93,6 +95,12 @@ public class ModuleAutomator
         SCPacketAutomatorTabStateChange.class,
         Side.CLIENT
     );
+
+    registry.register(
+        SCPacketTileData.class,
+        SCPacketTileData.class,
+        Side.CLIENT
+    );
   }
 
   @Override
@@ -105,7 +113,7 @@ public class ModuleAutomator
     this.registerTileEntities(
         registry,
         TileAutomator.class,
-        TileAutomatorPowerRF.class
+        TileAutomatorPowerSupplierRF.class
     );
   }
 

@@ -1,5 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 
-public interface ITileAutomatorPower {
+public interface ITileAutomatorPowerConsumer {
+
+  boolean isPowered();
 
 }
