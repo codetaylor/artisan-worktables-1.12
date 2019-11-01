@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 
-import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomatorConfig;
 import com.codetaylor.mc.athenaeum.spi.TileEntityBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -98,7 +97,7 @@ public class TileAutomatorPowerSupplierRF
       }
 
       return this.energyStorage.receiveEnergy(
-          maxReceive * ModuleAutomatorConfig.RF_CONVERTER.AP_PER_RF,
+          maxReceive,
           simulate
       );
     }
@@ -110,7 +109,7 @@ public class TileAutomatorPowerSupplierRF
         return 0;
       }
 
-      return this.energyStorage.getEnergyStored() / ModuleAutomatorConfig.RF_CONVERTER.AP_PER_RF;
+      return this.energyStorage.getEnergyStored();
     }
 
     @Override
@@ -120,7 +119,7 @@ public class TileAutomatorPowerSupplierRF
         return 0;
       }
 
-      return this.energyStorage.getMaxEnergyStored() / ModuleAutomatorConfig.RF_CONVERTER.AP_PER_RF;
+      return this.energyStorage.getMaxEnergyStored();
     }
 
     @Override

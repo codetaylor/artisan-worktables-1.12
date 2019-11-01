@@ -17,26 +17,15 @@ public class ModuleAutomatorConfig {
   public static class MechanicalArtisan {
 
     @Config.Comment({
-        "The AP capacity of the device.",
+        "The RF capacity of the device.",
         "Default: " + 10000
     })
-    public int AP_CAPACITY = 10000;
+    public int RF_CAPACITY = 10000;
 
     @Config.Comment({
-        "The max transfer rate, AP per tick.",
+        "The max transfer rate, RF per tick.",
         "Default: " + 100
     })
-    public int AP_PER_TICK = 100;
-  }
-
-  public static RFConverter RF_CONVERTER = new RFConverter();
-
-  public static class RFConverter {
-
-    @Config.Comment({
-        "The AP conversion rate for the RF converter.",
-        "Default: " + 1
-    })
-    public int AP_PER_RF = 1;
+    public int RF_PER_TICK = 100;
   }
 }

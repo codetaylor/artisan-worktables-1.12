@@ -41,8 +41,8 @@ public class TileAutomator
     super(ModuleAutomator.TILE_DATA_SERVICE);
 
     this.energyStorage = new EnergyTank(
-        ModuleAutomatorConfig.MECHANICAL_ARTISAN.AP_CAPACITY,
-        ModuleAutomatorConfig.MECHANICAL_ARTISAN.AP_PER_TICK,
+        ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_CAPACITY,
+        ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_PER_TICK,
         Integer.MAX_VALUE
     );
 
