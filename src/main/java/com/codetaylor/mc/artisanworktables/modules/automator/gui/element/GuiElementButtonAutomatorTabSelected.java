@@ -8,11 +8,11 @@ import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureButtonBase;
 public class GuiElementButtonAutomatorTabSelected
     extends GuiElementTextureButtonBase {
 
-  private final AutomatorContainer.State state;
+  private final AutomatorContainer.EnumState state;
   private final AutomatorGuiContainer guiContainer;
 
   public GuiElementButtonAutomatorTabSelected(
-      AutomatorContainer.State state,
+      AutomatorContainer.EnumState state,
       AutomatorGuiContainer guiBase,
       Texture texture,
       int elementX,

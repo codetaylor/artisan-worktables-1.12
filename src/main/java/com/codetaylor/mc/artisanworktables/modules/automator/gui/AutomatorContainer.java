@@ -1,11 +1,11 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.slot.PanelSlot;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class AutomatorContainer
     extends ContainerBase {
@@ -13,12 +13,12 @@ public class AutomatorContainer
   private final World world;
   private final TileAutomator tile;
 
-  public enum State {
+  public enum EnumState {
     Gear(0), Pattern(1), Inventory(2), Fluid(3), Tool(4);
 
     private final int index;
 
-    State(int index) {
+    EnumState(int index) {
 
       this.index = index;
     }
@@ -28,9 +28,9 @@ public class AutomatorContainer
       return this.index;
     }
 
-    public static State fromIndex(int index) {
+    public static EnumState fromIndex(int index) {
 
-      for (State value : State.values()) {
+      for (EnumState value : EnumState.values()) {
         if (value.index == index) {
           return value;
         }
@@ -39,7 +39,7 @@ public class AutomatorContainer
     }
   }
 
-  private State state;
+  private EnumState state;
 
   public AutomatorContainer(
       InventoryPlayer inventoryPlayer,
@@ -51,12 +51,13 @@ public class AutomatorContainer
     this.world = world;
     this.tile = tile;
 
-    this.state = State.Gear;
+    this.state = EnumState.Gear;
 
     this.containerPlayerInventoryAdd();
     this.containerPlayerHotbarAdd();
 
-    this.containerSlotAdd(new SlotItemHandler(
+    this.containerSlotAdd(new PanelSlot(
+        () -> this.state, EnumState.Gear,
         this.tile.getTableItemStackHandler(), 0, 26, 56
     ));
   }
@@ -73,7 +74,7 @@ public class AutomatorContainer
     return 166;
   }
 
-  public boolean setState(State state) {
+  public boolean setState(EnumState state) {
 
     if (this.state != state) {
       this.state = state;
@@ -83,7 +84,7 @@ public class AutomatorContainer
     return false;
   }
 
-  public State getState() {
+  public EnumState getState() {
 
     return this.state;
   }

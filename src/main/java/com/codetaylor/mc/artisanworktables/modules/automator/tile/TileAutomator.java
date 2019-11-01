@@ -53,8 +53,10 @@ public class TileAutomator
         ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_PER_TICK,
         Integer.MAX_VALUE
     );
+    this.energyStorage.addObserver((energyStorage, amount) -> this.markDirty());
 
     this.tableItemStackHandler = new TableItemStackHandler();
+    this.tableItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
 
     this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
 

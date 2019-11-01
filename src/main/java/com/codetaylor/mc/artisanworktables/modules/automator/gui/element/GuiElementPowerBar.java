@@ -48,7 +48,7 @@ public class GuiElementPowerBar
   @Override
   public boolean elementIsVisible(int mouseX, int mouseY) {
 
-    return (this.guiContainer.getContainerState() == AutomatorContainer.State.Gear);
+    return (this.guiContainer.getContainerState() == AutomatorContainer.EnumState.Gear);
   }
 
   @Override

@@ -26,7 +26,7 @@ public class GuiElementAutomatorPanel
   @Override
   protected int textureIndexGet(int mouseX, int mouseY) {
 
-    AutomatorContainer.State containerState = this.guiContainer.getContainerState();
+    AutomatorContainer.EnumState containerState = this.guiContainer.getContainerState();
     return containerState.getIndex();
   }
 }

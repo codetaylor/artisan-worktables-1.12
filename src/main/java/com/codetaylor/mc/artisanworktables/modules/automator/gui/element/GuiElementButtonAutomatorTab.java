@@ -10,13 +10,13 @@ import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureButtonBase;
 public class GuiElementButtonAutomatorTab
     extends GuiElementTextureButtonBase {
 
-  private final AutomatorContainer.State state;
+  private final AutomatorContainer.EnumState state;
   private final AutomatorGuiContainer guiContainer;
   private int mouseX;
   private int mouseY;
 
   public GuiElementButtonAutomatorTab(
-      AutomatorContainer.State state,
+      AutomatorContainer.EnumState state,
       AutomatorGuiContainer guiBase,
       Texture texture,
       int elementX,

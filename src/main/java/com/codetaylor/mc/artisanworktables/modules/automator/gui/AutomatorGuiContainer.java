@@ -62,7 +62,7 @@ public class AutomatorGuiContainer
     {
       Texture texture = this.getTexture("tab-gear-dark");
       this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
-          AutomatorContainer.State.Gear,
+          AutomatorContainer.EnumState.Gear,
           this,
           texture,
           12, 21,
@@ -74,7 +74,7 @@ public class AutomatorGuiContainer
     {
       Texture texture = this.getTexture("tab-pattern-dark");
       this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
-          AutomatorContainer.State.Pattern,
+          AutomatorContainer.EnumState.Pattern,
           this,
           texture,
           12 + 20, 21,
@@ -86,7 +86,7 @@ public class AutomatorGuiContainer
     {
       Texture texture = this.getTexture("tab-inventory-dark");
       this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
-          AutomatorContainer.State.Inventory,
+          AutomatorContainer.EnumState.Inventory,
           this,
           texture,
           12 + 20 * 2, 21,
@@ -98,7 +98,7 @@ public class AutomatorGuiContainer
     {
       Texture texture = this.getTexture("tab-fluid-dark");
       this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
-          AutomatorContainer.State.Fluid,
+          AutomatorContainer.EnumState.Fluid,
           this,
           texture,
           12 + 20 * 3, 21,
@@ -109,7 +109,7 @@ public class AutomatorGuiContainer
     {
       Texture texture = this.getTexture("tab-tool-dark");
       this.guiContainerElementAdd(new GuiElementButtonAutomatorTab(
-          AutomatorContainer.State.Tool,
+          AutomatorContainer.EnumState.Tool,
           this,
           texture,
           12 + 20 * 4, 21,
@@ -143,7 +143,7 @@ public class AutomatorGuiContainer
 
     // selected gear tab
     this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.State.Gear,
+        AutomatorContainer.EnumState.Gear,
         this,
         this.getTexture("tab-gear-selected"),
         12, 17,
@@ -152,7 +152,7 @@ public class AutomatorGuiContainer
 
     // selected pattern tab
     this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.State.Pattern,
+        AutomatorContainer.EnumState.Pattern,
         this,
         this.getTexture("tab-pattern-selected"),
         12 + 20, 17,
@@ -161,7 +161,7 @@ public class AutomatorGuiContainer
 
     // selected inventory tab
     this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.State.Inventory,
+        AutomatorContainer.EnumState.Inventory,
         this,
         this.getTexture("tab-inventory-selected"),
         12 + 20 * 2, 17,
@@ -170,7 +170,7 @@ public class AutomatorGuiContainer
 
     // selected fluid tab
     this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.State.Fluid,
+        AutomatorContainer.EnumState.Fluid,
         this,
         this.getTexture("tab-fluid-selected"),
         12 + 20 * 3, 17,
@@ -179,7 +179,7 @@ public class AutomatorGuiContainer
 
     // selected tool tab
     this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.State.Tool,
+        AutomatorContainer.EnumState.Tool,
         this,
         this.getTexture("tab-tool-selected"),
         12 + 20 * 4, 17,
@@ -187,7 +187,7 @@ public class AutomatorGuiContainer
     ));
   }
 
-  public AutomatorContainer.State getContainerState() {
+  public AutomatorContainer.EnumState getContainerState() {
 
     return this.container.getState();
   }

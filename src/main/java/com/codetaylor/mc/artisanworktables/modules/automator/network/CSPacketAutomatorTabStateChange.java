@@ -20,7 +20,7 @@ public class CSPacketAutomatorTabStateChange
     // serialization
   }
 
-  public CSPacketAutomatorTabStateChange(AutomatorContainer.State state) {
+  public CSPacketAutomatorTabStateChange(AutomatorContainer.EnumState state) {
 
     this.stateIndex = state.getIndex();
   }
@@ -45,7 +45,7 @@ public class CSPacketAutomatorTabStateChange
 
     if (openContainer instanceof AutomatorContainer) {
       AutomatorContainer container = (AutomatorContainer) openContainer;
-      AutomatorContainer.State state = AutomatorContainer.State.fromIndex(message.stateIndex);
+      AutomatorContainer.EnumState state = AutomatorContainer.EnumState.fromIndex(message.stateIndex);
 
       if (container.setState(state)) {
         ModuleAutomator.PACKET_SERVICE.sendTo(new SCPacketAutomatorTabStateChange(state), player);
