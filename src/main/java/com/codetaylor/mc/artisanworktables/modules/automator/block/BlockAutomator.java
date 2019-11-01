@@ -5,6 +5,7 @@ import com.codetaylor.mc.artisanworktables.lib.BlockPartialBase;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.ITileAutomatorPowerSupplier;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.util.AABBHelper;
+import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -77,6 +78,23 @@ public class BlockAutomator
     }
 
     return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+  }
+
+  @Override
+  public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+
+    TileEntity tileEntity = world.getTileEntity(pos);
+
+    if (tileEntity instanceof TileAutomator) {
+      StackHelper.spawnStackHandlerContentsOnTop(
+          world,
+          ((TileAutomator) tileEntity).getTableItemStackHandler(),
+          pos,
+          0
+      );
+    }
+
+    super.breakBlock(world, pos, state);
   }
 
   // --------------------------------------------------------------------------
