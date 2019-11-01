@@ -1,16 +1,17 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
+import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class AutomatorContainer
     extends ContainerBase {
 
   private final World world;
-  private final TileEntity tile;
+  private final TileAutomator tile;
 
   public enum State {
     Gear(0), Pattern(1), Inventory(2), Fluid(3), Tool(4);
@@ -43,7 +44,7 @@ public class AutomatorContainer
   public AutomatorContainer(
       InventoryPlayer inventoryPlayer,
       World world,
-      TileEntity tile
+      TileAutomator tile
   ) {
 
     super(inventoryPlayer);
@@ -54,6 +55,10 @@ public class AutomatorContainer
 
     this.containerPlayerInventoryAdd();
     this.containerPlayerHotbarAdd();
+
+    this.containerSlotAdd(new SlotItemHandler(
+        this.tile.getTableItemStackHandler(), 0, 26, 56
+    ));
   }
 
   @Override
