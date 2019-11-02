@@ -76,19 +76,19 @@
       "width": 166,
       "height": 58
     },
+    "power-duration-bar-lit": {
+      "atlas": "textures/gui/atlas/atlas_automator_0.png",
+      "u": 166,
+      "v": 197,
+      "width": 83,
+      "height": 4
+    },
     "power-power-bar-lit": {
       "atlas": "textures/gui/atlas/atlas_automator_0.png",
       "u": 166,
       "v": 190,
       "width": 83,
       "height": 7
-    },
-    "power-time-bar-lit": {
-      "atlas": "textures/gui/atlas/atlas_automator_0.png",
-      "u": 166,
-      "v": 197,
-      "width": 83,
-      "height": 4
     },
     "tab-fluid-dark": {
       "atlas": "textures/gui/atlas/atlas_automator_0.png",

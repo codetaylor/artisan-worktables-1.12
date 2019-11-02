@@ -1,10 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
-import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementAutomatorPanel;
-import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTab;
-import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementButtonAutomatorTabSelected;
-import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.GuiElementPowerBar;
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.*;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -139,6 +136,15 @@ public class AutomatorGuiContainer
         this.getTexture("power-power-bar-lit"),
         74, 49,
         83, 7
+    ));
+
+    // lit duration bar
+    this.guiContainerElementAdd(new GuiElementDurationBar(
+        this.tile::getProgress,
+        this,
+        this.getTexture("power-duration-bar-lit"),
+        74, 57,
+        83, 4
     ));
 
     // selected gear tab

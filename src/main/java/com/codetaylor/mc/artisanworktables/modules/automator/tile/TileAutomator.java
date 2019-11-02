@@ -9,12 +9,14 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockBase;
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnergyStorage;
+import com.codetaylor.mc.athenaeum.network.tile.data.TileDataFloat;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileData;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataEnergyStorage;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
+import com.codetaylor.mc.athenaeum.util.TickCounter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,6 +24,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -35,11 +38,14 @@ import javax.annotation.Nullable;
 public class TileAutomator
     extends TileNetBase
     implements IContainerProvider<AutomatorContainer, AutomatorGuiContainer>,
-    ITileAutomatorPowerConsumer {
+    ITileAutomatorPowerConsumer,
+    ITickable {
 
   private final TileDataEnergyStorage<EnergyTank> energyStorageData;
   private final EnergyTank energyStorage;
   private final TableItemStackHandler tableItemStackHandler;
+  private final TileDataFloat progress;
+  private int temporaryTickCounter;
 
   @SideOnly(Side.CLIENT)
   private int previousEnergy;
@@ -60,9 +66,12 @@ public class TileAutomator
 
     this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
 
+    this.progress = new TileDataFloat(0);
+
     this.registerTileDataForNetwork(new ITileData[]{
         this.energyStorageData,
-        new TileDataItemStackHandler<>(this.tableItemStackHandler)
+        new TileDataItemStackHandler<>(this.tableItemStackHandler),
+        this.progress
     });
   }
 
@@ -83,6 +92,11 @@ public class TileAutomator
   public TableItemStackHandler getTableItemStackHandler() {
 
     return this.tableItemStackHandler;
+  }
+
+  public float getProgress() {
+
+    return this.progress.get();
   }
 
   // ---------------------------------------------------------------------------
@@ -144,6 +158,27 @@ public class TileAutomator
   public AutomatorGuiContainer getGuiContainer(InventoryPlayer inventoryPlayer, World world, IBlockState state, BlockPos pos) {
 
     return new AutomatorGuiContainer(this, this.getContainer(inventoryPlayer, world, state, pos), 176, 190);
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Update
+  // ---------------------------------------------------------------------------
+
+  @Override
+  public void update() {
+
+    if (this.world.isRemote) {
+      return;
+    }
+
+    this.temporaryTickCounter += 1;
+
+    if (this.temporaryTickCounter >= 100) {
+      this.temporaryTickCounter = 0;
+      this.energyStorage.extractEnergy(10000, false);
+    }
+
+    this.progress.set(this.temporaryTickCounter / (float) 99);
   }
 
   // ---------------------------------------------------------------------------
