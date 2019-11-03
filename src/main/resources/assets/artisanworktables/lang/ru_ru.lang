@@ -1,0 +1,126 @@
+# Creative Tab
+itemGroup.artisanworktables=Artisan Worktables
+
+# Worktables
+tile.artisanworktables.worktable.basic.name=Базовый рабочий стол
+tile.artisanworktables.worktable.blacksmith.name=Рабочий стол кузнеца
+tile.artisanworktables.worktable.carpenter.name=Рабочий стол плотника
+tile.artisanworktables.worktable.chef.name=Рабочий стол шефа
+tile.artisanworktables.worktable.chemist.name=Рабочий стол химика
+tile.artisanworktables.worktable.designer.name=Рабочий стол дизайнера
+tile.artisanworktables.worktable.engineer.name=Рабочий стол инженера
+tile.artisanworktables.worktable.farmer.name=Рабочий стол фермера
+tile.artisanworktables.worktable.jeweler.name=Рабочий стол ювелира
+tile.artisanworktables.worktable.mage.name=Рабочий стол мага
+tile.artisanworktables.worktable.mason.name=Рабочий стол каменщика
+tile.artisanworktables.worktable.potter.name=Рабочий стол гончара
+tile.artisanworktables.worktable.scribe.name=Рабочий стол писателя
+tile.artisanworktables.worktable.tailor.name=Рабочий стол портного
+tile.artisanworktables.worktable.tanner.name=Рабочий стол дубильщика
+
+# Workstations
+tile.artisanworktables.workstation.basic.name=Базовая рабочая станция
+tile.artisanworktables.workstation.blacksmith.name=Рабочая станция кузнеца
+tile.artisanworktables.workstation.carpenter.name=Рабочая станция плотника
+tile.artisanworktables.workstation.chef.name=Рабочая станция шефа
+tile.artisanworktables.workstation.chemist.name=Рабочая станция химика
+tile.artisanworktables.workstation.designer.name=Рабочая станция дизайнера
+tile.artisanworktables.workstation.engineer.name=Рабочая станция инженера
+tile.artisanworktables.workstation.farmer.name=Рабочая станция фермера
+tile.artisanworktables.workstation.jeweler.name=Рабочая станция ювелира
+tile.artisanworktables.workstation.mage.name=Рабочая станция мага
+tile.artisanworktables.workstation.mason.name=Рабочая станция каменщика
+tile.artisanworktables.workstation.potter.name=Рабочая станция гончара
+tile.artisanworktables.workstation.scribe.name=Рабочая станция писателя
+tile.artisanworktables.workstation.tailor.name=Рабочая станция портного
+tile.artisanworktables.workstation.tanner.name=Рабочая станция дубильщика
+
+# Workshops
+tile.artisanworktables.workshop.basic.name=Базовая мастерская
+tile.artisanworktables.workshop.blacksmith.name=Мастерская кузнеца
+tile.artisanworktables.workshop.carpenter.name=Мастерская плотника
+tile.artisanworktables.workshop.chef.name=Мастерская шефа
+tile.artisanworktables.workshop.chemist.name=Мастерская химика
+tile.artisanworktables.workshop.designer.name=Мастерская дизайнера
+tile.artisanworktables.workshop.engineer.name=Мастерская инженера
+tile.artisanworktables.workshop.farmer.name=Мастерская фермера
+tile.artisanworktables.workshop.jeweler.name=Мастерская ювелира
+tile.artisanworktables.workshop.mage.name=Мастерская мага
+tile.artisanworktables.workshop.mason.name=Мастерская каменщика
+tile.artisanworktables.workshop.potter.name=Мастерская гончара
+tile.artisanworktables.workshop.scribe.name=Мастерская писателя
+tile.artisanworktables.workshop.tailor.name=Мастерская портного
+tile.artisanworktables.workshop.tanner.name=Мастерская дубильщика
+
+# Toolbox
+tile.artisanworktables.toolbox.name=Ящик для инструментов
+tile.artisanworktables.mechanical_toolbox.name=Механический ящик для инструментов
+
+# Worktable Tools
+item.artisanworktables.artisans.cutters.name=Artisan's %s Cutters
+item.artisanworktables.artisans.hammer.name=Artisan's %s Hammer
+item.artisanworktables.artisans.framing.hammer.name=Artisan's %s Framing Hammer
+item.artisanworktables.artisans.handsaw.name=Artisan's %s Handsaw
+item.artisanworktables.artisans.beaker.name=Artisan's %s Beaker
+item.artisanworktables.artisans.burner.name=Artisan's %s Burner
+item.artisanworktables.artisans.driver.name=Artisan's %s Driver
+item.artisanworktables.artisans.spanner.name=Artisan's %s Spanner
+item.artisanworktables.artisans.gemcutter.name=Artisan's %s Gemcutter
+item.artisanworktables.artisans.pliers.name=Artisan's %s Pliers
+item.artisanworktables.artisans.athame.name=Artisan's %s Athame
+item.artisanworktables.artisans.grimoire.name=Artisan's %s-Bound Grimoire
+item.artisanworktables.artisans.chisel.name=Artisan's %s Chisel
+item.artisanworktables.artisans.trowel.name=Artisan's %s Trowel
+item.artisanworktables.artisans.compass.name=Artisan's %s Compass
+item.artisanworktables.artisans.quill.name=Artisan's %s Quill
+item.artisanworktables.artisans.needle.name=Artisan's %s Needle
+item.artisanworktables.artisans.shears.name=Artisan's %s Shears
+item.artisanworktables.artisans.lens.name=Artisan's %s Lens
+item.artisanworktables.artisans.sifter.name=Artisan's %s Sifter
+item.artisanworktables.artisans.cutting.board.name=Artisan's %s Cutting Board
+item.artisanworktables.artisans.pan.name=Artisan's %s Pan
+item.artisanworktables.artisans.mortar.name=Artisan's %s Mortar
+item.artisanworktables.artisans.knife.name=Artisan's %s Knife
+item.artisanworktables.artisans.punch.name=Artisan's %s Punch
+item.artisanworktables.artisans.groover.name=Artisan's %s Groover
+item.artisanworktables.artisans.carver.name=Artisan's %s Carver
+item.artisanworktables.artisans.razor.name=Artisan's %s Razor
+item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
+item.artisanworktables.artisans.file.name=Artisan's %s File
+item.artisanworktables.artisans.pencil.name=Artisan's %s Pencil
+item.artisanworktables.artisans.tsquare.name=Artisan's %s T-Square
+item.artisanworktables.artisans.solderer.name=Artisan's %s Solderer
+
+# Patterns
+item.artisanworktables.design.pattern.written.name=Дизайнерский шаблон
+item.artisanworktables.design.pattern.blank.name=Пустой дизайнерский шаблон
+
+# JEI
+jei.artisanworktables.tooltip.shapeless.recipe=Бесформенный рецепт
+jei.artisanworktables.tooltip.chance=%s%s%% шанс создания
+jei.artisanworktables.xp.cost=Стоимость XP: %d
+jei.artisanworktables.level.cost=Стоимость уровня: %d
+jei.artisanworktables.xp.required=Минимум XP: %d
+jei.artisanworktables.level.required=Минимальный уровень: %d
+
+# GUI
+gui.artisanworktables.tooltip.fluid.empty=Пусто
+gui.artisanworktables.tooltip.fluid.destroy=%sУничтожить жидкость: %sSHIFT + ЛКМ
+gui.artisanworktables.tooltip.button.export.shaped=Экспортировать форменный рецепт
+gui.artisanworktables.tooltip.button.export.shapeless=Экспортировать бесформенный рецепт
+gui.artisanworktables.tooltip.button.clear.table=Очистить всё
+gui.artisanworktables.tooltip.button.creative.disabled=Режим стола: Выживание
+gui.artisanworktables.tooltip.button.creative.enabled=Режим стола: Творческий
+gui.artisanworktables.tooltip.button.oredict.linked=Режим словаря руд: Связано
+gui.artisanworktables.tooltip.button.oredict.unlinked=Режим словаря руд: Не связано
+gui.artisanworktables.tooltip.button.locked.disabled=Режим слота: Разблокировано
+gui.artisanworktables.tooltip.button.locked.enabled=Решим слота: Заблокировано
+
+# Tooltip
+item.artisanworktables.tooltip.durability=Прочность: %d / %d
+item.artisanworktables.tooltip.creative.table.oredict.header=Словарь руд: %s(SHIFT + ЛКМ)
+item.artisanworktables.tooltip.creative.table.oredict.none=-none-
+
+# Chat
+chat.artisanworktables.message.recipe.copy.success=Рецепт скопирован в буфер обмена
+chat.artisanworktables.message.recipe.copy.error=Ошибка при копировании рецепта. Подробности в логе
