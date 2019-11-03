@@ -140,33 +140,14 @@ public class RecipeRegistry
     return null;
   }
 
-  public boolean containsRecipeWithToolInSlot(ItemStack tool) {
+  public boolean containsRecipeWithTool(ItemStack tool) {
 
     synchronized (this.recipeList) {
 
       for (IArtisanRecipe recipe : this.recipeList) {
 
-        if (recipe.isValidTool(tool)) {
+        if (recipe.usesTool(tool)) {
           return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  public boolean containsRecipeWithToolInAnySlot(ItemStack tool) {
-
-    synchronized (this.recipeList) {
-
-      for (IArtisanRecipe recipe : this.recipeList) {
-        int toolCount = recipe.getToolCount();
-
-        for (int i = 0; i < toolCount; i++) {
-
-          if (recipe.isValidTool(tool)) {
-            return true;
-          }
         }
       }
     }
