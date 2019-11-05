@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomatorConf
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnergyStorage;
@@ -16,7 +17,6 @@ import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataEnergyStorage;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
-import com.codetaylor.mc.athenaeum.util.TickCounter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -41,6 +41,10 @@ public class TileAutomator
     ITileAutomatorPowerConsumer,
     ITickable {
 
+  // ---------------------------------------------------------------------------
+  // - Panel: Power
+  // ---------------------------------------------------------------------------
+
   private final TileDataEnergyStorage<EnergyTank> energyStorageData;
   private final EnergyTank energyStorage;
   private final TableItemStackHandler tableItemStackHandler;
@@ -50,9 +54,17 @@ public class TileAutomator
   @SideOnly(Side.CLIENT)
   private int previousEnergy;
 
+  // ---------------------------------------------------------------------------
+  // Panel: Pattern
+  // ---------------------------------------------------------------------------
+
+  private final PatternItemStackHandler patternItemStackHandler;
+
   public TileAutomator() {
 
     super(ModuleAutomator.TILE_DATA_SERVICE);
+
+    // power panel
 
     this.energyStorage = new EnergyTank(
         ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_CAPACITY,
@@ -68,10 +80,16 @@ public class TileAutomator
 
     this.progress = new TileDataFloat(0);
 
+    // pattern panel
+
+    this.patternItemStackHandler = new PatternItemStackHandler();
+    this.patternItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+
     this.registerTileDataForNetwork(new ITileData[]{
         this.energyStorageData,
         new TileDataItemStackHandler<>(this.tableItemStackHandler),
-        this.progress
+        this.progress,
+        new TileDataItemStackHandler<>(this.patternItemStackHandler)
     });
   }
 
@@ -97,6 +115,11 @@ public class TileAutomator
   public float getProgress() {
 
     return this.progress.get();
+  }
+
+  public PatternItemStackHandler getPatternItemStackHandler() {
+
+    return this.patternItemStackHandler;
   }
 
   // ---------------------------------------------------------------------------
@@ -132,6 +155,7 @@ public class TileAutomator
     super.writeToNBT(compound);
     compound.setTag("energyStorage", this.energyStorage.serializeNBT());
     compound.setTag("tableItemStackHandler", this.tableItemStackHandler.serializeNBT());
+    compound.setTag("patternItemStackHandler", this.patternItemStackHandler.serializeNBT());
     return compound;
   }
 
@@ -141,6 +165,7 @@ public class TileAutomator
     super.readFromNBT(compound);
     this.energyStorage.deserializeNBT(compound.getCompoundTag("energyStorage"));
     this.tableItemStackHandler.deserializeNBT(compound.getCompoundTag("tableItemStackHandler"));
+    this.patternItemStackHandler.deserializeNBT(compound.getCompoundTag("patternItemStackHandler"));
   }
 
   // ---------------------------------------------------------------------------
@@ -253,6 +278,33 @@ public class TileAutomator
 
       Block block = ((ItemBlock) stack.getItem()).getBlock();
       return (block instanceof BlockBase);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Pattern Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class PatternItemStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    /* package */ PatternItemStackHandler() {
+
+      super(9);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+
+      return 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+
+      return (stack.getItem() instanceof ItemDesignPattern)
+          && (stack.getMetadata() == ItemDesignPattern.EnumType.WRITTEN.getMeta());
     }
   }
 }

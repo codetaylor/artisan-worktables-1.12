@@ -60,6 +60,13 @@ public class AutomatorContainer
         () -> this.state, EnumState.Gear,
         this.tile.getTableItemStackHandler(), 0, 26, 56
     ));
+
+    for (int i = 0; i < 9; i++) {
+      this.containerSlotAdd(new PanelSlot(
+          () -> this.state, EnumState.Pattern,
+          this.tile.getPatternItemStackHandler(), i, 8 + (i * 18), 38
+      ));
+    }
   }
 
   @Override

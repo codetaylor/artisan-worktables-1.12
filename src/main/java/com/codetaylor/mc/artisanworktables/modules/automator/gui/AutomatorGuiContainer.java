@@ -29,6 +29,109 @@ public class AutomatorGuiContainer
     this.tile = tile;
     this.container = container;
 
+    this.createBackgroundElement();
+    this.createContainerTextElements();
+    this.createDeselectedTabElements();
+    this.createPanelElement();
+    this.createPowerPanelElements();
+    this.createPatternPanelElements();
+    this.createSelectedTabElements();
+  }
+
+  private void createPatternPanelElements() {
+
+    // TODO: buttons
+  }
+
+  private void createSelectedTabElements() {
+
+    // selected gear tab
+    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
+        AutomatorContainer.EnumState.Gear,
+        this,
+        this.getTexture("tab-gear-selected"),
+        12, 17,
+        20, 19
+    ));
+
+    // selected pattern tab
+    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
+        AutomatorContainer.EnumState.Pattern,
+        this,
+        this.getTexture("tab-pattern-selected"),
+        12 + 20, 17,
+        20, 19
+    ));
+
+    // selected inventory tab
+    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
+        AutomatorContainer.EnumState.Inventory,
+        this,
+        this.getTexture("tab-inventory-selected"),
+        12 + 20 * 2, 17,
+        20, 19
+    ));
+
+    // selected fluid tab
+    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
+        AutomatorContainer.EnumState.Fluid,
+        this,
+        this.getTexture("tab-fluid-selected"),
+        12 + 20 * 3, 17,
+        20, 19
+    ));
+
+    // selected tool tab
+    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
+        AutomatorContainer.EnumState.Tool,
+        this,
+        this.getTexture("tab-tool-selected"),
+        12 + 20 * 4, 17,
+        20, 19
+    ));
+  }
+
+  private void createPowerPanelElements() {
+
+    // lit power bar
+    this.guiContainerElementAdd(new GuiElementPowerBar(
+        this.tile::getEnergyAmount,
+        this.tile::getEnergyCapacity,
+        this,
+        this.getTexture("power-power-bar-lit"),
+        74, 49,
+        83, 7
+    ));
+
+    // lit duration bar
+    this.guiContainerElementAdd(new GuiElementDurationBar(
+        this.tile::getProgress,
+        this,
+        this.getTexture("power-duration-bar-lit"),
+        74, 57,
+        83, 4
+    ));
+  }
+
+  private void createPanelElement() {
+
+    // panel texture
+    this.guiContainerElementAdd(new GuiElementAutomatorPanel(
+        this,
+        new Texture[]{
+            this.getTexture("background#panel-power"),
+            this.getTexture("panel-pattern"),
+            this.getTexture("panel-inventory"),
+            this.getTexture("panel-fluid"),
+            this.getTexture("panel-tool")
+        },
+        5, 35,
+        166, 58
+    ));
+  }
+
+  private void createBackgroundElement() {
+
     // background texture
     this.guiContainerElementAdd(new GuiElementTextureRectangle(
         this,
@@ -38,6 +141,9 @@ public class AutomatorGuiContainer
         this.xSize,
         this.ySize
     ));
+  }
+
+  private void createContainerTextElements() {
 
     // title
     this.guiContainerElementAdd(new GuiElementTitle(
@@ -54,6 +160,9 @@ public class AutomatorGuiContainer
         8,
         this.ySize - 93
     ));
+  }
+
+  private void createDeselectedTabElements() {
 
     // deselected gear tab
     {
@@ -113,84 +222,6 @@ public class AutomatorGuiContainer
           20, 18
       ));
     }
-
-    // panel texture
-    this.guiContainerElementAdd(new GuiElementAutomatorPanel(
-        this,
-        new Texture[]{
-            this.getTexture("background#panel-power"),
-            this.getTexture("panel-pattern"),
-            this.getTexture("panel-inventory"),
-            this.getTexture("panel-fluid"),
-            this.getTexture("panel-tool")
-        },
-        5, 35,
-        166, 58
-    ));
-
-    // lit power bar
-    this.guiContainerElementAdd(new GuiElementPowerBar(
-        this.tile::getEnergyAmount,
-        this.tile::getEnergyCapacity,
-        this,
-        this.getTexture("power-power-bar-lit"),
-        74, 49,
-        83, 7
-    ));
-
-    // lit duration bar
-    this.guiContainerElementAdd(new GuiElementDurationBar(
-        this.tile::getProgress,
-        this,
-        this.getTexture("power-duration-bar-lit"),
-        74, 57,
-        83, 4
-    ));
-
-    // selected gear tab
-    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.EnumState.Gear,
-        this,
-        this.getTexture("tab-gear-selected"),
-        12, 17,
-        20, 19
-    ));
-
-    // selected pattern tab
-    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.EnumState.Pattern,
-        this,
-        this.getTexture("tab-pattern-selected"),
-        12 + 20, 17,
-        20, 19
-    ));
-
-    // selected inventory tab
-    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.EnumState.Inventory,
-        this,
-        this.getTexture("tab-inventory-selected"),
-        12 + 20 * 2, 17,
-        20, 19
-    ));
-
-    // selected fluid tab
-    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.EnumState.Fluid,
-        this,
-        this.getTexture("tab-fluid-selected"),
-        12 + 20 * 3, 17,
-        20, 19
-    ));
-
-    // selected tool tab
-    this.guiContainerElementAdd(new GuiElementButtonAutomatorTabSelected(
-        AutomatorContainer.EnumState.Tool,
-        this,
-        this.getTexture("tab-tool-selected"),
-        12 + 20 * 4, 17,
-        20, 19
-    ));
   }
 
   public AutomatorContainer.EnumState getContainerState() {
