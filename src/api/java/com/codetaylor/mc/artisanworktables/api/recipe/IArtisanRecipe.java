@@ -67,9 +67,9 @@ public interface IArtisanRecipe {
 
   /**
    * @param tool      the tool to check
-   * @return true if the given tool is valid for this recipe in the given slot
+   * @return true if the given tool is used in this recipe
    */
-  boolean isValidTool(ItemStack tool);
+  boolean usesTool(ItemStack tool);
 
   /**
    * @param tool      the tool to check

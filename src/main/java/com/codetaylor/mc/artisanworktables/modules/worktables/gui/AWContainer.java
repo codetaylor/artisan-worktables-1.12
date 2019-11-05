@@ -153,7 +153,7 @@ public class AWContainer
             itemStack -> {
               RecipeRegistry worktableRecipeRegistry = this.tile.getWorktableRecipeRegistry();
               return this.tile.isCreative()
-                  || worktableRecipeRegistry.containsRecipeWithToolInSlot(itemStack);
+                  || worktableRecipeRegistry.containsRecipeWithTool(itemStack);
             },
             toolHandler,
             i,

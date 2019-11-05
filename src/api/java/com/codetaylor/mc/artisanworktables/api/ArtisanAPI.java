@@ -90,7 +90,7 @@ public class ArtisanAPI {
 
     for (RecipeRegistry registry : ArtisanRegistries.RECIPE_REGISTRY.getValuesCollection()) {
 
-      if (registry.containsRecipeWithToolInAnySlot(itemStack)) {
+      if (registry.containsRecipeWithTool(itemStack)) {
         return true;
       }
     }

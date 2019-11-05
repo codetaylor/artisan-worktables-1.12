@@ -17,6 +17,20 @@
 
 ---
 
+**1.22.13**
+
+  * **Fixed:**
+    * Improper tool matching [(#210)](https://github.com/codetaylor/artisan-worktables/pull/210)
+
+---
+
+**1.22.12**
+
+  * **Added:**
+    * ru_ru.lang [(#209)](https://github.com/codetaylor/artisan-worktables/pull/209)
+    
+---
+
 **1.22.11**
 
   * **API:**

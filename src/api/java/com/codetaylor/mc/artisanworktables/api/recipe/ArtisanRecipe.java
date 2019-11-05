@@ -13,7 +13,6 @@ import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementCo
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.util.NonNullList;
@@ -299,23 +298,18 @@ public class ArtisanRecipe
   private ToolEntry findToolEntry(ItemStack tool) {
 
     for (ToolEntry toolEntry : this.tools) {
-      IArtisanItemStack[] itemStacks = toolEntry.getTool();
 
-      for (IArtisanItemStack itemStack : itemStacks) {
-
-        if (itemStack.getItem() == tool.getItem()) {
-          return toolEntry;
-        }
+      if (this.toolMatchesToolEntry(tool, toolEntry)) {
+        return toolEntry;
       }
     }
     return null;
   }
 
   @Override
-  public boolean isValidTool(ItemStack tool) {
+  public boolean usesTool(ItemStack tool) {
 
     IToolHandler handler = ArtisanToolHandlers.get(tool);
-    Item toolItem = tool.getItem();
 
     for (ToolEntry toolEntry : this.tools) {
       IArtisanItemStack[] itemStacks = toolEntry.getTool();
@@ -323,9 +317,24 @@ public class ArtisanRecipe
       for (IArtisanItemStack itemStack : itemStacks) {
 
         if (handler.matches(tool, itemStack.toItemStack())) {
-        //if (itemStack.getItem() == toolItem) {
           return true;
         }
+      }
+    }
+
+    return false;
+  }
+
+  private boolean toolMatchesToolEntry(ItemStack tool, ToolEntry toolEntry) {
+
+    IToolHandler handler = ArtisanToolHandlers.get(tool);
+
+    IArtisanItemStack[] itemStacks = toolEntry.getTool();
+
+    for (IArtisanItemStack itemStack : itemStacks) {
+
+      if (handler.matches(tool, itemStack.toItemStack())) {
+        return true;
       }
     }
 
@@ -403,18 +412,55 @@ public class ArtisanRecipe
     }
 
     if (this.getToolCount() > tools.length) {
-      // this recipe requires more tools than the tools in the table
+      // this recipe requires more tools than the number of tools available in the table
       return false;
     }
 
-    // Do we have the correct tools?
-    // Do the tools have enough durability for this recipe?
-    for (int i = 0; i < this.getToolCount(); i++) {
+    // We need to match each recipe tool to a tool in the table
+    // Each time a table tool is matched, it needs to be removed from the tools to match
+    // so each tool in the table can only be matched once.
 
-      if (!this.isValidTool(tools[i])
-          || !this.hasSufficientToolDurability(tools[i])) {
-        return false;
+    // table_tools
+    // recipe_tools
+    // boolean[] recipe_tools_matched
+
+    /*
+
+    table:
+    for each table_tool in table_tools
+      for each recipe_tool in recipe_tools
+
+        // does this table_tool satisfy a required recipe_tool?
+        if !recipe_tools_matched[recipe_tool_index] && table_tool == recipe_tool
+          recipe_tools_matched[recipe_tool_index] = true
+
+     */
+
+    int toolCount = this.getToolCount();
+    byte mask = 0;
+    byte matchCount = 0;
+
+    tableTools:
+    for (int i = 0; i < tools.length; i++) {
+
+      for (int j = 0; j < toolCount; j++) {
+        int bit = (1 << j);
+
+        // Has the recipe tool already been matched?
+        // Is the table tool valid?
+        // Does the table tool have sufficient durability?
+        if ((mask & bit) != bit
+            && this.toolMatchesToolEntry(tools[i], this.tools[j])
+            && this.hasSufficientToolDurability(tools[i])) {
+          mask |= bit;
+          matchCount += 1;
+          continue tableTools;
+        }
       }
+    }
+
+    if (matchCount != toolCount) {
+      return false;
     }
 
     if (!this.matchesRequirements(requirementContextMap)) {
@@ -496,9 +542,26 @@ public class ArtisanRecipe
 
     // Damage or destroy tools
     // Check for replacement tool
-    for (int i = 0; i < this.getToolCount(); i++) {
-      this.onCraftDamageTool(context, i);
-      this.onCraftCheckAndReplaceTool(context, i);
+    IItemHandlerModifiable toolHandler = context.getToolHandler();
+    byte mask = 0;
+
+    recipeTools:
+    for (int i = 0; i < this.tools.length; i++) { // recipe tools
+
+      for (int j = 0; j < toolHandler.getSlots(); j++) { // table tools
+        int bit = 1 << j;
+        ItemStack stackInSlot = toolHandler.getStackInSlot(j);
+
+        if ((mask & bit) != bit // haven't damaged this slot
+            && !stackInSlot.isEmpty() // slot isn't empty
+            && this.toolMatchesToolEntry(stackInSlot, this.tools[i]) // tool matches recipe
+            && this.hasSufficientToolDurability(stackInSlot)) { // tool has durability
+          mask |= bit;
+          this.onCraftDamageTool(context, stackInSlot);
+          this.onCraftCheckAndReplaceTool(context, j);
+          continue recipeTools;
+        }
+      }
     }
 
     // Issue #150:
@@ -833,16 +896,24 @@ public class ArtisanRecipe
     return result;
   }
 
-  protected void onCraftDamageTool(ICraftingContext context, int toolIndex) {
+  protected void onCraftDamageTool(ICraftingContext context, ItemStack itemStack) {
 
     World world = context.getWorld();
     EntityPlayer player = context.getPlayer();
-    IItemHandlerModifiable toolHandler = context.getToolHandler();
-    ItemStack itemStack = toolHandler.getStackInSlot(toolIndex);
 
-    if (!itemStack.isEmpty() && this.isValidTool(itemStack)) {
+    if (!itemStack.isEmpty()) {
+      ToolEntry toolEntry = this.findToolEntry(itemStack);
+
+      if (toolEntry == null) {
+        return;
+      }
+
+      if (!this.hasSufficientToolDurability(itemStack)) {
+        return;
+      }
+
       IToolHandler handler = ArtisanToolHandlers.get(itemStack);
-      int toolDamage = this.getToolDamage(toolIndex);
+      int toolDamage = toolEntry.getDamage();
       boolean broken = toolDamage > 0
           && handler.applyDamage(world, itemStack, toolDamage, player, false);
 
@@ -883,7 +954,10 @@ public class ArtisanRecipe
           continue;
         }
 
-        if (this.isValidTool(potentialTool)
+        ToolEntry toolEntry = this.findToolEntry(potentialTool);
+
+        if (toolEntry != null
+            && this.toolMatchesToolEntry(itemStack, toolEntry)
             && this.hasSufficientToolDurability(potentialTool)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
