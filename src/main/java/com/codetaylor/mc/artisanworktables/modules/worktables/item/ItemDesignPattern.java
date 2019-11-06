@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.item;
 
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
-import com.codetaylor.mc.athenaeum.spi.IVariant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,22 +11,25 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import java.util.Comparator;
-import java.util.stream.Stream;
 
+@SuppressWarnings("WeakerAccess")
 public class ItemDesignPattern
     extends Item {
 
   public static final String NAME = "design_pattern";
+  public static final String NAME_BLANK = "blank";
+  public static final String NAME_WRITTEN = "written";
 
+  @Nonnull
   @Override
   public String getUnlocalizedName(ItemStack stack) {
 
+    // TODO: fix this
     if (stack.hasTagCompound()) {
-      return super.getUnlocalizedName(stack) + "." + EnumType.WRITTEN.getName();
+      return super.getUnlocalizedName(stack) + "." + NAME_WRITTEN;
     }
 
-    return super.getUnlocalizedName(stack) + "." + EnumType.BLANK.getName();
+    return super.getUnlocalizedName(stack) + "." + NAME_BLANK;
   }
 
   @Nonnull
@@ -43,46 +45,4 @@ public class ItemDesignPattern
 
     return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
   }
-
-  public enum EnumType
-      implements IVariant {
-
-    BLANK(0, "blank"),
-    WRITTEN(1, "written");
-
-    private static final EnumType[] META_LOOKUP = Stream.of(EnumType.values())
-        .sorted(Comparator.comparing(EnumType::getMeta))
-        .toArray(EnumType[]::new);
-    private final int meta;
-
-    private final String name;
-
-    EnumType(int meta, String name) {
-
-      this.meta = meta;
-      this.name = name;
-    }
-
-    @Override
-    public int getMeta() {
-
-      return this.meta;
-    }
-
-    @Override
-    public String getName() {
-
-      return this.name;
-    }
-
-    public static EnumType fromMeta(int meta) {
-
-      if (meta < 0 || meta >= META_LOOKUP.length) {
-        meta = 0;
-      }
-
-      return META_LOOKUP[meta];
-    }
-  }
-
 }

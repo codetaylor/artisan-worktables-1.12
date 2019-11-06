@@ -18,12 +18,12 @@ public class ItemDesignPatternMeshDefinition
 
     this.modelResourceLocationBlank = new ModelResourceLocation(new ResourceLocation(
         ModuleWorktables.MOD_ID,
-        ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.BLANK.getName()
+        ItemDesignPattern.NAME + "_" + ItemDesignPattern.NAME_BLANK
     ), "inventory");
 
     this.modelResourceLocationWritten = new ModelResourceLocation(new ResourceLocation(
         ModuleWorktables.MOD_ID,
-        ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN.getName()
+        ItemDesignPattern.NAME + "_" + ItemDesignPattern.NAME_WRITTEN
     ), "inventory");
   }
 

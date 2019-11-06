@@ -320,13 +320,22 @@ public class ModuleWorktables
     registry.registerClientModelRegistrationStrategy(() -> {
       ModelBakery.registerItemVariants(
           Items.DESIGN_PATTERN,
-          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.BLANK.getName())
+          new ResourceLocation(
+              MOD_ID,
+              ItemDesignPattern.NAME + "_" + ItemDesignPattern.NAME_BLANK
+          )
       );
       ModelBakery.registerItemVariants(
           Items.DESIGN_PATTERN,
-          new ResourceLocation(MOD_ID, ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN.getName())
+          new ResourceLocation(
+              MOD_ID,
+              ItemDesignPattern.NAME + "_" + ItemDesignPattern.NAME_WRITTEN
+          )
       );
-      ModelLoader.setCustomMeshDefinition(Items.DESIGN_PATTERN, new ItemDesignPatternMeshDefinition());
+      ModelLoader.setCustomMeshDefinition(
+          Items.DESIGN_PATTERN,
+          new ItemDesignPatternMeshDefinition()
+      );
     });
   }
 
@@ -335,7 +344,7 @@ public class ModuleWorktables
   public void onModelBakeEvent(ModelBakeEvent event) {
 
     IRegistry<ModelResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
-    String matchName = ItemDesignPattern.NAME + "_" + ItemDesignPattern.EnumType.WRITTEN.getName();
+    String matchName = ItemDesignPattern.NAME + "_" + ItemDesignPattern.NAME_WRITTEN;
 
     for (ModelResourceLocation modelResourceLocation : modelRegistry.getKeys()) {
 

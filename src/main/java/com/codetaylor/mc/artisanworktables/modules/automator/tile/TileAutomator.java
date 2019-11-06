@@ -303,8 +303,7 @@ public class TileAutomator
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
 
-      return (stack.getItem() instanceof ItemDesignPattern)
-          && (stack.getMetadata() == ItemDesignPattern.EnumType.WRITTEN.getMeta());
+      return (stack.getItem() instanceof ItemDesignPattern);
     }
   }
 }
