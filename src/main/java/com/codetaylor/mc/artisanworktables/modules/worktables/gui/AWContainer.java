@@ -11,6 +11,7 @@ import com.codetaylor.mc.artisanworktables.modules.toolbox.tile.TileEntityToolbo
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot.*;
+import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.SCPacketWorktableContainerJoinedBlockBreak;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.ITileEntityDesigner;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
@@ -25,7 +26,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
@@ -480,10 +480,9 @@ public class AWContainer
 
         } else if (recipe.getName() != null) {
           // 2019-09-23 added the null check because vanilla recipes have a null name
-          ItemStack stack = new ItemStack(ModuleWorktables.Items.DESIGN_PATTERN);
-          NBTTagCompound tag = new NBTTagCompound();
-          tag.setString("recipe", recipe.getName());
-          stack.setTagCompound(tag);
+          ItemDesignPattern item = ModuleWorktables.Items.DESIGN_PATTERN;
+          ItemStack stack = new ItemStack(item);
+          item.setRecipeName(stack, recipe.getName());
           this.patternResultHandler.setStackInSlot(0, stack);
         }
       }

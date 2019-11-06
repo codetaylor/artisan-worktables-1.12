@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.item;
 
 import com.blamejared.ctgui.api.GuiBase;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.pattern.IItemDesignPattern;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.modules.worktables.Util;
 import net.minecraft.block.state.IBlockState;
@@ -12,8 +13,8 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -90,12 +91,12 @@ public class ItemDesignPatternBakedModel
           @Nullable EntityLivingBase entity
       ) {
 
-        NBTTagCompound tag = stack.getTagCompound();
+        Item item = stack.getItem();
 
-        if (tag != null) {
-          String recipeName = tag.getString("recipe");
+        if (item instanceof IItemDesignPattern) {
+          String recipeName = ((IItemDesignPattern) item).getRecipeName(stack);
 
-          if (!recipeName.isEmpty()) {
+          if (recipeName != null) {
             IArtisanRecipe recipe = ArtisanAPI.getRecipe(recipeName);
 
             if (recipe != null && ItemDesignPatternBakedModel.canDisplayPatternOutput(stack)) {

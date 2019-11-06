@@ -20,6 +20,7 @@ import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -303,7 +304,10 @@ public class TileAutomator
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
 
-      return (stack.getItem() instanceof ItemDesignPattern);
+      Item item = stack.getItem();
+
+      return (item instanceof ItemDesignPattern)
+          && (((ItemDesignPattern) item).hasRecipe(stack));
     }
   }
 }

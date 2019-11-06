@@ -31,7 +31,7 @@ public class ItemDesignPatternMeshDefinition
   @Override
   public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
 
-    if (stack.hasTagCompound()) {
+    if (ModuleWorktables.Items.DESIGN_PATTERN.hasRecipe(stack)) {
       return this.modelResourceLocationWritten;
     }
 

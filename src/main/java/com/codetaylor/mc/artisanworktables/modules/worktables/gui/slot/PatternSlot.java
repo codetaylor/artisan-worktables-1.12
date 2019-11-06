@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui.slot;
 
-import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
+import com.codetaylor.mc.artisanworktables.api.pattern.IItemDesignPattern;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
@@ -27,9 +28,11 @@ public class PatternSlot
   @Override
   public boolean isItemValid(@Nonnull ItemStack stack) {
 
+    Item item = stack.getItem();
+
     return this.isEnabled()
-        && (stack.getItem() == ModuleWorktables.Items.DESIGN_PATTERN)
-        && (!stack.hasTagCompound());
+        && (item instanceof IItemDesignPattern)
+        && (!((IItemDesignPattern) item).hasRecipe(stack));
   }
 
   @Override
