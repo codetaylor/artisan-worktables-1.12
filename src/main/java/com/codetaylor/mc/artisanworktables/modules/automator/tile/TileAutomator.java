@@ -65,6 +65,7 @@ public class TileAutomator
 
   private final PatternItemStackHandler patternItemStackHandler;
   private final OutputItemStackHandler[] outputItemStackHandler;
+  private final boolean[] outputDirty;
 
   public TileAutomator() {
 
@@ -88,15 +89,24 @@ public class TileAutomator
 
     // pattern panel
 
+    this.outputDirty = new boolean[9];
+    Arrays.fill(this.outputDirty, true);
+
     this.patternItemStackHandler = new PatternItemStackHandler();
     this.patternItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
 
     this.outputItemStackHandler = new OutputItemStackHandler[9];
 
     for (int i = 0; i < this.outputItemStackHandler.length; i++) {
+      int handlerIndex = i;
       this.outputItemStackHandler[i] = new OutputItemStackHandler();
-      this.outputItemStackHandler[i].addObserver((stackHandler, slotIndex) -> this.markDirty());
+      this.outputItemStackHandler[i].addObserver((stackHandler, slotIndex) -> {
+        this.markDirty();
+        this.outputDirty[handlerIndex] = true;
+      });
     }
+
+    // network
 
     List<ITileData> tileDataList = new ArrayList<>(Arrays.asList(
         this.energyStorageData,
@@ -255,18 +265,28 @@ public class TileAutomator
     }
 
     // TODO: review
-    for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
-      for (int i = 1; i < itemStackHandler.getSlots(); i++) {
-        ItemStack stackInSlot = itemStackHandler.getStackInSlot(i);
-        if (!stackInSlot.isEmpty()) {
-          stackInSlot = itemStackHandler.extractItem(i, stackInSlot.getCount(), false);
-          for (int j = 0; j <= i; j++) {
-            stackInSlot = itemStackHandler.insertItem(j, stackInSlot, false);
-            if (stackInSlot.isEmpty()) {
-              break;
+    for (int i = 0; i < 9; i++) {
+
+      if (this.outputDirty[i]) {
+        OutputItemStackHandler itemStackHandler = this.outputItemStackHandler[i];
+
+        for (int j = 1; j < itemStackHandler.getSlots(); j++) {
+          ItemStack stackInSlot = itemStackHandler.getStackInSlot(j);
+
+          if (!stackInSlot.isEmpty()) {
+            int count = stackInSlot.getCount();
+            stackInSlot = itemStackHandler.extractItem(j, count, false);
+
+            for (int k = 0; k <= j; k++) {
+              stackInSlot = itemStackHandler.insertItem(k, stackInSlot, false);
+
+              if (stackInSlot.isEmpty()) {
+                break;
+              }
             }
           }
         }
+        this.outputDirty[i] = false;
       }
     }
 
