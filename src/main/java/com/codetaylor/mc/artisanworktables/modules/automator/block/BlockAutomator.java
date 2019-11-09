@@ -86,12 +86,32 @@ public class BlockAutomator
     TileEntity tileEntity = world.getTileEntity(pos);
 
     if (tileEntity instanceof TileAutomator) {
+
+      // Table
       StackHelper.spawnStackHandlerContentsOnTop(
           world,
           ((TileAutomator) tileEntity).getTableItemStackHandler(),
           pos,
           0
       );
+
+      // Patterns
+      StackHelper.spawnStackHandlerContentsOnTop(
+          world,
+          ((TileAutomator) tileEntity).getPatternItemStackHandler(),
+          pos,
+          0
+      );
+
+      // Recipe Outputs
+      for (int i = 0; i < 9; i++) {
+        StackHelper.spawnStackHandlerContentsOnTop(
+            world,
+            ((TileAutomator) tileEntity).getOutputItemStackHandler(i),
+            pos,
+            0
+        );
+      }
     }
 
     super.breakBlock(world, pos, state);
