@@ -264,11 +264,15 @@ public class TileAutomator
       }
     }
 
-    // TODO: review
     for (int i = 0; i < 9; i++) {
 
       if (this.outputDirty[i]) {
         OutputItemStackHandler itemStackHandler = this.outputItemStackHandler[i];
+
+        // Loop through the handler's slots starting with the second slot. If
+        // the slot isn't empty, remove the slot's stack and try to place the
+        // removed stack into all slots up to and including the current slot
+        // that was just emptied.
 
         for (int j = 1; j < itemStackHandler.getSlots(); j++) {
           ItemStack stackInSlot = itemStackHandler.getStackInSlot(j);
