@@ -254,12 +254,7 @@ public class TileAutomator
       for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
         for (ItemStack stack : output) {
           ItemStack itemStack = stack.copy();
-          for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            itemStack = itemStackHandler.insertItem(i, itemStack, false);
-            if (itemStack.isEmpty()) {
-              break;
-            }
-          }
+          itemStackHandler.insert(itemStack, false);
         }
       }
     }
@@ -267,29 +262,7 @@ public class TileAutomator
     for (int i = 0; i < 9; i++) {
 
       if (this.outputDirty[i]) {
-        OutputItemStackHandler itemStackHandler = this.outputItemStackHandler[i];
-
-        // Loop through the handler's slots starting with the second slot. If
-        // the slot isn't empty, remove the slot's stack and try to place the
-        // removed stack into all slots up to and including the current slot
-        // that was just emptied.
-
-        for (int j = 1; j < itemStackHandler.getSlots(); j++) {
-          ItemStack stackInSlot = itemStackHandler.getStackInSlot(j);
-
-          if (!stackInSlot.isEmpty()) {
-            int count = stackInSlot.getCount();
-            stackInSlot = itemStackHandler.extractItem(j, count, false);
-
-            for (int k = 0; k <= j; k++) {
-              stackInSlot = itemStackHandler.insertItem(k, stackInSlot, false);
-
-              if (stackInSlot.isEmpty()) {
-                break;
-              }
-            }
-          }
-        }
+        this.outputItemStackHandler[i].settleStacks();
         this.outputDirty[i] = false;
       }
     }
@@ -412,6 +385,53 @@ public class TileAutomator
     /* package */ OutputItemStackHandler() {
 
       super(9);
+    }
+
+    /**
+     * Attempt to insert the given item stack into all slots in this handler
+     * starting with slot 0.
+     *
+     * @param itemStack the stack to insert
+     * @param simulate  simulate
+     * @return the items that couldn't be inserted
+     */
+    private ItemStack insert(ItemStack itemStack, boolean simulate) {
+
+      for (int i = 0; i < this.getSlots(); i++) {
+        itemStack = this.insertItem(i, itemStack, simulate);
+
+        if (itemStack.isEmpty()) {
+          break;
+        }
+      }
+
+      return itemStack;
+    }
+
+    /**
+     * Loop through the handler's slots starting with the second slot. If
+     * the slot isn't empty, remove the slot's stack and try to place the
+     * removed stack into all slots up to and including the current slot
+     * that was just emptied.
+     */
+    private void settleStacks() {
+
+      for (int j = 1; j < this.getSlots(); j++) {
+        ItemStack stackInSlot = this.getStackInSlot(j);
+
+        if (!stackInSlot.isEmpty()) {
+          int count = stackInSlot.getCount();
+          stackInSlot = this.extractItem(j, count, false);
+
+          for (int k = 0; k <= j; k++) {
+            stackInSlot = this.insertItem(k, stackInSlot, false);
+
+            if (stackInSlot.isEmpty()) {
+              break;
+            }
+          }
+        }
+      }
     }
   }
 
