@@ -180,6 +180,11 @@ public class TileAutomator
     compound.setTag("energyStorage", this.energyStorage.serializeNBT());
     compound.setTag("tableItemStackHandler", this.tableItemStackHandler.serializeNBT());
     compound.setTag("patternItemStackHandler", this.patternItemStackHandler.serializeNBT());
+
+    for (int i = 0; i < this.outputItemStackHandler.length; i++) {
+      compound.setTag("outputItemStackHandler" + i, this.outputItemStackHandler[i].serializeNBT());
+    }
+
     return compound;
   }
 
@@ -190,6 +195,10 @@ public class TileAutomator
     this.energyStorage.deserializeNBT(compound.getCompoundTag("energyStorage"));
     this.tableItemStackHandler.deserializeNBT(compound.getCompoundTag("tableItemStackHandler"));
     this.patternItemStackHandler.deserializeNBT(compound.getCompoundTag("patternItemStackHandler"));
+
+    for (int i = 0; i < this.outputItemStackHandler.length; i++) {
+      this.outputItemStackHandler[i].deserializeNBT(compound.getCompoundTag("outputItemStackHandler" + i));
+    }
   }
 
   // ---------------------------------------------------------------------------
