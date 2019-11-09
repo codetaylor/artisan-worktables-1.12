@@ -20,6 +20,7 @@ import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TileAutomator
     extends TileNetBase
@@ -60,6 +64,7 @@ public class TileAutomator
   // ---------------------------------------------------------------------------
 
   private final PatternItemStackHandler patternItemStackHandler;
+  private final OutputItemStackHandler[] outputItemStackHandler;
 
   public TileAutomator() {
 
@@ -86,12 +91,25 @@ public class TileAutomator
     this.patternItemStackHandler = new PatternItemStackHandler();
     this.patternItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
 
-    this.registerTileDataForNetwork(new ITileData[]{
+    this.outputItemStackHandler = new OutputItemStackHandler[9];
+
+    for (int i = 0; i < this.outputItemStackHandler.length; i++) {
+      this.outputItemStackHandler[i] = new OutputItemStackHandler();
+      this.outputItemStackHandler[i].addObserver((stackHandler, slotIndex) -> this.markDirty());
+    }
+
+    List<ITileData> tileDataList = new ArrayList<>(Arrays.asList(
         this.energyStorageData,
         new TileDataItemStackHandler<>(this.tableItemStackHandler),
         this.progress,
         new TileDataItemStackHandler<>(this.patternItemStackHandler)
-    });
+    ));
+
+    for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
+      tileDataList.add(new TileDataItemStackHandler<>(itemStackHandler));
+    }
+
+    this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
 
   // ---------------------------------------------------------------------------
@@ -121,6 +139,11 @@ public class TileAutomator
   public PatternItemStackHandler getPatternItemStackHandler() {
 
     return this.patternItemStackHandler;
+  }
+
+  public OutputItemStackHandler getOutputItemStackHandler(int index) {
+
+    return this.outputItemStackHandler[index];
   }
 
   // ---------------------------------------------------------------------------
@@ -202,6 +225,40 @@ public class TileAutomator
     if (this.temporaryTickCounter >= 100) {
       this.temporaryTickCounter = 0;
       this.energyStorage.extractEnergy(10000, false);
+
+      ItemStack[] output = new ItemStack[]{
+          new ItemStack(Blocks.DIRT),
+          new ItemStack(Blocks.GRAVEL),
+          new ItemStack(Blocks.STONE)
+      };
+
+      for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
+        for (ItemStack stack : output) {
+          ItemStack itemStack = stack.copy();
+          for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            itemStack = itemStackHandler.insertItem(i, itemStack, false);
+            if (itemStack.isEmpty()) {
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // TODO: review
+    for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
+      for (int i = 1; i < itemStackHandler.getSlots(); i++) {
+        ItemStack stackInSlot = itemStackHandler.getStackInSlot(i);
+        if (!stackInSlot.isEmpty()) {
+          stackInSlot = itemStackHandler.extractItem(i, stackInSlot.getCount(), false);
+          for (int j = 0; j <= i; j++) {
+            stackInSlot = itemStackHandler.insertItem(j, stackInSlot, false);
+            if (stackInSlot.isEmpty()) {
+              break;
+            }
+          }
+        }
+      }
     }
 
     this.progress.set(this.temporaryTickCounter / (float) 99);
@@ -310,4 +367,19 @@ public class TileAutomator
           && (((ItemDesignPattern) item).hasRecipe(stack));
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // - Output Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class OutputItemStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    /* package */ OutputItemStackHandler() {
+
+      super(9);
+    }
+  }
+
 }

@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.slot.OutputPanelSlot;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.slot.PanelSlot;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
@@ -65,6 +66,13 @@ public class AutomatorContainer
       this.containerSlotAdd(new PanelSlot(
           () -> this.state, EnumState.Pattern,
           this.tile.getPatternItemStackHandler(), i, 8 + (i * 18), 38
+      ));
+    }
+
+    for (int i = 0; i < 9; i++) {
+      this.containerSlotAdd(new OutputPanelSlot(
+          () -> this.state, EnumState.Pattern,
+          this.tile.getOutputItemStackHandler(i), 0, 8 + (i * 18), 38 + 18
       ));
     }
   }
