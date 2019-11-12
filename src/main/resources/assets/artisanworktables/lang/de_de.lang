@@ -124,6 +124,15 @@ gui.artisanworktables.tooltip.automator.power=%d / %d RF
 item.artisanworktables.tooltip.durability=Haltbarkeit: %d / %d
 item.artisanworktables.tooltip.creative.table.oredict.header=Oredict: %s(SHIFT + LEFT-CLICK)
 item.artisanworktables.tooltip.creative.table.oredict.none=-none-
+item.artisanworktables.tooltip.automator.output.slot.mode=Output mode: %s
+item.artisanworktables.tooltip.automator.output.slot.mode.keep=Keep
+item.artisanworktables.tooltip.automator.output.slot.mode.keep.info=Output cannot be externally extracted
+item.artisanworktables.tooltip.automator.output.slot.mode.manual=Manual
+item.artisanworktables.tooltip.automator.output.slot.mode.manual.info=Output can be externally extracted
+item.artisanworktables.tooltip.automator.output.slot.mode.inventory=Inventory
+item.artisanworktables.tooltip.automator.output.slot.mode.inventory.info=Output is placed in device inventory
+item.artisanworktables.tooltip.automator.output.slot.mode.export=Export
+item.artisanworktables.tooltip.automator.output.slot.mode.export.info=Output is placed in adjacent inventory
 
 # Chat
 chat.artisanworktables.message.recipe.copy.success=Recipe copied to clipboard

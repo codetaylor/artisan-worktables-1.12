@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.*;
+import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorOutputModeChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -40,7 +41,30 @@ public class AutomatorGuiContainer
 
   private void createPatternPanelElements() {
 
-    // TODO: buttons
+    for (int i = 0; i < 9; i++) {
+      int slotIndex = i;
+      this.guiContainerElementAdd(new GuiElementButtonOutputMode(
+          () -> ModuleAutomator.PACKET_SERVICE.sendToServer(
+              new CSPacketAutomatorOutputModeChange(this.tile.getPos(), slotIndex)
+          ),
+          () -> this.tile.getOutputMode(slotIndex),
+          this::getContainerState,
+          this,
+          new Texture[]{
+              // Expects regular textures first, then hovered textures
+              this.getTexture("pattern-button-keep"),
+              this.getTexture("pattern-button-manual"),
+              this.getTexture("pattern-button-inventory"),
+              this.getTexture("pattern-button-export"),
+              this.getTexture("pattern-button-keep-hovered"),
+              this.getTexture("pattern-button-manual-hovered"),
+              this.getTexture("pattern-button-inventory-hovered"),
+              this.getTexture("pattern-button-export-hovered")
+          },
+          8 + (18 * i), 75,
+          16, 16
+      ));
+    }
   }
 
   private void createSelectedTabElements() {

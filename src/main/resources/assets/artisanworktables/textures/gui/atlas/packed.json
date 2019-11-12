@@ -76,14 +76,14 @@
       "width": 166,
       "height": 58
     },
-    "pattern-button-auto-export": {
+    "pattern-button-export": {
       "atlas": "textures/gui/atlas/atlas_automator_0.png",
       "u": 192,
       "v": 56,
       "width": 16,
       "height": 16
     },
-    "pattern-button-auto-export-hovered": {
+    "pattern-button-export-hovered": {
       "atlas": "textures/gui/atlas/atlas_automator_0.png",
       "u": 208,
       "v": 56,

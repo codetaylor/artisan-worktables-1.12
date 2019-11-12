@@ -10,6 +10,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPat
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnergyStorage;
+import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnum;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataFloat;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileData;
@@ -20,7 +21,6 @@ import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -38,7 +38,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class TileAutomator
     extends TileNetBase
@@ -63,9 +65,35 @@ public class TileAutomator
   // Panel: Pattern
   // ---------------------------------------------------------------------------
 
+  public enum EnumOutputMode {
+    Keep(0), Manual(1), Inventory(2), Export(3);
+
+    private static final EnumOutputMode[] INDEX_LOOKUP = Stream.of(EnumOutputMode.values())
+        .sorted(Comparator.comparing(EnumOutputMode::getIndex))
+        .toArray(EnumOutputMode[]::new);
+
+    private final int index;
+
+    EnumOutputMode(int index) {
+
+      this.index = index;
+    }
+
+    public int getIndex() {
+
+      return this.index;
+    }
+
+    public static EnumOutputMode fromIndex(int index) {
+
+      return INDEX_LOOKUP[index];
+    }
+  }
+
   private final PatternItemStackHandler patternItemStackHandler;
   private final OutputItemStackHandler[] outputItemStackHandler;
   private final boolean[] outputDirty;
+  private final List<TileDataEnum<EnumOutputMode>> outputMode;
 
   public TileAutomator() {
 
@@ -106,6 +134,16 @@ public class TileAutomator
       });
     }
 
+    this.outputMode = new ArrayList<>(9);
+
+    for (int i = 0; i < 9; i++) {
+      this.outputMode.add(new TileDataEnum<>(
+          EnumOutputMode::fromIndex,
+          EnumOutputMode::getIndex,
+          EnumOutputMode.Keep
+      ));
+    }
+
     // network
 
     List<ITileData> tileDataList = new ArrayList<>(Arrays.asList(
@@ -118,6 +156,8 @@ public class TileAutomator
     for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
       tileDataList.add(new TileDataItemStackHandler<>(itemStackHandler));
     }
+
+    tileDataList.addAll(this.outputMode);
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
@@ -154,6 +194,32 @@ public class TileAutomator
   public OutputItemStackHandler getOutputItemStackHandler(int index) {
 
     return this.outputItemStackHandler[index];
+  }
+
+  public EnumOutputMode getOutputMode(int slotIndex) {
+
+    TileDataEnum<EnumOutputMode> tileData = this.outputMode.get(slotIndex);
+    return tileData.get();
+  }
+
+  public void cycleOutputMode(int slotIndex) {
+
+    TileDataEnum<EnumOutputMode> tileData = this.outputMode.get(slotIndex);
+    EnumOutputMode enumOutputMode = tileData.get();
+
+    int nextIndex = enumOutputMode.getIndex() + 1;
+
+    if (nextIndex == EnumOutputMode.values().length) {
+      nextIndex = 0;
+    }
+
+    EnumOutputMode newMode = EnumOutputMode.fromIndex(nextIndex);
+    this.setOutputMode(slotIndex, newMode);
+  }
+
+  private void setOutputMode(int slotIndex, EnumOutputMode mode) {
+
+    this.outputMode.get(slotIndex).set(mode);
   }
 
   // ---------------------------------------------------------------------------
@@ -195,6 +261,12 @@ public class TileAutomator
       compound.setTag("outputItemStackHandler" + i, this.outputItemStackHandler[i].serializeNBT());
     }
 
+    for (int i = 0; i < this.outputMode.size(); i++) {
+      TileDataEnum<EnumOutputMode> tileData = this.outputMode.get(i);
+      EnumOutputMode enumOutputMode = tileData.get();
+      compound.setInteger("outputMode" + i, enumOutputMode.getIndex());
+    }
+
     return compound;
   }
 
@@ -208,6 +280,13 @@ public class TileAutomator
 
     for (int i = 0; i < this.outputItemStackHandler.length; i++) {
       this.outputItemStackHandler[i].deserializeNBT(compound.getCompoundTag("outputItemStackHandler" + i));
+    }
+
+    for (int i = 0; i < this.outputMode.size(); i++) {
+      int index = compound.getInteger("outputMode" + i);
+      EnumOutputMode value = EnumOutputMode.fromIndex(index);
+      TileDataEnum<EnumOutputMode> tileData = this.outputMode.get(i);
+      tileData.set(value);
     }
   }
 
@@ -245,7 +324,7 @@ public class TileAutomator
       this.temporaryTickCounter = 0;
       this.energyStorage.extractEnergy(10000, false);
 
-      ItemStack[] output = new ItemStack[]{
+      /*ItemStack[] output = new ItemStack[]{
           new ItemStack(Blocks.DIRT),
           new ItemStack(Blocks.GRAVEL),
           new ItemStack(Blocks.STONE)
@@ -256,7 +335,7 @@ public class TileAutomator
           ItemStack itemStack = stack.copy();
           itemStackHandler.insert(itemStack, false);
         }
-      }
+      }*/
     }
 
     for (int i = 0; i < 9; i++) {
