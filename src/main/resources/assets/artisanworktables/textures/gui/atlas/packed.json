@@ -83,24 +83,52 @@
       "width": 16,
       "height": 16
     },
-    "pattern-button-inventory": {
+    "pattern-button-auto-export-hovered": {
       "atlas": "textures/gui/atlas/atlas_automator_0.png",
       "u": 208,
       "v": 56,
       "width": 16,
       "height": 16
     },
-    "pattern-button-keep": {
+    "pattern-button-inventory": {
       "atlas": "textures/gui/atlas/atlas_automator_0.png",
       "u": 224,
       "v": 56,
       "width": 16,
       "height": 16
     },
-    "pattern-button-manual": {
+    "pattern-button-inventory-hovered": {
       "atlas": "textures/gui/atlas/atlas_automator_0.png",
       "u": 240,
       "v": 56,
+      "width": 16,
+      "height": 16
+    },
+    "pattern-button-keep": {
+      "atlas": "textures/gui/atlas/atlas_automator_0.png",
+      "u": 176,
+      "v": 72,
+      "width": 16,
+      "height": 16
+    },
+    "pattern-button-keep-hovered": {
+      "atlas": "textures/gui/atlas/atlas_automator_0.png",
+      "u": 192,
+      "v": 72,
+      "width": 16,
+      "height": 16
+    },
+    "pattern-button-manual": {
+      "atlas": "textures/gui/atlas/atlas_automator_0.png",
+      "u": 208,
+      "v": 72,
+      "width": 16,
+      "height": 16
+    },
+    "pattern-button-manual-hovered": {
+      "atlas": "textures/gui/atlas/atlas_automator_0.png",
+      "u": 224,
+      "v": 72,
       "width": 16,
       "height": 16
     },
