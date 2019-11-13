@@ -7,6 +7,7 @@ import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementItemStack;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 import com.codetaylor.mc.athenaeum.packer.PackAPI;
@@ -36,7 +37,23 @@ public class AutomatorGuiContainer
     this.createPanelElement();
     this.createPowerPanelElements();
     this.createPatternPanelElements();
+    this.createInventoryPanelElements();
     this.createSelectedTabElements();
+  }
+
+  private void createInventoryPanelElements() {
+
+    for (int i = 0; i < 26; i++) {
+      int x = i % 9;
+      int y = i / 9;
+      int slotIndex = i;
+      this.guiContainerElementAdd(new GuiElementItemStack(
+          () -> this.tile.getInventoryGhostItemStackHandler().getStackInSlot(slotIndex),
+          0.5f,
+          this,
+          8 + (x * 18), 38 + (y * 18)
+      ));
+    }
   }
 
   private void createPatternPanelElements() {

@@ -100,6 +100,11 @@ public class TileAutomator
   // ---------------------------------------------------------------------------
 
   private final InventoryItemStackHandler inventoryItemStackHandler;
+  private final InventoryGhostItemStackHandler inventoryGhostItemStackHandler;
+
+  // ---------------------------------------------------------------------------
+  // Constructor
+  // ---------------------------------------------------------------------------
 
   public TileAutomator() {
 
@@ -152,7 +157,10 @@ public class TileAutomator
 
     // inventory panel
 
-    this.inventoryItemStackHandler = new InventoryItemStackHandler();
+    this.inventoryGhostItemStackHandler = new InventoryGhostItemStackHandler();
+    this.inventoryGhostItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+    this.inventoryItemStackHandler = new InventoryItemStackHandler(this.inventoryGhostItemStackHandler);
+    this.inventoryItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
 
     // network
 
@@ -170,6 +178,7 @@ public class TileAutomator
     tileDataList.addAll(this.outputMode);
 
     tileDataList.add(new TileDataItemStackHandler<>(this.inventoryItemStackHandler));
+    tileDataList.add(new TileDataItemStackHandler<>(this.inventoryGhostItemStackHandler));
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
@@ -239,6 +248,11 @@ public class TileAutomator
     return this.inventoryItemStackHandler;
   }
 
+  public InventoryGhostItemStackHandler getInventoryGhostItemStackHandler() {
+
+    return this.inventoryGhostItemStackHandler;
+  }
+
   // ---------------------------------------------------------------------------
   // - Capabilities
   // ---------------------------------------------------------------------------
@@ -285,6 +299,7 @@ public class TileAutomator
     }
 
     compound.setTag("inventoryItemStackHandler", this.inventoryItemStackHandler.serializeNBT());
+    compound.setTag("inventoryGhostItemStackHandler", this.inventoryGhostItemStackHandler.serializeNBT());
 
     return compound;
   }
@@ -309,6 +324,7 @@ public class TileAutomator
     }
 
     this.inventoryItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryItemStackHandler"));
+    this.inventoryGhostItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryGhostItemStackHandler"));
   }
 
   // ---------------------------------------------------------------------------
@@ -543,9 +559,46 @@ public class TileAutomator
       extends ObservableStackHandler
       implements ITileDataItemStackHandler {
 
-    public InventoryItemStackHandler() {
+    private final InventoryGhostItemStackHandler ghostItemStackHandler;
+
+    /* package */ InventoryItemStackHandler(InventoryGhostItemStackHandler ghostItemStackHandler) {
 
       super(26);
+      this.ghostItemStackHandler = ghostItemStackHandler;
+    }
+
+    @Override
+    protected void onContentsChanged(int slot) {
+
+      ItemStack stackInSlot = this.getStackInSlot(slot);
+      System.out.println("Inventory Slot: " + slot + ", " + stackInSlot);
+
+      if (!stackInSlot.isEmpty()) {
+        ItemStack copy = stackInSlot.copy();
+        copy.setCount(1);
+        this.ghostItemStackHandler.setStackInSlot(slot, copy);
+      }
+      super.onContentsChanged(slot);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Inventory Ghost Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class InventoryGhostItemStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    /* package */ InventoryGhostItemStackHandler() {
+
+      super(26);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+
+      return 1;
     }
   }
 }
