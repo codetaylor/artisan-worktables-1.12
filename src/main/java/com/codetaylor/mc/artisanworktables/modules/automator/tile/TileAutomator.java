@@ -95,6 +95,12 @@ public class TileAutomator
   private final boolean[] outputDirty;
   private final List<TileDataEnum<EnumOutputMode>> outputMode;
 
+  // ---------------------------------------------------------------------------
+  // Panel: Inventory
+  // ---------------------------------------------------------------------------
+
+  private final InventoryItemStackHandler inventoryItemStackHandler;
+
   public TileAutomator() {
 
     super(ModuleAutomator.TILE_DATA_SERVICE);
@@ -144,6 +150,10 @@ public class TileAutomator
       ));
     }
 
+    // inventory panel
+
+    this.inventoryItemStackHandler = new InventoryItemStackHandler();
+
     // network
 
     List<ITileData> tileDataList = new ArrayList<>(Arrays.asList(
@@ -158,6 +168,8 @@ public class TileAutomator
     }
 
     tileDataList.addAll(this.outputMode);
+
+    tileDataList.add(new TileDataItemStackHandler<>(this.inventoryItemStackHandler));
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
@@ -222,6 +234,11 @@ public class TileAutomator
     this.outputMode.get(slotIndex).set(mode);
   }
 
+  public InventoryItemStackHandler getInventoryItemStackHandler() {
+
+    return this.inventoryItemStackHandler;
+  }
+
   // ---------------------------------------------------------------------------
   // - Capabilities
   // ---------------------------------------------------------------------------
@@ -267,6 +284,8 @@ public class TileAutomator
       compound.setInteger("outputMode" + i, enumOutputMode.getIndex());
     }
 
+    compound.setTag("inventoryItemStackHandler", this.inventoryItemStackHandler.serializeNBT());
+
     return compound;
   }
 
@@ -288,6 +307,8 @@ public class TileAutomator
       TileDataEnum<EnumOutputMode> tileData = this.outputMode.get(i);
       tileData.set(value);
     }
+
+    this.inventoryItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryItemStackHandler"));
   }
 
   // ---------------------------------------------------------------------------
@@ -514,4 +535,17 @@ public class TileAutomator
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // - Inventory Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class InventoryItemStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    public InventoryItemStackHandler() {
+
+      super(26);
+    }
+  }
 }
