@@ -6,6 +6,7 @@ import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipExtendedProvider;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -113,7 +114,7 @@ public class GuiElementButtonOutputMode
         break;
     }
 
-    tooltip.add(I18n.format(infoKey));
+    tooltip.add(TextFormatting.GRAY + I18n.format(infoKey));
 
     return tooltip;
   }
