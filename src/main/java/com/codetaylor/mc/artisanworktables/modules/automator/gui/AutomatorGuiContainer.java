@@ -7,7 +7,6 @@ import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
 import com.codetaylor.mc.athenaeum.gui.Texture;
-import com.codetaylor.mc.athenaeum.gui.element.GuiElementItemStack;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 import com.codetaylor.mc.athenaeum.packer.PackAPI;
@@ -47,9 +46,9 @@ public class AutomatorGuiContainer
       int x = i % 9;
       int y = i / 9;
       int slotIndex = i;
-      this.guiContainerElementAdd(new GuiElementItemStack(
+      this.guiContainerElementAdd(new GuiElementInventoryGhostItem(
+          this::getContainerState,
           () -> this.tile.getInventoryGhostItemStackHandler().getStackInSlot(slotIndex),
-          0.5f,
           this,
           8 + (x * 18), 38 + (y * 18)
       ));
