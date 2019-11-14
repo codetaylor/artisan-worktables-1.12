@@ -77,7 +77,7 @@ public class AutomatorGuiContainer
               this.getTexture("pattern-button-inventory-hovered"),
               this.getTexture("pattern-button-export-hovered")
           },
-          8 + (18 * i), 75,
+          8 + (18 * i), 74,
           16, 16
       ));
     }
