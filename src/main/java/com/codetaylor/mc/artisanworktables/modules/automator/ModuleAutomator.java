@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomatorPowerRF;
+import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorClearInventoryGhostSlot;
 import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorOutputModeChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorTabStateChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.network.SCPacketAutomatorTabStateChange;
@@ -100,6 +101,12 @@ public class ModuleAutomator
     registry.register(
         CSPacketAutomatorOutputModeChange.class,
         CSPacketAutomatorOutputModeChange.class,
+        Side.SERVER
+    );
+
+    registry.register(
+        CSPacketAutomatorClearInventoryGhostSlot.class,
+        CSPacketAutomatorClearInventoryGhostSlot.class,
         Side.SERVER
     );
 

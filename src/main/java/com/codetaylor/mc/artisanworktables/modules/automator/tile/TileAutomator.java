@@ -571,7 +571,6 @@ public class TileAutomator
     protected void onContentsChanged(int slot) {
 
       ItemStack stackInSlot = this.getStackInSlot(slot);
-      System.out.println("Inventory Slot: " + slot + ", " + stackInSlot);
 
       if (!stackInSlot.isEmpty()) {
         ItemStack copy = stackInSlot.copy();

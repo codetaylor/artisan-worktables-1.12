@@ -47,6 +47,8 @@ public class AutomatorGuiContainer
       int y = i / 9;
       int slotIndex = i;
       this.guiContainerElementAdd(new GuiElementInventoryGhostItem(
+          slotIndex,
+          this.tile.getPos(),
           this::getContainerState,
           () -> this.tile.getInventoryGhostItemStackHandler().getStackInSlot(slotIndex),
           this,
