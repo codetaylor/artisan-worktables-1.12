@@ -376,7 +376,7 @@ public class TileAutomator
 
     if (this.temporaryTickCounter >= 100) {
       this.temporaryTickCounter = 0;
-      this.energyStorage.extractEnergy(10000, false);
+      //this.energyStorage.extractEnergy(10000, false);
 
       /*ItemStack[] output = new ItemStack[]{
           new ItemStack(Blocks.DIRT),
@@ -400,7 +400,7 @@ public class TileAutomator
       }
     }
 
-    this.progress.set(this.temporaryTickCounter / (float) 99);
+    //this.progress.set(this.temporaryTickCounter / (float) 99);
   }
 
   // ---------------------------------------------------------------------------

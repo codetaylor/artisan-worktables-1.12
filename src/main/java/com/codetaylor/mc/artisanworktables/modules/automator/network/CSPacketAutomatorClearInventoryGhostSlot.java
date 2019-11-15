@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.network;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
-import com.codetaylor.mc.athenaeum.spi.packet.CPacketTileEntityBase;
+import com.codetaylor.mc.athenaeum.spi.packet.SPacketTileEntityBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class CSPacketAutomatorClearInventoryGhostSlot
-    extends CPacketTileEntityBase<CSPacketAutomatorClearInventoryGhostSlot> {
+    extends SPacketTileEntityBase<CSPacketAutomatorClearInventoryGhostSlot> {
 
   private int slotIndex;
 

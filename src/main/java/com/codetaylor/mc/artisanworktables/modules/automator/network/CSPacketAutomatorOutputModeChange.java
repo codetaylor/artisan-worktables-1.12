@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.network;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
-import com.codetaylor.mc.athenaeum.spi.packet.CPacketTileEntityBase;
+import com.codetaylor.mc.athenaeum.spi.packet.SPacketTileEntityBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class CSPacketAutomatorOutputModeChange
-    extends CPacketTileEntityBase<CSPacketAutomatorOutputModeChange> {
+    extends SPacketTileEntityBase<CSPacketAutomatorOutputModeChange> {
 
   private int outputSlotIndex;
 

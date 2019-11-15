@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.network;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
-import com.codetaylor.mc.athenaeum.spi.packet.CPacketTileEntityBase;
+import com.codetaylor.mc.athenaeum.spi.packet.SPacketTileEntityBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class CSPacketAutomatorInventoryLockModeChange
-    extends CPacketTileEntityBase<CSPacketAutomatorInventoryLockModeChange> {
+    extends SPacketTileEntityBase<CSPacketAutomatorInventoryLockModeChange> {
 
   @SuppressWarnings("unused")
   public CSPacketAutomatorInventoryLockModeChange() {
@@ -31,6 +31,7 @@ public class CSPacketAutomatorInventoryLockModeChange
     if (tileEntity instanceof TileAutomator) {
       TileAutomator tileAutomator = (TileAutomator) tileEntity;
       tileAutomator.setInventoryLocked(!tileAutomator.isInventoryLocked());
+      System.out.println("Inventory locked: " + tileAutomator.isInventoryLocked());
 
       TileAutomator.InventoryGhostItemStackHandler ghostHandler;
       ghostHandler = tileAutomator.getInventoryGhostItemStackHandler();
