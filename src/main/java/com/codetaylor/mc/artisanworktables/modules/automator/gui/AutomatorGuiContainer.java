@@ -55,6 +55,21 @@ public class AutomatorGuiContainer
           8 + (x * 18), 38 + (y * 18)
       ));
     }
+
+    this.guiContainerElementAdd(new GuiElementButtonLockedMode(
+        this.tile.getPos(),
+        this.tile::isInventoryLocked,
+        this::getContainerState,
+        this,
+        new Texture[]{
+            // Expects regular textures first, then hovered textures
+            this.getTexture("inventory-button-lock-unlocked"),
+            this.getTexture("inventory-button-lock-locked"),
+            this.getTexture("inventory-button-lock-unlocked-hovered"),
+            this.getTexture("inventory-button-lock-locked-hovered")
+        },
+        8 + (8 * 18), 38 + (2 * 18)
+    ));
   }
 
   private void createPatternPanelElements() {

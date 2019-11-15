@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 
+import com.codetaylor.mc.artisanworktables.lib.IBooleanSupplier;
 import com.codetaylor.mc.artisanworktables.lib.TileNetBase;
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomatorConfig;
@@ -9,10 +10,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
-import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnergyStorage;
-import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnum;
-import com.codetaylor.mc.athenaeum.network.tile.data.TileDataFloat;
-import com.codetaylor.mc.athenaeum.network.tile.data.TileDataItemStackHandler;
+import com.codetaylor.mc.athenaeum.network.tile.data.*;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileData;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataEnergyStorage;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataItemStackHandler;
@@ -101,6 +99,7 @@ public class TileAutomator
 
   private final InventoryItemStackHandler inventoryItemStackHandler;
   private final InventoryGhostItemStackHandler inventoryGhostItemStackHandler;
+  private final TileDataBoolean inventoryLocked;
 
   // ---------------------------------------------------------------------------
   // Constructor
@@ -159,8 +158,12 @@ public class TileAutomator
 
     this.inventoryGhostItemStackHandler = new InventoryGhostItemStackHandler();
     this.inventoryGhostItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
-    this.inventoryItemStackHandler = new InventoryItemStackHandler(this.inventoryGhostItemStackHandler);
+    this.inventoryItemStackHandler = new InventoryItemStackHandler(
+        this::isInventoryLocked,
+        this.inventoryGhostItemStackHandler
+    );
     this.inventoryItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+    this.inventoryLocked = new TileDataBoolean(false);
 
     // network
 
@@ -179,6 +182,7 @@ public class TileAutomator
 
     tileDataList.add(new TileDataItemStackHandler<>(this.inventoryItemStackHandler));
     tileDataList.add(new TileDataItemStackHandler<>(this.inventoryGhostItemStackHandler));
+    tileDataList.add(this.inventoryLocked);
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
@@ -253,6 +257,17 @@ public class TileAutomator
     return this.inventoryGhostItemStackHandler;
   }
 
+  public void setInventoryLocked(boolean locked) {
+
+    this.inventoryLocked.set(locked);
+    this.markDirty();
+  }
+
+  public boolean isInventoryLocked() {
+
+    return this.inventoryLocked.get();
+  }
+
   // ---------------------------------------------------------------------------
   // - Capabilities
   // ---------------------------------------------------------------------------
@@ -300,6 +315,7 @@ public class TileAutomator
 
     compound.setTag("inventoryItemStackHandler", this.inventoryItemStackHandler.serializeNBT());
     compound.setTag("inventoryGhostItemStackHandler", this.inventoryGhostItemStackHandler.serializeNBT());
+    compound.setBoolean("inventoryLocked", this.inventoryLocked.get());
 
     return compound;
   }
@@ -325,6 +341,7 @@ public class TileAutomator
 
     this.inventoryItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryItemStackHandler"));
     this.inventoryGhostItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryGhostItemStackHandler"));
+    this.inventoryLocked.set(compound.getBoolean("inventoryLocked"));
   }
 
   // ---------------------------------------------------------------------------
@@ -559,23 +576,30 @@ public class TileAutomator
       extends ObservableStackHandler
       implements ITileDataItemStackHandler {
 
+    private final IBooleanSupplier isLocked;
     private final InventoryGhostItemStackHandler ghostItemStackHandler;
 
-    /* package */ InventoryItemStackHandler(InventoryGhostItemStackHandler ghostItemStackHandler) {
+    /* package */ InventoryItemStackHandler(
+        IBooleanSupplier isLocked,
+        InventoryGhostItemStackHandler ghostItemStackHandler
+    ) {
 
       super(26);
+      this.isLocked = isLocked;
       this.ghostItemStackHandler = ghostItemStackHandler;
     }
 
     @Override
     protected void onContentsChanged(int slot) {
 
-      ItemStack stackInSlot = this.getStackInSlot(slot);
+      if (this.isLocked.get()) {
+        ItemStack stackInSlot = this.getStackInSlot(slot);
 
-      if (!stackInSlot.isEmpty()) {
-        ItemStack copy = stackInSlot.copy();
-        copy.setCount(1);
-        this.ghostItemStackHandler.setStackInSlot(slot, copy);
+        if (!stackInSlot.isEmpty()) {
+          ItemStack copy = stackInSlot.copy();
+          copy.setCount(1);
+          this.ghostItemStackHandler.setStackInSlot(slot, copy);
+        }
       }
       super.onContentsChanged(slot);
     }

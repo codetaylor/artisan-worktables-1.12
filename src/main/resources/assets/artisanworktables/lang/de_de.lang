@@ -133,6 +133,10 @@ item.artisanworktables.tooltip.automator.output.slot.mode.inventory=Inventory
 item.artisanworktables.tooltip.automator.output.slot.mode.inventory.info=Output is placed in device inventory
 item.artisanworktables.tooltip.automator.output.slot.mode.export=Export
 item.artisanworktables.tooltip.automator.output.slot.mode.export.info=Output is placed in adjacent inventory
+tooltip.artisanworktables.automator.inventory.locked=Inventory Locked
+tooltip.artisanworktables.automator.inventory.locked.info=Empty slots remember items
+tooltip.artisanworktables.automator.inventory.unlocked=Inventory Unlocked
+tooltip.artisanworktables.automator.inventory.unlocked.info=Empty slots forget items
 
 # Chat
 chat.artisanworktables.message.recipe.copy.success=Recipe copied to clipboard

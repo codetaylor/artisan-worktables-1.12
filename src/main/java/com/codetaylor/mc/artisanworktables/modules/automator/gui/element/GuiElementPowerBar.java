@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui.element;
 
+import com.codetaylor.mc.artisanworktables.lib.IIntSupplier;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiContainer;
 import com.codetaylor.mc.athenaeum.gui.Texture;
