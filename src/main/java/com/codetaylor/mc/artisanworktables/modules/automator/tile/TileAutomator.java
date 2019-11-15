@@ -240,6 +240,7 @@ public class TileAutomator
 
     EnumOutputMode newMode = EnumOutputMode.fromIndex(nextIndex);
     this.setOutputMode(slotIndex, newMode);
+    this.markDirty();
   }
 
   private void setOutputMode(int slotIndex, EnumOutputMode mode) {
