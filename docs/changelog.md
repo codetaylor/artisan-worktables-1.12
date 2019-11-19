@@ -21,6 +21,13 @@
 
 ---
 
+**1.22.14**
+
+  * **Fixed:**
+    * Optimized AW recipe searches [(#212)](https://github.com/codetaylor/artisan-worktables/pull/212)
+    
+---
+
 **1.22.13**
 
   * **Fixed:**

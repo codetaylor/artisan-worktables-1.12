@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.api;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -88,9 +89,11 @@ public class ArtisanAPI {
    */
   public static boolean containsRecipeWithTool(ItemStack itemStack) {
 
+    IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
+
     for (RecipeRegistry registry : ArtisanRegistries.RECIPE_REGISTRY.getValuesCollection()) {
 
-      if (registry.containsRecipeWithTool(itemStack)) {
+      if (registry.containsRecipeWithTool(toolHandler, itemStack)) {
         return true;
       }
     }

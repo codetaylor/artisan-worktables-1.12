@@ -1,8 +1,10 @@
 package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -86,6 +88,12 @@ public class RecipeRegistry
       return null;
     }
 
+    IToolHandler[] toolHandlers = new IToolHandler[tools.length];
+
+    for (int i = 0; i < tools.length; i++) {
+      toolHandlers[i] = ArtisanToolHandlers.get(tools[i]);
+    }
+
     synchronized (this.recipeList) {
 
       // Next, check the last recipe first.
@@ -96,6 +104,7 @@ public class RecipeRegistry
           playerLevels,
           isPlayerCreative,
           tools,
+          toolHandlers,
           craftingMatrix,
           fluidStack,
           secondaryIngredientMatcher,
@@ -116,6 +125,7 @@ public class RecipeRegistry
             playerLevels,
             isPlayerCreative,
             tools,
+            toolHandlers,
             craftingMatrix,
             fluidStack,
             secondaryIngredientMatcher,
@@ -140,13 +150,13 @@ public class RecipeRegistry
     return null;
   }
 
-  public boolean containsRecipeWithTool(ItemStack tool) {
+  public boolean containsRecipeWithTool(IToolHandler toolHandler, ItemStack tool) {
 
     synchronized (this.recipeList) {
 
       for (IArtisanRecipe recipe : this.recipeList) {
 
-        if (recipe.usesTool(tool)) {
+        if (recipe.usesTool(toolHandler, tool)) {
           return true;
         }
       }

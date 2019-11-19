@@ -12,6 +12,7 @@ import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfig;
 import com.codetaylor.mc.artisanworktables.modules.tools.ModuleToolsConfigAPIWrapper;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfigAPIWrapper;
+import com.codetaylor.mc.artisanworktables.proxy.IProxy;
 import com.codetaylor.mc.athenaeum.gui.GuiHandler;
 import com.codetaylor.mc.athenaeum.module.ModuleManager;
 import com.codetaylor.mc.athenaeum.util.Injector;
@@ -19,6 +20,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
@@ -39,6 +41,13 @@ public class ModArtisanWorktables {
   @Mod.Instance
   @SuppressWarnings("unused")
   public static ModArtisanWorktables INSTANCE;
+
+  @SidedProxy(
+      modId = ModArtisanWorktables.MOD_ID,
+      clientSide = "com.codetaylor.mc.artisanworktables.proxy.ClientProxy",
+      serverSide = "com.codetaylor.mc.artisanworktables.proxy.ServerProxy"
+  )
+  public static IProxy PROXY;
 
   public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(MOD_ID) {
 
@@ -97,6 +106,8 @@ public class ModArtisanWorktables {
   public void onInitializationEvent(FMLInitializationEvent event) {
 
     this.moduleManager.routeFMLStateEvent(event);
+
+//    RecipeInjector.inject();
   }
 
   @Mod.EventHandler
