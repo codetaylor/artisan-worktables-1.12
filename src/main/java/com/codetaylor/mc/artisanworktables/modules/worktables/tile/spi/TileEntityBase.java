@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi;
 
+import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanRegistries;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
@@ -27,6 +28,7 @@ import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
@@ -476,7 +478,8 @@ public abstract class TileEntityBase
   @Override
   public void update() {
 
-    if (this.isCreative()) {
+    if (this.isCreative() ||
+        (this.world.isRemote && ModArtisanWorktables.PROXY.isIntegratedServerRunning())) {
       this.requiresRecipeUpdate = false;
     }
 

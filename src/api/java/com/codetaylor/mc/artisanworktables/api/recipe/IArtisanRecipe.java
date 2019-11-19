@@ -29,6 +29,7 @@ public interface IArtisanRecipe {
    * @param playerLevels               the player's total level count
    * @param isPlayerCreative           is the player in creative mode?
    * @param tools                      the tools in the crafting GUI
+   * @param toolHandlers               the tools' handlers
    * @param craftingMatrix             the crafting matrix stack handler
    * @param fluidStack                 the fluid in the table
    * @param secondaryIngredientMatcher the secondary ingredient matcher
@@ -41,6 +42,7 @@ public interface IArtisanRecipe {
       int playerLevels,
       boolean isPlayerCreative,
       ItemStack[] tools,
+      IToolHandler[] toolHandlers,
       ICraftingMatrixStackHandler craftingMatrix,
       @Nullable FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
@@ -66,16 +68,18 @@ public interface IArtisanRecipe {
   Map<ResourceLocation, IRequirement> getRequirements();
 
   /**
-   * @param tool      the tool to check
+   * @param handler the tool's handler
+   * @param tool    the tool to check
    * @return true if the given tool is used in this recipe
    */
-  boolean usesTool(ItemStack tool);
+  boolean usesTool(IToolHandler handler, ItemStack tool);
 
   /**
-   * @param tool      the tool to check
+   * @param handler
+   * @param tool    the tool to check
    * @return true if the given tool has sufficient durability to complete the craft
    */
-  boolean hasSufficientToolDurability(ItemStack tool);
+  boolean hasSufficientToolDurability(IToolHandler handler, ItemStack tool);
 
   /**
    * @param tier the tier to match

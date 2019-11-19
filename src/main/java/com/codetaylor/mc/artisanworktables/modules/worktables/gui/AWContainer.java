@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
@@ -153,7 +154,7 @@ public class AWContainer
             itemStack -> {
               RecipeRegistry worktableRecipeRegistry = this.tile.getWorktableRecipeRegistry();
               return this.tile.isCreative()
-                  || worktableRecipeRegistry.containsRecipeWithTool(itemStack);
+                  || worktableRecipeRegistry.containsRecipeWithTool(ArtisanToolHandlers.get(itemStack), itemStack);
             },
             toolHandler,
             i,

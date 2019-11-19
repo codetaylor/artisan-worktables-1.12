@@ -295,11 +295,11 @@ public class ArtisanRecipe
   // - Matching
 
   @Nullable
-  private ToolEntry findToolEntry(ItemStack tool) {
+  private ToolEntry findToolEntry(IToolHandler handler, ItemStack tool) {
 
     for (ToolEntry toolEntry : this.tools) {
 
-      if (this.toolMatchesToolEntry(tool, toolEntry)) {
+      if (toolEntry.matches(handler, tool)) {
         return toolEntry;
       }
     }
@@ -307,33 +307,11 @@ public class ArtisanRecipe
   }
 
   @Override
-  public boolean usesTool(ItemStack tool) {
-
-    IToolHandler handler = ArtisanToolHandlers.get(tool);
+  public boolean usesTool(IToolHandler handler, ItemStack tool) {
 
     for (ToolEntry toolEntry : this.tools) {
-      IArtisanItemStack[] itemStacks = toolEntry.getTool();
 
-      for (IArtisanItemStack itemStack : itemStacks) {
-
-        if (handler.matches(tool, itemStack.toItemStack())) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  private boolean toolMatchesToolEntry(ItemStack tool, ToolEntry toolEntry) {
-
-    IToolHandler handler = ArtisanToolHandlers.get(tool);
-
-    IArtisanItemStack[] itemStacks = toolEntry.getTool();
-
-    for (IArtisanItemStack itemStack : itemStacks) {
-
-      if (handler.matches(tool, itemStack.toItemStack())) {
+      if (toolEntry.matches(handler, tool)) {
         return true;
       }
     }
@@ -342,19 +320,16 @@ public class ArtisanRecipe
   }
 
   @Override
-  public boolean hasSufficientToolDurability(ItemStack tool) {
+  public boolean hasSufficientToolDurability(IToolHandler handler, ItemStack tool) {
 
     if (tool.isEmpty()) {
       return false;
     }
 
     if (ArtisanConfig.MODULE_WORKTABLES_CONFIG.restrictCraftMinimumDurability()) {
-
-      ToolEntry toolEntry = this.findToolEntry(tool);
+      ToolEntry toolEntry = this.findToolEntry(handler, tool);
 
       if (toolEntry != null) {
-
-        IToolHandler handler = ArtisanToolHandlers.get(tool);
         int toolDamage = toolEntry.getDamage();
         return handler.canAcceptAllDamage(tool, toolDamage);
       }
@@ -390,6 +365,7 @@ public class ArtisanRecipe
       int playerLevels,
       boolean isPlayerCreative,
       ItemStack[] tools,
+      IToolHandler[] toolHandlers,
       ICraftingMatrixStackHandler craftingMatrix,
       FluidStack fluidStack,
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
@@ -413,6 +389,19 @@ public class ArtisanRecipe
 
     if (this.getToolCount() > tools.length) {
       // this recipe requires more tools than the number of tools available in the table
+      return false;
+    }
+
+    if (!this.matchesRequirements(requirementContextMap)) {
+      return false;
+    }
+
+    if (!this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack)) {
+      return false;
+    }
+
+    if (!this.secondaryIngredients.isEmpty()
+        && !secondaryIngredientMatcher.matches(this.secondaryIngredients)) {
       return false;
     }
 
@@ -450,8 +439,8 @@ public class ArtisanRecipe
         // Is the table tool valid?
         // Does the table tool have sufficient durability?
         if ((mask & bit) != bit
-            && this.toolMatchesToolEntry(tools[i], this.tools[j])
-            && this.hasSufficientToolDurability(tools[i])) {
+            && this.tools[j].matches(toolHandlers[i], tools[i])
+            && this.hasSufficientToolDurability(toolHandlers[i], tools[i])) {
           mask |= bit;
           matchCount += 1;
           continue tableTools;
@@ -459,23 +448,7 @@ public class ArtisanRecipe
       }
     }
 
-    if (matchCount != toolCount) {
-      return false;
-    }
-
-    if (!this.matchesRequirements(requirementContextMap)) {
-      return false;
-    }
-
-    if (!this.recipeMatrixMatcher.matches(this, craftingMatrix, fluidStack)) {
-      return false;
-    }
-
-    if (!this.secondaryIngredients.isEmpty()) {
-      return secondaryIngredientMatcher.matches(this.secondaryIngredients);
-    }
-
-    return true;
+    return (matchCount == toolCount);
   }
 
   @Override
@@ -542,24 +515,28 @@ public class ArtisanRecipe
 
     // Damage or destroy tools
     // Check for replacement tool
-    IItemHandlerModifiable toolHandler = context.getToolHandler();
+    IItemHandlerModifiable toolStackHandler = context.getToolHandler();
     byte mask = 0;
 
     recipeTools:
     for (int i = 0; i < this.tools.length; i++) { // recipe tools
 
-      for (int j = 0; j < toolHandler.getSlots(); j++) { // table tools
+      for (int j = 0; j < toolStackHandler.getSlots(); j++) { // table tools
         int bit = 1 << j;
-        ItemStack stackInSlot = toolHandler.getStackInSlot(j);
+        ItemStack stackInSlot = toolStackHandler.getStackInSlot(j);
 
         if ((mask & bit) != bit // haven't damaged this slot
-            && !stackInSlot.isEmpty() // slot isn't empty
-            && this.toolMatchesToolEntry(stackInSlot, this.tools[i]) // tool matches recipe
-            && this.hasSufficientToolDurability(stackInSlot)) { // tool has durability
-          mask |= bit;
-          this.onCraftDamageTool(context, stackInSlot);
-          this.onCraftCheckAndReplaceTool(context, j);
-          continue recipeTools;
+            && !stackInSlot.isEmpty()) { // slot isn't empty
+          IToolHandler toolHandler = ArtisanToolHandlers.get(stackInSlot);
+
+          if (this.tools[i].matches(toolHandler, stackInSlot) // tool matches recipe
+              && this.hasSufficientToolDurability(toolHandler, stackInSlot)) { // tool has durability
+
+            mask |= bit;
+            this.onCraftDamageTool(context, stackInSlot);
+            this.onCraftCheckAndReplaceTool(context, j);
+            continue recipeTools;
+          }
         }
       }
     }
@@ -902,17 +879,18 @@ public class ArtisanRecipe
     EntityPlayer player = context.getPlayer();
 
     if (!itemStack.isEmpty()) {
-      ToolEntry toolEntry = this.findToolEntry(itemStack);
+      IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
+      ToolEntry toolEntry = this.findToolEntry(toolHandler, itemStack);
 
       if (toolEntry == null) {
         return;
       }
 
-      if (!this.hasSufficientToolDurability(itemStack)) {
+      if (!this.hasSufficientToolDurability(toolHandler, itemStack)) {
         return;
       }
 
-      IToolHandler handler = ArtisanToolHandlers.get(itemStack);
+      IToolHandler handler = toolHandler;
       int toolDamage = toolEntry.getDamage();
       boolean broken = toolDamage > 0
           && handler.applyDamage(world, itemStack, toolDamage, player, false);
@@ -934,10 +912,11 @@ public class ArtisanRecipe
 
   protected void onCraftCheckAndReplaceTool(ICraftingContext context, int toolIndex) {
 
-    IItemHandlerModifiable toolHandler = context.getToolHandler();
-    ItemStack itemStack = toolHandler.getStackInSlot(toolIndex);
+    IItemHandlerModifiable toolStackHandler = context.getToolHandler();
+    ItemStack itemStack = toolStackHandler.getStackInSlot(toolIndex);
+    IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
 
-    if (!this.hasSufficientToolDurability(itemStack)) {
+    if (!this.hasSufficientToolDurability(toolHandler, itemStack)) {
       // Tool needs to be replaced
       IItemHandler capability = context.getToolReplacementHandler();
 
@@ -954,15 +933,16 @@ public class ArtisanRecipe
           continue;
         }
 
-        ToolEntry toolEntry = this.findToolEntry(potentialTool);
+        IToolHandler potentialToolHandler = ArtisanToolHandlers.get(potentialTool);
+        ToolEntry toolEntry = this.findToolEntry(potentialToolHandler, potentialTool);
 
         if (toolEntry != null
-            && this.toolMatchesToolEntry(itemStack, toolEntry)
-            && this.hasSufficientToolDurability(potentialTool)) {
+            && toolEntry.matches(toolHandler, itemStack)
+            && this.hasSufficientToolDurability(potentialToolHandler, potentialTool)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
-          capability.insertItem(i, toolHandler.getStackInSlot(toolIndex), false);
-          toolHandler.setStackInSlot(toolIndex, potentialTool);
+          capability.insertItem(i, toolStackHandler.getStackInSlot(toolIndex), false);
+          toolStackHandler.setStackInSlot(toolIndex, potentialTool);
         }
       }
     }
