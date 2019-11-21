@@ -3,7 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.gui.element;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.network.CSPacketWorktableTankDestroyFluid;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
-import com.codetaylor.mc.athenaeum.gui.element.GuiElementFluidTank;
+import com.codetaylor.mc.athenaeum.gui.element.GuiElementFluidTankVertical;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidTank;
 import java.util.List;
 
 public abstract class GuiElementFluidTankBase
-    extends GuiElementFluidTank {
+    extends GuiElementFluidTankVertical {
 
   protected final BlockPos blockPos;
   protected final int overlayColor;

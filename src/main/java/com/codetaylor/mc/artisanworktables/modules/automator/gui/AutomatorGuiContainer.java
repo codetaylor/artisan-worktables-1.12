@@ -13,6 +13,9 @@ import com.codetaylor.mc.athenaeum.packer.PackAPI;
 import com.codetaylor.mc.athenaeum.packer.PackedData;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 import java.awt.*;
 
@@ -37,7 +40,37 @@ public class AutomatorGuiContainer
     this.createPowerPanelElements();
     this.createPatternPanelElements();
     this.createInventoryPanelElements();
+    this.createFluidPanelElements();
     this.createSelectedTabElements();
+  }
+
+  private void createFluidPanelElements() {
+
+    for (int i = 0; i < 3; i++) {
+      this.guiContainerElementAdd(new GuiElementFluidTank(
+          this,
+          new FluidTank(new FluidStack(
+              FluidRegistry.LAVA, (i + 2) * 500), 2000),
+          64, 39 + 18 * i,
+          102, 14
+      ));
+    }
+
+    this.guiContainerElementAdd(new GuiElementTextureRectangle(
+        this,
+        this.getTexture("panel-fluid-glass"),
+        62, 74 - 18 * 2,
+        106, 52
+    ) {
+
+      @Override
+      public boolean elementIsVisible(int mouseX, int mouseY) {
+
+        AutomatorContainer.EnumState containerState;
+        containerState = AutomatorGuiContainer.this.getContainerState();
+        return (containerState == AutomatorContainer.EnumState.Fluid);
+      }
+    });
   }
 
   private void createInventoryPanelElements() {
