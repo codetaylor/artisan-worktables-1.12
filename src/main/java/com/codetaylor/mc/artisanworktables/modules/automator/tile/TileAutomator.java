@@ -19,6 +19,7 @@ import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -31,6 +32,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -102,6 +106,12 @@ public class TileAutomator
   private final TileDataBoolean inventoryLocked;
 
   // ---------------------------------------------------------------------------
+  // Internal
+  // ---------------------------------------------------------------------------
+
+  private final ItemCapabilityWrapper itemCapabilityWrapper;
+
+  // ---------------------------------------------------------------------------
   // Constructor
   // ---------------------------------------------------------------------------
 
@@ -164,6 +174,16 @@ public class TileAutomator
     );
     this.inventoryItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
     this.inventoryLocked = new TileDataBoolean(false);
+
+    // internal
+
+    this.itemCapabilityWrapper = new ItemCapabilityWrapper(
+        this.inventoryItemStackHandler,
+        this.inventoryGhostItemStackHandler,
+        this.outputItemStackHandler,
+        this.outputMode,
+        this::isInventoryLocked
+    );
 
     // network
 
@@ -276,16 +296,24 @@ public class TileAutomator
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
 
-    return (capability == CapabilityEnergy.ENERGY && facing == EnumFacing.DOWN);
+    return (facing == EnumFacing.DOWN
+        && (capability == CapabilityEnergy.ENERGY
+        || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY));
   }
 
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
 
-    if (capability == CapabilityEnergy.ENERGY && facing == EnumFacing.DOWN) {
+    if (capability == CapabilityEnergy.ENERGY
+        && facing == EnumFacing.DOWN) {
       //noinspection unchecked
       return (T) this.energyStorage;
+
+    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+        && facing == EnumFacing.DOWN) {
+      //noinspection unchecked
+      return (T) this.itemCapabilityWrapper;
     }
 
     return null;
@@ -375,11 +403,11 @@ public class TileAutomator
 
     this.temporaryTickCounter += 1;
 
-    if (this.temporaryTickCounter >= 100) {
+    if (this.temporaryTickCounter >= 500) {
       this.temporaryTickCounter = 0;
       //this.energyStorage.extractEnergy(10000, false);
 
-      /*ItemStack[] output = new ItemStack[]{
+      ItemStack[] output = new ItemStack[]{
           new ItemStack(Blocks.DIRT),
           new ItemStack(Blocks.GRAVEL),
           new ItemStack(Blocks.STONE)
@@ -390,7 +418,7 @@ public class TileAutomator
           ItemStack itemStack = stack.copy();
           itemStackHandler.insert(itemStack, false);
         }
-      }*/
+      }
     }
 
     for (int i = 0; i < 9; i++) {
@@ -625,4 +653,108 @@ public class TileAutomator
       return 1;
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // - Item Capability Wrapper
+  // ---------------------------------------------------------------------------
+
+  public static class ItemCapabilityWrapper
+      implements IItemHandler {
+
+    private final InventoryItemStackHandler inventoryItemStackHandler;
+    private final InventoryGhostItemStackHandler inventoryGhostItemStackHandler;
+    private final OutputItemStackHandler[] outputItemStackHandlers;
+    private final List<TileDataEnum<EnumOutputMode>> outputModes;
+    private final IBooleanSupplier inventoryLocked;
+
+    /* package */ ItemCapabilityWrapper(
+        InventoryItemStackHandler inventoryItemStackHandler,
+        InventoryGhostItemStackHandler inventoryGhostItemStackHandler,
+        OutputItemStackHandler[] outputItemStackHandlers,
+        List<TileDataEnum<EnumOutputMode>> outputModes,
+        IBooleanSupplier inventoryLocked
+    ) {
+
+      this.inventoryItemStackHandler = inventoryItemStackHandler;
+      this.inventoryGhostItemStackHandler = inventoryGhostItemStackHandler;
+      this.outputItemStackHandlers = outputItemStackHandlers;
+      this.outputModes = outputModes;
+      this.inventoryLocked = inventoryLocked;
+    }
+
+    @Override
+    public int getSlots() {
+
+      return this.inventoryItemStackHandler.getSlots() + this.outputItemStackHandlers.length;
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+
+      if (slot < this.inventoryItemStackHandler.getSlots()) {
+        return this.inventoryItemStackHandler.getStackInSlot(slot);
+      }
+
+      return this.outputItemStackHandlers[slot - this.inventoryItemStackHandler.getSlots()].getStackInSlot(0);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+
+      if (slot >= this.inventoryItemStackHandler.getSlots()) {
+        return stack;
+      }
+
+      if (this.inventoryLocked.get()) {
+        ItemStack ghostStack = this.inventoryGhostItemStackHandler.getStackInSlot(slot);
+
+        if (ghostStack.getItem() != stack.getItem()) {
+          // items aren't equal
+          return stack;
+
+        } else if (ghostStack.getMetadata() != OreDictionary.WILDCARD_VALUE
+            && ghostStack.getMetadata() != stack.getMetadata()) {
+          // ghost stack doesn't have wildcard and metas don't match
+          return stack;
+
+        } else if (ghostStack.hasTagCompound()
+            && !ItemStack.areItemStackTagsEqual(ghostStack, stack)) {
+          // ghost stack has tag, tags aren't equal
+          return stack;
+        }
+      }
+
+      return this.inventoryItemStackHandler.insertItem(slot, stack, simulate);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+
+      if (slot < this.inventoryItemStackHandler.getSlots()) {
+        return ItemStack.EMPTY;
+      }
+
+      int actualSlot = slot - this.inventoryItemStackHandler.getSlots();
+
+      if (this.outputModes.get(actualSlot).get() != EnumOutputMode.Manual) {
+        return ItemStack.EMPTY;
+      }
+
+      return this.outputItemStackHandlers[actualSlot].extractItem(0, amount, simulate);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+
+      if (slot < this.inventoryItemStackHandler.getSlots()) {
+        return this.inventoryItemStackHandler.getSlotLimit(slot);
+      }
+
+      return this.outputItemStackHandlers[slot - this.inventoryItemStackHandler.getSlots()].getSlotLimit(0);
+    }
+  }
+
 }

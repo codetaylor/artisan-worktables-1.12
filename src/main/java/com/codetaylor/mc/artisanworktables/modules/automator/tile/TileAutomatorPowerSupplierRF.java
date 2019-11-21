@@ -6,6 +6,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,11 +16,13 @@ public class TileAutomatorPowerSupplierRF
     extends TileEntityBase
     implements ITileAutomatorPowerSupplier {
 
-  private final EnergyConverter energyConverter;
+  private final EnergyCapabilityDelegate energyCapabilityDelegate;
+  private final ItemCapabilityDelegate itemCapabilityDelegate;
 
   public TileAutomatorPowerSupplierRF() {
 
-    this.energyConverter = new EnergyConverter();
+    this.energyCapabilityDelegate = new EnergyCapabilityDelegate();
+    this.itemCapabilityDelegate = new ItemCapabilityDelegate();
   }
 
   // --------------------------------------------------------------------------
@@ -42,17 +46,24 @@ public class TileAutomatorPowerSupplierRF
 
   public void neighborChanged() {
 
-    this.updateCapabilityWrapper();
+    this.updateCapabilityDelegates();
   }
 
-  private void updateCapabilityWrapper() {
+  private void updateCapabilityDelegates() {
 
     TileEntity tileEntity = this.world.getTileEntity(this.pos.up());
 
     if (tileEntity instanceof ITileAutomatorPowerConsumer) {
-      this.energyConverter.setEnergyStorage(
+      this.energyCapabilityDelegate.setEnergyStorage(
           tileEntity.getCapability(CapabilityEnergy.ENERGY, EnumFacing.DOWN)
       );
+      this.itemCapabilityDelegate.setItemHandler(
+          tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)
+      );
+
+    } else {
+      this.energyCapabilityDelegate.setEnergyStorage(null);
+      this.itemCapabilityDelegate.setItemHandler(null);
     }
   }
 
@@ -63,7 +74,8 @@ public class TileAutomatorPowerSupplierRF
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
 
-    return (capability == CapabilityEnergy.ENERGY);
+    return (capability == CapabilityEnergy.ENERGY
+        || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
   }
 
   @Nullable
@@ -71,19 +83,25 @@ public class TileAutomatorPowerSupplierRF
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
 
     if (capability == CapabilityEnergy.ENERGY) {
-      this.updateCapabilityWrapper();
+      this.updateCapabilityDelegates();
+      //noinspection unchecked
+      return (T) this.energyCapabilityDelegate;
+
+    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      this.updateCapabilityDelegates();
+      //noinspection unchecked
+      return (T) this.itemCapabilityDelegate;
     }
 
-    //noinspection unchecked
-    return (T) this.energyConverter;
+    return null;
   }
 
-  public static class EnergyConverter
+  public static class EnergyCapabilityDelegate
       extends EnergyStorageAdapter {
 
     private IEnergyStorage energyStorage;
 
-    public EnergyConverter setEnergyStorage(IEnergyStorage energyStorage) {
+    public EnergyCapabilityDelegate setEnergyStorage(@Nullable IEnergyStorage energyStorage) {
 
       this.energyStorage = energyStorage;
       return this;
@@ -126,6 +144,15 @@ public class TileAutomatorPowerSupplierRF
     public boolean canReceive() {
 
       return (this.energyStorage != null);
+    }
+  }
+
+  public static class ItemCapabilityDelegate
+      extends ItemHandlerDelegate {
+
+    public void setItemHandler(@Nullable IItemHandler iItemHandler) {
+
+      this.itemHandler = iItemHandler;
     }
   }
 }
