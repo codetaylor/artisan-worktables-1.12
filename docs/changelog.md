@@ -21,6 +21,13 @@
 
 ---
 
+**1.22.15**
+
+  * **Fixed:**
+    * Tables don't properly save fluids unless item slot contents are altered
+
+---
+
 **1.22.14**
 
   * **Fixed:**

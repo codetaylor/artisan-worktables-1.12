@@ -170,6 +170,7 @@ public abstract class TileEntityBase
   protected void onFluidTankContentsChanged() {
 
     this.requiresRecipeUpdate = true;
+    this.markDirty();
 
     if (!this.world.isRemote) {
       ModuleWorktables.PACKET_SERVICE.sendToAllAround(
