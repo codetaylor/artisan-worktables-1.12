@@ -27,5 +27,11 @@ public class ModuleAutomatorConfig {
         "Default: " + 100
     })
     public int RF_PER_TICK = 100;
+
+    @Config.Comment({
+        "The fluid capacity of the device's fluid tanks.",
+        "Default: " + 8000
+    })
+    public int FLUID_CAPACITY = 8000;
   }
 }

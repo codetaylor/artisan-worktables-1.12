@@ -9,10 +9,12 @@ import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiCon
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
+import com.codetaylor.mc.athenaeum.inventory.ObservableFluidTank;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.data.*;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileData;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataEnergyStorage;
+import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataFluidTank;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.tile.IContainerProvider;
 import com.codetaylor.mc.athenaeum.util.BlockHelper;
@@ -30,6 +32,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -42,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class TileAutomator
@@ -104,6 +112,40 @@ public class TileAutomator
   private final InventoryItemStackHandler inventoryItemStackHandler;
   private final InventoryGhostItemStackHandler inventoryGhostItemStackHandler;
   private final TileDataBoolean inventoryLocked;
+
+  // ---------------------------------------------------------------------------
+  // Panel: Fluid
+  // ---------------------------------------------------------------------------
+
+  public enum EnumFluidMode {
+    Fill(0), Drain(1);
+
+    private static final EnumFluidMode[] INDEX_LOOKUP = Stream.of(EnumFluidMode.values())
+        .sorted(Comparator.comparing(EnumFluidMode::getIndex))
+        .toArray(EnumFluidMode[]::new);
+
+    private final int index;
+
+    EnumFluidMode(int index) {
+
+      this.index = index;
+    }
+
+    public int getIndex() {
+
+      return this.index;
+    }
+
+    public static EnumFluidMode fromIndex(int index) {
+
+      return INDEX_LOOKUP[index];
+    }
+  }
+
+  private final FluidHandler[] fluidHandler;
+  private final BucketItemStackHandler bucketItemStackHandler;
+  private final List<TileDataEnum<EnumFluidMode>> fluidMode;
+  private final List<TileDataBoolean> fluidLocked;
 
   // ---------------------------------------------------------------------------
   // Internal
@@ -175,6 +217,39 @@ public class TileAutomator
     this.inventoryItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
     this.inventoryLocked = new TileDataBoolean(false);
 
+    // fluid panel
+
+    this.fluidHandler = new FluidHandler[3];
+    for (int i = 0; i < this.fluidHandler.length; i++) {
+      int index = i;
+      this.fluidHandler[index] = new FluidHandler(
+          ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY,
+          () -> this.isFluidLocked(index),
+          () -> this.getFluidMode(index)
+      );
+    }
+
+    for (ObservableFluidTank observableFluidTank : this.fluidHandler) {
+      observableFluidTank.addObserver((tank, amount) -> this.markDirty());
+    }
+
+    this.bucketItemStackHandler = new BucketItemStackHandler();
+    this.bucketItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+
+    this.fluidMode = new ArrayList<>(3);
+    for (int i = 0; i < 3; i++) {
+      this.fluidMode.add(new TileDataEnum<>(
+          EnumFluidMode::fromIndex,
+          EnumFluidMode::getIndex,
+          EnumFluidMode.Drain
+      ));
+    }
+
+    this.fluidLocked = new ArrayList<>(3);
+    for (int i = 0; i < 3; i++) {
+      this.fluidLocked.add(new TileDataBoolean(false));
+    }
+
     // internal
 
     this.itemCapabilityWrapper = new ItemCapabilityWrapper(
@@ -203,6 +278,14 @@ public class TileAutomator
     tileDataList.add(new TileDataItemStackHandler<>(this.inventoryItemStackHandler));
     tileDataList.add(new TileDataItemStackHandler<>(this.inventoryGhostItemStackHandler));
     tileDataList.add(this.inventoryLocked);
+
+    for (FluidHandler fluidTank : this.fluidHandler) {
+      tileDataList.add(new TileDataFluidTank<>(fluidTank));
+    }
+
+    tileDataList.add(new TileDataItemStackHandler<>(this.bucketItemStackHandler));
+    tileDataList.addAll(this.fluidMode);
+    tileDataList.addAll(this.fluidLocked);
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
@@ -260,12 +343,12 @@ public class TileAutomator
 
     EnumOutputMode newMode = EnumOutputMode.fromIndex(nextIndex);
     this.setOutputMode(slotIndex, newMode);
-    this.markDirty();
   }
 
   private void setOutputMode(int slotIndex, EnumOutputMode mode) {
 
     this.outputMode.get(slotIndex).set(mode);
+    this.markDirty();
   }
 
   public InventoryItemStackHandler getInventoryItemStackHandler() {
@@ -287,6 +370,54 @@ public class TileAutomator
   public boolean isInventoryLocked() {
 
     return this.inventoryLocked.get();
+  }
+
+  public FluidHandler getFluidHandler(int index) {
+
+    return this.fluidHandler[index];
+  }
+
+  public BucketItemStackHandler getBucketItemStackHandler() {
+
+    return this.bucketItemStackHandler;
+  }
+
+  public void setFluidLocked(int index, boolean locked) {
+
+    this.fluidLocked.get(index).set(locked);
+    this.markDirty();
+  }
+
+  public boolean isFluidLocked(int index) {
+
+    return this.fluidLocked.get(index).get();
+  }
+
+  public EnumFluidMode getFluidMode(int slotIndex) {
+
+    TileDataEnum<EnumFluidMode> tileData = this.fluidMode.get(slotIndex);
+    return tileData.get();
+  }
+
+  public void cycleFluidMode(int slotIndex) {
+
+    TileDataEnum<EnumFluidMode> tileData = this.fluidMode.get(slotIndex);
+    EnumFluidMode enumOutputMode = tileData.get();
+
+    int nextIndex = enumOutputMode.getIndex() + 1;
+
+    if (nextIndex == EnumFluidMode.values().length) {
+      nextIndex = 0;
+    }
+
+    EnumFluidMode newMode = EnumFluidMode.fromIndex(nextIndex);
+    this.setFluidMode(slotIndex, newMode);
+  }
+
+  private void setFluidMode(int slotIndex, EnumFluidMode mode) {
+
+    this.fluidMode.get(slotIndex).set(mode);
+    this.markDirty();
   }
 
   // ---------------------------------------------------------------------------
@@ -346,6 +477,23 @@ public class TileAutomator
     compound.setTag("inventoryGhostItemStackHandler", this.inventoryGhostItemStackHandler.serializeNBT());
     compound.setBoolean("inventoryLocked", this.inventoryLocked.get());
 
+    for (int i = 0; i < this.fluidHandler.length; i++) {
+      compound.setTag("fluidHandler" + i, this.fluidHandler[i].writeToNBT(new NBTTagCompound()));
+    }
+
+    compound.setTag("bucketItemStackHandler", this.bucketItemStackHandler.serializeNBT());
+
+    for (int i = 0; i < this.fluidMode.size(); i++) {
+      TileDataEnum<EnumFluidMode> tileData = this.fluidMode.get(i);
+      EnumFluidMode mode = tileData.get();
+      compound.setInteger("fluidMode" + i, mode.getIndex());
+    }
+
+    for (int i = 0; i < this.fluidLocked.size(); i++) {
+      TileDataBoolean tileData = this.fluidLocked.get(i);
+      compound.setBoolean("fluidLocked" + i, tileData.get());
+    }
+
     return compound;
   }
 
@@ -371,6 +519,25 @@ public class TileAutomator
     this.inventoryItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryItemStackHandler"));
     this.inventoryGhostItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryGhostItemStackHandler"));
     this.inventoryLocked.set(compound.getBoolean("inventoryLocked"));
+
+    for (int i = 0; i < this.fluidHandler.length; i++) {
+      this.fluidHandler[i].readFromNBT(compound.getCompoundTag("fluidHandler" + i));
+    }
+
+    this.bucketItemStackHandler.deserializeNBT(compound.getCompoundTag("bucketItemStackHandler"));
+
+    for (int i = 0; i < this.fluidMode.size(); i++) {
+      int index = compound.getInteger("fluidMode" + i);
+      EnumFluidMode mode = EnumFluidMode.fromIndex(index);
+      TileDataEnum<EnumFluidMode> tileData = this.fluidMode.get(i);
+      tileData.set(mode);
+    }
+
+    for (int i = 0; i < this.fluidLocked.size(); i++) {
+      boolean locked = compound.getBoolean("fluidLocked" + i);
+      TileDataBoolean tileData = this.fluidLocked.get(i);
+      tileData.set(locked);
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -754,6 +921,247 @@ public class TileAutomator
       }
 
       return this.outputItemStackHandlers[slot - this.inventoryItemStackHandler.getSlots()].getSlotLimit(0);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Fluid Tank
+  // ---------------------------------------------------------------------------
+
+  public static class FluidHandler
+      extends ObservableFluidTank
+      implements ITileDataFluidTank {
+
+    private FluidStack memoryStack;
+
+    private final IBooleanSupplier locked;
+    private final Supplier<EnumFluidMode> mode;
+
+    /* package */ FluidHandler(
+        int capacity,
+        IBooleanSupplier locked,
+        Supplier<EnumFluidMode> mode
+    ) {
+
+      super(capacity);
+      this.locked = locked;
+      this.mode = mode;
+    }
+
+    public void clear() {
+
+      this.drainInternal(this.getFluidAmount(), true);
+      this.memoryStack = null;
+    }
+
+    @Override
+    public FluidTank readFromNBT(NBTTagCompound nbt) {
+
+      super.readFromNBT(nbt);
+
+      if (!nbt.hasKey("Empty")) {
+        NBTTagCompound memoryStackTag = nbt.getCompoundTag("memoryStack");
+        this.memoryStack = FluidStack.loadFluidStackFromNBT(memoryStackTag);
+
+      } else {
+        this.memoryStack = null;
+      }
+      return this;
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+
+      super.writeToNBT(nbt);
+      nbt.setTag("memoryStack", this.memoryStack.writeToNBT(new NBTTagCompound()));
+      return nbt;
+    }
+
+    @Override
+    public int fillInternal(FluidStack resource, boolean doFill) {
+
+      /*
+      Do nothing if the tank's mode is not set to fill.
+      If the tank is locked and the input fluid does not match the remembered
+      fluid, do nothing.
+      If the tank is unlocked and it was actually filled, set the remembered
+      fluid to the input fluid.
+       */
+
+      if (this.mode.get() != EnumFluidMode.Fill) {
+        return 0;
+      }
+
+      if (this.locked.get()
+          && !resource.isFluidEqual(this.memoryStack)) {
+        return 0;
+      }
+
+      int filled = super.fillInternal(resource, doFill);
+
+      if (doFill
+          && !this.locked.get()
+          && filled > 0) {
+        this.memoryStack = resource.copy();
+      }
+
+      return filled;
+    }
+
+    @Nullable
+    @Override
+    public FluidStack drainInternal(int maxDrain, boolean doDrain) {
+
+      /*
+      Do nothing if the tank's mode is not set to drain.
+      If the tank is unlocked and it was actually emptied by this drain,
+      clear the remembered fluid.
+       */
+
+      if (this.mode.get() != EnumFluidMode.Drain) {
+        return null;
+      }
+
+      FluidStack fluidStack = super.drainInternal(maxDrain, doDrain);
+
+      if (doDrain
+          && !this.locked.get()
+          && fluidStack != null
+          && fluidStack.amount > 0
+          && this.getFluidAmount() == 0) {
+        this.memoryStack = null;
+      }
+
+      return fluidStack;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Bucket Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class BucketItemStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    /* package */ BucketItemStackHandler() {
+
+      super(3);
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+
+      return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Fluid Capability Wrapper
+  // ---------------------------------------------------------------------------
+
+  public static class FluidCapabilityWrapper
+      implements IFluidHandler {
+
+    private final FluidHandler[] fluidHandler;
+
+    private IFluidTankProperties[] tankProperties;
+
+    public FluidCapabilityWrapper(
+        FluidHandler[] fluidHandler
+    ) {
+
+      this.fluidHandler = fluidHandler;
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+
+      if (this.tankProperties == null) {
+        List<IFluidTankProperties> list = new ArrayList<>();
+
+        for (FluidHandler handler : this.fluidHandler) {
+          list.addAll(Arrays.asList(handler.getTankProperties()));
+        }
+        this.tankProperties = list.toArray(new IFluidTankProperties[0]);
+      }
+
+      return this.tankProperties;
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+
+      FluidStack copy = resource.copy();
+      int total = copy.amount;
+
+      for (int i = 0; i < this.fluidHandler.length; i++) {
+        int filled = this.fluidHandler[i].fill(copy, doFill);
+        copy.amount -= filled;
+
+        if (copy.amount <= 0) {
+          return total;
+        }
+      }
+
+      return total - copy.amount;
+    }
+
+    @Nullable
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+      FluidStack toDrain = resource.copy();
+      int totalAmountDrained = 0;
+
+      for (int i = 0; i < this.fluidHandler.length; i++) {
+        FluidStack drained = this.fluidHandler[i].drain(toDrain, doDrain);
+        totalAmountDrained += (drained != null) ? drained.amount : 0;
+        toDrain.amount -= (drained != null) ? drained.amount : 0;
+
+        if (toDrain.amount <= 0) {
+          break;
+        }
+      }
+
+      return new FluidStack(resource, totalAmountDrained);
+    }
+
+    @Nullable
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+
+      if (maxDrain <= 0) {
+        return null;
+      }
+
+      FluidStack result = null;
+
+      for (int i = 0; i < this.fluidHandler.length; i++) {
+        FluidStack drained = this.fluidHandler[i].drain(maxDrain, false);
+
+        if (drained == null) {
+          continue;
+        }
+
+        if (result == null) {
+          this.fluidHandler[i].drain(maxDrain, true);
+          result = new FluidStack(drained, drained.amount);
+
+        } else {
+          if (result.isFluidEqual(drained)) {
+            int toDrain = maxDrain - result.amount;
+
+            if (toDrain <= 0) {
+              break;
+            }
+            this.fluidHandler[i].drain(toDrain, true);
+            result.amount += drained.amount;
+          }
+        }
+      }
+
+      return result;
     }
   }
 
