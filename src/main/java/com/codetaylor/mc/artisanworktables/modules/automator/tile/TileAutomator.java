@@ -152,6 +152,7 @@ public class TileAutomator
   // ---------------------------------------------------------------------------
 
   private final ItemCapabilityWrapper itemCapabilityWrapper;
+  private final FluidCapabilityWrapper fluidCapabilityWrapper;
 
   // ---------------------------------------------------------------------------
   // Constructor
@@ -241,7 +242,7 @@ public class TileAutomator
       this.fluidMode.add(new TileDataEnum<>(
           EnumFluidMode::fromIndex,
           EnumFluidMode::getIndex,
-          EnumFluidMode.Drain
+          EnumFluidMode.Fill
       ));
     }
 
@@ -258,6 +259,10 @@ public class TileAutomator
         this.outputItemStackHandler,
         this.outputMode,
         this::isInventoryLocked
+    );
+
+    this.fluidCapabilityWrapper = new FluidCapabilityWrapper(
+        this.fluidHandler
     );
 
     // network
@@ -427,9 +432,9 @@ public class TileAutomator
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
 
-    return (facing == EnumFacing.DOWN
-        && (capability == CapabilityEnergy.ENERGY
-        || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY));
+    return (facing == EnumFacing.DOWN && capability == CapabilityEnergy.ENERGY)
+        || (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        || (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
   }
 
   @Nullable
@@ -441,10 +446,14 @@ public class TileAutomator
       //noinspection unchecked
       return (T) this.energyStorage;
 
-    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-        && facing == EnumFacing.DOWN) {
+    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       //noinspection unchecked
       return (T) this.itemCapabilityWrapper;
+
+    } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+
+      //noinspection unchecked
+      return (T) this.fluidCapabilityWrapper;
     }
 
     return null;
@@ -959,7 +968,7 @@ public class TileAutomator
 
       super.readFromNBT(nbt);
 
-      if (!nbt.hasKey("Empty")) {
+      if (nbt.hasKey("memoryStack")) {
         NBTTagCompound memoryStackTag = nbt.getCompoundTag("memoryStack");
         this.memoryStack = FluidStack.loadFluidStackFromNBT(memoryStackTag);
 
@@ -973,7 +982,10 @@ public class TileAutomator
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
       super.writeToNBT(nbt);
-      nbt.setTag("memoryStack", this.memoryStack.writeToNBT(new NBTTagCompound()));
+
+      if (this.memoryStack != null) {
+        nbt.setTag("memoryStack", this.memoryStack.writeToNBT(new NBTTagCompound()));
+      }
       return nbt;
     }
 
@@ -1136,28 +1148,30 @@ public class TileAutomator
       }
 
       FluidStack result = null;
+      int remainingDrain = maxDrain;
 
       for (int i = 0; i < this.fluidHandler.length; i++) {
-        FluidStack drained = this.fluidHandler[i].drain(maxDrain, false);
+        FluidStack drained = this.fluidHandler[i].drain(remainingDrain, false);
 
         if (drained == null) {
           continue;
         }
 
+        remainingDrain -= drained.amount;
+
         if (result == null) {
-          this.fluidHandler[i].drain(maxDrain, true);
-          result = new FluidStack(drained, drained.amount);
+          result = this.fluidHandler[i].drain(drained.amount, doDrain);
 
         } else {
-          if (result.isFluidEqual(drained)) {
-            int toDrain = maxDrain - result.amount;
 
-            if (toDrain <= 0) {
-              break;
-            }
-            this.fluidHandler[i].drain(toDrain, true);
+          if (result.isFluidEqual(drained)) {
+            this.fluidHandler[i].drain(drained.amount, doDrain);
             result.amount += drained.amount;
           }
+        }
+
+        if (remainingDrain <= 0) {
+          break;
         }
       }
 

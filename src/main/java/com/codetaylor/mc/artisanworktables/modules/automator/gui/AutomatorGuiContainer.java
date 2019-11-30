@@ -13,9 +13,6 @@ import com.codetaylor.mc.athenaeum.packer.PackAPI;
 import com.codetaylor.mc.athenaeum.packer.PackedData;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
 import java.awt.*;
 
@@ -49,8 +46,7 @@ public class AutomatorGuiContainer
     for (int i = 0; i < 3; i++) {
       this.guiContainerElementAdd(new GuiElementFluidTank(
           this,
-          new FluidTank(new FluidStack(
-              FluidRegistry.LAVA, (i + 2) * 500), 2000),
+          this.tile.getFluidHandler(i),
           64, 39 + 18 * i,
           102, 14
       ));
