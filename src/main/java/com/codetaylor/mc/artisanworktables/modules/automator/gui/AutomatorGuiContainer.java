@@ -50,6 +50,37 @@ public class AutomatorGuiContainer
           64, 39 + 18 * i,
           102, 14
       ));
+      int fluidIndex = i;
+      this.guiContainerElementAdd(new GuiElementButtonFluidLockMode(
+          this.tile.getPos(),
+          fluidIndex,
+          () -> this.tile.isFluidLocked(fluidIndex),
+          this::getContainerState,
+          this,
+          new Texture[]{
+              // Expects regular textures first, then hovered textures
+              this.getTexture("inventory-button-lock-unlocked"),
+              this.getTexture("inventory-button-lock-locked"),
+              this.getTexture("inventory-button-lock-unlocked-hovered"),
+              this.getTexture("inventory-button-lock-locked-hovered")
+          },
+          44, 38 + i * 18
+      ));
+      this.guiContainerElementAdd(new GuiElementButtonFluidMode(
+          this.tile.getPos(),
+          fluidIndex,
+          () -> this.tile.getFluidMode(fluidIndex),
+          this::getContainerState,
+          this,
+          new Texture[]{
+              // Expects regular textures first, then hovered textures
+              this.getTexture("fluid-button-mode-fill"),
+              this.getTexture("fluid-button-mode-drain"),
+              this.getTexture("fluid-button-mode-fill-hovered"),
+              this.getTexture("fluid-button-mode-drain-hovered")
+          },
+          26, 38 + i * 18
+      ));
     }
 
     this.guiContainerElementAdd(new GuiElementTextureRectangle(
@@ -85,7 +116,7 @@ public class AutomatorGuiContainer
       ));
     }
 
-    this.guiContainerElementAdd(new GuiElementButtonLockedMode(
+    this.guiContainerElementAdd(new GuiElementButtonInventoryLockMode(
         this.tile.getPos(),
         this.tile::isInventoryLocked,
         this::getContainerState,

@@ -13,14 +13,14 @@ import net.minecraft.util.math.BlockPos;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class GuiElementButtonLockedMode
+public class GuiElementButtonInventoryLockMode
     extends GuiElementPanelButtonBase
     implements IGuiElementTooltipExtendedProvider {
 
   private final IBooleanSupplier currentLockedMode;
   private final BlockPos tilePos;
 
-  public GuiElementButtonLockedMode(
+  public GuiElementButtonInventoryLockMode(
       BlockPos tilePos,
       IBooleanSupplier currentLockedMode,
       Supplier<AutomatorContainer.EnumState> currentState,

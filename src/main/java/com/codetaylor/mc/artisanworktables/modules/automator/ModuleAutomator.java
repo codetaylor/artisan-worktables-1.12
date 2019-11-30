@@ -114,6 +114,18 @@ public class ModuleAutomator
     );
 
     registry.register(
+        CSPacketAutomatorFluidLockModeChange.class,
+        CSPacketAutomatorFluidLockModeChange.class,
+        Side.SERVER
+    );
+
+    registry.register(
+        CSPacketAutomatorFluidModeChange.class,
+        CSPacketAutomatorFluidModeChange.class,
+        Side.SERVER
+    );
+
+    registry.register(
         SCPacketTileData.class,
         SCPacketTileData.class,
         Side.CLIENT

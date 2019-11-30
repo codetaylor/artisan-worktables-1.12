@@ -390,6 +390,11 @@ public class TileAutomator
   public void setFluidLocked(int index, boolean locked) {
 
     this.fluidLocked.get(index).set(locked);
+
+    if (!locked) {
+      this.fluidHandler[index].memoryStack = null;
+    }
+
     this.markDirty();
   }
 

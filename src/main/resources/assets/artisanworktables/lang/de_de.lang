@@ -137,6 +137,15 @@ tooltip.artisanworktables.automator.inventory.locked=Inventory Locked
 tooltip.artisanworktables.automator.inventory.locked.info=Empty slots remember items
 tooltip.artisanworktables.automator.inventory.unlocked=Inventory Unlocked
 tooltip.artisanworktables.automator.inventory.unlocked.info=Empty slots forget items
+tooltip.artisanworktables.automator.fluid.locked=Tank Locked
+tooltip.artisanworktables.automator.fluid.locked.info=Empty tank remembers fluid type
+tooltip.artisanworktables.automator.fluid.unlocked=Tank Unlocked
+tooltip.artisanworktables.automator.fluid.unlocked.info=Empty tank forgets fluid type
+tooltip.artisanworktables.automator.fluid.mode=Mode: %s
+tooltip.artisanworktables.automator.fluid.mode.fill=Fill
+tooltip.artisanworktables.automator.fluid.mode.fill.info=Tank can be filled
+tooltip.artisanworktables.automator.fluid.mode.drain=Drain
+tooltip.artisanworktables.automator.fluid.mode.drain.info=Tank can be drained
 
 # Chat
 chat.artisanworktables.message.recipe.copy.success=Recipe copied to clipboard
