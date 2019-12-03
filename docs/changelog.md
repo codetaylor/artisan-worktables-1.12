@@ -5,6 +5,20 @@
         * `tile.artisanworktables.automator.name`
         * `tile.artisanworktables.automator_power_rf.name`
         * `gui.artisanworktables.tooltip.automator.power`
+        * `tooltip.artisanworktables.automator.inventory.locked`
+        * `tooltip.artisanworktables.automator.inventory.locked.info`
+        * `tooltip.artisanworktables.automator.inventory.unlocked`
+        * `tooltip.artisanworktables.automator.inventory.unlocked.info`
+        * `tooltip.artisanworktables.automator.fluid.locked`
+        * `tooltip.artisanworktables.automator.fluid.locked.info`
+        * `tooltip.artisanworktables.automator.fluid.unlocked`
+        * `tooltip.artisanworktables.automator.fluid.unlocked.info`
+        * `tooltip.artisanworktables.automator.fluid.mode`
+        * `tooltip.artisanworktables.automator.fluid.mode.fill`
+        * `tooltip.artisanworktables.automator.fluid.mode.fill.info`
+        * `tooltip.artisanworktables.automator.fluid.mode.drain`
+        * `tooltip.artisanworktables.automator.fluid.mode.drain.info`
+        * `tooltip.artisanworktables.automator.fluid.forget`        
         
   * **API:**
     * Bumped version to 10
