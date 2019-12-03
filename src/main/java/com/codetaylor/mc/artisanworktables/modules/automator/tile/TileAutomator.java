@@ -143,6 +143,7 @@ public class TileAutomator
   }
 
   private final FluidHandler[] fluidHandler;
+  private final List<TileDataFluidTank<FluidHandler>> fluidHandlerTileData;
   private final BucketItemStackHandler bucketItemStackHandler;
   private final List<TileDataEnum<EnumFluidMode>> fluidMode;
   private final List<TileDataBoolean> fluidLocked;
@@ -284,8 +285,12 @@ public class TileAutomator
     tileDataList.add(new TileDataItemStackHandler<>(this.inventoryGhostItemStackHandler));
     tileDataList.add(this.inventoryLocked);
 
-    for (FluidHandler fluidTank : this.fluidHandler) {
-      tileDataList.add(new TileDataFluidTank<>(fluidTank));
+    this.fluidHandlerTileData = new ArrayList<>(this.fluidHandler.length);
+
+    for (FluidHandler handler : this.fluidHandler) {
+      TileDataFluidTank<FluidHandler> tileData = new TileDataFluidTank<>(handler);
+      this.fluidHandlerTileData.add(tileData);
+      tileDataList.add(tileData);
     }
 
     tileDataList.add(new TileDataItemStackHandler<>(this.bucketItemStackHandler));
@@ -391,10 +396,9 @@ public class TileAutomator
 
     this.fluidLocked.get(index).set(locked);
 
-    if (!locked) {
-      this.fluidHandler[index].memoryStack = null;
+    if (this.fluidHandler[index].updateMemory()) {
+      this.fluidHandlerTileData.get(index).setDirty(true);
     }
-
     this.markDirty();
   }
 
@@ -962,10 +966,47 @@ public class TileAutomator
       this.mode = mode;
     }
 
-    public void clear() {
+    public FluidStack getMemoryStack() {
 
-      this.drainInternal(this.getFluidAmount(), true);
-      this.memoryStack = null;
+      return this.memoryStack;
+    }
+
+    public boolean isLocked() {
+
+      return this.locked.get();
+    }
+
+    private boolean updateMemory() {
+
+      if (this.locked.get()) {
+        // update the handler's memory
+        FluidStack fluid = this.getFluid();
+
+        if (fluid != null) {
+          this.memoryStack = fluid.copy();
+          return true;
+        }
+      }
+
+      // clear the handler's memory
+      return this.clearMemory();
+    }
+
+    private boolean clearMemory() {
+
+      if (this.memoryStack != null) {
+        this.memoryStack = null;
+        return true;
+      }
+
+      return false;
+    }
+
+    public boolean clearAll() {
+
+      FluidStack drained = this.drainInternal(this.getFluidAmount(), true);
+      boolean memoryCleared = this.clearMemory();
+      return (drained != null && drained.amount > 0) || memoryCleared;
     }
 
     @Override
