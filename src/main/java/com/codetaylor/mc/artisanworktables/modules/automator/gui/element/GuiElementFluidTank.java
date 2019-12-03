@@ -76,12 +76,6 @@ public class GuiElementFluidTank
     }
 
     tooltip.add(I18n.format(
-        "tooltip.artisanworktables.automator.fluid.forget",
-        TextFormatting.DARK_GRAY,
-        TextFormatting.DARK_GRAY
-    ));
-
-    tooltip.add(I18n.format(
         "gui.artisanworktables.tooltip.fluid.destroy",
         TextFormatting.DARK_GRAY,
         TextFormatting.DARK_GRAY

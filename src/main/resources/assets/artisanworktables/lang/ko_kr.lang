@@ -147,7 +147,6 @@ tooltip.artisanworktables.automator.fluid.mode.fill=Fill
 tooltip.artisanworktables.automator.fluid.mode.fill.info=Tank can be filled
 tooltip.artisanworktables.automator.fluid.mode.drain=Drain
 tooltip.artisanworktables.automator.fluid.mode.drain.info=Tank can be drained
-tooltip.artisanworktables.automator.fluid.forget=%sForget fluid: %sCTRL + LEFT-CLICK
 
 # Chat
 chat.artisanworktables.message.recipe.copy.success=Recipe copied to clipboard

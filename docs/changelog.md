@@ -18,7 +18,6 @@
         * `tooltip.artisanworktables.automator.fluid.mode.fill.info`
         * `tooltip.artisanworktables.automator.fluid.mode.drain`
         * `tooltip.artisanworktables.automator.fluid.mode.drain.info`
-        * `tooltip.artisanworktables.automator.fluid.forget`        
         
   * **API:**
     * Bumped version to 10
