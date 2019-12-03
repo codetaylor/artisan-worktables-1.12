@@ -1,11 +1,20 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui.element;
 
+import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiContainer;
+import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorFluidDestroy;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementFluidTankHorizontal;
+import com.codetaylor.mc.athenaeum.gui.element.IGuiElementClickable;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipExtendedProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,12 +23,17 @@ import java.util.List;
 
 public class GuiElementFluidTank
     extends GuiElementFluidTankHorizontal
-    implements IGuiElementTooltipExtendedProvider {
+    implements IGuiElementTooltipExtendedProvider,
+    IGuiElementClickable {
 
+  private final BlockPos tilePos;
+  private final int fluidIndex;
   private final AutomatorGuiContainer guiContainer;
   private final TileAutomator.FluidHandler fluidHandler;
 
   public GuiElementFluidTank(
+      BlockPos tilePos,
+      int fluidIndex,
       AutomatorGuiContainer guiBase,
       TileAutomator.FluidHandler fluidHandler,
       int elementX, int elementY,
@@ -27,6 +41,8 @@ public class GuiElementFluidTank
   ) {
 
     super(guiBase, fluidHandler, elementX, elementY, elementWidth, elementHeight);
+    this.tilePos = tilePos;
+    this.fluidIndex = fluidIndex;
     this.guiContainer = guiBase;
     this.fluidHandler = fluidHandler;
   }
@@ -35,6 +51,20 @@ public class GuiElementFluidTank
   public boolean elementIsVisible(int mouseX, int mouseY) {
 
     return (this.guiContainer.getContainerState() == AutomatorContainer.EnumState.Fluid);
+  }
+
+  @Override
+  public void elementClicked(int mouseX, int mouseY, int mouseButton) {
+
+    if (mouseButton == 0 && GuiScreen.isShiftKeyDown()
+        && (this.fluidHandler.getFluid() != null
+        || this.fluidHandler.getMemoryStack() != null)) {
+      WorldClient world = Minecraft.getMinecraft().world;
+      world.playSound(this.tilePos, SoundEvents.ITEM_BUCKET_EMPTY,
+          SoundCategory.BLOCKS, 1, 1, false);
+      ModuleAutomator.PACKET_SERVICE.sendToServer(
+          new CSPacketAutomatorFluidDestroy(this.tilePos, this.fluidIndex));
+    }
   }
 
   @Override

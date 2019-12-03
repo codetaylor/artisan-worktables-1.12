@@ -126,6 +126,12 @@ public class ModuleAutomator
     );
 
     registry.register(
+        CSPacketAutomatorFluidDestroy.class,
+        CSPacketAutomatorFluidDestroy.class,
+        Side.SERVER
+    );
+
+    registry.register(
         SCPacketTileData.class,
         SCPacketTileData.class,
         Side.CLIENT

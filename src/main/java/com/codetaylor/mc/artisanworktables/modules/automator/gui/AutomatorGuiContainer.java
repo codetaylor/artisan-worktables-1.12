@@ -44,13 +44,15 @@ public class AutomatorGuiContainer
   private void createFluidPanelElements() {
 
     for (int i = 0; i < 3; i++) {
+      int fluidIndex = i;
       this.guiContainerElementAdd(new GuiElementFluidTank(
+          this.tile.getPos(),
+          fluidIndex,
           this,
           this.tile.getFluidHandler(i),
           64, 39 + 18 * i,
           102, 14
       ));
-      int fluidIndex = i;
       this.guiContainerElementAdd(new GuiElementButtonFluidLockMode(
           this.tile.getPos(),
           fluidIndex,

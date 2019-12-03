@@ -434,6 +434,13 @@ public class TileAutomator
     this.markDirty();
   }
 
+  public void destroyFluid(int index) {
+
+    if (this.fluidHandler[index].clearAll()) {
+      this.fluidHandlerTileData.get(index).setDirty(true);
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // - Capabilities
   // ---------------------------------------------------------------------------
@@ -1004,7 +1011,7 @@ public class TileAutomator
 
     public boolean clearAll() {
 
-      FluidStack drained = this.drainInternal(this.getFluidAmount(), true);
+      FluidStack drained = super.drainInternal(this.getFluidAmount(), true);
       boolean memoryCleared = this.clearMemory();
       return (drained != null && drained.amount > 0) || memoryCleared;
     }
