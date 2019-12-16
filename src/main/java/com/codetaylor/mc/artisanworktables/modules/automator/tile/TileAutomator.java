@@ -7,6 +7,8 @@ import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomatorConfig;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiContainer;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
+import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockBase;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
@@ -158,6 +160,7 @@ public class TileAutomator
   // ---------------------------------------------------------------------------
 
   private final ToolStackHandler toolStackHandler;
+  private final ToolboxStackHandler toolboxStackHandler;
 
   // ---------------------------------------------------------------------------
   // Internal
@@ -273,6 +276,9 @@ public class TileAutomator
     this.toolStackHandler = new ToolStackHandler();
     this.toolStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
 
+    this.toolboxStackHandler = new ToolboxStackHandler();
+    this.toolboxStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+
     // internal
 
     this.itemCapabilityWrapper = new ItemCapabilityWrapper(
@@ -319,6 +325,7 @@ public class TileAutomator
     tileDataList.addAll(this.fluidLocked);
 
     tileDataList.add(new TileDataItemStackHandler<>(this.toolStackHandler));
+    tileDataList.add(new TileDataItemStackHandler<>(this.toolboxStackHandler));
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
@@ -470,6 +477,11 @@ public class TileAutomator
   public ToolStackHandler getToolStackHandler() {
 
     return this.toolStackHandler;
+  }
+
+  public ToolboxStackHandler getToolboxStackHandler() {
+
+    return this.toolboxStackHandler;
   }
 
   // ---------------------------------------------------------------------------
@@ -1332,4 +1344,33 @@ public class TileAutomator
       return ArtisanAPI.containsRecipeWithTool(stack);
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // - Toolbox Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class ToolboxStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    public ToolboxStackHandler() {
+
+      super(1);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+
+      return 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+
+      return ModuleToolboxConfig.ENABLE_MODULE
+          && ModuleToolboxConfig.MECHANICAL_TOOLBOX.ENABLED
+          && stack.getItem() == Item.getItemFromBlock(ModuleToolbox.Blocks.MECHANICAL_TOOLBOX);
+    }
+  }
+
 }

@@ -105,6 +105,11 @@ public class AutomatorContainer
           this.tile.getToolStackHandler(), i, 8 + ((i - 6) * 18), 38 + (2 * 18)
       ));
     }
+
+    this.containerSlotAdd(new PanelSlot(
+        () -> this.state, EnumState.Tool,
+        this.tile.getToolboxStackHandler(), 0, 8 + 7 * 18, 56
+    ));
   }
 
   @Override
