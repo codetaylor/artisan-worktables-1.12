@@ -91,6 +91,20 @@ public class AutomatorContainer
           this.tile.getBucketItemStackHandler(), i, 8, 38 + (i * 18)
       ));
     }
+
+    for (int i = 0; i < 6; i++) {
+      this.containerSlotAdd(new PanelSlot(
+          () -> this.state, EnumState.Tool,
+          this.tile.getToolStackHandler(), i, 8 + (i * 18), 38
+      ));
+    }
+
+    for (int i = 6; i < 12; i++) {
+      this.containerSlotAdd(new PanelSlot(
+          () -> this.state, EnumState.Tool,
+          this.tile.getToolStackHandler(), i, 8 + ((i - 6) * 18), 38 + (2 * 18)
+      ));
+    }
   }
 
   @Override

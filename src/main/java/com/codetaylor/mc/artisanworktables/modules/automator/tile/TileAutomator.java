@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.lib.IBooleanSupplier;
 import com.codetaylor.mc.artisanworktables.lib.TileNetBase;
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
@@ -153,6 +154,12 @@ public class TileAutomator
   private final boolean[] bucketUpdateRequired;
 
   // ---------------------------------------------------------------------------
+  // Panel: Tools
+  // ---------------------------------------------------------------------------
+
+  private final ToolStackHandler toolStackHandler;
+
+  // ---------------------------------------------------------------------------
   // Internal
   // ---------------------------------------------------------------------------
 
@@ -261,6 +268,11 @@ public class TileAutomator
 
     this.bucketUpdateRequired = new boolean[3];
 
+    // tool panel
+
+    this.toolStackHandler = new ToolStackHandler();
+    this.toolStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+
     // internal
 
     this.itemCapabilityWrapper = new ItemCapabilityWrapper(
@@ -305,6 +317,8 @@ public class TileAutomator
     tileDataList.add(new TileDataItemStackHandler<>(this.bucketItemStackHandler));
     tileDataList.addAll(this.fluidMode);
     tileDataList.addAll(this.fluidLocked);
+
+    tileDataList.add(new TileDataItemStackHandler<>(this.toolStackHandler));
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
   }
@@ -451,6 +465,11 @@ public class TileAutomator
       this.fluidHandlerTileData.get(index).setDirty(true);
       this.bucketUpdateRequired[index] = true;
     }
+  }
+
+  public ToolStackHandler getToolStackHandler() {
+
+    return this.toolStackHandler;
   }
 
   // ---------------------------------------------------------------------------
@@ -1294,4 +1313,23 @@ public class TileAutomator
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // - Tool Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class ToolStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    public ToolStackHandler() {
+
+      super(12);
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+
+      return ArtisanAPI.containsRecipeWithTool(stack);
+    }
+  }
 }
