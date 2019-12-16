@@ -32,10 +32,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -147,6 +150,7 @@ public class TileAutomator
   private final BucketItemStackHandler bucketItemStackHandler;
   private final List<TileDataEnum<EnumFluidMode>> fluidMode;
   private final List<TileDataBoolean> fluidLocked;
+  private final boolean[] bucketUpdateRequired;
 
   // ---------------------------------------------------------------------------
   // Internal
@@ -229,14 +233,17 @@ public class TileAutomator
           () -> this.isFluidLocked(index),
           () -> this.getFluidMode(index)
       );
-    }
-
-    for (ObservableFluidTank observableFluidTank : this.fluidHandler) {
-      observableFluidTank.addObserver((tank, amount) -> this.markDirty());
+      this.fluidHandler[index].addObserver((fluidTank, amount) -> {
+        this.markDirty();
+        TileAutomator.this.bucketUpdateRequired[index] = true;
+      });
     }
 
     this.bucketItemStackHandler = new BucketItemStackHandler();
-    this.bucketItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+    this.bucketItemStackHandler.addObserver((stackHandler, slotIndex) -> {
+      this.markDirty();
+      TileAutomator.this.bucketUpdateRequired[slotIndex] = true;
+    });
 
     this.fluidMode = new ArrayList<>(3);
     for (int i = 0; i < 3; i++) {
@@ -251,6 +258,8 @@ public class TileAutomator
     for (int i = 0; i < 3; i++) {
       this.fluidLocked.add(new TileDataBoolean(false));
     }
+
+    this.bucketUpdateRequired = new boolean[3];
 
     // internal
 
@@ -400,6 +409,7 @@ public class TileAutomator
       this.fluidHandlerTileData.get(index).setDirty(true);
     }
     this.markDirty();
+    this.bucketUpdateRequired[index] = true;
   }
 
   public boolean isFluidLocked(int index) {
@@ -432,12 +442,14 @@ public class TileAutomator
 
     this.fluidMode.get(slotIndex).set(mode);
     this.markDirty();
+    this.bucketUpdateRequired[slotIndex] = true;
   }
 
   public void destroyFluid(int index) {
 
     if (this.fluidHandler[index].clearAll()) {
       this.fluidHandlerTileData.get(index).setDirty(true);
+      this.bucketUpdateRequired[index] = true;
     }
   }
 
@@ -618,6 +630,50 @@ public class TileAutomator
       if (this.outputDirty[i]) {
         this.outputItemStackHandler[i].settleStacks();
         this.outputDirty[i] = false;
+      }
+    }
+
+    // bucket update
+    for (int i = 0; i < this.bucketUpdateRequired.length; i++) {
+
+      if (this.bucketUpdateRequired[i]) {
+        this.bucketUpdateRequired[i] = false;
+        ItemStack container = this.bucketItemStackHandler.getStackInSlot(i);
+
+        if (container.isEmpty()) {
+          // early out for empty slots
+          continue;
+        }
+
+        IFluidHandlerItem capability = container.getCapability(
+            CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+
+        if (capability == null) {
+          continue;
+        }
+
+        if (this.fluidMode.get(i).get() == EnumFluidMode.Drain
+            && this.fluidHandler[i].getFluidAmount() > 0) {
+          // fill bucket
+          int containerCapacity = capability.getTankProperties()[0].getCapacity();
+          FluidActionResult fluidActionResult = FluidUtil.tryFillContainer(
+              container, this.fluidHandler[i], containerCapacity, null, true);
+
+          if (fluidActionResult.success) {
+            this.bucketItemStackHandler.setStackInSlot(i, fluidActionResult.result);
+          }
+
+        } else if (this.fluidMode.get(i).get() == EnumFluidMode.Fill
+            && this.fluidHandler[i].getFluidAmount() < this.fluidHandler[i].getCapacity()) {
+          // drain bucket
+          int containerCapacity = capability.getTankProperties()[0].getCapacity();
+          FluidActionResult fluidActionResult = FluidUtil.tryEmptyContainer(
+              container, this.fluidHandler[i], containerCapacity, null, true);
+
+          if (fluidActionResult.success) {
+            this.bucketItemStackHandler.setStackInSlot(i, fluidActionResult.result);
+          }
+        }
       }
     }
 
@@ -1112,6 +1168,12 @@ public class TileAutomator
     /* package */ BucketItemStackHandler() {
 
       super(3);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+
+      return 1;
     }
 
     @Override

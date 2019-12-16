@@ -84,6 +84,13 @@ public class AutomatorContainer
           this.tile.getInventoryItemStackHandler(), i, 8 + (x * 18), 38 + (y * 18)
       ));
     }
+
+    for (int i = 0; i < 3; i++) {
+      this.containerSlotAdd(new PanelSlot(
+          () -> this.state, EnumState.Fluid,
+          this.tile.getBucketItemStackHandler(), i, 8, 38 + (i * 18)
+      ));
+    }
   }
 
   @Override
