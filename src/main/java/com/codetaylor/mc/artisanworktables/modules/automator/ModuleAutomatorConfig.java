@@ -33,5 +33,17 @@ public class ModuleAutomatorConfig {
         "Default: " + 8000
     })
     public int FLUID_CAPACITY = 8000;
+
+    @Config.Comment({
+        "The number of ticks required per craft.",
+        "Default: " + (10 * 20)
+    })
+    public int TICKS_PER_CRAFT = 10 * 20;
+
+    @Config.Comment({
+        "The amount of RF consumed per craft.",
+        "Default: " + 1000
+    })
+    public int RF_PER_CRAFT = 1000;
   }
 }

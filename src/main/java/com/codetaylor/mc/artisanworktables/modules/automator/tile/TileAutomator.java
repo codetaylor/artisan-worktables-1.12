@@ -1,15 +1,24 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.artisanworktables.lib.IBooleanSupplier;
 import com.codetaylor.mc.artisanworktables.lib.TileNetBase;
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomatorConfig;
+import com.codetaylor.mc.artisanworktables.modules.automator.Util;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiContainer;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockBase;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
 import com.codetaylor.mc.athenaeum.inventory.ObservableFluidTank;
@@ -24,7 +33,6 @@ import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -72,7 +80,7 @@ public class TileAutomator
   private final EnergyTank energyStorage;
   private final TableItemStackHandler tableItemStackHandler;
   private final TileDataFloat progress;
-  private int temporaryTickCounter;
+  private int tickCounter;
 
   @SideOnly(Side.CLIENT)
   private int previousEnergy;
@@ -640,25 +648,145 @@ public class TileAutomator
       return;
     }
 
-    this.temporaryTickCounter += 1;
+    this.tickCounter += 1;
 
-    if (this.temporaryTickCounter >= 500) {
-      this.temporaryTickCounter = 0;
-      //this.energyStorage.extractEnergy(10000, false);
+    if (this.tickCounter >= ModuleAutomatorConfig.MECHANICAL_ARTISAN.TICKS_PER_CRAFT) {
+      this.tickCounter = 0;
+      this.doCrafting();
+    }
 
-      ItemStack[] output = new ItemStack[]{
-          new ItemStack(Blocks.DIRT),
-          new ItemStack(Blocks.GRAVEL),
-          new ItemStack(Blocks.STONE)
-      };
+    this.updateOutputStacks();
+    this.updateBuckets();
 
-      for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
-        for (ItemStack stack : output) {
-          ItemStack itemStack = stack.copy();
-          itemStackHandler.insert(itemStack, false);
-        }
+    this.progress.set(this.tickCounter / (float) ModuleAutomatorConfig.MECHANICAL_ARTISAN.TICKS_PER_CRAFT);
+  }
+
+  private void doCrafting() {
+
+    // get recipe
+    ItemStack tableStack = this.tableItemStackHandler.getStackInSlot(0);
+
+    if (tableStack.isEmpty()) {
+      return;
+    }
+
+    Block blockFromItem = Block.getBlockFromItem(tableStack.getItem());
+
+    if (!(blockFromItem instanceof BlockBase)) {
+      return;
+    }
+
+    EnumTier tableTier = this.getTableTier(blockFromItem);
+
+    if (tableTier == null) {
+      return;
+    }
+
+    // get the table's type name
+    IBlockState blockState = blockFromItem.getStateFromMeta(tableStack.getMetadata());
+    EnumType type = blockState.getValue(BlockBase.VARIANT);
+    String typeName = type.getName();
+
+    // bake tools
+    ItemStack[] tools = this.bakeTools(this.toolStackHandler);
+    IToolHandler[] toolHandlers = this.getToolHandlers(tools);
+
+    for (int i = 0; i < this.patternItemStackHandler.getSlots(); i++) {
+      ItemStack patternStack = this.patternItemStackHandler.getStackInSlot(i);
+      Item item = patternStack.getItem();
+
+      if (!(item instanceof ItemDesignPattern)) {
+        continue;
+      }
+
+      String recipeName = ((ItemDesignPattern) item).getRecipeName(patternStack);
+
+      if (recipeName == null) {
+        continue;
+      }
+
+      if (!recipeName.split(":")[0].equals(typeName)) {
+        continue;
+      }
+
+      IArtisanRecipe recipe = ArtisanAPI.getRecipe(recipeName);
+
+      if (recipe == null
+          || !recipe.matchTier(tableTier)) {
+        continue;
+      }
+
+      // check ingredients
+      System.out.println("Has ingredients: " + Util.hasIngredientsFor(recipe.getIngredientList(), this.inventoryItemStackHandler));
+
+      // check fluids
+      if (recipe.getFluidIngredient() != null) {
+        System.out.println("Has fluid: " + Util.hasFluidsFor(recipe.getFluidIngredient(), this.fluidHandler));
+      }
+
+      // check tools
+      System.out.println("Has tools: " + recipe.matchesTools(tools, toolHandlers));
+
+      //recipe.damageTools(this.toolStackHandler, this.world, null, this.pos, false, null);
+
+      // TODO: determine if the output slot for the pattern can hold the largest possible
+      // amount of output... include each possible main output + all secondary outputs
+
+      // TODO: figure out how to restrict recipes that have requirements that
+      // use the player object, ie. gamestages, ftgu, and reskillable
+
+      // TODO: skip recipe if recipe requires XP
+
+      // TODO: match secondary ingredients
+
+      // TODO: consume secondary ingredients
+    }
+  }
+
+  private ItemStack[] bakeTools(TileAutomator.ToolStackHandler toolStackHandler) {
+
+    int slotCount = toolStackHandler.getSlots();
+    List<ItemStack> tools = new ArrayList<>(slotCount);
+
+    for (int i = 0; i < slotCount; i++) {
+      ItemStack stackInSlot = toolStackHandler.getStackInSlot(i);
+
+      if (!stackInSlot.isEmpty()) {
+        tools.add(stackInSlot);
       }
     }
+
+    return tools.toArray(new ItemStack[0]);
+  }
+
+  private IToolHandler[] getToolHandlers(ItemStack[] tools) {
+
+    IToolHandler[] toolHandlers = new IToolHandler[tools.length];
+
+    for (int i = 0; i < tools.length; i++) {
+      toolHandlers[i] = ArtisanToolHandlers.get(tools[i]);
+    }
+
+    return toolHandlers;
+  }
+
+  @Nullable
+  private EnumTier getTableTier(Block block) {
+
+    if (block instanceof BlockWorktable) {
+      return EnumTier.WORKTABLE;
+
+    } else if (block instanceof BlockWorkstation) {
+      return EnumTier.WORKSTATION;
+
+    } else if (block instanceof BlockWorkshop) {
+      return EnumTier.WORKSHOP;
+    }
+
+    return null;
+  }
+
+  private void updateOutputStacks() {
 
     for (int i = 0; i < 9; i++) {
 
@@ -667,8 +795,10 @@ public class TileAutomator
         this.outputDirty[i] = false;
       }
     }
+  }
 
-    // bucket update
+  private void updateBuckets() {
+
     for (int i = 0; i < this.bucketUpdateRequired.length; i++) {
 
       if (this.bucketUpdateRequired[i]) {
@@ -711,8 +841,6 @@ public class TileAutomator
         }
       }
     }
-
-    //this.progress.set(this.temporaryTickCounter / (float) 99);
   }
 
   // ---------------------------------------------------------------------------
