@@ -562,6 +562,8 @@ public class TileAutomator
       compound.setBoolean("fluidLocked" + i, tileData.get());
     }
 
+    compound.setTag("toolStackHandler", this.toolStackHandler.serializeNBT());
+
     return compound;
   }
 
@@ -606,6 +608,8 @@ public class TileAutomator
       TileDataBoolean tileData = this.fluidLocked.get(i);
       tileData.set(locked);
     }
+
+    this.toolStackHandler.deserializeNBT(compound.getCompoundTag("toolStackHandler"));
   }
 
   // ---------------------------------------------------------------------------
