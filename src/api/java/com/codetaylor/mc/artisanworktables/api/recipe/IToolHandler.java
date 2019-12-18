@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public interface IToolHandler {
 
   /**
@@ -34,6 +36,6 @@ public interface IToolHandler {
    * @param simulate  if true, no damage will actually be applied
    * @return true if the tool is broken as a result of the applied damage
    */
-  boolean applyDamage(World world, ItemStack itemStack, int damage, EntityPlayer player, boolean simulate);
+  boolean applyDamage(World world, ItemStack itemStack, int damage, @Nullable EntityPlayer player, boolean simulate);
 
 }

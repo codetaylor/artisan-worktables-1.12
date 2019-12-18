@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class DefaultToolHandler
@@ -30,7 +31,7 @@ public class DefaultToolHandler
   }
 
   @Override
-  public boolean applyDamage(World world, ItemStack itemStack, int damage, EntityPlayer player, boolean simulate) {
+  public boolean applyDamage(World world, ItemStack itemStack, int damage, @Nullable EntityPlayer player, boolean simulate) {
 
     if (simulate) {
       return (itemStack.getItemDamage() + damage > itemStack.getMaxDamage());
