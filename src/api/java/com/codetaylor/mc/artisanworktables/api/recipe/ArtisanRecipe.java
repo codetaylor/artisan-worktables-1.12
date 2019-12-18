@@ -425,6 +425,12 @@ public class ArtisanRecipe
 
      */
 
+    return this.matchesTools(tools, toolHandlers);
+  }
+
+  @Override
+  public boolean matchesTools(ItemStack[] tools, IToolHandler[] toolHandlers) {
+
     int toolCount = this.getToolCount();
     byte mask = 0;
     byte matchCount = 0;
@@ -512,10 +518,22 @@ public class ArtisanRecipe
 
     // Decrease stacks in secondary ingredient slots
     this.onCraftReduceSecondaryIngredients(context);
+    this.damageTools(context.getToolHandler(), context.getWorld(), context.getPlayer(), context.getPosition(), true, context.getToolReplacementHandler());
+
+    // Issue #150:
+    // When shift-clicking a recipe, craftedItem was empty. Now, craftedItem should never be empty.
+    // The craftedItem is the return value of calling onCraftCheckAndSwapWeightedOutput
+    // and is only used here to determine if onCraftCompleteServer should be called.
+    if (!world.isRemote && !craftedItem.isEmpty()) {
+      this.onCraftCompleteServer(craftedItem, extraOutputList, context);
+    }
+  }
+
+  @Override
+  public void damageTools(IItemHandlerModifiable toolStackHandler, World world, @Nullable EntityPlayer player, BlockPos position, boolean checkAndReplace, @Nullable IItemHandler toolReplacementHandler) {
 
     // Damage or destroy tools
     // Check for replacement tool
-    IItemHandlerModifiable toolStackHandler = context.getToolHandler();
     byte mask = 0;
 
     recipeTools:
@@ -533,20 +551,32 @@ public class ArtisanRecipe
               && this.hasSufficientToolDurability(toolHandler, stackInSlot)) { // tool has durability
 
             mask |= bit;
-            this.onCraftDamageTool(context, stackInSlot);
-            this.onCraftCheckAndReplaceTool(context, j);
+
+            if (this.onCraftDamageTool(stackInSlot, world, player)) {
+
+              if (!world.isRemote) {
+                world.playSound(
+                    null,
+                    position.getX(),
+                    position.getY(),
+                    position.getZ(),
+                    SoundEvents.ENTITY_ITEM_BREAK,
+                    SoundCategory.PLAYERS,
+                    1.0f,
+                    1.0f
+                );
+              }
+            }
+
+            if (checkAndReplace && toolReplacementHandler != null) {
+              // TODO: review this method, looks like it will fail if the tool is broken and emptied
+              // by the damage logic above
+              this.onCraftCheckAndReplaceTool(j, toolStackHandler, toolReplacementHandler);
+            }
             continue recipeTools;
           }
         }
       }
-    }
-
-    // Issue #150:
-    // When shift-clicking a recipe, craftedItem was empty. Now, craftedItem should never be empty.
-    // The craftedItem is the return value of calling onCraftCheckAndSwapWeightedOutput
-    // and is only used here to determine if onCraftCompleteServer should be called.
-    if (!world.isRemote && !craftedItem.isEmpty()) {
-      this.onCraftCompleteServer(craftedItem, extraOutputList, context);
     }
   }
 
@@ -873,52 +903,39 @@ public class ArtisanRecipe
     return result;
   }
 
-  protected void onCraftDamageTool(ICraftingContext context, ItemStack itemStack) {
-
-    World world = context.getWorld();
-    EntityPlayer player = context.getPlayer();
+  /**
+   * @return true if the tool was damaged and broken
+   */
+  protected boolean onCraftDamageTool(ItemStack itemStack, World world, @Nullable EntityPlayer player) {
 
     if (!itemStack.isEmpty()) {
       IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
       ToolEntry toolEntry = this.findToolEntry(toolHandler, itemStack);
 
       if (toolEntry == null) {
-        return;
+        return false;
       }
 
       if (!this.hasSufficientToolDurability(toolHandler, itemStack)) {
-        return;
+        return false;
       }
 
-      IToolHandler handler = toolHandler;
       int toolDamage = toolEntry.getDamage();
-      boolean broken = toolDamage > 0
-          && handler.applyDamage(world, itemStack, toolDamage, player, false);
 
-      if (broken && !world.isRemote) {
-        world.playSound(
-            null,
-            player.posX,
-            player.posY,
-            player.posZ,
-            SoundEvents.ENTITY_ITEM_BREAK,
-            SoundCategory.PLAYERS,
-            1.0f,
-            1.0f
-        );
-      }
+      return toolDamage > 0
+          && toolHandler.applyDamage(world, itemStack, toolDamage, player, false);
     }
+
+    return false;
   }
 
-  protected void onCraftCheckAndReplaceTool(ICraftingContext context, int toolIndex) {
+  protected void onCraftCheckAndReplaceTool(int toolIndex, IItemHandlerModifiable toolStackHandler, IItemHandler capability) {
 
-    IItemHandlerModifiable toolStackHandler = context.getToolHandler();
     ItemStack itemStack = toolStackHandler.getStackInSlot(toolIndex);
     IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
 
     if (!this.hasSufficientToolDurability(toolHandler, itemStack)) {
       // Tool needs to be replaced
-      IItemHandler capability = context.getToolReplacementHandler();
 
       if (capability == null) {
         return;

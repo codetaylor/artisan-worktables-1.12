@@ -4,9 +4,14 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,6 +53,15 @@ public interface IArtisanRecipe {
       ISecondaryIngredientMatcher secondaryIngredientMatcher,
       EnumTier tier
   );
+
+  /**
+   * Return true if the given tools match the required tools.
+   *
+   * @param tools        the tools
+   * @param toolHandlers the tools' tool handlers
+   * @return true if the given tools match the required tools
+   */
+  boolean matchesTools(ItemStack[] tools, IToolHandler[] toolHandlers);
 
   /**
    * @param requirementContextMap requirement contexts
@@ -231,4 +245,6 @@ public interface IArtisanRecipe {
    * @param context the crafting context
    */
   void doCraft(ICraftingContext context);
+
+  void damageTools(IItemHandlerModifiable toolStackHandler, World world, @Nullable EntityPlayer player, BlockPos position, boolean checkAndReplace, @Nullable IItemHandler toolReplacementHandler);
 }
