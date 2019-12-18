@@ -22,6 +22,8 @@
   * **API:**
     * Bumped version to 10
     * Added `com.codetaylor.mc.artisanworktables.api.pattern.IItemPattern`
+    * Added method `matchesTools` to `IArtisanRecipe`
+    * Added method `damageTools` to `IArtisanRecipe`
 
   * **Added:**
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
