@@ -76,8 +76,7 @@ public class CraftingContextFactory {
 
         TileEntityToolbox adjacentToolbox = tile.getAdjacentToolbox();
 
-        if (adjacentToolbox == null
-            || !(adjacentToolbox instanceof TileEntityMechanicalToolbox)) {
+        if (!(adjacentToolbox instanceof TileEntityMechanicalToolbox)) {
           return null;
         }
 
