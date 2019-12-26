@@ -45,4 +45,5 @@ public interface IModuleWorktablesConfig {
 
   boolean patternSlotsEnabledForTier(EnumTier tier);
 
+  boolean enablePatternCreationForRecipesWithRequirements();
 }

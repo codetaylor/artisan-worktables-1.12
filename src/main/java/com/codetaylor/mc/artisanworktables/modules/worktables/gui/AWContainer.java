@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.gui;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
@@ -480,11 +481,16 @@ public class AWContainer
           this.patternResultHandler.setStackInSlot(0, ItemStack.EMPTY);
 
         } else if (recipe.getName() != null) {
-          // 2019-09-23 added the null check because vanilla recipes have a null name
-          ItemDesignPattern item = ModuleWorktables.Items.DESIGN_PATTERN;
-          ItemStack stack = new ItemStack(item);
-          item.setRecipeName(stack, recipe.getName());
-          this.patternResultHandler.setStackInSlot(0, stack);
+
+          if (ArtisanConfig.MODULE_WORKTABLES_CONFIG.enablePatternCreationForRecipesWithRequirements()
+              || (recipe.getExperienceRequired() == 0 && recipe.getRequirements().isEmpty())) {
+
+            // 2019-09-23 added the null check because vanilla recipes have a null name
+            ItemDesignPattern item = ModuleWorktables.Items.DESIGN_PATTERN;
+            ItemStack stack = new ItemStack(item);
+            item.setRecipeName(stack, recipe.getName());
+            this.patternResultHandler.setStackInSlot(0, stack);
+          }
         }
       }
 

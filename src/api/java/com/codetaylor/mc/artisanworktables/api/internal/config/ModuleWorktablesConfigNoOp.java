@@ -115,4 +115,10 @@ public class ModuleWorktablesConfigNoOp
 
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public boolean enablePatternCreationForRecipesWithRequirements() {
+
+    throw new UnsupportedOperationException();
+  }
 }

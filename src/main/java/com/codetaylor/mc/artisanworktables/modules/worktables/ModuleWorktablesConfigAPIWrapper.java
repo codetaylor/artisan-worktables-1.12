@@ -114,4 +114,10 @@ public class ModuleWorktablesConfigAPIWrapper
 
     return ModuleWorktablesConfig.patternSlotsEnabledForTier(tier);
   }
+
+  @Override
+  public boolean enablePatternCreationForRecipesWithRequirements() {
+
+    return ModuleWorktablesConfig.PATTERN.ENABLE_PATTERN_CREATION_FOR_RECIPES_WITH_REQUIREMENTS;
+  }
 }

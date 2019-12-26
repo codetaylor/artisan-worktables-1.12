@@ -12,8 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 @Config(modid = ModuleWorktables.MOD_ID, name = ModuleWorktables.MOD_ID + "/module.Worktables")
 public class ModuleWorktablesConfig {
@@ -323,6 +323,13 @@ public class ModuleWorktablesConfig {
         "Set to false to disable pattern creation for workshops."
     })
     public boolean ENABLE_PATTERN_CREATION_FOR_WORKSHOPS = true;
+
+    @Config.Comment({
+        "By default, patterns can be created from recipes that require player specific requirements to craft.",
+        "ie. xp, gamestages, ftgu, reskillable",
+        "Set to false to disable."
+    })
+    public boolean ENABLE_PATTERN_CREATION_FOR_RECIPES_WITH_REQUIREMENTS = true;
   }
 
   @Mod.EventBusSubscriber(modid = ModuleWorktables.MOD_ID)
