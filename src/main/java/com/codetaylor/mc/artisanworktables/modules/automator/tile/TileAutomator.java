@@ -711,8 +711,14 @@ public class TileAutomator
 
       IArtisanRecipe recipe = ArtisanAPI.getRecipe(recipeName);
 
+      // check recipe exists
+      // check recipe tier
+      // check recipe has no requirements
+      // check recipe requires no experience
       if (recipe == null
-          || !recipe.matchTier(tableTier)) {
+          || !recipe.matchTier(tableTier)
+          || !recipe.getRequirements().isEmpty()
+          || recipe.getExperienceRequired() > 0) {
         continue;
       }
 
@@ -732,14 +738,9 @@ public class TileAutomator
       // TODO: determine if the output slot for the pattern can hold the largest possible
       // amount of output... include each possible main output + all secondary outputs
 
-      // TODO: figure out how to restrict recipes that have requirements that
-      // use the player object, ie. gamestages, ftgu, and reskillable
-
-      // TODO: skip recipe if recipe requires XP
-
       // TODO: match secondary ingredients
 
-      // TODO: consume secondary ingredients
+      // TODO: logic to consume secondary ingredients
     }
   }
 
