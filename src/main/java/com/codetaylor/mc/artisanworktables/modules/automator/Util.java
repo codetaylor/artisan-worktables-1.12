@@ -10,10 +10,17 @@ import java.util.List;
 
 public final class Util {
 
-  public static boolean consumeIngredientsFor(
+  public static void consumeIngredientsFor(
       List<IArtisanIngredient> recipeIngredients,
+      List<IArtisanIngredient> recipeSecondaryIngredients,
       TileAutomator.InventoryItemStackHandler inventoryItemStackHandler
   ) {
+
+    Util.consumeIngredientsFor(recipeIngredients, inventoryItemStackHandler);
+    Util.consumeIngredientsFor(recipeSecondaryIngredients, inventoryItemStackHandler);
+  }
+
+  private static void consumeIngredientsFor(List<IArtisanIngredient> recipeIngredients, TileAutomator.InventoryItemStackHandler inventoryItemStackHandler) {
 
     for (IArtisanIngredient recipeIngredient : recipeIngredients) {
       int amount = recipeIngredient.getAmount();
@@ -25,7 +32,6 @@ public final class Util {
 
           if (itemStack.getCount() >= amount) {
             inventoryItemStackHandler.extractItem(i, amount, false);
-            amount = 0;
             break;
 
           } else {
@@ -35,17 +41,12 @@ public final class Util {
           }
         }
       }
-
-      if (amount != 0) {
-        return false;
-      }
     }
-
-    return true;
   }
 
   public static boolean hasIngredientsFor(
       List<IArtisanIngredient> recipeIngredients,
+      List<IArtisanIngredient> recipeSecondaryIngredients,
       TileAutomator.InventoryItemStackHandler inventoryItemStackHandler
   ) {
 
@@ -56,6 +57,12 @@ public final class Util {
       ItemStack itemStack = inventoryItemStackHandler.getStackInSlot(i);
       inventoryCopy.add(itemStack.copy());
     }
+
+    return Util.hasIngredientsFor(recipeIngredients, inventoryCopy)
+        && Util.hasIngredientsFor(recipeSecondaryIngredients, inventoryCopy);
+  }
+
+  private static boolean hasIngredientsFor(List<IArtisanIngredient> recipeIngredients, List<ItemStack> inventoryCopy) {
 
     for (IArtisanIngredient recipeIngredient : recipeIngredients) {
       int amount = recipeIngredient.getAmount();

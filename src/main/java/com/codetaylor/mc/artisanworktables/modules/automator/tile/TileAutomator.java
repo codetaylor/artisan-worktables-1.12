@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
@@ -713,17 +714,28 @@ public class TileAutomator
 
       // check recipe exists
       // check recipe tier
-      // check recipe has no requirements
-      // check recipe requires no experience
       if (recipe == null
-          || !recipe.matchTier(tableTier)
-          || !recipe.getRequirements().isEmpty()
-          || recipe.getExperienceRequired() > 0) {
+          || !recipe.matchTier(tableTier)) {
         continue;
       }
 
+      if (!ArtisanConfig.MODULE_WORKTABLES_CONFIG.enablePatternCreationForRecipesWithRequirements()) {
+
+        // check recipe has no requirements
+        // check recipe requires no experience
+        if (!recipe.getRequirements().isEmpty()
+            || recipe.getExperienceRequired() > 0) {
+          continue;
+        }
+      }
+
       // check ingredients
-      System.out.println("Has ingredients: " + Util.hasIngredientsFor(recipe.getIngredientList(), this.inventoryItemStackHandler));
+      // check secondary ingredients
+      System.out.println("Has ingredients: " + Util.hasIngredientsFor(
+          recipe.getIngredientList(),
+          recipe.getSecondaryIngredients(),
+          this.inventoryItemStackHandler
+      ));
 
       // check fluids
       if (recipe.getFluidIngredient() != null) {
@@ -737,10 +749,7 @@ public class TileAutomator
 
       // TODO: determine if the output slot for the pattern can hold the largest possible
       // amount of output... include each possible main output + all secondary outputs
-
-      // TODO: match secondary ingredients
-
-      // TODO: logic to consume secondary ingredients
+      // if output mode is set to output to the machine's inventory, consider that
     }
   }
 
