@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
@@ -731,26 +732,127 @@ public class TileAutomator
 
       // check ingredients
       // check secondary ingredients
-      System.out.println("Has ingredients: " + Util.hasIngredientsFor(
+      if (!Util.hasIngredientsFor(
           recipe.getIngredientList(),
           recipe.getSecondaryIngredients(),
           this.inventoryItemStackHandler
-      ));
+      )) {
+        continue;
+      }
 
       // check fluids
-      if (recipe.getFluidIngredient() != null) {
-        System.out.println("Has fluid: " + Util.hasFluidsFor(recipe.getFluidIngredient(), this.fluidHandler));
+      if (recipe.getFluidIngredient() != null
+          && !Util.hasFluidsFor(recipe.getFluidIngredient(), this.fluidHandler)) {
+        continue;
       }
 
       // check tools
-      System.out.println("Has tools: " + recipe.matchesTools(tools, toolHandlers));
+      if (!recipe.matchesTools(tools, toolHandlers)) {
+        continue;
+      }
 
-      //recipe.damageTools(this.toolStackHandler, this.world, null, this.pos, false, null);
+      // check output space
+      if (!this.hasOutputSpaceFor(i, recipe)) {
+        continue;
+      }
 
-      // TODO: determine if the output slot for the pattern can hold the largest possible
-      // amount of output... include each possible main output + all secondary outputs
-      // if output mode is set to output to the machine's inventory, consider that
+      // if we've made it this far, eat the input, place the output and damage the tools
+
+      Util.consumeIngredientsFor(
+          recipe.getIngredientList(),
+          recipe.getSecondaryIngredients(),
+          this.inventoryItemStackHandler
+      );
+
+      Util.consumeFluidsFor(recipe.getFluidIngredient(), this.fluidHandler);
+
+      recipe.damageTools(this.toolStackHandler, this.world, null, this.pos, false, null);
+
+      // TODO:
+      // - handle remaining items, functions / actions
+      // - insert output / additional outputs
+
+      /*
+      I think we're going to need a fake context with a fake player to pass into
+      the recipe's method doCraft.
+       */
     }
+  }
+
+  private boolean hasOutputSpaceFor(int recipeSlotIndex, IArtisanRecipe recipe) {
+
+    List<OutputWeightPair> outputWeightPairList = recipe.getOutputWeightPairList();
+    ItemStack secondaryOutput = recipe.getSecondaryOutput().toItemStack();
+    ItemStack tertiaryOutput = recipe.getTertiaryOutput().toItemStack();
+    ItemStack quaternaryOutput = recipe.getQuaternaryOutput().toItemStack();
+
+    for (OutputWeightPair pair : outputWeightPairList) {
+
+      ItemStack output = pair.getOutput().toItemStack();
+      EnumOutputMode outputMode = this.getOutputMode(recipeSlotIndex);
+      IItemHandler handler;
+
+      if (outputMode == EnumOutputMode.Inventory) {
+        handler = new InventoryItemStackHandler(this.getInventoryItemStackHandler());
+
+      } else {
+        handler = new OutputItemStackHandler(this.getOutputItemStackHandler(recipeSlotIndex));
+      }
+
+      if (!this.hasOutputSpaceFor(handler, output, secondaryOutput, tertiaryOutput, quaternaryOutput)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private boolean hasOutputSpaceFor(IItemHandler handler, ItemStack output, ItemStack secondaryOutput, ItemStack tertiaryOutput, ItemStack quaternaryOutput) {
+
+    if (handler instanceof OutputItemStackHandler) {
+
+      ItemStack copy = output.copy();
+      ItemStack insert = ((OutputItemStackHandler) handler).insert(copy, false);
+
+      if (!insert.isEmpty()) {
+        return false;
+      }
+
+    } else if (!this.testInsert(handler, output).isEmpty()) {
+      return false;
+    }
+
+    if (!secondaryOutput.isEmpty()
+        && !this.testInsert(handler, secondaryOutput).isEmpty()) {
+      return false;
+    }
+
+    if (!tertiaryOutput.isEmpty()
+        && !this.testInsert(handler, tertiaryOutput).isEmpty()) {
+      return false;
+    }
+
+    if (!quaternaryOutput.isEmpty()
+        && !this.testInsert(handler, quaternaryOutput).isEmpty()) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private ItemStack testInsert(IItemHandler handler, ItemStack toInsert) {
+
+    ItemStack remainingItems = toInsert.copy();
+
+    for (int i = 0; i < handler.getSlots(); i++) {
+      remainingItems = handler.insertItem(i, remainingItems, false);
+
+      if (remainingItems.isEmpty()) {
+        break;
+      }
+    }
+
+    return remainingItems;
   }
 
   private ItemStack[] bakeTools(TileAutomator.ToolStackHandler toolStackHandler) {
@@ -970,6 +1072,15 @@ public class TileAutomator
       super(9);
     }
 
+    /* package */ OutputItemStackHandler(OutputItemStackHandler toCopy) {
+
+      super(toCopy.getSlots());
+
+      for (int i = 0; i < toCopy.getSlots(); i++) {
+        this.setStackInSlot(i, toCopy.getStackInSlot(i));
+      }
+    }
+
     /**
      * Attempt to insert the given item stack into all slots in this handler
      * starting with slot 0.
@@ -1037,6 +1148,17 @@ public class TileAutomator
       super(26);
       this.isLocked = isLocked;
       this.ghostItemStackHandler = ghostItemStackHandler;
+    }
+
+    /* package */ InventoryItemStackHandler(InventoryItemStackHandler toCopy) {
+
+      super(toCopy.getSlots());
+      this.isLocked = toCopy.isLocked;
+      this.ghostItemStackHandler = toCopy.ghostItemStackHandler;
+
+      for (int i = 0; i < toCopy.getSlots(); i++) {
+        this.setStackInSlot(i, toCopy.getStackInSlot(i));
+      }
     }
 
     @Override
