@@ -158,7 +158,7 @@ public class TileAutomator
     }
   }
 
-  private final FluidHandler[] fluidHandler;
+  private final FluidHandler[] fluidHandlers;
   private final List<TileDataFluidTank<FluidHandler>> fluidHandlerTileData;
   private final BucketItemStackHandler bucketItemStackHandler;
   private final List<TileDataEnum<EnumFluidMode>> fluidMode;
@@ -245,15 +245,15 @@ public class TileAutomator
 
     // fluid panel
 
-    this.fluidHandler = new FluidHandler[3];
-    for (int i = 0; i < this.fluidHandler.length; i++) {
+    this.fluidHandlers = new FluidHandler[3];
+    for (int i = 0; i < this.fluidHandlers.length; i++) {
       int index = i;
-      this.fluidHandler[index] = new FluidHandler(
+      this.fluidHandlers[index] = new FluidHandler(
           ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY,
           () -> this.isFluidLocked(index),
           () -> this.getFluidMode(index)
       );
-      this.fluidHandler[index].addObserver((fluidTank, amount) -> {
+      this.fluidHandlers[index].addObserver((fluidTank, amount) -> {
         this.markDirty();
         TileAutomator.this.bucketUpdateRequired[index] = true;
       });
@@ -300,7 +300,7 @@ public class TileAutomator
     );
 
     this.fluidCapabilityWrapper = new FluidCapabilityWrapper(
-        this.fluidHandler
+        this.fluidHandlers
     );
 
     // network
@@ -322,9 +322,9 @@ public class TileAutomator
     tileDataList.add(new TileDataItemStackHandler<>(this.inventoryGhostItemStackHandler));
     tileDataList.add(this.inventoryLocked);
 
-    this.fluidHandlerTileData = new ArrayList<>(this.fluidHandler.length);
+    this.fluidHandlerTileData = new ArrayList<>(this.fluidHandlers.length);
 
-    for (FluidHandler handler : this.fluidHandler) {
+    for (FluidHandler handler : this.fluidHandlers) {
       TileDataFluidTank<FluidHandler> tileData = new TileDataFluidTank<>(handler);
       this.fluidHandlerTileData.add(tileData);
       tileDataList.add(tileData);
@@ -424,7 +424,7 @@ public class TileAutomator
 
   public FluidHandler getFluidHandler(int index) {
 
-    return this.fluidHandler[index];
+    return this.fluidHandlers[index];
   }
 
   public BucketItemStackHandler getBucketItemStackHandler() {
@@ -436,7 +436,7 @@ public class TileAutomator
 
     this.fluidLocked.get(index).set(locked);
 
-    if (this.fluidHandler[index].updateMemory()) {
+    if (this.fluidHandlers[index].updateMemory()) {
       this.fluidHandlerTileData.get(index).setDirty(true);
     }
     this.markDirty();
@@ -478,7 +478,7 @@ public class TileAutomator
 
   public void destroyFluid(int index) {
 
-    if (this.fluidHandler[index].clearAll()) {
+    if (this.fluidHandlers[index].clearAll()) {
       this.fluidHandlerTileData.get(index).setDirty(true);
       this.bucketUpdateRequired[index] = true;
     }
@@ -555,8 +555,8 @@ public class TileAutomator
     compound.setTag("inventoryGhostItemStackHandler", this.inventoryGhostItemStackHandler.serializeNBT());
     compound.setBoolean("inventoryLocked", this.inventoryLocked.get());
 
-    for (int i = 0; i < this.fluidHandler.length; i++) {
-      compound.setTag("fluidHandler" + i, this.fluidHandler[i].writeToNBT(new NBTTagCompound()));
+    for (int i = 0; i < this.fluidHandlers.length; i++) {
+      compound.setTag("fluidHandler" + i, this.fluidHandlers[i].writeToNBT(new NBTTagCompound()));
     }
 
     compound.setTag("bucketItemStackHandler", this.bucketItemStackHandler.serializeNBT());
@@ -600,8 +600,8 @@ public class TileAutomator
     this.inventoryGhostItemStackHandler.deserializeNBT(compound.getCompoundTag("inventoryGhostItemStackHandler"));
     this.inventoryLocked.set(compound.getBoolean("inventoryLocked"));
 
-    for (int i = 0; i < this.fluidHandler.length; i++) {
-      this.fluidHandler[i].readFromNBT(compound.getCompoundTag("fluidHandler" + i));
+    for (int i = 0; i < this.fluidHandlers.length; i++) {
+      this.fluidHandlers[i].readFromNBT(compound.getCompoundTag("fluidHandler" + i));
     }
 
     this.bucketItemStackHandler.deserializeNBT(compound.getCompoundTag("bucketItemStackHandler"));
@@ -742,7 +742,7 @@ public class TileAutomator
 
       // check fluids
       if (recipe.getFluidIngredient() != null
-          && !Util.hasFluidsFor(recipe.getFluidIngredient(), this.fluidHandler)) {
+          && !Util.hasFluidsFor(recipe.getFluidIngredient(), this.fluidHandlers)) {
         continue;
       }
 
@@ -764,7 +764,7 @@ public class TileAutomator
           this.inventoryItemStackHandler
       );
 
-      Util.consumeFluidsFor(recipe.getFluidIngredient(), this.fluidHandler);
+      Util.consumeFluidsFor(recipe.getFluidIngredient(), this.fluidHandlers);
 
       recipe.damageTools(this.toolStackHandler, this.world, null, this.pos, false, null);
 
@@ -930,22 +930,22 @@ public class TileAutomator
         }
 
         if (this.fluidMode.get(i).get() == EnumFluidMode.Drain
-            && this.fluidHandler[i].getFluidAmount() > 0) {
+            && this.fluidHandlers[i].getFluidAmount() > 0) {
           // fill bucket
           int containerCapacity = capability.getTankProperties()[0].getCapacity();
           FluidActionResult fluidActionResult = FluidUtil.tryFillContainer(
-              container, this.fluidHandler[i], containerCapacity, null, true);
+              container, this.fluidHandlers[i], containerCapacity, null, true);
 
           if (fluidActionResult.success) {
             this.bucketItemStackHandler.setStackInSlot(i, fluidActionResult.result);
           }
 
         } else if (this.fluidMode.get(i).get() == EnumFluidMode.Fill
-            && this.fluidHandler[i].getFluidAmount() < this.fluidHandler[i].getCapacity()) {
+            && this.fluidHandlers[i].getFluidAmount() < this.fluidHandlers[i].getCapacity()) {
           // drain bucket
           int containerCapacity = capability.getTankProperties()[0].getCapacity();
           FluidActionResult fluidActionResult = FluidUtil.tryEmptyContainer(
-              container, this.fluidHandler[i], containerCapacity, null, true);
+              container, this.fluidHandlers[i], containerCapacity, null, true);
 
           if (fluidActionResult.success) {
             this.bucketItemStackHandler.setStackInSlot(i, fluidActionResult.result);
