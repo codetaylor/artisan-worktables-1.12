@@ -516,6 +516,9 @@ public class ArtisanRecipe
     // Decrease stacks in crafting matrix
     this.onCraftReduceIngredients(context);
 
+    // Decrease fluid
+    this.onCraftReduceFluid(context);
+
     // Decrease stacks in secondary ingredient slots
     this.onCraftReduceSecondaryIngredients(context);
     this.damageTools(context.getToolHandler(), context.getWorld(), context.getPlayer(), context.getPosition(), true, context.getToolReplacementHandler());
@@ -611,10 +614,19 @@ public class ArtisanRecipe
     ));
   }
 
+  protected void onCraftReduceFluid(ICraftingContext context) {
+
+    FluidStack fluidIngredient = this.getFluidIngredient();
+
+    if (fluidIngredient != null) {
+      IFluidHandler fluidHandler = context.getFluidHandler();
+      fluidHandler.drain(fluidIngredient, true);
+    }
+  }
+
   protected void onCraftReduceIngredients(ICraftingContext context) {
 
     IItemHandlerModifiable matrixHandler = context.getCraftingMatrixHandler();
-    IFluidHandler fluidHandler = context.getFluidHandler();
 
     List<ItemStack> remainingItems = this.getRemainingItems(
         context,
@@ -681,12 +693,6 @@ public class ArtisanRecipe
         }
 
       }
-    }
-
-    FluidStack fluidIngredient = this.getFluidIngredient();
-
-    if (fluidIngredient != null) {
-      fluidHandler.drain(fluidIngredient, true);
     }
   }
 
