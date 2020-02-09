@@ -775,6 +775,32 @@ public class TileAutomator
       /*
       I think we're going to need a fake context with a fake player to pass into
       the recipe's method doCraft.
+
+      Actually, we don't need a fake player.
+      We can do this by adding a new field to the context; something like
+        context.isPattern()
+
+      Better yet, we can simply use a null player and if the player is null,
+      we know that it came from a pattern. On second thought, a null player could
+      indicate that something went wrong when there should have been a player.
+      In that case, I would want the error to be reported so it could be fixed.
+      If we use null instead of an explicit field, we run the risk of absorbing
+      any future NPEs if the player object is ever null when it's expected to
+      not be null. We'll use the isPattern() approach.
+
+      Then we just write checks and branching behavior if the context belongs
+      to a pattern. This should allow us to use the recipe doCraft logic which
+      will handle all of the CrT stuff too.
+
+      TODO: Now we need to figure out how to build a crafting grid context using the
+      items extracted from the machine's inventory.
+
+      We could pass the crafting grid context into the util method that consumes
+      ingredients and fill it with the items that the util method extracts.
+
+      It looks like the recipe's doCraft can:
+        - consume fluids
+        - damage tools
        */
     }
   }
