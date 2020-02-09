@@ -34,6 +34,8 @@
         * HARVEST_TOOL_WORKSTATION
         * HARVEST_TOOL_WORKSHOP
     * Added `all` table type for recipe builders [(#110)](https://github.com/codetaylor/artisan-worktables/issues/110)
+    * Config option to enable / disable automating recipes with requirements
+        * ENABLE_PATTERN_CREATION_FOR_RECIPES_WITH_REQUIREMENTS
 
 ---
 
