@@ -9,6 +9,7 @@ import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipExtendedProvider;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -90,7 +91,7 @@ public class GuiElementButtonInventoryLockMode
       langKey = "tooltip.artisanworktables.automator.inventory.unlocked.info";
     }
 
-    tooltip.add(I18n.format(langKey));
+    tooltip.add(TextFormatting.GRAY + I18n.format(langKey));
 
     return tooltip;
   }
