@@ -4,7 +4,9 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredien
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,35 +14,34 @@ public final class Util {
 
   public static void consumeIngredientsFor(
       List<IArtisanIngredient> recipeIngredients,
-      List<IArtisanIngredient> recipeSecondaryIngredients,
-      TileAutomator.InventoryItemStackHandler inventoryItemStackHandler
+      TileAutomator.InventoryItemStackHandler inventoryItemStackHandler,
+      @Nullable IItemHandler itemHandler
   ) {
 
-    Util.consumeIngredientsFor(recipeIngredients, inventoryItemStackHandler);
-    Util.consumeIngredientsFor(recipeSecondaryIngredients, inventoryItemStackHandler);
-  }
-
-  private static void consumeIngredientsFor(List<IArtisanIngredient> recipeIngredients, TileAutomator.InventoryItemStackHandler inventoryItemStackHandler) {
-
-    for (IArtisanIngredient recipeIngredient : recipeIngredients) {
+    for (int i = 0; i < recipeIngredients.size(); i++) {
+      IArtisanIngredient recipeIngredient = recipeIngredients.get(i);
       int amount = recipeIngredient.getAmount();
 
-      for (int i = 0; i < inventoryItemStackHandler.getSlots(); i++) {
-        ItemStack itemStack = inventoryItemStackHandler.getStackInSlot(i);
+      for (int j = 0; j < inventoryItemStackHandler.getSlots(); j++) {
+        ItemStack itemStack = inventoryItemStackHandler.getStackInSlot(j);
 
         if (recipeIngredient.matchesIgnoreAmount(itemStack)) {
 
           if (itemStack.getCount() >= amount) {
-            inventoryItemStackHandler.extractItem(i, amount, false);
+            ItemStack extractItem = inventoryItemStackHandler.extractItem(j, amount, false);
+            if (itemHandler != null) {
+              itemHandler.insertItem(i, extractItem, false);
+            }
             break;
 
           } else {
-            inventoryItemStackHandler.setStackInSlot(i, ItemStack.EMPTY);
+            inventoryItemStackHandler.setStackInSlot(j, ItemStack.EMPTY);
             amount -= itemStack.getCount();
             itemStack.setCount(0);
           }
         }
       }
+
     }
   }
 
@@ -105,11 +106,11 @@ public final class Util {
       if (availableFluid.isFluidEqual(requiredFluid)) {
 
         if (availableFluid.amount >= requiredFluidAmount) {
-          handler.drain(requiredFluidAmount, true);
+          handler.forceDrain(requiredFluidAmount);
           return true;
 
         } else {
-          handler.drain(availableFluid.amount, true);
+          handler.forceDrain(availableFluid.amount);
           requiredFluidAmount -= availableFluid.amount;
         }
       }

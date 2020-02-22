@@ -39,4 +39,8 @@ public interface ICraftingContext {
 
   BlockPos getPosition();
 
+  default boolean isPattern() {
+    return false;
+  }
+
 }

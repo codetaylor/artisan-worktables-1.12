@@ -491,13 +491,16 @@ public class ArtisanRecipe
 
   @Override
   public void doCraft(
-      ICraftingContext context
+      ICraftingContext context,
+      List<ItemStack> output
   ) {
 
     World world = context.getWorld();
 
     // Reduce player experience
-    this.onCraftReduceExperience(context);
+    if (!context.isPattern()) {
+      this.onCraftReduceExperience(context);
+    }
 
     ItemStack craftedItem = ItemStack.EMPTY;
     List<IArtisanItemStack> extraOutputList = new ArrayList<>(3);
@@ -520,20 +523,31 @@ public class ArtisanRecipe
     this.onCraftReduceFluid(context);
 
     // Decrease stacks in secondary ingredient slots
-    this.onCraftReduceSecondaryIngredients(context);
-    this.damageTools(context.getToolHandler(), context.getWorld(), context.getPlayer(), context.getPosition(), true, context.getToolReplacementHandler());
+    if (!context.isPattern()) {
+      this.onCraftReduceSecondaryIngredients(context);
+    }
+    this.damageTools(context.getToolHandler(), context.getWorld(), (context.isPattern()) ? null : context.getPlayer(), context.getPosition(), context.getToolReplacementHandler());
 
     // Issue #150:
     // When shift-clicking a recipe, craftedItem was empty. Now, craftedItem should never be empty.
     // The craftedItem is the return value of calling onCraftCheckAndSwapWeightedOutput
     // and is only used here to determine if onCraftCompleteServer should be called.
-    if (!world.isRemote && !craftedItem.isEmpty()) {
+    if (!world.isRemote
+        && !craftedItem.isEmpty()) {
       this.onCraftCompleteServer(craftedItem, extraOutputList, context);
+    }
+
+    if (output != null) {
+      output.add(craftedItem);
+
+      for (IArtisanItemStack artisanItemStack : extraOutputList) {
+        output.add(artisanItemStack.toItemStack());
+      }
     }
   }
 
   @Override
-  public void damageTools(IItemHandlerModifiable toolStackHandler, World world, @Nullable EntityPlayer player, BlockPos position, boolean checkAndReplace, @Nullable IItemHandler toolReplacementHandler) {
+  public void damageTools(IItemHandlerModifiable toolStackHandler, World world, @Nullable EntityPlayer player, BlockPos position, @Nullable IItemHandler toolReplacementHandler) {
 
     // Damage or destroy tools
     // Check for replacement tool
@@ -571,7 +585,7 @@ public class ArtisanRecipe
               }
             }
 
-            if (checkAndReplace && toolReplacementHandler != null) {
+            if (toolReplacementHandler != null) {
               // TODO: review this method, looks like it will fail if the tool is broken and emptied
               // by the damage logic above
               this.onCraftCheckAndReplaceTool(j, toolStackHandler, toolReplacementHandler);
@@ -588,6 +602,10 @@ public class ArtisanRecipe
       List<IArtisanItemStack> extraOutputList,
       ICraftingContext context
   ) {
+
+    if (context.isPattern()) {
+      return;
+    }
 
     List<ItemStack> extraOutputConvertedList = new ArrayList<>(extraOutputList.size());
 
@@ -857,15 +875,17 @@ public class ArtisanRecipe
     // Select an output.
     ItemStack itemStack = this.selectOutput(context, Util.RANDOM).toItemStack();
 
-    EntityPlayer player = context.getPlayer();
+    if (!context.isPattern()) {
+      EntityPlayer player = context.getPlayer();
 
-    if (!player.inventory.getItemStack().isEmpty()) {
+      if (!player.inventory.getItemStack().isEmpty()) {
 
-      // If the player is holding an item under their mouse cursor swap the item accordingly.
+        // If the player is holding an item under their mouse cursor swap the item accordingly.
 
-      if (this.hasMultipleWeightedOutputs()) {
-        player.inventory.setItemStack(itemStack);
-        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
+        if (this.hasMultipleWeightedOutputs()) {
+          player.inventory.setItemStack(itemStack);
+          ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
+        }
       }
     }
 

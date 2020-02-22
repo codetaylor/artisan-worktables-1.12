@@ -244,7 +244,7 @@ public interface IArtisanRecipe {
    *
    * @param context the crafting context
    */
-  void doCraft(ICraftingContext context);
+  void doCraft(ICraftingContext context, @Nullable List<ItemStack> output);
 
-  void damageTools(IItemHandlerModifiable toolStackHandler, World world, @Nullable EntityPlayer player, BlockPos position, boolean checkAndReplace, @Nullable IItemHandler toolReplacementHandler);
+  void damageTools(IItemHandlerModifiable toolStackHandler, World world, @Nullable EntityPlayer player, BlockPos position, @Nullable IItemHandler toolReplacementHandler);
 }

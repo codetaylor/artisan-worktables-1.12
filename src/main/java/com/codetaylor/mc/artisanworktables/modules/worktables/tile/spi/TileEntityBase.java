@@ -28,7 +28,6 @@ import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
@@ -451,7 +450,7 @@ public abstract class TileEntityBase
       return;
     }
 
-    recipe.doCraft(this.getCraftingContext(player));
+    recipe.doCraft(this.getCraftingContext(player), null);
 
     this.markDirty();
 

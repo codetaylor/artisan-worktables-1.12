@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
@@ -22,6 +23,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorksho
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
+import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.CraftingMatrixStackHandler;
 import com.codetaylor.mc.athenaeum.inventory.ObservableEnergyStorage;
 import com.codetaylor.mc.athenaeum.inventory.ObservableFluidTank;
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
@@ -178,6 +180,7 @@ public class TileAutomator
 
   private final ItemCapabilityWrapper itemCapabilityWrapper;
   private final FluidCapabilityWrapper fluidCapabilityWrapper;
+  private ICraftingMatrixStackHandler craftingMatrixStackHandler;
 
   // ---------------------------------------------------------------------------
   // Constructor
@@ -686,8 +689,8 @@ public class TileAutomator
 
     // get the table's type name
     IBlockState blockState = blockFromItem.getStateFromMeta(tableStack.getMetadata());
-    EnumType type = blockState.getValue(BlockBase.VARIANT);
-    String typeName = type.getName();
+    EnumType tableType = blockState.getValue(BlockBase.VARIANT);
+    String typeName = tableType.getName();
 
     // bake tools
     ItemStack[] tools = this.bakeTools(this.toolStackHandler);
@@ -758,50 +761,48 @@ public class TileAutomator
 
       // if we've made it this far, eat the input, place the output and damage the tools
 
-      Util.consumeIngredientsFor(
-          recipe.getIngredientList(),
-          recipe.getSecondaryIngredients(),
-          this.inventoryItemStackHandler
+      int tableWidth = (tableTier == EnumTier.WORKSHOP) ? 5 : 3;
+      int tableHeight = (tableTier == EnumTier.WORKSHOP) ? 5 : 3;
+
+      this.craftingMatrixStackHandler = new CraftingMatrixStackHandler(tableWidth, tableHeight);
+
+      Util.consumeIngredientsFor(recipe.getIngredientList(), this.inventoryItemStackHandler, this.craftingMatrixStackHandler);
+      Util.consumeIngredientsFor(recipe.getSecondaryIngredients(), this.inventoryItemStackHandler, null);
+
+      AutomatorCraftingContext automatorCraftingContext = new AutomatorCraftingContext(
+          this.world,
+          this.craftingMatrixStackHandler,
+          this.toolStackHandler,
+          this.inventoryItemStackHandler,
+          this.fluidCapabilityWrapper,
+          tableType,
+          tableTier,
+          this.pos
       );
 
       Util.consumeFluidsFor(recipe.getFluidIngredient(), this.fluidHandlers);
 
-      recipe.damageTools(this.toolStackHandler, this.world, null, this.pos, false, null);
+      try {
+        ArrayList<ItemStack> output = new ArrayList<>(1);
+        recipe.doCraft(automatorCraftingContext, output);
+
+        for (ItemStack itemStack : output) {
+
+          for (int j = 0; j < this.inventoryItemStackHandler.getSlots(); j++) {
+            itemStack = this.inventoryItemStackHandler.insertItem(j, itemStack, false);
+
+            if (itemStack.isEmpty()) {
+              break;
+            }
+          }
+        }
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
 
       // TODO:
-      // - handle remaining items, functions / actions
-      // - insert output / additional outputs
-
-      /*
-      I think we're going to need a fake context with a fake player to pass into
-      the recipe's method doCraft.
-
-      Actually, we don't need a fake player.
-      We can do this by adding a new field to the context; something like
-        context.isPattern()
-
-      Better yet, we can simply use a null player and if the player is null,
-      we know that it came from a pattern. On second thought, a null player could
-      indicate that something went wrong when there should have been a player.
-      In that case, I would want the error to be reported so it could be fixed.
-      If we use null instead of an explicit field, we run the risk of absorbing
-      any future NPEs if the player object is ever null when it's expected to
-      not be null. We'll use the isPattern() approach.
-
-      Then we just write checks and branching behavior if the context belongs
-      to a pattern. This should allow us to use the recipe doCraft logic which
-      will handle all of the CrT stuff too.
-
-      TODO: Now we need to figure out how to build a crafting grid context using the
-      items extracted from the machine's inventory.
-
-      We could pass the crafting grid context into the util method that consumes
-      ingredients and fill it with the items that the util method extracts.
-
-      It looks like the recipe's doCraft can:
-        - consume fluids
-        - damage tools
-       */
+      // - handle remaining items
     }
   }
 
@@ -1468,6 +1469,20 @@ public class TileAutomator
 
       if (doDrain
           && !this.locked.get()
+          && fluidStack != null
+          && fluidStack.amount > 0
+          && this.getFluidAmount() == 0) {
+        this.memoryStack = null;
+      }
+
+      return fluidStack;
+    }
+
+    public FluidStack forceDrain(int maxDrain) {
+
+      FluidStack fluidStack = super.drainInternal(maxDrain, true);
+
+      if (!this.locked.get()
           && fluidStack != null
           && fluidStack.amount > 0
           && this.getFluidAmount() == 0) {
