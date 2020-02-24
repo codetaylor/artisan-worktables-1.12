@@ -786,6 +786,23 @@ public class TileAutomator
         ArrayList<ItemStack> output = new ArrayList<>(1);
         recipe.doCraft(automatorCraftingContext, output);
 
+        int matrixSlotCount = automatorCraftingContext.getCraftingMatrixHandler().getSlots();
+
+        for (int j = 0; j < matrixSlotCount; j++) {
+          ItemStack itemStack = automatorCraftingContext.getCraftingMatrixHandler().getStackInSlot(j);
+
+          if (!itemStack.isEmpty()) {
+
+            for (int k = 0; k < this.inventoryItemStackHandler.getSlots(); k++) {
+              itemStack = this.inventoryItemStackHandler.insertItem(k, itemStack, false);
+
+              if (itemStack.isEmpty()) {
+                break;
+              }
+            }
+          }
+        }
+
         for (ItemStack itemStack : output) {
 
           for (int j = 0; j < this.inventoryItemStackHandler.getSlots(); j++) {
@@ -800,9 +817,6 @@ public class TileAutomator
       } catch (Exception e) {
         e.printStackTrace();
       }
-
-      // TODO:
-      // - handle remaining items
     }
   }
 
