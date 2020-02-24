@@ -803,14 +803,23 @@ public class TileAutomator
           }
         }
 
-        for (ItemStack itemStack : output) {
+        if (this.outputMode.get(i).get() == EnumOutputMode.Inventory) {
 
-          for (int j = 0; j < this.inventoryItemStackHandler.getSlots(); j++) {
-            itemStack = this.inventoryItemStackHandler.insertItem(j, itemStack, false);
+          for (ItemStack itemStack : output) {
 
-            if (itemStack.isEmpty()) {
-              break;
+            for (int j = 0; j < this.inventoryItemStackHandler.getSlots(); j++) {
+              itemStack = this.inventoryItemStackHandler.insertItem(j, itemStack, false);
+
+              if (itemStack.isEmpty()) {
+                break;
+              }
             }
+          }
+
+        } else {
+
+          for (ItemStack itemStack : output) {
+            this.getOutputItemStackHandler(i).insert(itemStack, false);
           }
         }
 
