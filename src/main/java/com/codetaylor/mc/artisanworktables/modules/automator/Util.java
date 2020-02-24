@@ -94,6 +94,11 @@ public final class Util {
 
   public static boolean consumeFluidsFor(FluidStack requiredFluid, TileAutomator.FluidHandler[] fluidHandler) {
 
+    if (requiredFluid == null
+        || requiredFluid.amount == 0) {
+      return true;
+    }
+
     int requiredFluidAmount = requiredFluid.amount;
 
     for (TileAutomator.FluidHandler handler : fluidHandler) {
