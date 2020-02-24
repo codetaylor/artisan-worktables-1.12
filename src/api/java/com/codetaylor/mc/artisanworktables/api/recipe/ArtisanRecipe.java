@@ -551,7 +551,7 @@ public class ArtisanRecipe
 
     // Damage or destroy tools
     // Check for replacement tool
-    byte mask = 0;
+    long mask = 0;
 
     recipeTools:
     for (int i = 0; i < this.tools.length; i++) { // recipe tools
