@@ -6,6 +6,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -18,11 +20,13 @@ public class TileAutomatorPowerSupplierRF
 
   private final EnergyCapabilityDelegate energyCapabilityDelegate;
   private final ItemCapabilityDelegate itemCapabilityDelegate;
+  private final FluidCapabilityDelegate fluidCapabilityDelegate;
 
   public TileAutomatorPowerSupplierRF() {
 
     this.energyCapabilityDelegate = new EnergyCapabilityDelegate();
     this.itemCapabilityDelegate = new ItemCapabilityDelegate();
+    this.fluidCapabilityDelegate = new FluidCapabilityDelegate();
   }
 
   // --------------------------------------------------------------------------
@@ -60,10 +64,14 @@ public class TileAutomatorPowerSupplierRF
       this.itemCapabilityDelegate.setItemHandler(
           tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)
       );
+      this.fluidCapabilityDelegate.setFluidHandler(
+          tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN)
+      );
 
     } else {
       this.energyCapabilityDelegate.setEnergyStorage(null);
       this.itemCapabilityDelegate.setItemHandler(null);
+      this.fluidCapabilityDelegate.setFluidHandler(null);
     }
   }
 
@@ -75,7 +83,8 @@ public class TileAutomatorPowerSupplierRF
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
 
     return (capability == CapabilityEnergy.ENERGY
-        || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+        || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+        || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
   }
 
   @Nullable
@@ -91,6 +100,11 @@ public class TileAutomatorPowerSupplierRF
       this.updateCapabilityDelegates();
       //noinspection unchecked
       return (T) this.itemCapabilityDelegate;
+
+    } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      this.updateCapabilityDelegates();
+      //noinspection unchecked
+      return (T) this.fluidCapabilityDelegate;
     }
 
     return null;
@@ -153,6 +167,15 @@ public class TileAutomatorPowerSupplierRF
     public void setItemHandler(@Nullable IItemHandler iItemHandler) {
 
       this.itemHandler = iItemHandler;
+    }
+  }
+
+  public static class FluidCapabilityDelegate
+      extends FluidHandlerDelegate {
+
+    public void setFluidHandler(@Nullable IFluidHandler iFluidHandler) {
+
+      this.fluidHandler = iFluidHandler;
     }
   }
 }
