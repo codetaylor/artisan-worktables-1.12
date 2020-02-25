@@ -1,11 +1,14 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui.element;
 
+import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
+import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorOutputModeChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.Texture;
 import com.codetaylor.mc.athenaeum.gui.element.IGuiElementTooltipExtendedProvider;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
@@ -15,16 +18,13 @@ public class GuiElementButtonOutputMode
     extends GuiElementPanelButtonBase
     implements IGuiElementTooltipExtendedProvider {
 
-  private final IClickHandler clickHandler;
+  private final BlockPos blockPos;
+  private final int slotIndex;
   private final Supplier<TileAutomator.EnumOutputMode> currentOutputMode;
 
-  public interface IClickHandler {
-
-    void onClick();
-  }
-
   public GuiElementButtonOutputMode(
-      IClickHandler clickHandler,
+      BlockPos blockPos,
+      int slotIndex,
       Supplier<TileAutomator.EnumOutputMode> currentOutputMode,
       Supplier<AutomatorContainer.EnumState> currentState,
       GuiContainerBase guiBase,
@@ -41,7 +41,8 @@ public class GuiElementButtonOutputMode
         elementX, elementY,
         elementWidth, elementHeight
     );
-    this.clickHandler = clickHandler;
+    this.blockPos = blockPos;
+    this.slotIndex = slotIndex;
     this.currentOutputMode = currentOutputMode;
   }
 
@@ -61,7 +62,9 @@ public class GuiElementButtonOutputMode
   public void elementClicked(int mouseX, int mouseY, int mouseButton) {
 
     super.elementClicked(mouseX, mouseY, mouseButton);
-    this.clickHandler.onClick();
+    ModuleAutomator.PACKET_SERVICE.sendToServer(
+        new CSPacketAutomatorOutputModeChange(this.blockPos, this.slotIndex)
+    );
   }
 
   @Override

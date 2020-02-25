@@ -2,7 +2,6 @@ package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.*;
-import com.codetaylor.mc.artisanworktables.modules.automator.network.CSPacketAutomatorOutputModeChange;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -139,9 +138,8 @@ public class AutomatorGuiContainer
     for (int i = 0; i < 9; i++) {
       int slotIndex = i;
       this.guiContainerElementAdd(new GuiElementButtonOutputMode(
-          () -> ModuleAutomator.PACKET_SERVICE.sendToServer(
-              new CSPacketAutomatorOutputModeChange(this.tile.getPos(), slotIndex)
-          ),
+          this.tile.getPos(),
+          slotIndex,
           () -> this.tile.getOutputMode(slotIndex),
           this::getContainerState,
           this,
