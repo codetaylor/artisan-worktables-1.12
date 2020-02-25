@@ -41,9 +41,21 @@ public class ModuleAutomatorConfig {
     public int TICKS_PER_CRAFT = 10 * 20;
 
     @Config.Comment({
-        "The amount of RF consumed per craft.",
+        "The base amount of RF consumed per craft.",
         "Default: " + 1000
     })
     public int RF_PER_CRAFT = 1000;
+
+    @Config.Comment({
+        "Additional RF per item ingredient.",
+        "Default: " + 100
+    })
+    public int RF_PER_ITEM_INGREDIENT = 100;
+
+    @Config.Comment({
+        "Additional RF per mB of fluid ingredient.",
+        "Default: " + 1
+    })
+    public int RF_PER_MB_FLUID_INGREDIENT = 1;
   }
 }

@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator.tile;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixStackHandler;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
@@ -723,6 +724,13 @@ public class TileAutomator
         continue;
       }
 
+      // check recipe RF
+      int requiredEnergy = this.calculateRequiredRF(recipe);
+
+      if (this.getEnergyAmount() < requiredEnergy) {
+        continue;
+      }
+
       if (!ArtisanConfig.MODULE_WORKTABLES_CONFIG.enablePatternCreationForRecipesWithRequirements()) {
 
         // check recipe has no requirements
@@ -760,6 +768,8 @@ public class TileAutomator
       }
 
       // if we've made it this far, eat the input, place the output and damage the tools
+
+      this.energyStorage.extractEnergy(requiredEnergy, false);
 
       int tableWidth = (tableTier == EnumTier.WORKSHOP) ? 5 : 3;
       int tableHeight = (tableTier == EnumTier.WORKSHOP) ? 5 : 3;
@@ -827,6 +837,38 @@ public class TileAutomator
         e.printStackTrace();
       }
     }
+  }
+
+  private int calculateRequiredRF(IArtisanRecipe recipe) {
+
+    int ingredientCount = 0;
+    List<IArtisanIngredient> ingredientList = recipe.getIngredientList();
+
+    for (IArtisanIngredient ingredient : ingredientList) {
+
+      if (!ingredient.isEmpty()) {
+        ingredientCount += ingredient.getAmount();
+      }
+    }
+
+    List<IArtisanIngredient> secondaryIngredients = recipe.getSecondaryIngredients();
+
+    for (IArtisanIngredient secondaryIngredient : secondaryIngredients) {
+
+      if (!secondaryIngredient.isEmpty()) {
+        ingredientCount += secondaryIngredient.getAmount();
+      }
+    }
+
+    int fluidMBCount = 0;
+
+    if (recipe.getFluidIngredient() != null) {
+      fluidMBCount = recipe.getFluidIngredient().amount;
+    }
+
+    return Math.max(0, ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_PER_CRAFT)
+        + Math.max(0, ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_PER_ITEM_INGREDIENT) * ingredientCount
+        + Math.max(0, ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_PER_MB_FLUID_INGREDIENT) * fluidMBCount;
   }
 
   private boolean hasOutputSpaceFor(int recipeSlotIndex, IArtisanRecipe recipe) {
