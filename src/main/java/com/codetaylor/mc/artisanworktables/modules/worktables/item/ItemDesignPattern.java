@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.item;
 
+import com.codetaylor.mc.artisanworktables.api.internal.reference.Tags;
 import com.codetaylor.mc.artisanworktables.api.pattern.IItemDesignPattern;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktables;
 import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
@@ -23,9 +24,6 @@ public class ItemDesignPattern
   public static final String NAME = "design_pattern";
   public static final String NAME_BLANK = "blank";
   public static final String NAME_WRITTEN = "written";
-
-  private static final String TAG_ARTISAN_WORKTABLES = "ArtisanWorktables";
-  private static final String TAG_RECIPE_NAME = "RecipeName";
 
   @Nonnull
   @Override
@@ -65,11 +63,11 @@ public class ItemDesignPattern
     if (itemStack.getItem() == this) {
       NBTTagCompound tagCompound = StackHelper.getTagSafe(itemStack);
 
-      if (tagCompound.hasKey(TAG_ARTISAN_WORKTABLES)) {
-        NBTTagCompound innerTagCompound = tagCompound.getCompoundTag(TAG_ARTISAN_WORKTABLES);
+      if (tagCompound.hasKey(Tags.TAG_ARTISAN_WORKTABLES)) {
+        NBTTagCompound innerTagCompound = tagCompound.getCompoundTag(Tags.TAG_ARTISAN_WORKTABLES);
 
-        if (innerTagCompound.hasKey(TAG_RECIPE_NAME)) {
-          return innerTagCompound.getString(TAG_RECIPE_NAME);
+        if (innerTagCompound.hasKey(Tags.TAG_RECIPE_NAME)) {
+          return innerTagCompound.getString(Tags.TAG_RECIPE_NAME);
         }
       }
     }
@@ -82,9 +80,9 @@ public class ItemDesignPattern
 
     if (itemStack.getItem() == this) {
       NBTTagCompound tagCompound = StackHelper.getTagSafe(itemStack);
-      NBTTagCompound innerTagCompound = tagCompound.getCompoundTag(TAG_ARTISAN_WORKTABLES);
-      innerTagCompound.setString(TAG_RECIPE_NAME, recipeName);
-      tagCompound.setTag(TAG_ARTISAN_WORKTABLES, innerTagCompound);
+      NBTTagCompound innerTagCompound = tagCompound.getCompoundTag(Tags.TAG_ARTISAN_WORKTABLES);
+      innerTagCompound.setString(Tags.TAG_RECIPE_NAME, recipeName);
+      tagCompound.setTag(Tags.TAG_ARTISAN_WORKTABLES, innerTagCompound);
     }
   }
 }
