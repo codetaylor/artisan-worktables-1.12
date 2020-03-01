@@ -654,7 +654,13 @@ public class TileAutomator
       return;
     }
 
-    this.tickCounter += 1;
+    if (this.tableItemStackHandler.getStackInSlot(0).isEmpty()
+        || this.energyStorage.getEnergyStored() == 0) {
+      this.tickCounter = 0;
+
+    } else {
+      this.tickCounter += 1;
+    }
 
     if (this.tickCounter >= ModuleAutomatorConfig.MECHANICAL_ARTISAN.TICKS_PER_CRAFT) {
       this.tickCounter = 0;
