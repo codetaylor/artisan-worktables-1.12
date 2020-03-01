@@ -62,6 +62,14 @@ public class AutomatorContainer
         this.tile.getTableItemStackHandler(), 0, 26, 56
     ));
 
+    for (int i = 0; i < 5; i++) {
+      this.containerSlotAdd(new PanelSlot(
+          () -> this.state, EnumState.Gear,
+          this.tile.getUpgradeItemStackHandler(), i, 71 + (i * 18), 65
+      ));
+    }
+
+
     for (int i = 0; i < 9; i++) {
       this.containerSlotAdd(new PanelSlot(
           () -> this.state, EnumState.Pattern,

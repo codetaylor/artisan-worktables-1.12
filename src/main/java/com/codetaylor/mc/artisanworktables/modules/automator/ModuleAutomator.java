@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomatorPowerRF;
+import com.codetaylor.mc.artisanworktables.modules.automator.item.ItemUpgrade;
 import com.codetaylor.mc.artisanworktables.modules.automator.network.*;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomatorPowerSupplierRF;
@@ -61,9 +62,15 @@ public class ModuleAutomator
 //    public static final BlockWorkshop WORKSHOP = new BlockWorkshop();
   }
 
+  @GameRegistry.ObjectHolder(ModuleAutomator.MOD_ID)
   public static class Items {
 
-//    public static final ItemDesignPattern DESIGN_PATTERN = new ItemDesignPattern();
+    @GameRegistry.ObjectHolder(ItemUpgrade.NAME_SPEED)
+    public static final ItemUpgrade UPGRADE_SPEED;
+
+    static {
+      UPGRADE_SPEED = null;
+    }
   }
 
   public static IPacketService PACKET_SERVICE;
@@ -144,6 +151,8 @@ public class ModuleAutomator
     registry.registerBlockWithItem(new BlockAutomator(), BlockAutomator.NAME);
     registry.registerBlockWithItem(new BlockAutomatorPowerRF(), BlockAutomatorPowerRF.NAME);
 
+    registry.registerItem(new ItemUpgrade(), ItemUpgrade.NAME_SPEED);
+
     //noinspection unchecked
     this.registerTileEntities(
         registry,
@@ -160,6 +169,10 @@ public class ModuleAutomator
       ModelRegistrationHelper.registerBlockItemModels(
           Blocks.AUTOMATOR,
           Blocks.AUTOMATOR_POWER_RF
+      );
+
+      ModelRegistrationHelper.registerItemModels(
+          Items.UPGRADE_SPEED
       );
     });
   }

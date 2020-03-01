@@ -17,6 +17,7 @@ import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomatorConf
 import com.codetaylor.mc.artisanworktables.modules.automator.Util;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorContainer;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.AutomatorGuiContainer;
+import com.codetaylor.mc.artisanworktables.modules.automator.item.ItemUpgrade;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockBase;
@@ -84,6 +85,7 @@ public class TileAutomator
   private final TileDataEnergyStorage<EnergyTank> energyStorageData;
   private final EnergyTank energyStorage;
   private final TableItemStackHandler tableItemStackHandler;
+  private final UpgradeItemStackHandler upgradeItemStackHandler;
   private final TileDataFloat progress;
   private int tickCounter;
 
@@ -202,6 +204,9 @@ public class TileAutomator
 
     this.tableItemStackHandler = new TableItemStackHandler();
     this.tableItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+
+    this.upgradeItemStackHandler = new UpgradeItemStackHandler();
+    this.upgradeItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
 
     this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
 
@@ -361,6 +366,11 @@ public class TileAutomator
   public TableItemStackHandler getTableItemStackHandler() {
 
     return this.tableItemStackHandler;
+  }
+
+  public UpgradeItemStackHandler getUpgradeItemStackHandler() {
+
+    return this.upgradeItemStackHandler;
   }
 
   public float getProgress() {
@@ -1125,6 +1135,32 @@ public class TileAutomator
 
       Block block = ((ItemBlock) stack.getItem()).getBlock();
       return (block instanceof BlockBase);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Upgrade Stack Handler
+  // ---------------------------------------------------------------------------
+
+  public static class UpgradeItemStackHandler
+      extends ObservableStackHandler
+      implements ITileDataItemStackHandler {
+
+    /* package */ UpgradeItemStackHandler() {
+
+      super(5);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+
+      return 1;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+
+      return ItemUpgrade.isUpgrade(stack);
     }
   }
 
