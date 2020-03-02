@@ -321,6 +321,8 @@ public class TileAutomator
         new TileDataItemStackHandler<>(this.patternItemStackHandler)
     ));
 
+    tileDataList.add(new TileDataItemStackHandler<>(this.upgradeItemStackHandler));
+
     for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
       tileDataList.add(new TileDataItemStackHandler<>(itemStackHandler));
     }
@@ -553,6 +555,7 @@ public class TileAutomator
     super.writeToNBT(compound);
     compound.setTag("energyStorage", this.energyStorage.serializeNBT());
     compound.setTag("tableItemStackHandler", this.tableItemStackHandler.serializeNBT());
+    compound.setTag("upgradeItemStackHandler", this.upgradeItemStackHandler.serializeNBT());
     compound.setTag("patternItemStackHandler", this.patternItemStackHandler.serializeNBT());
 
     for (int i = 0; i < this.outputItemStackHandler.length; i++) {
@@ -597,6 +600,7 @@ public class TileAutomator
     super.readFromNBT(compound);
     this.energyStorage.deserializeNBT(compound.getCompoundTag("energyStorage"));
     this.tableItemStackHandler.deserializeNBT(compound.getCompoundTag("tableItemStackHandler"));
+    this.upgradeItemStackHandler.deserializeNBT(compound.getCompoundTag("upgradeItemStackHandler"));
     this.patternItemStackHandler.deserializeNBT(compound.getCompoundTag("patternItemStackHandler"));
 
     for (int i = 0; i < this.outputItemStackHandler.length; i++) {
