@@ -5,6 +5,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nullable;
+
 public class ItemUpgrade
     extends Item {
 
@@ -34,5 +36,18 @@ public class ItemUpgrade
     }
 
     return true;
+  }
+
+  @Nullable
+  public static NBTTagCompound getUpgradeTag(ItemStack itemStack) {
+
+    if (ItemUpgrade.isUpgrade(itemStack)) {
+      NBTTagCompound itemTag = itemStack.getTagCompound();
+      return (itemTag == null) ? null : itemTag
+          .getCompoundTag(Tags.TAG_ARTISAN_WORKTABLES)
+          .getCompoundTag(Tags.TAG_UPGRADE);
+    }
+
+    return null;
   }
 }
