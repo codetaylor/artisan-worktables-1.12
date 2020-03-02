@@ -8,6 +8,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixSt
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.api.internal.reference.Tags;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.artisanworktables.lib.IBooleanSupplier;
@@ -48,6 +49,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -87,7 +89,7 @@ public class TileAutomator
   private final TableItemStackHandler tableItemStackHandler;
   private final UpgradeItemStackHandler upgradeItemStackHandler;
   private final TileDataFloat progress;
-  private int tickCounter;
+  private float tickCounter;
 
   @SideOnly(Side.CLIENT)
   private int previousEnergy;
@@ -184,6 +186,7 @@ public class TileAutomator
   private final ItemCapabilityWrapper itemCapabilityWrapper;
   private final FluidCapabilityWrapper fluidCapabilityWrapper;
   private ICraftingMatrixStackHandler craftingMatrixStackHandler;
+  private final Stats stats;
 
   // ---------------------------------------------------------------------------
   // Constructor
@@ -192,6 +195,9 @@ public class TileAutomator
   public TileAutomator() {
 
     super(ModuleAutomator.TILE_DATA_SERVICE);
+
+    // stats
+    this.stats = new Stats();
 
     // power panel
 
@@ -206,7 +212,10 @@ public class TileAutomator
     this.tableItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
 
     this.upgradeItemStackHandler = new UpgradeItemStackHandler();
-    this.upgradeItemStackHandler.addObserver((stackHandler, slotIndex) -> this.markDirty());
+    this.upgradeItemStackHandler.addObserver((stackHandler, slotIndex) -> {
+      this.markDirty();
+      this.stats.calculate(this.upgradeItemStackHandler);
+    });
 
     this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
 
@@ -321,6 +330,8 @@ public class TileAutomator
         new TileDataItemStackHandler<>(this.patternItemStackHandler)
     ));
 
+    this.stats.registerNetwork(tileDataList);
+
     tileDataList.add(new TileDataItemStackHandler<>(this.upgradeItemStackHandler));
 
     for (OutputItemStackHandler itemStackHandler : this.outputItemStackHandler) {
@@ -349,6 +360,66 @@ public class TileAutomator
     tileDataList.add(new TileDataItemStackHandler<>(this.toolboxStackHandler));
 
     this.registerTileDataForNetwork(tileDataList.toArray(new ITileData[0]));
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Stats
+  // ---------------------------------------------------------------------------
+
+  public static class Stats
+      implements INBTSerializable<NBTTagCompound> {
+
+    private final TileDataFloat speed;
+
+    public Stats() {
+
+      this.speed = new TileDataFloat(1);
+    }
+
+    public TileDataFloat getSpeed() {
+
+      return this.speed;
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+
+      NBTTagCompound tag = new NBTTagCompound();
+      tag.setFloat(Tags.TAG_UPGRADE_SPEED, this.speed.get());
+      return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+
+      this.speed.set(tag.getFloat(Tags.TAG_UPGRADE_SPEED));
+    }
+
+    public void registerNetwork(List<ITileData> tileDataList) {
+
+      tileDataList.add(this.speed);
+    }
+
+    public void calculate(UpgradeItemStackHandler stackHandler) {
+
+      this.speed.set(1);
+
+      for (int i = 0; i < stackHandler.getSlots(); i++) {
+        ItemStack stackInSlot = stackHandler.getStackInSlot(i);
+
+        if (stackInSlot.isEmpty()) {
+          continue;
+        }
+
+        NBTTagCompound upgradeTag = ItemUpgrade.getUpgradeTag(stackInSlot);
+
+        if (upgradeTag == null) {
+          continue;
+        }
+
+        this.speed.set(this.speed.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_SPEED));
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -553,6 +624,7 @@ public class TileAutomator
   public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
     super.writeToNBT(compound);
+    compound.setTag("stats", this.stats.serializeNBT());
     compound.setTag("energyStorage", this.energyStorage.serializeNBT());
     compound.setTag("tableItemStackHandler", this.tableItemStackHandler.serializeNBT());
     compound.setTag("upgradeItemStackHandler", this.upgradeItemStackHandler.serializeNBT());
@@ -598,6 +670,7 @@ public class TileAutomator
   public void readFromNBT(NBTTagCompound compound) {
 
     super.readFromNBT(compound);
+    this.stats.deserializeNBT(compound.getCompoundTag("stats"));
     this.energyStorage.deserializeNBT(compound.getCompoundTag("energyStorage"));
     this.tableItemStackHandler.deserializeNBT(compound.getCompoundTag("tableItemStackHandler"));
     this.upgradeItemStackHandler.deserializeNBT(compound.getCompoundTag("upgradeItemStackHandler"));
@@ -673,7 +746,7 @@ public class TileAutomator
       this.tickCounter = 0;
 
     } else {
-      this.tickCounter += 1;
+      this.tickCounter += this.stats.speed.get();
     }
 
     if (this.tickCounter >= ModuleAutomatorConfig.MECHANICAL_ARTISAN.TICKS_PER_CRAFT) {
