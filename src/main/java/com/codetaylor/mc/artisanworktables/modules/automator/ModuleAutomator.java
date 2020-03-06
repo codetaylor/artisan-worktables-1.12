@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomator;
 import com.codetaylor.mc.artisanworktables.modules.automator.block.BlockAutomatorPowerRF;
+import com.codetaylor.mc.artisanworktables.modules.automator.event.TooltipEventHandler;
 import com.codetaylor.mc.artisanworktables.modules.automator.item.ItemUpgrade;
 import com.codetaylor.mc.artisanworktables.modules.automator.network.*;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
@@ -17,6 +18,7 @@ import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -85,6 +87,8 @@ public class ModuleAutomator
 
     PACKET_SERVICE = this.enableNetwork();
     TILE_DATA_SERVICE = this.enableNetworkTileDataService(PACKET_SERVICE);
+
+    MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
   }
 
   @Override

@@ -82,6 +82,10 @@ item.artisanworktables.artisans.solderer.name=Artisan's %s Solderer
 tile.artisanworktables.automator.name=Mechanical Artisan
 tile.artisanworktables.automator_power_rf.name=Artisanal Power Converter (RF)
 
+# Upgrade Items
+item.artisanworktables.upgrade.speed.name=Speed Upgrade
+tooltip.artisanworktables.automator.upgrade.speed=Speed: %d%%
+
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=无序合成
 jei.artisanworktables.tooltip.chance=%s%s%%概率合成
