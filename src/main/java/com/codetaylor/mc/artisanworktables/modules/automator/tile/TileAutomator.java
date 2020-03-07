@@ -596,6 +596,11 @@ public class TileAutomator
     return this.toolboxStackHandler;
   }
 
+  public Stats getStats() {
+
+    return this.stats;
+  }
+
   // ---------------------------------------------------------------------------
   // - Capabilities
   // ---------------------------------------------------------------------------

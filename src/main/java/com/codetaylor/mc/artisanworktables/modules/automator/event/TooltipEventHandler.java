@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.event;
 
 import com.codetaylor.mc.artisanworktables.api.internal.reference.Tags;
+import com.codetaylor.mc.artisanworktables.modules.automator.TooltipUtil;
 import com.codetaylor.mc.artisanworktables.modules.automator.item.ItemUpgrade;
 import com.codetaylor.mc.athenaeum.util.TooltipHelper;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
@@ -35,10 +35,7 @@ public class TooltipEventHandler {
         int speedModifier = (int) (upgradeTag.getFloat(Tags.TAG_UPGRADE_SPEED) * 100);
 
         if (speedModifier != 0) {
-          tooltip.add(TextFormatting.GRAY + I18n.format(
-              "tooltip.artisanworktables.automator.upgrade.speed",
-              (speedModifier > 0) ? TextFormatting.DARK_GREEN + "+" + speedModifier : "" + TextFormatting.DARK_RED + speedModifier
-          ));
+          tooltip.add(TextFormatting.GRAY + TooltipUtil.getSpeedString(speedModifier, true));
         }
       }
 
@@ -46,10 +43,7 @@ public class TooltipEventHandler {
         int energyUsageModifier = (int) (upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE) * 100);
 
         if (energyUsageModifier != 0) {
-          tooltip.add(TextFormatting.GRAY + I18n.format(
-              "tooltip.artisanworktables.automator.upgrade.energy.usage",
-              (energyUsageModifier > 0) ? TextFormatting.DARK_RED + "+" + energyUsageModifier : "" + TextFormatting.DARK_GREEN + energyUsageModifier
-          ));
+          tooltip.add(TextFormatting.GRAY + TooltipUtil.getEnergyUsageString(energyUsageModifier, true));
         }
       }
 

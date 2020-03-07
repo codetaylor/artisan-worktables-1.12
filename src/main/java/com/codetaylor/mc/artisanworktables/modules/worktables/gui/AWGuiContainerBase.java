@@ -493,6 +493,7 @@ public abstract class AWGuiContainerBase
     return this.tileEntity;
   }
 
+  @Override
   protected void renderToolTip(ItemStack stack, int x, int y) {
 
     Slot slot = this.getSlotUnderMouse();

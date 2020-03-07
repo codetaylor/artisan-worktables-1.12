@@ -1,7 +1,9 @@
 package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
+import com.codetaylor.mc.artisanworktables.modules.automator.TooltipUtil;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.element.*;
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.slot.TableSlot;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.GuiContainerBase;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -10,10 +12,17 @@ import com.codetaylor.mc.athenaeum.gui.element.GuiElementTextureRectangle;
 import com.codetaylor.mc.athenaeum.gui.element.GuiElementTitle;
 import com.codetaylor.mc.athenaeum.packer.PackAPI;
 import com.codetaylor.mc.athenaeum.packer.PackedData;
+import com.codetaylor.mc.athenaeum.util.TooltipHelper;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AutomatorGuiContainer
     extends GuiContainerBase {
@@ -359,6 +368,40 @@ public class AutomatorGuiContainer
     this.drawDefaultBackground();
     super.drawScreen(mouseX, mouseY, partialTicks);
     this.renderHoveredToolTip(mouseX, mouseY);
+  }
+
+  @Override
+  protected void renderToolTip(ItemStack stack, int x, int y) {
+
+    Slot slotUnderMouse = this.getSlotUnderMouse();
+
+    if (stack.isEmpty() || !(slotUnderMouse instanceof TableSlot)) {
+      super.renderToolTip(stack, x, y);
+      return;
+    }
+
+    List<String> tooltip = new ArrayList<>();
+
+    tooltip.add(stack.getRarity().rarityColor + stack.getDisplayName());
+
+    if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
+        || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+
+      TileAutomator.Stats stats = this.tile.getStats();
+
+      int speedModifier = (int) (stats.getSpeed().get() * 100);
+      tooltip.add(TextFormatting.GRAY + TooltipUtil.getSpeedString(speedModifier, false));
+
+      int energyUsageModifier = (int) (stats.getEnergyUsage().get() * 100);
+      tooltip.add(TextFormatting.GRAY + TooltipUtil.getEnergyUsageString(energyUsageModifier, false));
+
+    } else {
+      tooltip.add(TooltipHelper.tooltipHoldShiftStringGet());
+    }
+
+    FontRenderer font = stack.getItem().getFontRenderer(stack);
+    this.drawHoveringText(tooltip, x, y, (font == null ? this.fontRenderer : font));
+    net.minecraftforge.fml.client.config.GuiUtils.postItemToolTip();
   }
 
   private Texture getTexture(String path) {

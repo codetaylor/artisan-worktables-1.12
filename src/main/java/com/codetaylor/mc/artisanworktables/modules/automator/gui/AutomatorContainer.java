@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.automator.gui;
 
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.slot.OutputPanelSlot;
 import com.codetaylor.mc.artisanworktables.modules.automator.gui.slot.PanelSlot;
+import com.codetaylor.mc.artisanworktables.modules.automator.gui.slot.TableSlot;
 import com.codetaylor.mc.artisanworktables.modules.automator.tile.TileAutomator;
 import com.codetaylor.mc.athenaeum.gui.ContainerBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +58,7 @@ public class AutomatorContainer
     this.containerPlayerInventoryAdd();
     this.containerPlayerHotbarAdd();
 
-    this.containerSlotAdd(new PanelSlot(
+    this.containerSlotAdd(new TableSlot(
         () -> this.state, EnumState.Gear,
         this.tile.getTableItemStackHandler(), 0, 26, 56
     ));
@@ -68,7 +69,6 @@ public class AutomatorContainer
           this.tile.getUpgradeItemStackHandler(), i, 71 + (i * 18), 65
       ));
     }
-
 
     for (int i = 0; i < 9; i++) {
       this.containerSlotAdd(new PanelSlot(
