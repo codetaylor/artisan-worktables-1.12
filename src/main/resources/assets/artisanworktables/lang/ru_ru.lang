@@ -102,6 +102,7 @@ tile.artisanworktables.automator_power_rf.name=Artisanal Power Converter (RF)
 # Upgrade Items
 item.artisanworktables.upgrade.speed.name=Speed Upgrade
 tooltip.artisanworktables.automator.upgrade.speed=Speed: %d%%
+tooltip.artisanworktables.automator.upgrade.energy.usage=Energy Usage: %d%%
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Бесформенный рецепт

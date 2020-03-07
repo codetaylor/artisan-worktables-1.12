@@ -20,6 +20,7 @@
         * `tooltip.artisanworktables.automator.fluid.mode.drain.info`
         * `item.artisanworktables.upgrade.speed.name`
         * `tooltip.artisanworktables.automator.upgrade.speed`
+        * `tooltip.artisanworktables.automator.upgrade.energy.usage`
         
   * **API:**
     * Bumped version to 10
