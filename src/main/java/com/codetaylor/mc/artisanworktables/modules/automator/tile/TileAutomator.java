@@ -370,10 +370,12 @@ public class TileAutomator
       implements INBTSerializable<NBTTagCompound> {
 
     private final TileDataFloat speed;
+    private final TileDataFloat energyUsage;
 
     public Stats() {
 
       this.speed = new TileDataFloat(1);
+      this.energyUsage = new TileDataFloat(1);
     }
 
     public TileDataFloat getSpeed() {
@@ -381,11 +383,17 @@ public class TileAutomator
       return this.speed;
     }
 
+    public TileDataFloat getEnergyUsage() {
+
+      return this.energyUsage;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setFloat(Tags.TAG_UPGRADE_SPEED, this.speed.get());
+      tag.setFloat(Tags.TAG_UPGRADE_ENERGY_USAGE, this.energyUsage.get());
       return tag;
     }
 
@@ -393,16 +401,19 @@ public class TileAutomator
     public void deserializeNBT(NBTTagCompound tag) {
 
       this.speed.set(tag.getFloat(Tags.TAG_UPGRADE_SPEED));
+      this.energyUsage.set(tag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
     }
 
     public void registerNetwork(List<ITileData> tileDataList) {
 
       tileDataList.add(this.speed);
+      tileDataList.add(this.energyUsage);
     }
 
     public void calculate(UpgradeItemStackHandler stackHandler) {
 
       this.speed.set(1);
+      this.energyUsage.set(1);
 
       for (int i = 0; i < stackHandler.getSlots(); i++) {
         ItemStack stackInSlot = stackHandler.getStackInSlot(i);
@@ -418,7 +429,11 @@ public class TileAutomator
         }
 
         this.speed.set(this.speed.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_SPEED));
+        this.energyUsage.set(this.energyUsage.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
       }
+
+      this.speed.set(Math.max(0, this.speed.get()));
+      this.energyUsage.set(Math.max(0, this.energyUsage.get()));
     }
   }
 
@@ -818,7 +833,7 @@ public class TileAutomator
       }
 
       // check recipe RF
-      int requiredEnergy = this.calculateRequiredRF(recipe);
+      int requiredEnergy = (int) (this.calculateRequiredRF(recipe) * this.stats.energyUsage.get());
 
       if (this.getEnergyAmount() < requiredEnergy) {
         continue;
@@ -929,6 +944,8 @@ public class TileAutomator
       } catch (Exception e) {
         e.printStackTrace();
       }
+
+      break;
     }
   }
 

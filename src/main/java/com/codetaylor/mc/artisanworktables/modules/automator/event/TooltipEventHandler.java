@@ -33,10 +33,22 @@ public class TooltipEventHandler {
 
       if (upgradeTag.hasKey(Tags.TAG_UPGRADE_SPEED)) {
         int speedModifier = (int) (upgradeTag.getFloat(Tags.TAG_UPGRADE_SPEED) * 100);
+
         if (speedModifier != 0) {
           tooltip.add(TextFormatting.GRAY + I18n.format(
               "tooltip.artisanworktables.automator.upgrade.speed",
-              (speedModifier > 0) ? "+" + speedModifier : speedModifier
+              (speedModifier > 0) ? TextFormatting.DARK_GREEN + "+" + speedModifier : "" + TextFormatting.DARK_RED + speedModifier
+          ));
+        }
+      }
+
+      if (upgradeTag.hasKey(Tags.TAG_UPGRADE_ENERGY_USAGE)) {
+        int energyUsageModifier = (int) (upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE) * 100);
+
+        if (energyUsageModifier != 0) {
+          tooltip.add(TextFormatting.GRAY + I18n.format(
+              "tooltip.artisanworktables.automator.upgrade.energy.usage",
+              (energyUsageModifier > 0) ? TextFormatting.DARK_RED + "+" + energyUsageModifier : "" + TextFormatting.DARK_GREEN + energyUsageModifier
           ));
         }
       }
