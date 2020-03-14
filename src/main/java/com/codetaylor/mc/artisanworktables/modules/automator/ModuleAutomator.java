@@ -70,8 +70,12 @@ public class ModuleAutomator
     @GameRegistry.ObjectHolder(ItemUpgrade.NAME_SPEED)
     public static final ItemUpgrade UPGRADE_SPEED;
 
+    @GameRegistry.ObjectHolder(ItemUpgrade.NAME_FLUID_CAPACITY)
+    public static final ItemUpgrade UPGRADE_FLUID_CAPACITY;
+
     static {
       UPGRADE_SPEED = null;
+      UPGRADE_FLUID_CAPACITY = null;
     }
   }
 
@@ -156,6 +160,7 @@ public class ModuleAutomator
     registry.registerBlockWithItem(new BlockAutomatorPowerRF(), BlockAutomatorPowerRF.NAME);
 
     registry.registerItem(new ItemUpgrade(), ItemUpgrade.NAME_SPEED);
+    registry.registerItem(new ItemUpgrade(), ItemUpgrade.NAME_FLUID_CAPACITY);
 
     //noinspection unchecked
     this.registerTileEntities(
@@ -176,7 +181,8 @@ public class ModuleAutomator
       );
 
       ModelRegistrationHelper.registerItemModels(
-          Items.UPGRADE_SPEED
+          Items.UPGRADE_SPEED,
+          Items.UPGRADE_FLUID_CAPACITY
       );
     });
   }

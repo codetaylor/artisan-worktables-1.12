@@ -199,6 +199,9 @@ public class TileAutomator
     // stats
     this.stats = new Stats();
 
+    // required to be initialized before upgrade observer
+    this.fluidHandlers = new FluidHandler[3];
+
     // power panel
 
     this.energyStorage = new EnergyTank(
@@ -215,6 +218,10 @@ public class TileAutomator
     this.upgradeItemStackHandler.addObserver((stackHandler, slotIndex) -> {
       this.markDirty();
       this.stats.calculate(this.upgradeItemStackHandler);
+
+      for (int i = 0; i < this.fluidHandlers.length; i++) {
+        this.fluidHandlers[i].setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY * this.stats.fluidCapacity.get()));
+      }
     });
 
     this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
@@ -263,7 +270,6 @@ public class TileAutomator
 
     // fluid panel
 
-    this.fluidHandlers = new FluidHandler[3];
     for (int i = 0; i < this.fluidHandlers.length; i++) {
       int index = i;
       this.fluidHandlers[index] = new FluidHandler(
@@ -371,11 +377,13 @@ public class TileAutomator
 
     private final TileDataFloat speed;
     private final TileDataFloat energyUsage;
+    private final TileDataFloat fluidCapacity;
 
     public Stats() {
 
       this.speed = new TileDataFloat(1);
       this.energyUsage = new TileDataFloat(1);
+      this.fluidCapacity = new TileDataFloat(1);
     }
 
     public TileDataFloat getSpeed() {
@@ -388,12 +396,18 @@ public class TileAutomator
       return this.energyUsage;
     }
 
+    public TileDataFloat getFluidCapacity() {
+
+      return this.fluidCapacity;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setFloat(Tags.TAG_UPGRADE_SPEED, this.speed.get());
       tag.setFloat(Tags.TAG_UPGRADE_ENERGY_USAGE, this.energyUsage.get());
+      tag.setFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY, this.fluidCapacity.get());
       return tag;
     }
 
@@ -402,18 +416,21 @@ public class TileAutomator
 
       this.speed.set(tag.getFloat(Tags.TAG_UPGRADE_SPEED));
       this.energyUsage.set(tag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
+      this.fluidCapacity.set(tag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY));
     }
 
     public void registerNetwork(List<ITileData> tileDataList) {
 
       tileDataList.add(this.speed);
       tileDataList.add(this.energyUsage);
+      tileDataList.add(this.fluidCapacity);
     }
 
     public void calculate(UpgradeItemStackHandler stackHandler) {
 
       this.speed.set(1);
       this.energyUsage.set(1);
+      this.fluidCapacity.set(1);
 
       for (int i = 0; i < stackHandler.getSlots(); i++) {
         ItemStack stackInSlot = stackHandler.getStackInSlot(i);
@@ -430,10 +447,12 @@ public class TileAutomator
 
         this.speed.set(this.speed.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_SPEED));
         this.energyUsage.set(this.energyUsage.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
+        this.fluidCapacity.set(this.fluidCapacity.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY));
       }
 
       this.speed.set(Math.max(0, this.speed.get()));
       this.energyUsage.set(Math.max(0, this.energyUsage.get()));
+      this.fluidCapacity.set(Math.max(0, this.fluidCapacity.get()));
     }
   }
 
@@ -713,6 +732,7 @@ public class TileAutomator
 
     for (int i = 0; i < this.fluidHandlers.length; i++) {
       this.fluidHandlers[i].readFromNBT(compound.getCompoundTag("fluidHandler" + i));
+      this.fluidHandlers[i].setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY * this.stats.fluidCapacity.get()));
     }
 
     this.bucketItemStackHandler.deserializeNBT(compound.getCompoundTag("bucketItemStackHandler"));
@@ -1682,6 +1702,17 @@ public class TileAutomator
       }
 
       return fluidStack;
+    }
+
+    @Override
+    public void setCapacity(int capacity) {
+
+      this.capacity = capacity;
+
+      if (this.fluid != null
+          && this.fluid.amount > capacity) {
+        this.forceDrain(this.fluid.amount - capacity);
+      }
     }
 
     public FluidStack forceDrain(int maxDrain) {

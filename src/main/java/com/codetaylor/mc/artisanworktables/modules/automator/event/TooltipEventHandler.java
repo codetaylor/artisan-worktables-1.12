@@ -47,6 +47,14 @@ public class TooltipEventHandler {
         }
       }
 
+      if (upgradeTag.hasKey(Tags.TAG_UPGRADE_FLUID_CAPACITY)) {
+        int fluidCapacityModifier = (int) (upgradeTag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY) * 100);
+
+        if (fluidCapacityModifier != 0) {
+          tooltip.add(TextFormatting.GRAY + TooltipUtil.getFluidCapacityString(fluidCapacityModifier, true));
+        }
+      }
+
     } else {
       tooltip.add(TooltipHelper.tooltipHoldShiftStringGet());
     }

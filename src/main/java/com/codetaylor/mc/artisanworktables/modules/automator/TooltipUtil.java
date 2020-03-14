@@ -25,6 +25,16 @@ public final class TooltipUtil {
     );
   }
 
+  public static String getFluidCapacityString(int fluidCapacityModifier, boolean isUpgrade) {
+
+    String prefix = TooltipUtil.getPrefix(fluidCapacityModifier, isUpgrade);
+
+    return I18n.format(
+        "tooltip.artisanworktables.automator.upgrade.fluid.capacity",
+        prefix + fluidCapacityModifier
+    );
+  }
+
   private static String getPrefix(int modifier, boolean isUpgrade) {
 
     String prefix = "";

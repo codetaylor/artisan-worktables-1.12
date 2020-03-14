@@ -11,6 +11,7 @@ public class ItemUpgrade
     extends Item {
 
   public static final String NAME_SPEED = "upgrade_speed";
+  public static final String NAME_FLUID_CAPACITY = "upgrade_fluid_capacity";
 
   public ItemUpgrade() {
 

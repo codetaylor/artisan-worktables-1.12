@@ -48,8 +48,10 @@ tile.artisanworktables.automator_power_rf.name=Artisanal Power Converter (RF)
 
 # Upgrade Items
 item.artisanworktables.upgrade.speed.name=Speed Upgrade
+item.artisanworktables.upgrade.fluid.capacity.name=Fluid Capacity Upgrade
 tooltip.artisanworktables.automator.upgrade.speed=Speed: %d%%
 tooltip.artisanworktables.automator.upgrade.energy.usage=Energy Usage: %d%%
+tooltip.artisanworktables.automator.upgrade.fluid.capacity=Fluid Capacity: %d%%
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Recette sans modèle
