@@ -55,6 +55,14 @@ public class TooltipEventHandler {
         }
       }
 
+      if (upgradeTag.hasKey(Tags.TAG_UPGRADE_ENERGY_CAPACITY)) {
+        int energyCapacityModifier = (int) (upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY) * 100);
+
+        if (energyCapacityModifier != 0) {
+          tooltip.add(TextFormatting.GRAY + TooltipUtil.getEnergyCapacityString(energyCapacityModifier, true));
+        }
+      }
+
     } else {
       tooltip.add(TooltipHelper.tooltipHoldShiftStringGet());
     }

@@ -35,6 +35,16 @@ public final class TooltipUtil {
     );
   }
 
+  public static String getEnergyCapacityString(int energyCapacityModifier, boolean isUpgrade) {
+
+    String prefix = TooltipUtil.getPrefix(energyCapacityModifier, isUpgrade);
+
+    return I18n.format(
+        "tooltip.artisanworktables.automator.upgrade.energy.capacity",
+        prefix + energyCapacityModifier
+    );
+  }
+
   private static String getPrefix(int modifier, boolean isUpgrade) {
 
     String prefix = "";

@@ -220,8 +220,10 @@ public class TileAutomator
       this.stats.calculate(this.upgradeItemStackHandler);
 
       for (int i = 0; i < this.fluidHandlers.length; i++) {
-        this.fluidHandlers[i].setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY * this.stats.fluidCapacity.get()));
+        this.fluidHandlers[i].setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY * this.stats.getFluidCapacity().get()));
       }
+
+      this.energyStorage.setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_CAPACITY * this.stats.getEnergyCapacity().get()));
     });
 
     this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
@@ -378,12 +380,14 @@ public class TileAutomator
     private final TileDataFloat speed;
     private final TileDataFloat energyUsage;
     private final TileDataFloat fluidCapacity;
+    private final TileDataFloat energyCapacity;
 
     public Stats() {
 
       this.speed = new TileDataFloat(1);
       this.energyUsage = new TileDataFloat(1);
       this.fluidCapacity = new TileDataFloat(1);
+      this.energyCapacity = new TileDataFloat(1);
     }
 
     public TileDataFloat getSpeed() {
@@ -401,6 +405,11 @@ public class TileAutomator
       return this.fluidCapacity;
     }
 
+    public TileDataFloat getEnergyCapacity() {
+
+      return this.energyCapacity;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
 
@@ -408,6 +417,7 @@ public class TileAutomator
       tag.setFloat(Tags.TAG_UPGRADE_SPEED, this.speed.get());
       tag.setFloat(Tags.TAG_UPGRADE_ENERGY_USAGE, this.energyUsage.get());
       tag.setFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY, this.fluidCapacity.get());
+      tag.setFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY, this.energyCapacity.get());
       return tag;
     }
 
@@ -417,6 +427,7 @@ public class TileAutomator
       this.speed.set(tag.getFloat(Tags.TAG_UPGRADE_SPEED));
       this.energyUsage.set(tag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
       this.fluidCapacity.set(tag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY));
+      this.energyCapacity.set(tag.getFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY));
     }
 
     public void registerNetwork(List<ITileData> tileDataList) {
@@ -424,6 +435,7 @@ public class TileAutomator
       tileDataList.add(this.speed);
       tileDataList.add(this.energyUsage);
       tileDataList.add(this.fluidCapacity);
+      tileDataList.add(this.energyCapacity);
     }
 
     public void calculate(UpgradeItemStackHandler stackHandler) {
@@ -431,6 +443,7 @@ public class TileAutomator
       this.speed.set(1);
       this.energyUsage.set(1);
       this.fluidCapacity.set(1);
+      this.energyCapacity.set(1);
 
       for (int i = 0; i < stackHandler.getSlots(); i++) {
         ItemStack stackInSlot = stackHandler.getStackInSlot(i);
@@ -448,11 +461,13 @@ public class TileAutomator
         this.speed.set(this.speed.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_SPEED));
         this.energyUsage.set(this.energyUsage.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
         this.fluidCapacity.set(this.fluidCapacity.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY));
+        this.energyCapacity.set(this.energyCapacity.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY));
       }
 
       this.speed.set(Math.max(0, this.speed.get()));
       this.energyUsage.set(Math.max(0, this.energyUsage.get()));
       this.fluidCapacity.set(Math.max(0, this.fluidCapacity.get()));
+      this.energyCapacity.set(Math.max(0, this.energyCapacity.get()));
     }
   }
 
@@ -710,6 +725,7 @@ public class TileAutomator
 
     super.readFromNBT(compound);
     this.stats.deserializeNBT(compound.getCompoundTag("stats"));
+    this.energyStorage.setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_CAPACITY * this.stats.getEnergyCapacity().get()));
     this.energyStorage.deserializeNBT(compound.getCompoundTag("energyStorage"));
     this.tableItemStackHandler.deserializeNBT(compound.getCompoundTag("tableItemStackHandler"));
     this.upgradeItemStackHandler.deserializeNBT(compound.getCompoundTag("upgradeItemStackHandler"));
@@ -732,7 +748,7 @@ public class TileAutomator
 
     for (int i = 0; i < this.fluidHandlers.length; i++) {
       this.fluidHandlers[i].readFromNBT(compound.getCompoundTag("fluidHandler" + i));
-      this.fluidHandlers[i].setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY * this.stats.fluidCapacity.get()));
+      this.fluidHandlers[i].setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.FLUID_CAPACITY * this.stats.getFluidCapacity().get()));
     }
 
     this.bucketItemStackHandler.deserializeNBT(compound.getCompoundTag("bucketItemStackHandler"));
@@ -1223,6 +1239,15 @@ public class TileAutomator
     /* package */ EnergyTank(int capacity, int maxReceive, int maxExtract) {
 
       super(capacity, maxReceive, maxExtract);
+    }
+
+    public void setCapacity(int capacity) {
+
+      this.capacity = capacity;
+
+      if (this.energy > capacity) {
+        this.extractEnergy(this.energy - capacity, false);
+      }
     }
   }
 

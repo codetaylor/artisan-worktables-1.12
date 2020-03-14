@@ -398,6 +398,9 @@ public class AutomatorGuiContainer
       int fluidCapacityModifier = (int) (stats.getFluidCapacity().get() * 100);
       tooltip.add(TextFormatting.GRAY + TooltipUtil.getFluidCapacityString(fluidCapacityModifier, false));
 
+      int energyCapacityModifier = (int) (stats.getEnergyCapacity().get() * 100);
+      tooltip.add(TextFormatting.GRAY + TooltipUtil.getEnergyCapacityString(energyCapacityModifier, false));
+
     } else {
       tooltip.add(TooltipHelper.tooltipHoldShiftStringGet());
     }
