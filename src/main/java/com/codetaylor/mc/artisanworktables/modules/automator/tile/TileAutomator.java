@@ -44,6 +44,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -812,8 +813,46 @@ public class TileAutomator
 
     this.updateOutputStacks();
     this.updateBuckets();
+    this.exportItems();
 
     this.progress.set(this.tickCounter / (float) ModuleAutomatorConfig.MECHANICAL_ARTISAN.TICKS_PER_CRAFT);
+  }
+
+  private void exportItems() {
+
+    for (int i = 0; i < this.outputItemStackHandler.length; i++) {
+
+      if (this.outputMode.get(i).get() != EnumOutputMode.Export) {
+        continue;
+      }
+
+      ItemStack stackInSlot = this.outputItemStackHandler[i].getStackInSlot(0);
+      BlockPos down = this.getPos().down();
+
+      searchLoop:
+      for (int j = 0; j < EnumFacing.HORIZONTALS.length; j++) {
+        TileEntity tileEntity = this.world.getTileEntity(down.offset(EnumFacing.HORIZONTALS[j]));
+
+        if (tileEntity == null) {
+          continue;
+        }
+
+        IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.HORIZONTALS[j].getOpposite());
+
+        if (itemHandler == null) {
+          continue;
+        }
+
+        for (int k = 0; k < itemHandler.getSlots(); k++) {
+          ItemStack itemStack = itemHandler.insertItem(k, stackInSlot, false);
+
+          if (itemStack.getCount() != stackInSlot.getCount()) {
+            this.outputItemStackHandler[i].setStackInSlot(0, itemStack);
+            break searchLoop;
+          }
+        }
+      }
+    }
   }
 
   private void doCrafting() {
