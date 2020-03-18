@@ -21,10 +21,12 @@
         * `item.artisanworktables.upgrade.speed.name`
         * `item.artisanworktables.upgrade.fluid.capacity.name`
         * `item.artisanworktables.upgrade.energy.capacity.name`
+        * `item.artisanworktables.upgrade.auto.export.items.name`
         * `tooltip.artisanworktables.automator.upgrade.speed`
         * `tooltip.artisanworktables.automator.upgrade.energy.usage`
         * `tooltip.artisanworktables.automator.upgrade.fluid.capacity`
         * `tooltip.artisanworktables.automator.upgrade.energy.capacity`
+        * `tooltip.artisanworktables.automator.upgrade.auto.export.items`
         
   * **API:**
     * Bumped version to 10
@@ -37,6 +39,11 @@
     * New blocks:
         * Mechanical Artisan
         * Artisanal Power Converter (RF)
+    * New items:
+        * Speed Upgrade
+        * Fluid Capacity Upgrade
+        * Energy Capacity Upgrade
+        * Auto-Export Items Upgrade
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
     * Creative mode recipe exports now include NBT for all items [(#187)](https://github.com/codetaylor/artisan-worktables/issues/187)
     * Configs to change each table's harvest tool [(#192)](https://github.com/codetaylor/artisan-worktables/issues/192)

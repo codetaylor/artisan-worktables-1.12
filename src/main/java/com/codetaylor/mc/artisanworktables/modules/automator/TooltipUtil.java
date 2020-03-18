@@ -5,6 +5,16 @@ import net.minecraft.util.text.TextFormatting;
 
 public final class TooltipUtil {
 
+  public static String getAutoExportItemsString(boolean autoExportItems) {
+
+    String prefix = (autoExportItems) ? TextFormatting.DARK_GREEN.toString() : TextFormatting.DARK_RED.toString();
+
+    return I18n.format(
+        "tooltip.artisanworktables.automator.upgrade.auto.export.items",
+        prefix + autoExportItems
+    );
+  }
+
   public static String getSpeedString(int speedModifier, boolean isUpgrade) {
 
     String prefix = TooltipUtil.getPrefix(speedModifier, isUpgrade);

@@ -201,7 +201,10 @@ public class TileAutomator
     this.stats = new Stats();
 
     // required to be initialized before upgrade observer
-    this.fluidHandlers = new FluidHandler[3];
+    {
+      this.fluidHandlers = new FluidHandler[3];
+      this.outputMode = new ArrayList<>(9);
+    }
 
     // power panel
 
@@ -225,6 +228,16 @@ public class TileAutomator
       }
 
       this.energyStorage.setCapacity((int) (ModuleAutomatorConfig.MECHANICAL_ARTISAN.RF_CAPACITY * this.stats.getEnergyCapacity().get()));
+
+      if (!this.stats.getAutoExportItems().get()) {
+
+        for (TileDataEnum<EnumOutputMode> outputMode : this.outputMode) {
+
+          if (outputMode.get() == EnumOutputMode.Export) {
+            outputMode.set(EnumOutputMode.Keep);
+          }
+        }
+      }
     });
 
     this.energyStorageData = new TileDataEnergyStorage<>(this.energyStorage);
@@ -249,8 +262,6 @@ public class TileAutomator
         this.outputDirty[handlerIndex] = true;
       });
     }
-
-    this.outputMode = new ArrayList<>(9);
 
     for (int i = 0; i < 9; i++) {
       this.outputMode.add(new TileDataEnum<>(
@@ -382,6 +393,7 @@ public class TileAutomator
     private final TileDataFloat energyUsage;
     private final TileDataFloat fluidCapacity;
     private final TileDataFloat energyCapacity;
+    private final TileDataBoolean autoExportItems;
 
     public Stats() {
 
@@ -389,6 +401,7 @@ public class TileAutomator
       this.energyUsage = new TileDataFloat(1);
       this.fluidCapacity = new TileDataFloat(1);
       this.energyCapacity = new TileDataFloat(1);
+      this.autoExportItems = new TileDataBoolean(false);
     }
 
     public TileDataFloat getSpeed() {
@@ -411,6 +424,11 @@ public class TileAutomator
       return this.energyCapacity;
     }
 
+    public TileDataBoolean getAutoExportItems() {
+
+      return this.autoExportItems;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
 
@@ -419,6 +437,7 @@ public class TileAutomator
       tag.setFloat(Tags.TAG_UPGRADE_ENERGY_USAGE, this.energyUsage.get());
       tag.setFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY, this.fluidCapacity.get());
       tag.setFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY, this.energyCapacity.get());
+      tag.setBoolean(Tags.TAG_UPGRADE_AUTO_EXPORT_ITEMS, this.autoExportItems.get());
       return tag;
     }
 
@@ -429,6 +448,7 @@ public class TileAutomator
       this.energyUsage.set(tag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
       this.fluidCapacity.set(tag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY));
       this.energyCapacity.set(tag.getFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY));
+      this.autoExportItems.set(tag.getBoolean(Tags.TAG_UPGRADE_AUTO_EXPORT_ITEMS));
     }
 
     public void registerNetwork(List<ITileData> tileDataList) {
@@ -437,6 +457,7 @@ public class TileAutomator
       tileDataList.add(this.energyUsage);
       tileDataList.add(this.fluidCapacity);
       tileDataList.add(this.energyCapacity);
+      tileDataList.add(this.autoExportItems);
     }
 
     public void calculate(UpgradeItemStackHandler stackHandler) {
@@ -445,6 +466,7 @@ public class TileAutomator
       this.energyUsage.set(1);
       this.fluidCapacity.set(1);
       this.energyCapacity.set(1);
+      this.autoExportItems.set(false);
 
       for (int i = 0; i < stackHandler.getSlots(); i++) {
         ItemStack stackInSlot = stackHandler.getStackInSlot(i);
@@ -463,6 +485,10 @@ public class TileAutomator
         this.energyUsage.set(this.energyUsage.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_USAGE));
         this.fluidCapacity.set(this.fluidCapacity.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY));
         this.energyCapacity.set(this.energyCapacity.get() + upgradeTag.getFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY));
+
+        if (upgradeTag.getBoolean(Tags.TAG_UPGRADE_AUTO_EXPORT_ITEMS)) {
+          this.autoExportItems.set(true);
+        }
       }
 
       this.speed.set(Math.max(0, this.speed.get()));
@@ -524,7 +550,13 @@ public class TileAutomator
 
     int nextIndex = enumOutputMode.getIndex() + 1;
 
-    if (nextIndex == EnumOutputMode.values().length) {
+    if (!this.stats.getAutoExportItems().get()
+        && nextIndex < EnumOutputMode.values().length
+        && EnumOutputMode.fromIndex(nextIndex) == EnumOutputMode.Export) {
+      nextIndex += 1;
+    }
+
+    if (nextIndex >= EnumOutputMode.values().length) {
       nextIndex = 0;
     }
 

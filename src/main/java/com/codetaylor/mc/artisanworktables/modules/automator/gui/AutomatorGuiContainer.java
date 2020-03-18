@@ -401,6 +401,9 @@ public class AutomatorGuiContainer
       int energyCapacityModifier = (int) (stats.getEnergyCapacity().get() * 100);
       tooltip.add(TextFormatting.GRAY + TooltipUtil.getEnergyCapacityString(energyCapacityModifier, false));
 
+      boolean autoExportItems = stats.getAutoExportItems().get();
+      tooltip.add(TextFormatting.GRAY + TooltipUtil.getAutoExportItemsString(autoExportItems));
+
     } else {
       tooltip.add(TooltipHelper.tooltipHoldShiftStringGet());
     }
