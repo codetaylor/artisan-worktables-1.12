@@ -1126,7 +1126,7 @@ public class TileAutomator
     if (handler instanceof OutputItemStackHandler) {
 
       ItemStack copy = output.copy();
-      ItemStack insert = ((OutputItemStackHandler) handler).insert(copy, false);
+      ItemStack insert = ((OutputItemStackHandler) handler).insert(copy, true);
 
       if (!insert.isEmpty()) {
         return false;
