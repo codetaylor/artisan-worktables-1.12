@@ -46,6 +46,7 @@
         * Fluid Capacity Upgrade
         * Energy Capacity Upgrade
         * Auto-Export Items Upgrade
+        * Auto-Import Items Upgrade
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
     * Creative mode recipe exports now include NBT for all items [(#187)](https://github.com/codetaylor/artisan-worktables/issues/187)
     * Configs to change each table's harvest tool [(#192)](https://github.com/codetaylor/artisan-worktables/issues/192)
