@@ -66,6 +66,11 @@ public final class Util {
   private static boolean hasIngredientsFor(List<IArtisanIngredient> recipeIngredients, List<ItemStack> inventoryCopy) {
 
     for (IArtisanIngredient recipeIngredient : recipeIngredients) {
+
+      if (recipeIngredient.isEmpty()) {
+        continue;
+      }
+
       int amount = recipeIngredient.getAmount();
 
       for (ItemStack itemStack : inventoryCopy) {
