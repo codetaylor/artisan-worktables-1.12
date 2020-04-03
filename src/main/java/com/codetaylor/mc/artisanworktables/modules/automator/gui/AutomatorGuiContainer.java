@@ -404,6 +404,9 @@ public class AutomatorGuiContainer
       boolean autoExportItems = stats.getAutoExportItems().get();
       tooltip.add(TextFormatting.GRAY + TooltipUtil.getAutoExportItemsString(autoExportItems));
 
+      boolean autoImportItems = stats.getAutoImportItems().get();
+      tooltip.add(TextFormatting.GRAY + TooltipUtil.getAutoImportItemsString(autoImportItems));
+
     } else {
       tooltip.add(TooltipHelper.tooltipHoldShiftStringGet());
     }

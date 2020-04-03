@@ -394,6 +394,7 @@ public class TileAutomator
     private final TileDataFloat fluidCapacity;
     private final TileDataFloat energyCapacity;
     private final TileDataBoolean autoExportItems;
+    private final TileDataBoolean autoImportItems;
 
     public Stats() {
 
@@ -402,6 +403,7 @@ public class TileAutomator
       this.fluidCapacity = new TileDataFloat(1);
       this.energyCapacity = new TileDataFloat(1);
       this.autoExportItems = new TileDataBoolean(false);
+      this.autoImportItems = new TileDataBoolean(false);
     }
 
     public TileDataFloat getSpeed() {
@@ -429,6 +431,11 @@ public class TileAutomator
       return this.autoExportItems;
     }
 
+    public TileDataBoolean getAutoImportItems() {
+
+      return this.autoImportItems;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
 
@@ -438,6 +445,7 @@ public class TileAutomator
       tag.setFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY, this.fluidCapacity.get());
       tag.setFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY, this.energyCapacity.get());
       tag.setBoolean(Tags.TAG_UPGRADE_AUTO_EXPORT_ITEMS, this.autoExportItems.get());
+      tag.setBoolean(Tags.TAG_UPGRADE_AUTO_IMPORT_ITEMS, this.autoImportItems.get());
       return tag;
     }
 
@@ -449,6 +457,7 @@ public class TileAutomator
       this.fluidCapacity.set(tag.getFloat(Tags.TAG_UPGRADE_FLUID_CAPACITY));
       this.energyCapacity.set(tag.getFloat(Tags.TAG_UPGRADE_ENERGY_CAPACITY));
       this.autoExportItems.set(tag.getBoolean(Tags.TAG_UPGRADE_AUTO_EXPORT_ITEMS));
+      this.autoImportItems.set(tag.getBoolean(Tags.TAG_UPGRADE_AUTO_IMPORT_ITEMS));
     }
 
     public void registerNetwork(List<ITileData> tileDataList) {
@@ -458,6 +467,7 @@ public class TileAutomator
       tileDataList.add(this.fluidCapacity);
       tileDataList.add(this.energyCapacity);
       tileDataList.add(this.autoExportItems);
+      tileDataList.add(this.autoImportItems);
     }
 
     public void calculate(UpgradeItemStackHandler stackHandler) {
@@ -467,6 +477,7 @@ public class TileAutomator
       this.fluidCapacity.set(1);
       this.energyCapacity.set(1);
       this.autoExportItems.set(false);
+      this.autoImportItems.set(false);
 
       for (int i = 0; i < stackHandler.getSlots(); i++) {
         ItemStack stackInSlot = stackHandler.getStackInSlot(i);
@@ -488,6 +499,10 @@ public class TileAutomator
 
         if (upgradeTag.getBoolean(Tags.TAG_UPGRADE_AUTO_EXPORT_ITEMS)) {
           this.autoExportItems.set(true);
+        }
+
+        if (upgradeTag.getBoolean(Tags.TAG_UPGRADE_AUTO_IMPORT_ITEMS)) {
+          this.autoImportItems.set(true);
         }
       }
 

@@ -68,6 +68,11 @@ public class TooltipEventHandler {
         tooltip.add(TextFormatting.GRAY + TooltipUtil.getAutoExportItemsString(autoExportItems));
       }
 
+      if (upgradeTag.hasKey(Tags.TAG_UPGRADE_AUTO_IMPORT_ITEMS)) {
+        boolean autoExportItems = upgradeTag.getBoolean(Tags.TAG_UPGRADE_AUTO_IMPORT_ITEMS);
+        tooltip.add(TextFormatting.GRAY + TooltipUtil.getAutoImportItemsString(autoExportItems));
+      }
+
     } else {
       tooltip.add(TooltipHelper.tooltipHoldShiftStringGet());
     }
