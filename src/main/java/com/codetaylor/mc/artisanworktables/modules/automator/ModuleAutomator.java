@@ -79,11 +79,15 @@ public class ModuleAutomator
     @GameRegistry.ObjectHolder(ItemUpgrade.NAME_AUTO_EXPORT_ITEMS)
     public static final ItemUpgrade UPGRADE_AUTO_EXPORT_ITEMS;
 
+    @GameRegistry.ObjectHolder(ItemUpgrade.NAME_AUTO_IMPORT_ITEMS)
+    public static final ItemUpgrade UPGRADE_AUTO_IMPORT_ITEMS;
+
     static {
       UPGRADE_SPEED = null;
       UPGRADE_FLUID_CAPACITY = null;
       UPGRADE_ENERGY_CAPACITY = null;
       UPGRADE_AUTO_EXPORT_ITEMS = null;
+      UPGRADE_AUTO_IMPORT_ITEMS = null;
     }
   }
 
@@ -171,6 +175,7 @@ public class ModuleAutomator
     registry.registerItem(new ItemUpgrade(), ItemUpgrade.NAME_FLUID_CAPACITY);
     registry.registerItem(new ItemUpgrade(), ItemUpgrade.NAME_ENERGY_CAPACITY);
     registry.registerItem(new ItemUpgrade(), ItemUpgrade.NAME_AUTO_EXPORT_ITEMS);
+    registry.registerItem(new ItemUpgrade(), ItemUpgrade.NAME_AUTO_IMPORT_ITEMS);
 
     //noinspection unchecked
     this.registerTileEntities(
@@ -194,7 +199,8 @@ public class ModuleAutomator
           Items.UPGRADE_SPEED,
           Items.UPGRADE_FLUID_CAPACITY,
           Items.UPGRADE_ENERGY_CAPACITY,
-          Items.UPGRADE_AUTO_EXPORT_ITEMS
+          Items.UPGRADE_AUTO_EXPORT_ITEMS,
+          Items.UPGRADE_AUTO_IMPORT_ITEMS
       );
     });
   }

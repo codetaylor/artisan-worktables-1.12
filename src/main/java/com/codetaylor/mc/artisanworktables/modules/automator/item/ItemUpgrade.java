@@ -14,6 +14,7 @@ public class ItemUpgrade
   public static final String NAME_FLUID_CAPACITY = "upgrade_fluid_capacity";
   public static final String NAME_ENERGY_CAPACITY = "upgrade_energy_capacity";
   public static final String NAME_AUTO_EXPORT_ITEMS = "upgrade_auto_export_items";
+  public static final String NAME_AUTO_IMPORT_ITEMS = "upgrade_auto_import_items";
 
   public ItemUpgrade() {
 

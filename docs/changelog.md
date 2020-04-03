@@ -22,11 +22,13 @@
         * `item.artisanworktables.upgrade.fluid.capacity.name`
         * `item.artisanworktables.upgrade.energy.capacity.name`
         * `item.artisanworktables.upgrade.auto.export.items.name`
+        * `item.artisanworktables.upgrade.auto.import.items.name`
         * `tooltip.artisanworktables.automator.upgrade.speed`
         * `tooltip.artisanworktables.automator.upgrade.energy.usage`
         * `tooltip.artisanworktables.automator.upgrade.fluid.capacity`
         * `tooltip.artisanworktables.automator.upgrade.energy.capacity`
         * `tooltip.artisanworktables.automator.upgrade.auto.export.items`
+        * `tooltip.artisanworktables.automator.upgrade.auto.import.items`
         
   * **API:**
     * Bumped version to 10

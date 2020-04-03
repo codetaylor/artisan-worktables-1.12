@@ -103,11 +103,13 @@ item.artisanworktables.upgrade.speed.name=Speed Upgrade
 item.artisanworktables.upgrade.fluid.capacity.name=Fluid Capacity Upgrade
 item.artisanworktables.upgrade.energy.capacity.name=Energy Capacity Upgrade
 item.artisanworktables.upgrade.auto.export.items.name=Auto-Export Items Upgrade
+item.artisanworktables.upgrade.auto.import.items.name=Auto-Import Items Upgrade
 tooltip.artisanworktables.automator.upgrade.speed=Speed: %d%%
 tooltip.artisanworktables.automator.upgrade.energy.usage=Energy Usage: %d%%
 tooltip.artisanworktables.automator.upgrade.fluid.capacity=Fluid Capacity: %d%%
 tooltip.artisanworktables.automator.upgrade.energy.capacity=Energy Capacity: %d%%
 tooltip.artisanworktables.automator.upgrade.auto.export.items=Auto-Export Items: %s
+tooltip.artisanworktables.automator.upgrade.auto.import.items=Auto-Import Items: %s
 
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Formloses Rezept
