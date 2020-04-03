@@ -122,6 +122,10 @@ public class BlockAutomator
       // Inventory
       StackHelper.spawnStackHandlerContentsOnTop(
           world, automator.getInventoryItemStackHandler(), pos, 0);
+
+      // Upgrades
+      StackHelper.spawnStackHandlerContentsOnTop(
+          world, automator.getUpgradeItemStackHandler(), pos, 0);
     }
 
     super.breakBlock(world, pos, state);
