@@ -188,6 +188,8 @@ public class TileAutomator
   private final FluidCapabilityWrapper fluidCapabilityWrapper;
   private ICraftingMatrixStackHandler craftingMatrixStackHandler;
   private final Stats stats;
+  private static final int AUTO_IMPORT_TICK_INTERVAL = 20;
+  private int autoImportTickCount;
 
   // ---------------------------------------------------------------------------
   // Constructor
@@ -861,8 +863,70 @@ public class TileAutomator
     this.updateOutputStacks();
     this.updateBuckets();
     this.exportItems();
+    this.importItems();
 
     this.progress.set(this.tickCounter / (float) ModuleAutomatorConfig.MECHANICAL_ARTISAN.TICKS_PER_CRAFT);
+  }
+
+  private void importItems() {
+
+    if (!this.stats.getAutoImportItems().get()) {
+      return;
+    }
+
+    this.autoImportTickCount += 1;
+
+    if (this.autoImportTickCount < AUTO_IMPORT_TICK_INTERVAL) {
+      return;
+    }
+
+    this.autoImportTickCount = 0;
+
+    BlockPos down = this.getPos().down();
+    IItemHandler inventoryHandler = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+
+    if (inventoryHandler == null) {
+      return;
+    }
+
+    for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
+      TileEntity tileEntity = this.world.getTileEntity(down.offset(EnumFacing.HORIZONTALS[i]));
+
+      if (tileEntity == null) {
+        continue;
+      }
+
+      IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.HORIZONTALS[i].getOpposite());
+
+      if (itemHandler == null) {
+        continue;
+      }
+
+      for (int j = 0; j < itemHandler.getSlots(); j++) {
+        ItemStack stackInSlot = itemHandler.getStackInSlot(j);
+
+        if (stackInSlot.isEmpty()) {
+          continue;
+        }
+
+        ItemStack itemStack = inventoryHandler.insertItem(0, stackInSlot.copy(), false);
+
+        for (int k = 1; k < inventoryHandler.getSlots(); k++) {
+
+          if (!itemStack.isEmpty()) {
+            itemStack = inventoryHandler.insertItem(k, itemStack, false);
+
+          } else {
+            break;
+          }
+        }
+
+        if (stackInSlot.getCount() != itemStack.getCount()) {
+          itemHandler.extractItem(j, stackInSlot.getCount() - itemStack.getCount(), false);
+          break;
+        }
+      }
+    }
   }
 
   private void exportItems() {
