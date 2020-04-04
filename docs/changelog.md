@@ -1,35 +1,5 @@
 **1.23.0**
 
-  * **Translators:**
-    * The following lang keys were added to all lang files with en_us values:
-        * `tile.artisanworktables.automator.name`
-        * `tile.artisanworktables.automator_power_rf.name`
-        * `gui.artisanworktables.tooltip.automator.power`
-        * `tooltip.artisanworktables.automator.inventory.locked`
-        * `tooltip.artisanworktables.automator.inventory.locked.info`
-        * `tooltip.artisanworktables.automator.inventory.unlocked`
-        * `tooltip.artisanworktables.automator.inventory.unlocked.info`
-        * `tooltip.artisanworktables.automator.fluid.locked`
-        * `tooltip.artisanworktables.automator.fluid.locked.info`
-        * `tooltip.artisanworktables.automator.fluid.unlocked`
-        * `tooltip.artisanworktables.automator.fluid.unlocked.info`
-        * `tooltip.artisanworktables.automator.fluid.mode`
-        * `tooltip.artisanworktables.automator.fluid.mode.fill`
-        * `tooltip.artisanworktables.automator.fluid.mode.fill.info`
-        * `tooltip.artisanworktables.automator.fluid.mode.drain`
-        * `tooltip.artisanworktables.automator.fluid.mode.drain.info`
-        * `item.artisanworktables.upgrade.speed.name`
-        * `item.artisanworktables.upgrade.fluid.capacity.name`
-        * `item.artisanworktables.upgrade.energy.capacity.name`
-        * `item.artisanworktables.upgrade.auto.export.items.name`
-        * `item.artisanworktables.upgrade.auto.import.items.name`
-        * `tooltip.artisanworktables.automator.upgrade.speed`
-        * `tooltip.artisanworktables.automator.upgrade.energy.usage`
-        * `tooltip.artisanworktables.automator.upgrade.fluid.capacity`
-        * `tooltip.artisanworktables.automator.upgrade.energy.capacity`
-        * `tooltip.artisanworktables.automator.upgrade.auto.export.items`
-        * `tooltip.artisanworktables.automator.upgrade.auto.import.items`
-        
   * **API:**
     * Bumped version to 10
     * Added `com.codetaylor.mc.artisanworktables.api.pattern.IItemPattern`
@@ -38,15 +8,6 @@
     * Added method `enablePatternCreationForRecipesWithRequirements` to `IModuleWorktablesConfig`
 
   * **Added:**
-    * New blocks:
-        * Mechanical Artisan
-        * Artisanal Power Converter (RF)
-    * New items:
-        * Speed Upgrade
-        * Fluid Capacity Upgrade
-        * Energy Capacity Upgrade
-        * Auto-Export Items Upgrade
-        * Auto-Import Items Upgrade
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
     * Creative mode recipe exports now include NBT for all items [(#187)](https://github.com/codetaylor/artisan-worktables/issues/187)
     * Configs to change each table's harvest tool [(#192)](https://github.com/codetaylor/artisan-worktables/issues/192)

@@ -95,23 +95,6 @@ item.artisanworktables.artisans.solderer.name=Artisan's %s Solderer
 item.artisanworktables.design.pattern.written.name=Дизайнерский шаблон
 item.artisanworktables.design.pattern.blank.name=Пустой дизайнерский шаблон
 
-# Mechanical Artisan
-tile.artisanworktables.automator.name=Mechanical Artisan
-tile.artisanworktables.automator_power_rf.name=Artisanal Power Converter (RF)
-
-# Upgrade Items
-item.artisanworktables.upgrade.speed.name=Speed Upgrade
-item.artisanworktables.upgrade.fluid.capacity.name=Fluid Capacity Upgrade
-item.artisanworktables.upgrade.energy.capacity.name=Energy Capacity Upgrade
-item.artisanworktables.upgrade.auto.export.items.name=Auto-Export Items Upgrade
-item.artisanworktables.upgrade.auto.import.items.name=Auto-Import Items Upgrade
-tooltip.artisanworktables.automator.upgrade.speed=Speed: %d%%
-tooltip.artisanworktables.automator.upgrade.energy.usage=Energy Usage: %d%%
-tooltip.artisanworktables.automator.upgrade.fluid.capacity=Fluid Capacity: %d%%
-tooltip.artisanworktables.automator.upgrade.energy.capacity=Energy Capacity: %d%%
-tooltip.artisanworktables.automator.upgrade.auto.export.items=Auto-Export Items: %s
-tooltip.artisanworktables.automator.upgrade.auto.import.items=Auto-Import Items: %s
-
 # JEI
 jei.artisanworktables.tooltip.shapeless.recipe=Бесформенный рецепт
 jei.artisanworktables.tooltip.chance=%s%s%% шанс создания
@@ -137,28 +120,6 @@ gui.artisanworktables.tooltip.button.locked.enabled=Решим слота: За�
 item.artisanworktables.tooltip.durability=Прочность: %d / %d
 item.artisanworktables.tooltip.creative.table.oredict.header=Словарь руд: %s(SHIFT + ЛКМ)
 item.artisanworktables.tooltip.creative.table.oredict.none=-none-
-item.artisanworktables.tooltip.automator.output.slot.mode=Mode: %s
-item.artisanworktables.tooltip.automator.output.slot.mode.keep=Keep
-item.artisanworktables.tooltip.automator.output.slot.mode.keep.info=Output cannot be externally extracted
-item.artisanworktables.tooltip.automator.output.slot.mode.manual=Manual
-item.artisanworktables.tooltip.automator.output.slot.mode.manual.info=Output can be externally extracted
-item.artisanworktables.tooltip.automator.output.slot.mode.inventory=Inventory
-item.artisanworktables.tooltip.automator.output.slot.mode.inventory.info=Output is placed in device inventory
-item.artisanworktables.tooltip.automator.output.slot.mode.export=Export
-item.artisanworktables.tooltip.automator.output.slot.mode.export.info=Output is placed in adjacent inventory
-tooltip.artisanworktables.automator.inventory.locked=Inventory Locked
-tooltip.artisanworktables.automator.inventory.locked.info=Empty slots remember items
-tooltip.artisanworktables.automator.inventory.unlocked=Inventory Unlocked
-tooltip.artisanworktables.automator.inventory.unlocked.info=Empty slots forget items
-tooltip.artisanworktables.automator.fluid.locked=Tank Locked
-tooltip.artisanworktables.automator.fluid.locked.info=Empty tank remembers fluid type
-tooltip.artisanworktables.automator.fluid.unlocked=Tank Unlocked
-tooltip.artisanworktables.automator.fluid.unlocked.info=Empty tank forgets fluid type
-tooltip.artisanworktables.automator.fluid.mode=Mode: %s
-tooltip.artisanworktables.automator.fluid.mode.fill=Fill
-tooltip.artisanworktables.automator.fluid.mode.fill.info=Tank can be filled
-tooltip.artisanworktables.automator.fluid.mode.drain=Drain
-tooltip.artisanworktables.automator.fluid.mode.drain.info=Tank can be drained
 
 # Chat
 chat.artisanworktables.message.recipe.copy.success=Рецепт скопирован в буфер обмена

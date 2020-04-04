@@ -2,8 +2,6 @@ package com.codetaylor.mc.artisanworktables;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanConfig;
-import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
-import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomatorConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolbox;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfig;
 import com.codetaylor.mc.artisanworktables.modules.toolbox.ModuleToolboxConfigAPIWrapper;
@@ -78,10 +76,6 @@ public class ModArtisanWorktables {
 
     if (ModuleToolboxConfig.ENABLE_MODULE) {
       this.moduleManager.registerModules(ModuleToolbox.class);
-    }
-
-    if (ModuleAutomatorConfig.ENABLE_MODULE) {
-      this.moduleManager.registerModules(ModuleAutomator.class);
     }
 
     Injector injector = new Injector();

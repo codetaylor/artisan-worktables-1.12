@@ -6,7 +6,6 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
-import com.codetaylor.mc.artisanworktables.modules.automator.ModuleAutomator;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
@@ -31,16 +30,12 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.tile.worktable.Til
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
-import com.codetaylor.mc.athenaeum.packer.PackAPI;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.Injector;
 import crafttweaker.api.recipes.ICraftingRecipe;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
@@ -50,7 +45,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -58,8 +52,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Optional;
 
 public class ModuleWorktables
     extends ModuleBase {
@@ -173,28 +165,6 @@ public class ModuleWorktables
         .setType(RecipeRegistry.class)
         .create();
 
-  }
-
-  @Override
-  public void onClientPreInitializationEvent(FMLPreInitializationEvent event) {
-
-    super.onClientPreInitializationEvent(event);
-
-    String resourcePath = "textures/gui/atlas/packed.json";
-    ResourceLocation resourceLocation = new ResourceLocation(ModuleAutomator.MOD_ID, resourcePath);
-
-    PackAPI.register(resourceLocation, () -> {
-      try {
-        Minecraft minecraft = Minecraft.getMinecraft();
-        IResourceManager resourceManager = minecraft.getResourceManager();
-        IResource resource = resourceManager.getResource(resourceLocation);
-        return Optional.of(resource.getInputStream());
-
-      } catch (Exception e) {
-        LOG.error("Error loading packed atlas data: " + resourceLocation, e);
-      }
-      return Optional.empty();
-    });
   }
 
   @SubscribeEvent
