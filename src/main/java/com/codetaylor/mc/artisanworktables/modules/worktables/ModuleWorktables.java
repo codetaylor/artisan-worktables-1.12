@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
+import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockTabIcon;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
@@ -32,7 +33,9 @@ import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.Injector;
+import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import crafttweaker.api.recipes.ICraftingRecipe;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -90,6 +93,7 @@ public class ModuleWorktables
 
   public static class Blocks {
 
+    public static final Block TAB_ICON = new BlockTabIcon();
     public static final BlockWorktable WORKTABLE = new BlockWorktable();
     public static final BlockWorkstation WORKSTATION = new BlockWorkstation();
     public static final BlockWorkshop WORKSHOP = new BlockWorkshop();
@@ -223,6 +227,8 @@ public class ModuleWorktables
   @Override
   public void onRegister(Registry registry) {
 
+    registry.registerBlockWithItem(Blocks.TAB_ICON, BlockTabIcon.NAME);
+
     if (ModuleWorktablesConfig.ENABLE_WORKTABLES) {
 
       registry.registerBlock(
@@ -274,6 +280,10 @@ public class ModuleWorktables
   @SideOnly(Side.CLIENT)
   @Override
   public void onClientRegister(Registry registry) {
+
+    registry.registerClientModelRegistrationStrategy(() -> {
+      ModelRegistrationHelper.registerBlockItemModels(Blocks.TAB_ICON);
+    });
 
     if (ModuleWorktablesConfig.ENABLE_WORKTABLES) {
       registry.registerClientModelRegistrationStrategy(Blocks.WORKTABLE.getModelRegistrationStrategy());

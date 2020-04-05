@@ -7,6 +7,9 @@
     * Added method `damageTools` to `IArtisanRecipe`
     * Added method `enablePatternCreationForRecipesWithRequirements` to `IModuleWorktablesConfig`
 
+  * **Fixed:**
+    * Missing creative tab icon when worktables are disabled [(#215)](https://github.com/codetaylor/artisan-worktables/issues/215)
+
   * **Added:**
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
     * Creative mode recipe exports now include NBT for all items [(#187)](https://github.com/codetaylor/artisan-worktables/issues/187)
