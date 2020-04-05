@@ -1,3 +1,11 @@
+**1.22.16**
+
+  * **Fixed:**
+    * Viewing a recipe with NBT ingredients in JEI can cause recipe to subsequently fail [(#223)](https://github.com/codetaylor/artisan-worktables/issues/223)
+    * Tables don't recognize recipes with rf NBT data [(#201)](https://github.com/codetaylor/artisan-worktables/issues/201)
+
+---
+
 **1.22.15**
 
   * **Fixed:**
