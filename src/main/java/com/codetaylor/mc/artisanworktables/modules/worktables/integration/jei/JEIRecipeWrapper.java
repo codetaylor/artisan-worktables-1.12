@@ -47,7 +47,13 @@ public class JEIRecipeWrapper
     this.tools = new ArrayList<>();
 
     for (IArtisanIngredient input : this.artisanRecipe.getIngredientList()) {
-      this.inputs.add(Arrays.asList(input.toIngredient().getMatchingStacks()));
+      ItemStack[] matchingStacks = input.toIngredient().getMatchingStacks();
+      List<ItemStack> list = new ArrayList<>(matchingStacks.length);
+
+      for (ItemStack matchingStack : matchingStacks) {
+        list.add(matchingStack.copy());
+      }
+      this.inputs.add(list);
     }
 
     for (int i = 0; i < artisanRecipe.getToolCount(); i++) {
@@ -55,7 +61,7 @@ public class JEIRecipeWrapper
       List<ItemStack> itemStackList = new ArrayList<>(tools.length);
 
       for (IArtisanItemStack tool : tools) {
-        itemStackList.add(tool.toItemStack());
+        itemStackList.add(tool.toItemStack().copy());
       }
 
       this.tools.add(itemStackList);
@@ -65,11 +71,17 @@ public class JEIRecipeWrapper
     this.output = new ArrayList<>(output.size());
 
     for (OutputWeightPair pair : output) {
-      this.output.add(pair.getOutput().toItemStack());
+      this.output.add(pair.getOutput().toItemStack().copy());
     }
 
     for (IArtisanIngredient ingredient : this.artisanRecipe.getSecondaryIngredients()) {
-      this.secondaryInputs.add(Arrays.asList(ingredient.toIngredient().getMatchingStacks()));
+      ItemStack[] matchingStacks = ingredient.toIngredient().getMatchingStacks();
+      List<ItemStack> list = new ArrayList<>(matchingStacks.length);
+
+      for (ItemStack matchingStack : matchingStacks) {
+        list.add(matchingStack.copy());
+      }
+      this.secondaryInputs.add(list);
     }
   }
 
