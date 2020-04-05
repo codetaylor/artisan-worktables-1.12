@@ -54,6 +54,8 @@ public class PluginJEI
   @Override
   public void register(IModRegistry registry) {
 
+    registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModuleWorktables.Blocks.TAB_ICON));
+
     this.ingredientRegistry = registry.getIngredientRegistry();
 
     for (EnumTier tier : EnumTier.values()) {

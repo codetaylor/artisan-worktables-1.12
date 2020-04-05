@@ -1,3 +1,10 @@
+**1.22.17**
+
+  * **Fixed:**
+    * Missing creative tab icon when worktables are disabled [(#215)](https://github.com/codetaylor/artisan-worktables/issues/215)
+
+---
+
 **1.22.16**
 
   * **Fixed:**

@@ -52,7 +52,7 @@ public class ModArtisanWorktables {
     @Override
     public ItemStack getTabIconItem() {
 
-      return new ItemStack(Item.getItemFromBlock(ModuleWorktables.Blocks.WORKTABLE), 1, 0);
+      return new ItemStack(Item.getItemFromBlock(ModuleWorktables.Blocks.TAB_ICON), 1, 0);
     }
   };
 

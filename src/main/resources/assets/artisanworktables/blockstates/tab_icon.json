@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "artisanworktables:worktable",
+    "textures": {
+      "leg": "artisanworktables:blocks/worktable_leg",
+      "bottom": "artisanworktables:blocks/worktable_bottom",
+      "side": "artisanworktables:blocks/basic_side",
+      "top": "artisanworktables:blocks/basic_top",
+      "particle": "artisanworktables:blocks/basic_top"
+    }
+  },
+  "variants": {
+    "normal": [{}]
+  }
+}
