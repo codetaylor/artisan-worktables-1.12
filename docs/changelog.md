@@ -8,14 +8,14 @@
 **1.22.14**
 
   * **Fixed:**
-    * Optimized AW recipe searches [(#212)](https://github.com/codetaylor/artisan-worktables/pull/212)
+    * Optimized AW recipe searches [(#212)](https://github.com/codetaylor/artisan-worktables/issues/212)
     
 ---
 
 **1.22.13**
 
   * **Fixed:**
-    * Improper tool matching [(#210)](https://github.com/codetaylor/artisan-worktables/pull/210)
+    * Improper tool matching [(#210)](https://github.com/codetaylor/artisan-worktables/issues/210)
 
 ---
 
