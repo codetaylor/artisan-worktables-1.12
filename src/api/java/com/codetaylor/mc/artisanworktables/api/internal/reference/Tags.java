@@ -4,7 +4,7 @@ public final class Tags {
 
   public static final String TAG_ARTISAN_WORKTABLES = "ArtisanWorktables";
   public static final String TAG_RECIPE_NAME = "RecipeName";
-  
+
   private Tags() {
     //
   }
