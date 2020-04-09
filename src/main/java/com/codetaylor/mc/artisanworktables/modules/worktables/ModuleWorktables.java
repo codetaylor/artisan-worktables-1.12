@@ -3,6 +3,8 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
+import com.codetaylor.mc.artisanworktables.api.pattern.IItemDesignPattern;
+import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
@@ -36,10 +38,13 @@ import com.codetaylor.mc.athenaeum.util.Injector;
 import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import crafttweaker.api.recipes.ICraftingRecipe;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -48,6 +53,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -330,6 +336,35 @@ public class ModuleWorktables
         }
       }
     }
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void onClientInitializationEvent(FMLInitializationEvent event) {
+
+    super.onClientInitializationEvent(event);
+
+    // Register item color handlers to colorize layer 1 of each item model
+    // using the color stored in the material enum.
+
+    ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
+
+    itemColors.registerItemColorHandler((stack, tintIndex) -> {
+
+      if (stack.getItem() instanceof IItemDesignPattern) {
+        String recipeName = ((IItemDesignPattern) stack.getItem()).getRecipeName(stack);
+
+        if (recipeName != null) {
+          IArtisanRecipe recipe = ArtisanAPI.getRecipe(recipeName);
+
+          if (recipe != null) {
+            ItemStack output = recipe.getOutputWeightPairList().get(0).getOutput().toItemStack();
+            return itemColors.colorMultiplier(output, tintIndex);
+          }
+        }
+      }
+      return 0xFFFFFF;
+    }, Items.DESIGN_PATTERN);
   }
 
   private void injectAPI() {
