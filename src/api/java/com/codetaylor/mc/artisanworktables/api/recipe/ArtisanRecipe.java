@@ -194,7 +194,13 @@ public class ArtisanRecipe
       return new IArtisanItemStack[0];
     }
 
-    return this.tools[toolIndex].getTool();
+    return this.tools[toolIndex].getToolStacks();
+  }
+
+  @Override
+  public ToolEntry[] getToolEntries() {
+
+    return this.tools;
   }
 
   @Override

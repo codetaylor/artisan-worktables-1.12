@@ -1,8 +1,10 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker;
 
+import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
 import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
@@ -17,6 +19,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -208,11 +211,14 @@ public class CTArtisanRecipe
     Map<String, IItemStack> marks = new HashMap<>();
 
     if (this.isShaped()) {
-      marks = this.getMarksShaped(context, marks);
+      this.getMarksShaped(context, marks);
 
     } else {
-      marks = this.getMarksShapeless(context, marks);
+      this.getMarksShapeless(context, marks);
     }
+
+    this.getMarksSecondaryIngredients(context, marks);
+    this.getMarksTools(context, marks);
 
     try {
       IItemStack functionResult = recipeFunction.process(
@@ -230,7 +236,80 @@ public class CTArtisanRecipe
     return output;
   }
 
-  private Map<String, IItemStack> getMarksShapeless(ICraftingContext context, Map<String, IItemStack> marks) {
+  private void getMarksTools(ICraftingContext context, Map<String, IItemStack> marks) {
+
+    ToolEntry[] toolEntries = this.getToolEntries();
+    IItemHandlerModifiable contextToolHandler = context.getToolHandler();
+
+    if (toolEntries == null || toolEntries.length == 0) {
+      return;
+    }
+
+    toolSearch:
+    for (ToolEntry toolEntry : toolEntries) {
+      IArtisanIngredient tool = toolEntry.getTool();
+
+      for (int i = 0; i < contextToolHandler.getSlots(); i++) {
+        ItemStack stackInSlot = contextToolHandler.getStackInSlot(i);
+
+        if (stackInSlot.isEmpty()) {
+          continue;
+        }
+
+        IToolHandler handler = ArtisanToolHandlers.get(stackInSlot);
+
+        if (tool instanceof CTArtisanIngredient && toolEntry.matches(handler, stackInSlot)) {
+          String mark = ((CTArtisanIngredient) tool).getIngredient().getMark();
+
+          if (mark != null) {
+
+            if (!marks.containsKey(mark)) {
+              marks.put(mark, CraftTweakerMC.getIItemStack(stackInSlot.copy()));
+            }
+
+            break toolSearch;
+          }
+        }
+      }
+    }
+  }
+
+  private void getMarksSecondaryIngredients(ICraftingContext context, Map<String, IItemStack> marks) {
+
+    List<IArtisanIngredient> secondaryIngredients = this.getSecondaryIngredients();
+    IItemHandlerModifiable secondaryIngredientHandler = context.getSecondaryIngredientHandler();
+
+    if (secondaryIngredients.isEmpty() || secondaryIngredientHandler == null) {
+      return;
+    }
+
+    ingredientSearch:
+    for (IArtisanIngredient ingredient : secondaryIngredients) {
+
+      for (int i = 0; i < secondaryIngredientHandler.getSlots(); i++) {
+        ItemStack stackInSlot = secondaryIngredientHandler.getStackInSlot(i);
+
+        if (stackInSlot.isEmpty()) {
+          continue;
+        }
+
+        if (ingredient instanceof CTArtisanIngredient && ingredient.matchesIgnoreAmount(stackInSlot)) {
+          String mark = ((CTArtisanIngredient) ingredient).getIngredient().getMark();
+
+          if (mark != null) {
+
+            if (!marks.containsKey(mark)) {
+              marks.put(mark, CraftTweakerMC.getIItemStack(stackInSlot.copy()));
+            }
+
+            break ingredientSearch;
+          }
+        }
+      }
+    }
+  }
+
+  private void getMarksShapeless(ICraftingContext context, Map<String, IItemStack> marks) {
 
     List<IArtisanIngredient> ingredients = this.getIngredientList();
     IItemStack[] stacks = this.getStacksShapeless(context).getStacks();
@@ -247,11 +326,9 @@ public class CTArtisanRecipe
         }
       }
     }
-
-    return marks;
   }
 
-  private Map<String, IItemStack> getMarksShaped(ICraftingContext context, Map<String, IItemStack> marks) {
+  private void getMarksShaped(ICraftingContext context, Map<String, IItemStack> marks) {
 
     List<IArtisanIngredient> ingredients = this.getIngredientList();
     IItemStack[] stacks = this.getStacksShaped(context).getStacks();
@@ -268,8 +345,6 @@ public class CTArtisanRecipe
         }
       }
     }
-
-    return marks;
   }
 
   /**

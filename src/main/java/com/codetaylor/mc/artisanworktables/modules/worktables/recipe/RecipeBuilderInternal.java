@@ -598,7 +598,8 @@ public class RecipeBuilderInternal
     ToolEntry[] tools = new ToolEntry[this.tools.size()];
 
     for (int i = 0; i < this.tools.size(); i++) {
-      tools[i] = new ToolEntry(this.tools.get(i));
+      ToolIngredientEntry entry = this.tools.get(i);
+      tools[i] = new ToolEntry(entry.getTool(), entry.getDamage());
     }
 
     // Ensure that the secondary ingredient collection is not null.

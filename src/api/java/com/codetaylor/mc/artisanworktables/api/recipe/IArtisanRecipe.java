@@ -179,6 +179,8 @@ public interface IArtisanRecipe {
    */
   int getToolCount();
 
+  ToolEntry[] getToolEntries();
+
   /**
    * @return an immutable list of the recipe's ingredients
    */
