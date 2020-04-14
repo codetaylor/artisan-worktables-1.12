@@ -289,9 +289,16 @@ public abstract class TileEntityBase
     return this.type.getName();
   }
 
-  public boolean canHandleRecipeTransferJEI(String name, EnumTier tier) {
+  public boolean canHandleRecipeTransferJEI(String name, @Nullable EnumTier tier) {
 
-    return this.type.getName().equals(name) && tier.getId() <= this.getTier().getId();
+    // The given tier will be null if we're checking for a vanilla recipe.
+
+    if ("vanilla".equals(name)) {
+      // Check config if allows vanilla crafting.
+      return ModuleWorktablesConfig.isVanillaCraftingEnabledFor(this.getType(), this.getTier());
+    }
+
+    return this.type.getName().equals(name) && tier != null && tier.getId() <= this.getTier().getId();
   }
 
   public int getWorktableGuiTabTextureYOffset() {

@@ -882,7 +882,7 @@ public class AWContainer
 
   public boolean canHandleRecipeTransferJEI(
       String name,
-      EnumTier tier
+      @Nullable EnumTier tier
   ) {
 
     return !this.tile.isCreative()
