@@ -12,6 +12,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockTabIcon
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkshop;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorkstation;
 import com.codetaylor.mc.artisanworktables.modules.worktables.block.BlockWorktable;
+import com.codetaylor.mc.artisanworktables.modules.worktables.integration.craftingtweaks.CraftingTweaksPlugin;
 import com.codetaylor.mc.artisanworktables.modules.worktables.integration.crafttweaker.CTRecipeAdditionQueue;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPattern;
 import com.codetaylor.mc.artisanworktables.modules.worktables.item.ItemDesignPatternBakedModel;
@@ -155,6 +156,16 @@ public class ModuleWorktables
     }
 
     super.onConstructionEvent(event);
+  }
+
+  @Override
+  public void onInitializationEvent(FMLInitializationEvent event) {
+
+    super.onInitializationEvent(event);
+
+    if (Loader.isModLoaded("craftingtweaks")) {
+      CraftingTweaksPlugin.init();
+    }
   }
 
   @SubscribeEvent
