@@ -24,6 +24,7 @@
     * Vanilla recipes can now be transferred from JEI with the `+` button if the table's vanilla recipe feature is enabled in the config [(#216)](https://github.com/codetaylor/artisan-worktables/issues/216)
     * CraftTweaker marks are now available for secondary ingredients and tools [(#219)](https://github.com/codetaylor/artisan-worktables/issues/219)
     * Crafting Tweaks integration [(#80)](https://github.com/codetaylor/artisan-worktables/issues/80)
+    * Osmium tool material
 
 ---
 
