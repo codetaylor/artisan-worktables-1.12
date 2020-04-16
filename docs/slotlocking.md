@@ -6,17 +6,17 @@ By default, only Workstations and Workshops have this feature enabled.
 
 ## Enabling Slot-Locking
 
-![Table Slot-Locking Button](../images/table-slot-locking-button.png)
+![Table Slot-Locking Button](./images/table-slot-locking-button.png)
 
 To enable the slot locking, click the button indicated in the image above.
 
-![Table Locked Slots](../images/table-locked-slots.png)
+![Table Locked Slots](./images/table-locked-slots.png)
 
 When slot-locking is enabled, indicators will appear over any locked slot.
 
 ## What does it DO?
 
-![Table Locked Slots Ghost](../images/table-locked-slots-ghost.png)
+![Table Locked Slots Ghost](./images/table-locked-slots-ghost.png)
 
 When an item is removed from a locked slot, the slot will remember the item that used to be in it.
 
