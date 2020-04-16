@@ -2,6 +2,7 @@
 
   * **Fixed:**
     * Missing creative tab icon when worktables are disabled [(#215)](https://github.com/codetaylor/artisan-worktables/issues/215)
+    * Secondary ingredients are exported without quantity [(#224)](https://github.com/codetaylor/artisan-worktables/issues/224)
 
 ---
 
