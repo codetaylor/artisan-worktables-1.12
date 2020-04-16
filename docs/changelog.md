@@ -10,6 +10,7 @@
   * **Fixed:**
     * Missing creative tab icon when worktables are disabled [(#215)](https://github.com/codetaylor/artisan-worktables/issues/215)
     * Patterns don't render their output items with proper tint colors
+    * Secondary ingredients are exported without quantity [(#224)](https://github.com/codetaylor/artisan-worktables/issues/224)
 
   * **Added:**
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
