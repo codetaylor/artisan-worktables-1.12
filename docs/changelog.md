@@ -26,6 +26,7 @@
     * CraftTweaker marks are now available for secondary ingredients and tools [(#219)](https://github.com/codetaylor/artisan-worktables/issues/219)
     * Crafting Tweaks integration [(#80)](https://github.com/codetaylor/artisan-worktables/issues/80)
     * Osmium tool material
+    * Boron, Tough Alloy, Hard Carbon, and Boron Nitride tool materials
 
 ---
 
