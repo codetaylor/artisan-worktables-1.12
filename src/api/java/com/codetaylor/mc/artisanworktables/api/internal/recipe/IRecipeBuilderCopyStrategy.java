@@ -5,6 +5,8 @@ import javax.annotation.Nullable;
 @SuppressWarnings("UnusedReturnValue")
 public interface IRecipeBuilderCopyStrategy {
 
+  IRecipeBuilderCopyStrategy runAfter();
+
   IRecipeBuilderCopyStrategy noInput();
 
   IRecipeBuilderCopyStrategy noOutput();

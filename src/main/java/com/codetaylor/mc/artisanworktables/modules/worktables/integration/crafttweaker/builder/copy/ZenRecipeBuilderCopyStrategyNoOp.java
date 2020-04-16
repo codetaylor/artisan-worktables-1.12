@@ -11,6 +11,12 @@ public class ZenRecipeBuilderCopyStrategyNoOp
   public static final IZenRecipeBuilderCopyStrategy INSTANCE = new ZenRecipeBuilderCopyStrategyNoOp();
 
   @Override
+  public IZenRecipeBuilderCopyStrategy runAfter() {
+
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilderCopyStrategy noInput() {
 
     return this;

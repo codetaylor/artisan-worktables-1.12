@@ -19,6 +19,13 @@ public class ZenRecipeBuilderCopyStrategy
   }
 
   @Override
+  public IZenRecipeBuilderCopyStrategy runAfter() {
+
+    this.strategy.runAfter();
+    return this;
+  }
+
+  @Override
   public IZenRecipeBuilderCopyStrategy noInput() {
 
     this.strategy.noInput();

@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class RecipeBuilderCopyStrategyBase
     implements IRecipeBuilderCopyStrategyInternal {
 
+  protected EnumCopyPhase copyPhase;
   protected boolean excludeInput;
   protected boolean excludeOutput;
   protected IArtisanItemStack replaceOutput;
@@ -20,7 +21,21 @@ public abstract class RecipeBuilderCopyStrategyBase
 
   public RecipeBuilderCopyStrategyBase() {
 
+    this.copyPhase = EnumCopyPhase.Pre;
     this.inputReplacements = InputReplacements.NO_OP;
+  }
+
+  @Override
+  public EnumCopyPhase getCopyPhase() {
+
+    return this.copyPhase;
+  }
+
+  @Override
+  public IRecipeBuilderCopyStrategy runAfter() {
+
+    this.copyPhase = EnumCopyPhase.Post;
+    return this;
   }
 
   @Override

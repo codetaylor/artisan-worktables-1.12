@@ -9,6 +9,8 @@ import java.util.List;
 public interface IRecipeBuilderCopyStrategyInternal
     extends IRecipeBuilderCopyStrategy {
 
+  EnumCopyPhase getCopyPhase();
+
   boolean isExcludeInput();
 
   boolean isExcludeOutput();

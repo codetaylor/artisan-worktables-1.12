@@ -8,6 +8,12 @@ public class RecipeBuilderCopyStrategyNoOp
   public static final IRecipeBuilderCopyStrategy INSTANCE = new RecipeBuilderCopyStrategyNoOp();
 
   @Override
+  public IRecipeBuilderCopyStrategy runAfter() {
+
+    return this;
+  }
+
+  @Override
   public IRecipeBuilderCopyStrategy noInput() {
 
     return this;

@@ -2,6 +2,9 @@
 
 The Artisan Worktables builder API allows you to copy recipes in a reasonably flexible manner. Copying recipes, however, is a little more involved than simply calling a method on the builder, but not by much.
 
+!!! warning
+    Artisan Worktables can only copy vanilla crafting recipes.
+
 Here you will use a new type of builder: `Copy`. You will use this new builder to create a task that defines what to copy and how to copy it. This new builder works comparably to the `RecipeBuilder` in that you must first call a method to retrieve a builder object and can chain more methods on that object to provide additional directives to the task.
 
 The copy task that you define with the `Copy` builder will then be passed to the `RecipeBuilder`.
@@ -142,6 +145,22 @@ builder.setCopy(Copy.byName("minecraft:furnace").replaceOutput(<minecraft:diamon
 
 !!! warning
     The `replaceOutput(IItemStack)` method is mutually exclusive with the `noOutput()` method.
+
+### Copying CraftTweaker Recipes
+
+By default, all recipes are copied before CraftTweaker actions run. This means that any vanilla crafting recipes you add via CraftTweaker won't be available to copy when Artisan Worktables evaluates copied recipes.
+
+The `Copy` task can be instructed to run *after* CraftTweaker adds and removes recipes using the following method.
+
+```java
+Copy runAfter();
+```
+
+For example, to copy a recipe named `crafttweaker:customrecipe`, define a `Copy` task like this:
+
+```js
+builder.setCopy(Copy.byName("crafttweaker:customrecipe").runAfter());
+```
 
 ## Examples
 

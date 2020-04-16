@@ -58,6 +58,9 @@ public interface IZenRecipeBuilderCopyStrategy {
   }
 
   @ZenMethod
+  IZenRecipeBuilderCopyStrategy runAfter();
+
+  @ZenMethod
   IZenRecipeBuilderCopyStrategy noInput();
 
   @ZenMethod
