@@ -3,7 +3,6 @@ package com.codetaylor.mc.artisanworktables.modules.worktables;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.*;
-import com.codetaylor.mc.artisanworktables.api.pattern.IItemDesignPattern;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.RecipeBuilder;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementBuilderSupplier;
@@ -45,6 +44,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -351,15 +351,19 @@ public class ModuleWorktables
 
     itemColors.registerItemColorHandler((stack, tintIndex) -> {
 
-      if (stack.getItem() instanceof IItemDesignPattern) {
-        String recipeName = ((IItemDesignPattern) stack.getItem()).getRecipeName(stack);
+      if (stack.getItem() instanceof ItemDesignPattern) {
+        NBTTagCompound tag = stack.getTagCompound();
 
-        if (recipeName != null) {
-          IArtisanRecipe recipe = ArtisanAPI.getRecipe(recipeName);
+        if (tag != null) {
+          String recipeName = tag.getString("recipe");
 
-          if (recipe != null) {
-            ItemStack output = recipe.getOutputWeightPairList().get(0).getOutput().toItemStack();
-            return itemColors.colorMultiplier(output, tintIndex);
+          if (!recipeName.isEmpty()) {
+            IArtisanRecipe recipe = ArtisanAPI.getRecipe(recipeName);
+
+            if (recipe != null) {
+              ItemStack output = recipe.getOutputWeightPairList().get(0).getOutput().toItemStack();
+              return itemColors.colorMultiplier(output, tintIndex);
+            }
           }
         }
       }
