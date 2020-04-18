@@ -186,11 +186,7 @@ public final class ZSRecipeExport {
           StringBuilder builder = new StringBuilder();
 
           if (oreDict == null) {
-<<<<<<< HEAD
-            ZSRecipeExport.getItemString(stackInSlot, builder, true, false);
-=======
-            ZSRecipeExport.getItemString(stackInSlot, builder, false, false, false);
->>>>>>> cfec29b... Fix #224
+            ZSRecipeExport.getItemString(stackInSlot, builder, false, false);
 
           } else {
             ZSRecipeExport.getItemStringOredict(oreDict, stackInSlot, builder, false);
