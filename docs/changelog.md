@@ -7,11 +7,6 @@
     * Added method `damageTools` to `IArtisanRecipe`
     * Added method `enablePatternCreationForRecipesWithRequirements` to `IModuleWorktablesConfig`
 
-  * **Fixed:**
-    * Missing creative tab icon when worktables are disabled [(#215)](https://github.com/codetaylor/artisan-worktables/issues/215)
-    * Patterns don't render their output items with proper tint colors
-    * Secondary ingredients are exported without quantity [(#224)](https://github.com/codetaylor/artisan-worktables/issues/224)
-
   * **Added:**
     * Recipe id now displays on the bottom of the tooltip for JEI's output item [(#200)](https://github.com/codetaylor/artisan-worktables/issues/200)
     * Creative mode recipe exports now include NBT for all items [(#187)](https://github.com/codetaylor/artisan-worktables/issues/187)
@@ -28,6 +23,15 @@
     * Osmium tool material [(#207)](https://github.com/codetaylor/artisan-worktables/issues/207)
     * Boron, Tough Alloy, Hard Carbon, and Boron Nitride tool materials [(#208)](https://github.com/codetaylor/artisan-worktables/issues/208)
     * New recipe copy directive: `runAfter()` [(#167)](https://github.com/codetaylor/artisan-worktables/issues/167)
+
+---
+
+**1.22.17**
+
+  * **Fixed:**
+    * Missing creative tab icon when worktables are disabled [(#215)](https://github.com/codetaylor/artisan-worktables/issues/215)
+    * Secondary ingredients are exported without quantity [(#224)](https://github.com/codetaylor/artisan-worktables/issues/224)
+    * Patterns don't render their output items with proper tint colors
 
 ---
 
