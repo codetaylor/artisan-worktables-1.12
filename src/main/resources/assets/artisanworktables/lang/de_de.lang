@@ -59,7 +59,7 @@ tile.artisanworktables.mechanical_toolbox.name=Mechanischer Werkzeugkasten
 # Worktable Tools
 item.artisanworktables.artisans.cutters.name=%s Messer
 item.artisanworktables.artisans.hammer.name=%s Hammer
-item.artisanworktables.artisans.framing.hammer.name=%s Rahmungs Hammer
+item.artisanworktables.artisans.framing.hammer.name=%s Rahmungshammer
 item.artisanworktables.artisans.handsaw.name=%s Handsäge
 item.artisanworktables.artisans.beaker.name=%s Becher
 item.artisanworktables.artisans.burner.name=%s Bunsenbrenner
@@ -84,11 +84,11 @@ item.artisanworktables.artisans.knife.name=%s Messer
 item.artisanworktables.artisans.punch.name=%s Locher
 item.artisanworktables.artisans.groover.name=%s Glättekelle
 item.artisanworktables.artisans.carver.name=%s Tranchiermesser
-item.artisanworktables.artisans.hatchet.name=Artisan's %s Hatchet
-item.artisanworktables.artisans.file.name=Artisan's %s File
-item.artisanworktables.artisans.pencil.name=Artisan's %s Pencil
-item.artisanworktables.artisans.tsquare.name=Artisan's %s T-Square
-item.artisanworktables.artisans.solderer.name=Artisan's %s Solderer
+item.artisanworktables.artisans.hatchet.name=%s Beil
+item.artisanworktables.artisans.file.name=%s Feile
+item.artisanworktables.artisans.pencil.name=%s Bleistift
+item.artisanworktables.artisans.tsquare.name=%s T-Quadrat
+item.artisanworktables.artisans.solderer.name=%s Lötkolben
 
 # Patterns
 item.artisanworktables.design.pattern.written.name=Mustervorlage
@@ -105,22 +105,22 @@ jei.artisanworktables.level.required=Benötigtes Level: %d
 # GUI
 gui.artisanworktables.tooltip.fluid.empty=Leer
 gui.artisanworktables.tooltip.fluid.destroy=%sFlüssigkeiten entleeren: %sUMSCHALTTASTE + LINKSKLICK
-gui.artisanworktables.tooltip.button.export.shaped=Export Shaped
-gui.artisanworktables.tooltip.button.export.shapeless=Export Shapeless
-gui.artisanworktables.tooltip.button.clear.table=Clear All
-gui.artisanworktables.tooltip.button.creative.disabled=Table Mode: Survival
-gui.artisanworktables.tooltip.button.creative.enabled=Table Mode: Creative
-gui.artisanworktables.tooltip.button.oredict.linked=OreDict Mode: Linked
-gui.artisanworktables.tooltip.button.oredict.unlinked=OreDict Mode: Unlinked
-gui.artisanworktables.tooltip.button.locked.disabled=Slot Mode: Unlocked
-gui.artisanworktables.tooltip.button.locked.enabled=Slot Mode: Locked
+gui.artisanworktables.tooltip.button.export.shaped=Exportiere Shaped
+gui.artisanworktables.tooltip.button.export.shapeless=Exportiere Shapeless
+gui.artisanworktables.tooltip.button.clear.table=Lösch alles
+gui.artisanworktables.tooltip.button.creative.disabled=Tischmodus: Überleben
+gui.artisanworktables.tooltip.button.creative.enabled=Tischmodus: Kreativ
+gui.artisanworktables.tooltip.button.oredict.linked=OreDictmodus: Verknüpft
+gui.artisanworktables.tooltip.button.oredict.unlinked=OreDictmodus: Getrennt
+gui.artisanworktables.tooltip.button.locked.disabled=Slotmodus: Entsperrt
+gui.artisanworktables.tooltip.button.locked.enabled=Slotmodus: Gesperrt
 gui.artisanworktables.tooltip.automator.power=%d / %d RF
 
 # Tooltip
 item.artisanworktables.tooltip.durability=Haltbarkeit: %d / %d
-item.artisanworktables.tooltip.creative.table.oredict.header=Oredict: %s(SHIFT + LEFT-CLICK)
-item.artisanworktables.tooltip.creative.table.oredict.none=-none-
+item.artisanworktables.tooltip.creative.table.oredict.header=Oredict: %s(UMSCHALTTASTE + LINKSKLICK)
+item.artisanworktables.tooltip.creative.table.oredict.none=-kein-
 
 # Chat
-chat.artisanworktables.message.recipe.copy.success=Recipe copied to clipboard
-chat.artisanworktables.message.recipe.copy.error=Error copying recipe, see log for details
+chat.artisanworktables.message.recipe.copy.success=Rezept in die Zwischenablage kopiert.
+chat.artisanworktables.message.recipe.copy.error=Es gab einen Fehler beim Exportieren. Schau in die Logs für mehr Informationen.

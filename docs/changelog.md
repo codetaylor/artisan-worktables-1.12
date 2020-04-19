@@ -24,6 +24,9 @@
     * Boron, Tough Alloy, Hard Carbon, and Boron Nitride tool materials [(#208)](https://github.com/codetaylor/artisan-worktables/issues/208)
     * New recipe copy directive: `runAfter()` [(#167)](https://github.com/codetaylor/artisan-worktables/issues/167)
 
+  * **Changed:**
+    * Updated de_de.lang (LeonOwO)
+
 ---
 
 **1.22.17**
