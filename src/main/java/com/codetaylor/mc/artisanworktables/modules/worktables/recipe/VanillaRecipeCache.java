@@ -59,7 +59,10 @@ public class VanillaRecipeCache {
     recipe = LAST_RECIPE.get()[0];
 
     if (recipe == null || !recipe.matches(inventoryWrapper, world)) {
-      recipe = CraftingManager.findMatchingRecipe(inventoryWrapper, world);
+
+      if (!inventoryWrapper.isEmpty()) {
+        recipe = CraftingManager.findMatchingRecipe(inventoryWrapper, world);
+      }
     }
 
     if (recipe == null) {
@@ -245,6 +248,20 @@ public class VanillaRecipeCache {
       );
 
       this.tile = tile;
+    }
+
+    public boolean isEmpty() {
+
+      int slotCount = this.getWidth() * this.getHeight() - 1;
+
+      for (int i = 0; i < slotCount; i++) {
+
+        if (!this.tile.getCraftingMatrixHandler().getStackInSlot(slotCount).isEmpty()) {
+          return false;
+        }
+      }
+
+      return true;
     }
 
     @Nonnull
