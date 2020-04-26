@@ -255,11 +255,11 @@ public class VanillaRecipeCache {
 
     public boolean isEmpty() {
 
-      int slotCount = this.getWidth() * this.getHeight() - 1;
+      int slotCount = this.getWidth() * this.getHeight();
 
       for (int i = 0; i < slotCount; i++) {
 
-        if (!this.tile.getCraftingMatrixHandler().getStackInSlot(slotCount).isEmpty()) {
+        if (!this.tile.getCraftingMatrixHandler().getStackInSlot(i).isEmpty()) {
           return false;
         }
       }

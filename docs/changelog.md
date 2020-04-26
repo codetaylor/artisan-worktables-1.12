@@ -1,3 +1,10 @@
+**1.22.20**
+
+  * **Fixed:**
+    * Broken vanilla recipe matching
+    
+---
+
 **1.22.19**
 
   * **Fixed:**
