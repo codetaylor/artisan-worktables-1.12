@@ -1,3 +1,10 @@
+**1.22.19**
+
+  * **Fixed:**
+    * Egregious dupe bug introduced while fixing [(#227)](https://github.com/codetaylor/artisan-worktables/issues/227)
+
+---
+
 **1.22.18**
 
   * **Fixed:**

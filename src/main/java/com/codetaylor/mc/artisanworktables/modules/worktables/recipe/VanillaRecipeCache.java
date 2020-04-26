@@ -62,6 +62,9 @@ public class VanillaRecipeCache {
 
       if (!inventoryWrapper.isEmpty()) {
         recipe = CraftingManager.findMatchingRecipe(inventoryWrapper, world);
+
+      } else {
+        recipe = null;
       }
     }
 
