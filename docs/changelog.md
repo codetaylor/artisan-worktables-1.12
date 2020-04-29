@@ -2,6 +2,9 @@
 
   * **Fixed:**
     * Recipe cache dupe with DankNull mod installed [(#227)](https://github.com/codetaylor/artisan-worktables/issues/227)
+    
+  * **Added:**
+    * Vanilla recipe blacklist for misbehaving recipes
 
 ---
 
