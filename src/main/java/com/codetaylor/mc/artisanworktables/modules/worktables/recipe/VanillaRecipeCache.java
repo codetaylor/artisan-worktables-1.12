@@ -54,18 +54,17 @@ public class VanillaRecipeCache {
   @Nullable
   public synchronized static IArtisanRecipe getArtisanRecipe(InventoryWrapper inventoryWrapper, World world) {
 
+    if (inventoryWrapper.isEmpty()) {
+      // If the crafting grid is empty, we don't even try matching a recipe.
+      return null;
+    }
+
     IRecipe recipe;
 
     recipe = LAST_RECIPE.get()[0];
 
     if (recipe == null || !recipe.matches(inventoryWrapper, world)) {
-
-      if (!inventoryWrapper.isEmpty()) {
-        recipe = CraftingManager.findMatchingRecipe(inventoryWrapper, world);
-
-      } else {
-        recipe = null;
-      }
+      recipe = CraftingManager.findMatchingRecipe(inventoryWrapper, world);
     }
 
     if (recipe == null) {

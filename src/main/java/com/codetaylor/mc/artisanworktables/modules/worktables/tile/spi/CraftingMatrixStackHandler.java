@@ -31,4 +31,18 @@ public class CraftingMatrixStackHandler
 
     return this.height;
   }
+
+  public boolean isEmpty() {
+
+    int slotCount = this.getWidth() * this.getHeight();
+
+    for (int i = 0; i < slotCount; i++) {
+
+      if (!this.getStackInSlot(i).isEmpty()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }

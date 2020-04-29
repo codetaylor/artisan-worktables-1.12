@@ -493,6 +493,11 @@ public abstract class TileEntityBase
   @Nullable
   public IArtisanRecipe getRecipe(@Nonnull EntityPlayer player) {
 
+    if (this.craftingMatrixHandler.isEmpty()) {
+      // If the crafting grid is empty, we don't even try matching a recipe.
+      return null;
+    }
+
     FluidStack fluidStack = this.getTank().getFluid();
 
     if (fluidStack != null) {

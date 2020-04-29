@@ -1,3 +1,10 @@
+**1.22.21**
+
+  * **Fixed:**
+    * Recipe cache dupe with DankNull mod installed [(#227)](https://github.com/codetaylor/artisan-worktables/issues/227)
+
+---
+
 **1.22.20**
 
   * **Fixed:**
