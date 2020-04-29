@@ -29,6 +29,18 @@
 
 ---
 
+**1.22.21**
+
+  * **Fixed:**
+    * Recipe cache dupe with DankNull mod installed [(#227)](https://github.com/codetaylor/artisan-worktables/issues/227)
+        * The recipe will still cause a dupe bug when the upper left 3x3 grid in the 5x5 grid is empty. Use the added blacklist to blacklist the misbehaving recipe `danknull:redstonetolapis` or disable vanilla crafting in the 5x5 tables.
+        * See this for more info: [https://github.com/p455w0rds-MC-Mods/DankNull/pull/294](https://github.com/p455w0rds-MC-Mods/DankNull/pull/294)
+    
+  * **Added:**
+    * Vanilla recipe blacklist for misbehaving recipes
+
+---
+
 **1.22.20**
 
   * **Fixed:**

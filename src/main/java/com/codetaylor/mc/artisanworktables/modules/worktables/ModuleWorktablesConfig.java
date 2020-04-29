@@ -4,6 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
 import com.codetaylor.mc.athenaeum.util.ArrayHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -40,6 +41,22 @@ public class ModuleWorktablesConfig {
 
     String key = type.getName() + ":" + tier.getName();
     return ArrayHelper.contains(ENABLE_VANILLA_CRAFTING, key);
+  }
+
+  @Config.Comment({
+      "Recipes in this list will not be allowed to be crafted in any table.",
+      "Format is (domain):(path)",
+      "Example: minecraft:chest"
+  })
+  public static String[] VANILLA_CRAFTING_BLACKLIST = new String[0];
+
+  public static boolean isRecipeBlacklisted(ResourceLocation resourceLocation) {
+
+    if (resourceLocation == null) {
+      return false;
+    }
+
+    return ArrayHelper.contains(VANILLA_CRAFTING_BLACKLIST, resourceLocation.toString());
   }
 
   @Config.Comment({
