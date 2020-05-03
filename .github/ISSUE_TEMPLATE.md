@@ -1,12 +1,16 @@
 #### Intro
 
+*[replace]*
+
 Please follow the template when submitting an issue.
 
 If you are submitting a suggestion, feature request, or idea, please delete this template and follow the guidelines found in the README.md file.
 
 If you do not follow the template or guidelines, your issue will be flagged as `invalid` and may be immediately closed.
 
-Text placed within *[replace]* tags may be omitted and replaced with your text.
+Delete text placed within *[replace]* tags and replace with your text.
+
+*[/replace]*
 
 #### Issue Description
 
@@ -61,4 +65,6 @@ Do *not* use `latest`; please supply accurate version numbers.
 * Forge:
 * CraftTweaker:
 * Artisan Worktables:
+* Artisan Automation:
+* Artisan Integrations:
 * Athenaeum:
