@@ -55,9 +55,7 @@ public class Util {
       return ItemStack.EMPTY;
     }
 
-    itemStack.shrink(amount);
-
-    if (itemStack.getCount() <= 0) {
+    if (itemStack.getCount() - amount <= 0) {
 
       if (checkContainer && itemStack.getItem().hasContainerItem(itemStack)) {
         return itemStack.getItem().getContainerItem(itemStack);
@@ -66,6 +64,8 @@ public class Util {
         return ItemStack.EMPTY;
       }
     }
+
+    itemStack.shrink(amount);
 
     return itemStack;
   }

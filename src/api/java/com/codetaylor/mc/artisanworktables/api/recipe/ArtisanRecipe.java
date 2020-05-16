@@ -663,7 +663,7 @@ public class ArtisanRecipe
       ItemStack remainingItemStack = remainingItems.get(i);
 
       if (!itemStack.isEmpty()) {
-        matrixHandler.setStackInSlot(i, Util.decrease(itemStack.copy(), 1, false));
+        matrixHandler.setStackInSlot(i, Util.decrease(itemStack.copy(), 1, true));
         itemStack = matrixHandler.getStackInSlot(i);
       }
 

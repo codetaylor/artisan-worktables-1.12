@@ -1,4 +1,11 @@
-**1.23.0**
+**1.23.1**
+
+  * **Fixed:**
+    * Crafting shouldn't void remaining container items (ie. buckets)
+    
+---
+
+#1.23.0
 
   * **API:**
     * Bumped version to 10
@@ -188,14 +195,14 @@
 
 ---
 
-1.22.1
+**1.22.1**
 
-  * Fixed:
+  * **Fixed:**
     * Worktable crash [(#185)](https://github.com/codetaylor/artisan-worktables/issues/185):
 
 ---
 
-1.22.0
+#1.22.0
 
   * Note:
     * Config files have been renamed, see below
