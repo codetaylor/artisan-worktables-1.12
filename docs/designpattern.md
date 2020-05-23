@@ -10,4 +10,4 @@ The written Design Pattern contains NBT data with the name of the recipe. The wr
 
 To clear a written Design Pattern, hold the pattern in your main hand and sneak + use.
 
-The patterns are a step toward automation, but they are still useful without it.
+Written Design Patterns can also be used with the Mechanical Artisan from the [Artisan Automation](https://artisan-automation.readthedocs.io/en/latest/) mod.
