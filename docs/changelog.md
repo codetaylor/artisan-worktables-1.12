@@ -5,6 +5,7 @@
         * `consumeSecondaryIngredients`
         * `maximumTier`
         * `hidden`
+    * Inserting liquid into worktable from stackable containers voids container & liquid [(#236)](https://github.com/codetaylor/artisan-worktables/issues/236)
     
 ---
 

@@ -8,6 +8,7 @@ import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntit
 import com.codetaylor.mc.athenaeum.registry.strategy.IClientModelRegistrationStrategy;
 import com.codetaylor.mc.athenaeum.tile.IContainer;
 import com.codetaylor.mc.athenaeum.util.FluidHelper;
+import com.codetaylor.mc.athenaeum.util.FluidUtilFix;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -99,7 +100,7 @@ public abstract class BlockBase
 
       if (FluidHelper.drainWaterFromBottle(playerIn, tank)
           || FluidHelper.drainWaterIntoBottle(playerIn, tank)
-          || FluidUtil.interactWithFluidHandler(playerIn, hand, tank)) {
+          || FluidUtilFix.interactWithFluidHandler(playerIn, hand, tank)) {
         return true;
       }
 
