@@ -1,3 +1,13 @@
+**1.23.2**
+
+  * **Fixed:**
+    * Recipe parameters don't work with Copy directives [(#235)](https://github.com/codetaylor/artisan-worktables/issues/235):
+        * `consumeSecondaryIngredients`
+        * `maximumTier`
+        * `hidden`
+    
+---
+
 **1.23.1**
 
   * **Fixed:**

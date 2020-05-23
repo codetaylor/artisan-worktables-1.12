@@ -531,7 +531,7 @@ public class RecipeBuilderInternal
 
   public RecipeBuilderInternal copy() {
 
-    RecipeBuilderInternal copy = new RecipeBuilderInternal(this.tableName, recipeAdditionQueue, recipeFactory);
+    RecipeBuilderInternal copy = new RecipeBuilderInternal(this.tableName, this.recipeAdditionQueue, this.recipeFactory);
 
     copy.outputSet = this.outputSet;
     copy.inputSet = this.inputSet;
@@ -545,17 +545,19 @@ public class RecipeBuilderInternal
       copy.ingredients = new ArrayList<>(this.ingredients);
     }
     copy.secondaryIngredients = new ArrayList<>(this.secondaryIngredients);
+    copy.consumeSecondaryIngredients = this.consumeSecondaryIngredients;
     copy.fluidIngredient = this.fluidIngredient;
     copy.tools = new ArrayList<>(this.tools);
     copy.outputWeightPairList = new ArrayList<>(this.outputWeightPairList);
     copy.extraOutputs = new ExtraOutputChancePair[this.extraOutputs.length];
     System.arraycopy(this.extraOutputs, 0, copy.extraOutputs, 0, this.extraOutputs.length);
     copy.minimumTier = this.minimumTier;
+    copy.maximumTier = this.maximumTier;
     copy.experienceRequired = this.experienceRequired;
     copy.levelRequired = this.levelRequired;
     copy.consumeExperience = this.consumeExperience;
-
     copy.requirementMap = new HashMap<>(this.requirementMap);
+    copy.hidden = this.hidden;
 
     return copy;
   }
