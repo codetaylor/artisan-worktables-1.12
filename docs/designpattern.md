@@ -11,3 +11,15 @@ The written Design Pattern contains NBT data with the name of the recipe. The wr
 To clear a written Design Pattern, hold the pattern in your main hand and sneak + use.
 
 Written Design Patterns can also be used with the Mechanical Artisan from the [Artisan Automation](https://artisan-automation.readthedocs.io/en/latest/) mod.
+
+## NBT
+
+A written Design Pattern's NBT is structured like this:
+
+```
+<namespace:path>.withTag({
+    ArtisanWorktables: {
+        RecipeName: "your_recipe_name"
+    }
+});
+```

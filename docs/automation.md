@@ -2,7 +2,7 @@
 
 Artisan Worktables allows slot-locking for partial automation.
 
-A full automation solution is planned.
+See below for full automation.
 
 ## Partial Automation
 
