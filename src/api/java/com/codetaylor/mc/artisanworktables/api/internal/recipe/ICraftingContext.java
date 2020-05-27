@@ -40,9 +40,9 @@ public interface ICraftingContext {
 
   BlockPos getPosition();
 
-  default boolean isPattern() {
+  default boolean swapOutputWithCursorItem() {
 
-    return false;
+    return true;
   }
 
 }

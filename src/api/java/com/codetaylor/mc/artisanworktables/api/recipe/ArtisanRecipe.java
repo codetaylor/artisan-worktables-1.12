@@ -899,17 +899,16 @@ public class ArtisanRecipe
     // Select an output.
     ItemStack itemStack = this.selectOutput(context, Util.RANDOM).toItemStack();
 
-    if (!context.isPattern() && context.getPlayer().isPresent()) { // TODO: change granularity of isPattern
+    if (this.hasMultipleWeightedOutputs()
+        && context.swapOutputWithCursorItem()
+        && context.getPlayer().isPresent()) {
+
       EntityPlayer player = context.getPlayer().get();
 
       if (!player.inventory.getItemStack().isEmpty()) {
-
         // If the player is holding an item under their mouse cursor swap the item accordingly.
-
-        if (this.hasMultipleWeightedOutputs()) {
-          player.inventory.setItemStack(itemStack);
-          ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
-        }
+        player.inventory.setItemStack(itemStack);
+        ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-1, -1, itemStack));
       }
     }
 
