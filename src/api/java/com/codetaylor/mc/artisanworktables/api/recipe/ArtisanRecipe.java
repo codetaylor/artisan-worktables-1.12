@@ -505,9 +505,7 @@ public class ArtisanRecipe
     World world = context.getWorld();
 
     // Reduce player experience
-    if (!context.isPattern()) {
-      this.onCraftReduceExperience(context);
-    }
+    this.onCraftReduceExperience(context);
 
     ItemStack craftedItem = ItemStack.EMPTY;
     List<IArtisanItemStack> extraOutputList = new ArrayList<>(3);
@@ -530,10 +528,7 @@ public class ArtisanRecipe
     this.onCraftReduceFluid(context);
 
     // Decrease stacks in secondary ingredient slots
-    if (!context.isPattern()) {
-      // TODO: the automator handles its own secondary ings
-      this.onCraftReduceSecondaryIngredients(context);
-    }
+    this.onCraftReduceSecondaryIngredients(context);
 
     this.damageTools(context.getToolHandler(), context.getWorld(), context.getPlayer().orElse(null), context.getPosition(), context.getToolReplacementHandler());
 
@@ -611,10 +606,6 @@ public class ArtisanRecipe
       List<IArtisanItemStack> extraOutputList,
       ICraftingContext context
   ) {
-
-    if (context.isPattern()) { // TODO: increase granularity
-      return;
-    }
 
     if (!context.getPlayer().isPresent()) {
       return;
