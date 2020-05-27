@@ -16,6 +16,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class CraftingContextFactory {
 
@@ -34,9 +35,9 @@ public class CraftingContextFactory {
       }
 
       @Override
-      public EntityPlayer getPlayer() {
+      public Optional<EntityPlayer> getPlayer() {
 
-        return player;
+        return Optional.of(player);
       }
 
       @Override

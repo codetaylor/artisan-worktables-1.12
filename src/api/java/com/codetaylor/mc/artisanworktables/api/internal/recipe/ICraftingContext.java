@@ -11,13 +11,14 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Optional;
 
 @ParametersAreNonnullByDefault
 public interface ICraftingContext {
 
   World getWorld();
 
-  EntityPlayer getPlayer();
+  Optional<EntityPlayer> getPlayer();
 
   ICraftingMatrixStackHandler getCraftingMatrixHandler();
 
@@ -40,6 +41,7 @@ public interface ICraftingContext {
   BlockPos getPosition();
 
   default boolean isPattern() {
+
     return false;
   }
 

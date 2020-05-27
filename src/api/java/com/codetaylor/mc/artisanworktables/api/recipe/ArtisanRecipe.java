@@ -10,6 +10,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.util.EnchantmentHelper;
 import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
+import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
@@ -530,9 +531,11 @@ public class ArtisanRecipe
 
     // Decrease stacks in secondary ingredient slots
     if (!context.isPattern()) {
+      // TODO: the automator handles its own secondary ings
       this.onCraftReduceSecondaryIngredients(context);
     }
-    this.damageTools(context.getToolHandler(), context.getWorld(), (context.isPattern()) ? null : context.getPlayer(), context.getPosition(), context.getToolReplacementHandler());
+
+    this.damageTools(context.getToolHandler(), context.getWorld(), context.getPlayer().orElse(null), context.getPosition(), context.getToolReplacementHandler());
 
     // Issue #150:
     // When shift-clicking a recipe, craftedItem was empty. Now, craftedItem should never be empty.
@@ -609,7 +612,11 @@ public class ArtisanRecipe
       ICraftingContext context
   ) {
 
-    if (context.isPattern()) {
+    if (context.isPattern()) { // TODO: increase granularity
+      return;
+    }
+
+    if (!context.getPlayer().isPresent()) {
       return;
     }
 
@@ -620,7 +627,7 @@ public class ArtisanRecipe
     }
 
     MinecraftForge.EVENT_BUS.post(new ArtisanCraftEvent.Post(
-        context.getPlayer(),
+        context.getPlayer().get(),
         context.getType(),
         context.getTier(),
         craftedItem.copy(),
@@ -628,7 +635,7 @@ public class ArtisanRecipe
     ));
 
     MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(
-        context.getPlayer(),
+        context.getPlayer().get(),
         craftedItem.copy(),
         new ArtisanInventory(
             context.getCraftingMatrixHandler(),
@@ -694,29 +701,47 @@ public class ArtisanRecipe
             while (combinedStackSize > itemStack.getMaxStackSize()) {
               copy = remainingItemStack.copy();
               copy.setCount(itemStack.getMaxStackSize());
-
-              if (!context.getPlayer().addItemStackToInventory(copy)) {
-                context.getPlayer().dropItem(copy, false);
-              }
+              this.addToInventoryOrDrop(copy, context.getPlayer(), context.getWorld(), context.getPosition());
               combinedStackSize -= itemStack.getMaxStackSize();
             }
 
             remainingItemStack.grow(itemStack.getCount());
-
-            if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
-              context.getPlayer().dropItem(remainingItemStack, false);
-            }
+            this.addToInventoryOrDrop(copy, context.getPlayer(), context.getWorld(), context.getPosition());
 
           } else {
             remainingItemStack.grow(itemStack.getCount());
             matrixHandler.setStackInSlot(i, remainingItemStack);
           }
 
-        } else if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
-          context.getPlayer().dropItem(remainingItemStack, false);
+        } else {
+          this.addToInventoryOrDrop(remainingItemStack, context.getPlayer(), context.getWorld(), context.getPosition());
         }
 
       }
+    }
+  }
+
+  /**
+   * If the player entity is present, add the stuff to the player's inventory
+   * or drop in world, else just drop in world.
+   *
+   * @param itemStack      the item stack to add or drop
+   * @param optionalPlayer the optional player
+   * @param world          the world
+   * @param position       the position to drop
+   */
+  @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+  private void addToInventoryOrDrop(ItemStack itemStack, Optional<EntityPlayer> optionalPlayer, World world, BlockPos position) {
+
+    if (optionalPlayer.isPresent()) {
+      EntityPlayer player = optionalPlayer.get();
+
+      if (!player.addItemStackToInventory(itemStack)) {
+        player.dropItem(itemStack, false);
+      }
+
+    } else {
+      StackHelper.spawnStackOnTop(world, itemStack, position);
     }
   }
 
@@ -790,9 +815,8 @@ public class ArtisanRecipe
                   itemStack = secondaryIngredientHandler.insertItem(j, itemStack, false);
                 }
 
-                if (!itemStack.isEmpty()
-                    && !context.getPlayer().addItemStackToInventory(itemStack)) {
-                  context.getPlayer().dropItem(itemStack, false);
+                if (!itemStack.isEmpty()) {
+                  this.addToInventoryOrDrop(itemStack, context.getPlayer(), context.getWorld(), context.getPosition());
                 }
               }
 
@@ -819,9 +843,8 @@ public class ArtisanRecipe
                   itemStack = secondaryIngredientHandler.insertItem(j, itemStack, false);
                 }
 
-                if (!itemStack.isEmpty()
-                    && !context.getPlayer().addItemStackToInventory(itemStack)) {
-                  context.getPlayer().dropItem(itemStack, false);
+                if (!itemStack.isEmpty()) {
+                  this.addToInventoryOrDrop(itemStack, context.getPlayer(), context.getWorld(), context.getPosition());
                 }
               }
 
@@ -853,7 +876,11 @@ public class ArtisanRecipe
 
   protected void onCraftReduceExperience(ICraftingContext context) {
 
-    EntityPlayer player = context.getPlayer();
+    if (!context.getPlayer().isPresent()) {
+      return;
+    }
+
+    EntityPlayer player = context.getPlayer().get();
 
     if (player.isCreative()) {
       // Don't consume experience when the player is in creative mode.
@@ -881,8 +908,8 @@ public class ArtisanRecipe
     // Select an output.
     ItemStack itemStack = this.selectOutput(context, Util.RANDOM).toItemStack();
 
-    if (!context.isPattern()) {
-      EntityPlayer player = context.getPlayer();
+    if (!context.isPattern() && context.getPlayer().isPresent()) { // TODO: change granularity of isPattern
+      EntityPlayer player = context.getPlayer().get();
 
       if (!player.inventory.getItemStack().isEmpty()) {
 

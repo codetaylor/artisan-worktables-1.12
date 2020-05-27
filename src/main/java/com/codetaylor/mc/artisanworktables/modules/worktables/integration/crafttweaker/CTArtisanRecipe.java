@@ -13,10 +13,12 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.recipes.CraftingInfo;
 import crafttweaker.api.recipes.IRecipeAction;
 import crafttweaker.api.recipes.IRecipeFunction;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -186,13 +188,13 @@ public class CTArtisanRecipe
 
     super.onCraftCompleteServer(craftedItem, extraOutputList, context);
 
-    if (this.recipeAction != null) {
+    if (this.recipeAction != null && context.getPlayer().isPresent()) {
 
       try {
         this.recipeAction.process(
             CraftTweakerMC.getIItemStack(craftedItem.copy()),
-            this.getCraftingInfo(context),
-            CraftTweakerMC.getIPlayer(context.getPlayer())
+            this.getCraftingInfo(context.getWorld(), context.getPlayer().get(), context.getCraftingMatrixHandler()),
+            CraftTweakerMC.getIPlayer(context.getPlayer().get())
         );
 
       } catch (Throwable e) {
@@ -207,6 +209,10 @@ public class CTArtisanRecipe
       IArtisanItemStack output,
       ICraftingContext context
   ) {
+
+    if (!context.getPlayer().isPresent()) {
+      return output;
+    }
 
     Map<String, IItemStack> marks = new HashMap<>();
 
@@ -224,7 +230,7 @@ public class CTArtisanRecipe
       IItemStack functionResult = recipeFunction.process(
           ((CTArtisanItemStack) output).getIItemStack(),
           marks,
-          this.getCraftingInfo(context)
+          this.getCraftingInfo(context.getWorld(), context.getPlayer().get(), context.getCraftingMatrixHandler())
       );
 
       output = ArtisanItemStack.from(CraftTweakerMC.getItemStack(functionResult));
@@ -477,21 +483,23 @@ public class CTArtisanRecipe
   /**
    * Creates and returns a {@link CraftingInfo} object.
    *
-   * @param context the context
+   * @param world                 the world
+   * @param player                the player
+   * @param craftingMatrixHandler the matrix handler
    * @return a {@link CraftingInfo} object
    */
-  private CraftingInfo getCraftingInfo(ICraftingContext context) {
+  private CraftingInfo getCraftingInfo(World world, EntityPlayer player, ICraftingMatrixStackHandler craftingMatrixHandler) {
 
     return new CraftingInfo(
         new CTArtisanCraftingInventory(
-            CraftTweakerMC.getIPlayer(context.getPlayer()),
-            context.getCraftingMatrixHandler()
+            CraftTweakerMC.getIPlayer(player),
+            craftingMatrixHandler
         ),
-        CraftTweakerMC.getIWorld(context.getWorld())
+        CraftTweakerMC.getIWorld(world)
     );
   }
 
-  private class MatchInfo {
+  private static class MatchInfo {
 
     private final IItemStack[] stacks;
     private final int[] matrixIndices;
@@ -502,12 +510,12 @@ public class CTArtisanRecipe
       this.matrixIndices = matrixIndices;
     }
 
-    public IItemStack[] getStacks() {
+    /* package */ IItemStack[] getStacks() {
 
       return this.stacks;
     }
 
-    public int[] getMatrixIndices() {
+    /* package */ int[] getMatrixIndices() {
 
       return this.matrixIndices;
     }
