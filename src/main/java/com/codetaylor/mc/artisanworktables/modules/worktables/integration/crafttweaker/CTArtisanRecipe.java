@@ -315,11 +315,10 @@ public class CTArtisanRecipe
     IItemStack[] stacks = this.getStacksShapeless(context).getStacks();
 
     for (int i = 0; i < ingredients.size(); i++) {
-      IArtisanIngredient artisanIngredient = ingredients.get(i);
+      IArtisanIngredient ingredient = ingredients.get(i);
 
-      if (!artisanIngredient.isEmpty()) {
-        CTArtisanIngredient ingredient = (CTArtisanIngredient) artisanIngredient;
-        String mark = ingredient.getIngredient().getMark();
+      if (ingredient instanceof CTArtisanIngredient) {
+        String mark = ((CTArtisanIngredient) ingredient).getIngredient().getMark();
 
         if (mark != null) {
           marks.put(mark, stacks[i]);
@@ -334,11 +333,10 @@ public class CTArtisanRecipe
     IItemStack[] stacks = this.getStacksShaped(context).getStacks();
 
     for (int i = 0; i < ingredients.size(); i++) {
-      IArtisanIngredient artisanIngredient = ingredients.get(i);
+      IArtisanIngredient ingredient = ingredients.get(i);
 
-      if (!artisanIngredient.isEmpty()) {
-        CTArtisanIngredient ctArtisanIngredient = (CTArtisanIngredient) artisanIngredient;
-        String mark = ctArtisanIngredient.getIngredient().getMark();
+      if (ingredient instanceof CTArtisanIngredient) {
+        String mark = ((CTArtisanIngredient) ingredient).getIngredient().getMark();
 
         if (mark != null) {
           marks.put(mark, stacks[i]);
