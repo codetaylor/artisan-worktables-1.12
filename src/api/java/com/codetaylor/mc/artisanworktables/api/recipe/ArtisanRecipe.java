@@ -326,19 +326,17 @@ public class ArtisanRecipe
   }
 
   @Override
-  public boolean hasSufficientToolDurability(IToolHandler handler, ItemStack tool) {
+  public boolean hasSufficientUses(IToolHandler handler, ItemStack tool) {
 
     if (tool.isEmpty()) {
       return false;
     }
 
-    if (ArtisanConfig.MODULE_WORKTABLES_CONFIG.restrictCraftMinimumDurability()) {
-      ToolEntry toolEntry = this.findToolEntry(handler, tool);
-
-      if (toolEntry != null) {
-        int toolDamage = toolEntry.getDamage();
-        return handler.canAcceptAllDamage(tool, toolDamage);
-      }
+    ToolEntry toolEntry = this.findToolEntry(handler, tool);
+    if (toolEntry != null) {
+      int toolDamage = toolEntry.getDamage();
+      boolean restrictDurability = ArtisanConfig.MODULE_WORKTABLES_CONFIG.restrictCraftMinimumDurability();
+      return handler.canApplyUses(tool, toolDamage, restrictDurability);
     }
 
     return true;
@@ -452,7 +450,7 @@ public class ArtisanRecipe
         // Does the table tool have sufficient durability?
         if ((mask & bit) != bit
             && this.tools[j].matches(toolHandlers[i], tools[i])
-            && this.hasSufficientToolDurability(toolHandlers[i], tools[i])) {
+            && this.hasSufficientUses(toolHandlers[i], tools[i])) {
           mask |= bit;
           matchCount += 1;
           continue tableTools;
@@ -571,24 +569,24 @@ public class ArtisanRecipe
           IToolHandler toolHandler = ArtisanToolHandlers.get(stackInSlot);
 
           if (this.tools[i].matches(toolHandler, stackInSlot) // tool matches recipe
-              && this.hasSufficientToolDurability(toolHandler, stackInSlot)) { // tool has durability
+              && this.hasSufficientUses(toolHandler, stackInSlot)) { // tool has durability
 
             mask |= bit;
 
-            if (this.onCraftDamageTool(stackInSlot, world, player)) {
+            ItemStack usedStack = this.onCraftApplyUses(stackInSlot, world, player);
+            toolStackHandler.setStackInSlot(j, usedStack);
 
-              if (!world.isRemote) {
-                world.playSound(
-                    null,
-                    position.getX(),
-                    position.getY(),
-                    position.getZ(),
-                    SoundEvents.ENTITY_ITEM_BREAK,
-                    SoundCategory.PLAYERS,
-                    1.0f,
-                    1.0f
-                );
-              }
+            if (usedStack.isEmpty() && !world.isRemote) {
+              world.playSound(
+                  null,
+                  position.getX(),
+                  position.getY(),
+                  position.getZ(),
+                  SoundEvents.ENTITY_ITEM_BREAK,
+                  SoundCategory.PLAYERS,
+                  1.0f,
+                  1.0f
+              );
             }
 
             if (toolReplacementHandler != null) {
@@ -936,29 +934,31 @@ public class ArtisanRecipe
   }
 
   /**
-   * @return true if the tool was damaged and broken
+   * @return a new stack representing the item after the uses have been applied (usually in the form of item damage)
    */
-  protected boolean onCraftDamageTool(ItemStack itemStack, World world, @Nullable EntityPlayer player) {
+  protected ItemStack onCraftApplyUses(ItemStack itemStack, World world, @Nullable EntityPlayer player) {
 
-    if (!itemStack.isEmpty()) {
-      IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
-      ToolEntry toolEntry = this.findToolEntry(toolHandler, itemStack);
-
-      if (toolEntry == null) {
-        return false;
-      }
-
-      if (!this.hasSufficientToolDurability(toolHandler, itemStack)) {
-        return false;
-      }
-
-      int toolDamage = toolEntry.getDamage();
-
-      return toolDamage > 0
-          && toolHandler.applyDamage(world, itemStack, toolDamage, player, false);
+    if (itemStack.isEmpty()) {
+        return itemStack;
     }
 
-    return false;
+    IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
+    ToolEntry toolEntry = this.findToolEntry(toolHandler, itemStack);
+
+    if (toolEntry == null) {
+      return itemStack;
+    }
+
+    if (!this.hasSufficientUses(toolHandler, itemStack)) {
+      return itemStack;
+    }
+
+    int toolDamage = toolEntry.getDamage();
+    if (toolDamage <= 0) {
+      return itemStack;
+    }
+
+    return toolHandler.applyUses(world, itemStack, toolDamage, player);
   }
 
   protected void onCraftCheckAndReplaceTool(int toolIndex, IItemHandlerModifiable toolStackHandler, IItemHandler capability) {
@@ -966,7 +966,7 @@ public class ArtisanRecipe
     ItemStack itemStack = toolStackHandler.getStackInSlot(toolIndex);
     IToolHandler toolHandler = ArtisanToolHandlers.get(itemStack);
 
-    if (!this.hasSufficientToolDurability(toolHandler, itemStack)) {
+    if (!this.hasSufficientUses(toolHandler, itemStack)) {
       // Tool needs to be replaced
 
       if (capability == null) {
@@ -987,7 +987,7 @@ public class ArtisanRecipe
 
         if (toolEntry != null
             && toolEntry.matches(toolHandler, itemStack)
-            && this.hasSufficientToolDurability(potentialToolHandler, potentialTool)) {
+            && this.hasSufficientUses(potentialToolHandler, potentialTool)) {
           // Found an acceptable tool
           potentialTool = capability.extractItem(i, 1, false);
           capability.insertItem(i, toolStackHandler.getStackInSlot(toolIndex), false);

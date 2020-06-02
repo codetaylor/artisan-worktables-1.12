@@ -25,26 +25,20 @@ public class DefaultToolHandler
   }
 
   @Override
-  public boolean canAcceptAllDamage(ItemStack itemStack, int damage) {
+  public boolean canApplyUses(ItemStack itemStack, int uses, boolean restrictDurability) {
 
-    return (itemStack.getItemDamage() + damage <= itemStack.getMaxDamage());
+    return !restrictDurability || (itemStack.getItemDamage() + uses <= itemStack.getMaxDamage());
   }
 
   @Override
-  public boolean applyDamage(World world, ItemStack itemStack, int damage, @Nullable EntityPlayer player, boolean simulate) {
+  public ItemStack applyUses(World world, ItemStack itemStack, int uses, @Nullable EntityPlayer player) {
 
-    if (simulate) {
-      return (itemStack.getItemDamage() + damage > itemStack.getMaxDamage());
-
-    } else {
-      boolean broken = itemStack.attemptDamageItem(damage, new Random(), null)
-          || itemStack.getItemDamage() == itemStack.getMaxDamage();
-
-      if (broken) {
-        itemStack.shrink(1);
-      }
-
-      return broken;
+    ItemStack result = itemStack.copy();
+    boolean broken = itemStack.attemptDamageItem(uses, new Random(), null)
+        || itemStack.getItemDamage() == itemStack.getMaxDamage();
+    if (broken) {
+      itemStack.shrink(1);
     }
+    return result;
   }
 }

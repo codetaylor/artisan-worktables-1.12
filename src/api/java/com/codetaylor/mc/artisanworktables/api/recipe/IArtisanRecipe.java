@@ -91,9 +91,9 @@ public interface IArtisanRecipe {
   /**
    * @param handler
    * @param tool    the tool to check
-   * @return true if the given tool has sufficient durability to complete the craft
+   * @return true if the given tool has sufficient uses to complete the craft
    */
-  boolean hasSufficientToolDurability(IToolHandler handler, ItemStack tool);
+  boolean hasSufficientUses(IToolHandler handler, ItemStack tool);
 
   /**
    * @param tier the tier to match
