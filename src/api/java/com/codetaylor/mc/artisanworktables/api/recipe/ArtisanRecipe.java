@@ -658,68 +658,19 @@ public class ArtisanRecipe
     );
 
     for (int i = 0; i < remainingItems.size(); i++) {
-
-      ItemStack stackInSlot = matrixHandler.getStackInSlot(i);
-      ItemStack remainingItemStack = remainingItems.get(i);
-
-      if (!stackInSlot.isEmpty()) {
-        matrixHandler.setStackInSlot(i, Util.decrease(stackInSlot.copy(), 1, true));
-        stackInSlot = matrixHandler.getStackInSlot(i);
-      }
-
-      if (!remainingItemStack.isEmpty()) {
-
-        if (stackInSlot.isEmpty()) {
-          matrixHandler.setStackInSlot(i, remainingItemStack);
-
-        } else if (ItemStack.areItemsEqual(stackInSlot, remainingItemStack)
-            && ItemStack.areItemStackTagsEqual(stackInSlot, remainingItemStack)) {
-
-          int combinedStackSize = remainingItemStack.getCount() + stackInSlot.getCount();
-
-          if (combinedStackSize > stackInSlot.getMaxStackSize()) {
-
-            // Special handling if combined stack size exceeds max stack size.
-            // First, set the existing slot to the maximum stack size. Next,
-            // loop while the combined stack size is larger than the max stack
-            // size and put the items into the player's inventory or on the
-            // ground. Finally, put the remaining items in the player's
-            // inventory or on the ground.
-
-            ItemStack copy = remainingItemStack.copy();
-            copy.setCount(stackInSlot.getMaxStackSize());
-            matrixHandler.setStackInSlot(i, copy);
-            combinedStackSize -= stackInSlot.getMaxStackSize();
-
-            while (combinedStackSize > stackInSlot.getMaxStackSize()) {
-              copy = remainingItemStack.copy();
-              copy.setCount(stackInSlot.getMaxStackSize());
-
-              if (!context.getPlayer().addItemStackToInventory(copy)) {
-                context.getPlayer().dropItem(copy, false);
-              }
-              combinedStackSize -= stackInSlot.getMaxStackSize();
-            }
-
-            remainingItemStack.grow(stackInSlot.getCount());
-
-            if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
-              context.getPlayer().dropItem(remainingItemStack, false);
-            }
-
-          } else {
-            remainingItemStack.grow(stackInSlot.getCount());
-            matrixHandler.setStackInSlot(i, remainingItemStack);
-          }
-
-        } else if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
-          context.getPlayer().dropItem(remainingItemStack, false);
-        }
-
-      }
+      matrixHandler.setStackInSlot(i, remainingItems.get(i));
     }
   }
 
+  /**
+   * Returns the authoritative list of items remaining after a craft. Responsible
+   * for reducing stack sizes. The results of this method will overwrite any
+   * items in the crafting grid.
+   *
+   * @param context    the crafting context
+   * @param itemStacks the resulting list
+   * @return the authoritative list of items remaining after a craft
+   */
   @Nonnull
   protected List<ItemStack> getRemainingItems(
       ICraftingContext context,
@@ -729,7 +680,7 @@ public class ArtisanRecipe
     ICraftingMatrixStackHandler matrixHandler = context.getCraftingMatrixHandler();
 
     for (int i = 0; i < matrixHandler.getSlots(); i++) {
-      itemStacks.set(i, Util.getContainerItem(matrixHandler.getStackInSlot(i)));
+      itemStacks.set(i, Util.decrease(matrixHandler.getStackInSlot(i).copy(), 1, true));
     }
 
     return itemStacks;

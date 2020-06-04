@@ -142,7 +142,7 @@ public class CTArtisanRecipe
         }
 
       } else {
-        itemStacks.set(matrixIndices[i], Util.getContainerItem(matrixHandler.getStackInSlot(matrixIndices[i])));
+        itemStacks.set(matrixIndices[i], Util.decrease(matrixHandler.getStackInSlot(matrixIndices[i]).copy(), 1, true));
       }
     }
 
