@@ -1,3 +1,10 @@
+**1.23.3**
+
+  * **Fixed:**
+    * Crash when crafting vanilla recipe with recipe function in Artisan's table [(#240)](https://github.com/codetaylor/artisan-worktables/issues/240)
+    
+---
+
 **1.23.2**
 
   * **Fixed:**

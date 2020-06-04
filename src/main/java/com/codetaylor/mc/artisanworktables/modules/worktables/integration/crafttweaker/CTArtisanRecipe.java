@@ -317,7 +317,7 @@ public class CTArtisanRecipe
     for (int i = 0; i < ingredients.size(); i++) {
       IArtisanIngredient artisanIngredient = ingredients.get(i);
 
-      if (!artisanIngredient.isEmpty()) {
+      if (!artisanIngredient.isEmpty() && artisanIngredient instanceof CTArtisanIngredient) {
         CTArtisanIngredient ingredient = (CTArtisanIngredient) artisanIngredient;
         String mark = ingredient.getIngredient().getMark();
 
@@ -336,7 +336,7 @@ public class CTArtisanRecipe
     for (int i = 0; i < ingredients.size(); i++) {
       IArtisanIngredient artisanIngredient = ingredients.get(i);
 
-      if (!artisanIngredient.isEmpty()) {
+      if (!artisanIngredient.isEmpty() && artisanIngredient instanceof CTArtisanIngredient) {
         CTArtisanIngredient ctArtisanIngredient = (CTArtisanIngredient) artisanIngredient;
         String mark = ctArtisanIngredient.getIngredient().getMark();
 
