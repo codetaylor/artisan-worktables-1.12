@@ -659,25 +659,25 @@ public class ArtisanRecipe
 
     for (int i = 0; i < remainingItems.size(); i++) {
 
-      ItemStack itemStack = matrixHandler.getStackInSlot(i);
+      ItemStack stackInSlot = matrixHandler.getStackInSlot(i);
       ItemStack remainingItemStack = remainingItems.get(i);
 
-      if (!itemStack.isEmpty()) {
-        matrixHandler.setStackInSlot(i, Util.decrease(itemStack.copy(), 1, true));
-        itemStack = matrixHandler.getStackInSlot(i);
+      if (!stackInSlot.isEmpty()) {
+        matrixHandler.setStackInSlot(i, Util.decrease(stackInSlot.copy(), 1, true));
+        stackInSlot = matrixHandler.getStackInSlot(i);
       }
 
       if (!remainingItemStack.isEmpty()) {
 
-        if (itemStack.isEmpty()) {
+        if (stackInSlot.isEmpty()) {
           matrixHandler.setStackInSlot(i, remainingItemStack);
 
-        } else if (ItemStack.areItemsEqual(itemStack, remainingItemStack)
-            && ItemStack.areItemStackTagsEqual(itemStack, remainingItemStack)) {
+        } else if (ItemStack.areItemsEqual(stackInSlot, remainingItemStack)
+            && ItemStack.areItemStackTagsEqual(stackInSlot, remainingItemStack)) {
 
-          int combinedStackSize = remainingItemStack.getCount() + itemStack.getCount();
+          int combinedStackSize = remainingItemStack.getCount() + stackInSlot.getCount();
 
-          if (combinedStackSize > itemStack.getMaxStackSize()) {
+          if (combinedStackSize > stackInSlot.getMaxStackSize()) {
 
             // Special handling if combined stack size exceeds max stack size.
             // First, set the existing slot to the maximum stack size. Next,
@@ -687,28 +687,28 @@ public class ArtisanRecipe
             // inventory or on the ground.
 
             ItemStack copy = remainingItemStack.copy();
-            copy.setCount(itemStack.getMaxStackSize());
+            copy.setCount(stackInSlot.getMaxStackSize());
             matrixHandler.setStackInSlot(i, copy);
-            combinedStackSize -= itemStack.getMaxStackSize();
+            combinedStackSize -= stackInSlot.getMaxStackSize();
 
-            while (combinedStackSize > itemStack.getMaxStackSize()) {
+            while (combinedStackSize > stackInSlot.getMaxStackSize()) {
               copy = remainingItemStack.copy();
-              copy.setCount(itemStack.getMaxStackSize());
+              copy.setCount(stackInSlot.getMaxStackSize());
 
               if (!context.getPlayer().addItemStackToInventory(copy)) {
                 context.getPlayer().dropItem(copy, false);
               }
-              combinedStackSize -= itemStack.getMaxStackSize();
+              combinedStackSize -= stackInSlot.getMaxStackSize();
             }
 
-            remainingItemStack.grow(itemStack.getCount());
+            remainingItemStack.grow(stackInSlot.getCount());
 
             if (!context.getPlayer().addItemStackToInventory(remainingItemStack)) {
               context.getPlayer().dropItem(remainingItemStack, false);
             }
 
           } else {
-            remainingItemStack.grow(itemStack.getCount());
+            remainingItemStack.grow(stackInSlot.getCount());
             matrixHandler.setStackInSlot(i, remainingItemStack);
           }
 
