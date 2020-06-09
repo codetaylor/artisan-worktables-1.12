@@ -125,25 +125,29 @@ public class CTArtisanRecipe
         continue;
       }
 
+      // If the ingredient is a CTArtisanIngredient, it may have CrT transformers.
+      // We need to check if it has transformers, apply them, and place the
+      // result in the grid. If the CTArtisanIngredient does not have any
+      // transformers, we fall through to the default behavior, which is to
+      // decrease the stack size by one.
+
       if (artisanIngredient instanceof CTArtisanIngredient) {
         IIngredient ingredient = ((CTArtisanIngredient) artisanIngredient).getIngredient();
 
         if (ingredient.hasNewTransformers()) {
-          IItemStack remainingItem = null;
 
           try {
-            remainingItem = ingredient.applyNewTransform(stacks[i]);
+            IItemStack remainingItem = ingredient.applyNewTransform(stacks[i]);
+            itemStacks.set(matrixIndices[i], CraftTweakerMC.getItemStack(remainingItem));
+            continue;
 
           } catch (Throwable e) {
             CraftTweakerAPI.logError("Could not execute NewRecipeTransformer on " + ingredient.toCommandString(), e);
           }
-
-          itemStacks.set(matrixIndices[i], CraftTweakerMC.getItemStack(remainingItem));
         }
-
-      } else {
-        itemStacks.set(matrixIndices[i], Util.decrease(matrixHandler.getStackInSlot(matrixIndices[i]).copy(), 1, true));
       }
+
+      itemStacks.set(matrixIndices[i], Util.decrease(matrixHandler.getStackInSlot(matrixIndices[i]).copy(), 1, true));
     }
 
     return itemStacks;
