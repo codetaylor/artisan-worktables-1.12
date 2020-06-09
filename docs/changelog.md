@@ -1,3 +1,10 @@
+**1.23.4**
+
+  * **Fixed:**
+    * Recipes void stacks of ingredients [(#243)](https://github.com/codetaylor/artisan-worktables/issues/243)
+    
+---
+
 **1.23.3**
 
   * **Fixed:**
