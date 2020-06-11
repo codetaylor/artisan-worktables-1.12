@@ -16,9 +16,7 @@ import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
-import mezz.jei.transfer.BasicRecipeTransferInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -175,6 +173,11 @@ public class PluginJEI
     return false;
   }
 
+  /**
+   * This is called from requirement implementations in Artisan Integrations.
+   * <p>
+   * TODO: This needs to be exposed via the API.
+   */
   @SideOnly(Side.CLIENT)
   public static void updateRecipeVisibility() {
 
