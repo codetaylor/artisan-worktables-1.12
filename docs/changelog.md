@@ -1,3 +1,11 @@
+**1.23.5**
+
+  * **API:**
+    * Bumped version to 11
+    * Added ArtisanUpdateJEIRecipeVisibilityEvent
+
+---
+
 **1.23.4**
 
   * **Fixed:**

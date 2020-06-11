@@ -1,6 +1,7 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.event.ArtisanUpdateJEIRecipeVisibilityEvent;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
@@ -18,7 +19,9 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,6 +36,11 @@ public class PluginJEI
   public static IRecipeRegistry RECIPE_REGISTRY;
 
   private IIngredientRegistry ingredientRegistry;
+
+  public PluginJEI() {
+
+    MinecraftForge.EVENT_BUS.register(this);
+  }
 
   @Override
   public void registerCategories(IRecipeCategoryRegistration registry) {
@@ -173,13 +181,8 @@ public class PluginJEI
     return false;
   }
 
-  /**
-   * This is called from requirement implementations in Artisan Integrations.
-   * <p>
-   * TODO: This needs to be exposed via the API.
-   */
-  @SideOnly(Side.CLIENT)
-  public static void updateRecipeVisibility() {
+  @SubscribeEvent
+  public void on(ArtisanUpdateJEIRecipeVisibilityEvent event) {
 
     if (!FMLCommonHandler.instance().getEffectiveSide().isClient()) {
       return;
