@@ -9,6 +9,8 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
+apply from: 'project.gradle'
+
 def getVersionName = { String workTree ->
     def stdout = new ByteArrayOutputStream()
     exec {
@@ -18,13 +20,21 @@ def getVersionName = { String workTree ->
     return stdout.toString().trim()
 }
 
-project.ext.mcversion = "1.12.2"
-project.ext.forgeversion = "14.23.5.2838" // req 2556
-version = project.ext.mcversion + "-" + getVersionName("${project.projectDir}")
-group = "com.sudoplay.mc"
-archivesBaseName = "artisanworktables"
 
-project.ext.athenaeum_version = "1.12.2-1.15.0"
+version = getVersionName("${project.projectDir}")
+group = 'com.codetaylor.mc.' + project.ext.modid
+archivesBaseName = project.ext.modid
+
+println()
+println("-------------------------------------------------------------")
+println("- Mod Id: " + project.ext.modid)
+println("- Version: " + version)
+println("- Forge Version: " + project.ext.forge.version)
+println("- Mappings: " + project.ext.mappings.channel + " " + project.ext.mappings.version)
+println("-------------------------------------------------------------")
+println()
+
+project.ext.athenaeum_version = "1.12.2-1.18.1"
 project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker@[4.1.11.500,);after:jei@[4.8.5.139,);after:craftingtweaks;"'
 
 compileJava.doFirst {
@@ -59,34 +69,14 @@ compileJava {
 }
 
 minecraft {
-    version = project.ext.mcversion + "-" + project.ext.forgeversion
+    version = project.ext.forge.version
     runDir = "run"
-
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20171003"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    mappings = project.ext.mappings.version
 }
 
-repositories {
+repositories {}
 
-    maven {
-        // CraftTweaker
-        url "http://maven.blamejared.com/"
-    }
-
-    flatDir {
-        dirs 'libs'
-    }
-}
-
-dependencies {
-    compile project(":athenaeum")
-    compile files('CraftingTweaks_1.12.2-8.1.9.jar')
-}
+dependencies {}
 
 jar {
     from sourceSets.api.output
