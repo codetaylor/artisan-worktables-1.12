@@ -26,17 +26,9 @@ ext {
 
 }
 
-repositories {
-
-  mavenCentral()
-
-  maven {
-    name = "CurseForge"
-    url = "https://minecraft.curseforge.com/api/maven/"
-  }
-}
+repositories {}
 
 dependencies {
   compile project(":athenaeum")
-  compile 'crafting-tweaks:CraftingTweaks_1.12.2:8.1.9'
+  compile 'curse.maven:crafting-tweaks:2562139'
 }
