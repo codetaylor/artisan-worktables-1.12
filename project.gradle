@@ -24,6 +24,12 @@ ext {
     ]
   ]
 
+  replace = [
+    'required-after:athenaeum;': 'required-after:athenaeum@[1.12.2-1.19.0-RC.1,);',
+    'after:crafttweaker;': 'after:crafttweaker@[4.1.11.500,);',
+    'after:jei;': 'after:jei@[4.8.5.139,);'
+  ]
+
 }
 
 repositories {}

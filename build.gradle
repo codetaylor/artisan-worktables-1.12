@@ -37,9 +37,6 @@ println("- Mappings: " + project.ext.mappings.channel + " " + project.ext.mappin
 println("-------------------------------------------------------------")
 println()
 
-project.ext.athenaeum_version = "1.12.2-1.18.1"
-project.ext.dependencies = ',dependencies = "required-after:athenaeum@[' + project.ext.athenaeum_version + ',);after:crafttweaker@[4.1.11.500,);after:jei@[4.8.5.139,);after:craftingtweaks;"'
-
 compileJava.doFirst {
     project.sourceSets.main.java.srcDirs.each { dir ->
         copy {
@@ -49,8 +46,10 @@ compileJava.doFirst {
             filter {
                 it.replaceAll('@@VERSION@@', project.version)
             }
-            filter {
-                it.replaceAll('//@@DEPENDENCIES@@', project.ext.dependencies)
+            project.ext.replace.each{entry -> 
+                filter {
+                    it.replaceAll(entry.key, entry.value)
+                }
             }
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         }

@@ -27,14 +27,15 @@ import java.util.function.Supplier;
 @Mod(
     modid = ModArtisanWorktables.MOD_ID,
     version = ModArtisanWorktables.VERSION,
-    name = ModArtisanWorktables.NAME
-    //@@DEPENDENCIES@@
+    name = ModArtisanWorktables.NAME,
+    dependencies = ModArtisanWorktables.DEPENDENCIES
 )
 public class ModArtisanWorktables {
 
   public static final String MOD_ID = Reference.MOD_ID;
   public static final String VERSION = Reference.VERSION;
   public static final String NAME = Reference.NAME;
+  public static final String DEPENDENCIES = Reference.DEPENDENCIES;
 
   @Mod.Instance
   @SuppressWarnings("unused")
