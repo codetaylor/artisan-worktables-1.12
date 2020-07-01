@@ -1,65 +1,33 @@
-#### Intro
+<!-- Please follow the template when submitting an issue. -->
+<!-- If this issue occurs in a modpack, please report this to the modpack author. Also, please take the time to look at existing issues to ensure you don't create a duplicate. -->
 
-*[replace]*
+## Expected Behavior
+<!-- If you're describing a bug, tell us what should happen. -->
+<!-- If you're suggesting a change/improvement, tell us how it should work. -->
 
-Please follow the template when submitting an issue.
+## Current Behavior
+<!-- If describing a bug, tell us what happens instead of the expected behavior. -->
+<!-- If suggesting a change/improvement, explain the difference from current behavior. -->
 
-If you are submitting a suggestion, feature request, or idea, please delete this template and follow the guidelines found in the README.md file.
+## Steps to Reproduce (for bugs)
+<!-- Provide an unambiguous set of steps to reproduce this bug. -->
+<!-- Include code to reproduce, if relevant. -->
+1.
+2.
+3.
+4.
 
-If you do not follow the template or guidelines, your issue will be flagged as `invalid` and may be immediately closed.
+## Script
+<!-- If your issue involves a CraftTweaker script, please place a **LINK** to your script here. -->
+<!-- **DO NOT** paste your script here. Please use a service such as pastebin, hastebin, or gist. -->
 
-Delete text placed within *[replace]* tags and replace with your text.
+## Crash Log
+<!-- If your issue involves a crash log, please place a **LINK** to your crash log here. -->
+<!-- **DO NOT** paste your crash log here. Please use a service such as pastebin, hastebin, or gist. -->
 
-*[/replace]*
-
-#### Issue Description
-
-*[replace]*
-
-If this issue occurs in a modpack, please report this to the modpack author. Also, please take the time to look at existing issues to ensure you don't create a duplicate. You may remove this line and place your issue description here.
-
-*[/replace]*
-
-#### What Happens
-
-*[replace]*
-
-* Describe what happens
-* Describe, in detail, the steps required to reproduce the issue
-
-*[/replace]*
-
-#### What You Expect to Happen
-
-*[replace]*
-
-* Describe what you expect to happen
-
-*[/replace]*
-
-#### Script
-
-*[replace]*
-
-If your issue involves a CraftTweaker script, please place a **LINK** to your script here.
-
-**DO NOT** paste your script here. Please use a service such as pastebin, hastebin, or gist.
-
-*[/replace]*
-
-#### Crash Log
-
-*[replace]*
-
-If your issue involves a crash log, please place a **LINK** to your crash log here.
-
-**DO NOT** paste your crash log here. Please use a service such as pastebin, hastebin, or gist.
-
-*[/replace]*
-
-#### Affected Versions
-
-Do *not* use `latest`; please supply accurate version numbers.
+## Your Environment
+<!-- Include as many relevant details about the environment you experienced the bug in. -->
+<!-- Do *not* use `latest`; please supply accurate version numbers. -->
 
 * Minecraft:
 * Forge:
@@ -67,4 +35,5 @@ Do *not* use `latest`; please supply accurate version numbers.
 * Artisan Worktables:
 * Artisan Automation:
 * Artisan Integrations:
+* Artisan Workstumps:
 * Athenaeum:
