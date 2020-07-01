@@ -1,5 +1,8 @@
 **1.23.5**
 
+  * **Fixed:**
+    * Config harvest tool values don't work [(#246)](https://github.com/codetaylor/artisan-worktables/issues/246)
+
   * **API:**
     * Bumped version to 11
     * Added ArtisanUpdateJEIRecipeVisibilityEvent

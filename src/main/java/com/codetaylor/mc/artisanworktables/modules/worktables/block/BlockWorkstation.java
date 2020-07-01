@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
 
 public class BlockWorkstation
     extends BlockBase
@@ -23,19 +24,19 @@ public class BlockWorkstation
 
   public BlockWorkstation() {
 
-    super(Material.ROCK);
+    super(Material.WOOD);
 
     this.setHardness(5);
-    this.setDefaultState(this.blockState.getBaseState()
+    this.setDefaultState(this.blockState
+        .getBaseState()
         .withProperty(VARIANT, EnumType.TAILOR)
         .withProperty(ACTIVE, false));
   }
 
-  @Nullable
   @Override
-  public String getHarvestTool(IBlockState state) {
+  protected Map<String, String> getHarvestToolMap() {
 
-    return ModuleWorktablesConfig.HARVEST_TOOL_WORKSTATION.get(state.getValue(this.getVariant()).toString());
+    return ModuleWorktablesConfig.HARVEST_TOOL_WORKSTATION;
   }
 
   @Nullable
@@ -55,28 +56,3 @@ public class BlockWorkstation
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

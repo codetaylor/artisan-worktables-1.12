@@ -34,7 +34,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,6 +41,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public abstract class BlockBase
@@ -53,11 +53,24 @@ public abstract class BlockBase
   );
   public static final IProperty<Boolean> ACTIVE = PropertyBool.create("active");
 
-  public BlockBase(
-      Material materialIn
-  ) {
+  public BlockBase(Material material) {
 
-    super(materialIn);
+    super(material);
+
+    EnumType[] types = EnumType.values();
+    Map<String, String> harvestToolMap = this.getHarvestToolMap();
+
+    for (EnumType type : types) {
+      IBlockState blockState = this.getStateFromMeta(type.getMeta());
+      IProperty<EnumType> variant = this.getVariant();
+      EnumType value = blockState.getValue(variant);
+      String key = value.getName();
+      String harvestTool = harvestToolMap.get(key);
+
+      if (harvestTool != null) {
+        this.setHarvestLevel(harvestTool, 0, blockState);
+      }
+    }
   }
 
   @Override
@@ -223,6 +236,8 @@ public abstract class BlockBase
 
     return false;
   }
+
+  protected abstract Map<String, String> getHarvestToolMap();
 
   @Override
   public BlockFaceShape getBlockFaceShape(
