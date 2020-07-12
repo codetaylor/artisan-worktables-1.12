@@ -1,0 +1,127 @@
+# Creative Tab
+itemGroup.artisanworktables=Kézműves Munkaasztalok
+
+# Munkaasztalok
+tile.artisanworktables.worktable.basic.name=Alap Munkaasztal
+tile.artisanworktables.worktable.blacksmith.name=Kovács Munkaasztala
+tile.artisanworktables.worktable.carpenter.name=Asztalos Munkaasztala
+tile.artisanworktables.worktable.chef.name=Séf Munkaasztala
+tile.artisanworktables.worktable.chemist.name=Kémikus Munkaasztala
+tile.artisanworktables.worktable.designer.name=Tervező Munkaasztala
+tile.artisanworktables.worktable.engineer.name=Mérnök Munkaasztala
+tile.artisanworktables.worktable.farmer.name=Gazda Munkaasztala
+tile.artisanworktables.worktable.jeweler.name=Ékszerész Munkaasztala
+tile.artisanworktables.worktable.mage.name=Mágus Munkaasztala
+tile.artisanworktables.worktable.mason.name=Kőműves Munkaasztala
+tile.artisanworktables.worktable.potter.name=Fazekas Munkaasztala
+tile.artisanworktables.worktable.scribe.name=Írnok Munkaasztala
+tile.artisanworktables.worktable.tailor.name=Szabó Munkaasztala
+tile.artisanworktables.worktable.tanner.name=Tímár Munkaasztala
+
+# Munkaállomások
+tile.artisanworktables.workstation.basic.name=Basic Munkaállomás
+tile.artisanworktables.workstation.blacksmith.name=Kovács Munkaállomása
+tile.artisanworktables.workstation.carpenter.name=Asztalos Munkaállomása
+tile.artisanworktables.workstation.chef.name=Séf Munkaállomása
+tile.artisanworktables.workstation.chemist.name=Kémikus Munkaállomása
+tile.artisanworktables.workstation.designer.name=Tervező Munkaállomása
+tile.artisanworktables.workstation.engineer.name=Mérnök Munkaállomása
+tile.artisanworktables.workstation.farmer.name=Gazda Munkaállomása
+tile.artisanworktables.workstation.jeweler.name=Ékszerész Munkaállomása
+tile.artisanworktables.workstation.mage.name=Mágus Munkaállomása
+tile.artisanworktables.workstation.mason.name=Kőműves Munkaállomása
+tile.artisanworktables.workstation.potter.name=Fazekas Munkaállomása
+tile.artisanworktables.workstation.scribe.name=Írnok Munkaállomása
+tile.artisanworktables.workstation.tailor.name=Szabó Munkaállomása
+tile.artisanworktables.workstation.tanner.name=Tímár Munkaállomása
+
+# Műhelyek
+tile.artisanworktables.workshop.basic.name=Basic Műhely
+tile.artisanworktables.workshop.blacksmith.name=Kovács Műhely
+tile.artisanworktables.workshop.carpenter.name=Asztalos Műhelye
+tile.artisanworktables.workshop.chef.name=Séf Műhelye
+tile.artisanworktables.workshop.chemist.name=Kémikus Műhelye
+tile.artisanworktables.workshop.designer.name=Tervező Műhelye
+tile.artisanworktables.workshop.engineer.name=Mérnök Műhelye
+tile.artisanworktables.workshop.farmer.name=Gazda Műhelye
+tile.artisanworktables.workshop.jeweler.name=Ékszerész Műhelye
+tile.artisanworktables.workshop.mage.name=Mágus Műhelye
+tile.artisanworktables.workshop.mason.name=Kőműves Műhelye
+tile.artisanworktables.workshop.potter.name=Fazekas Műhelye
+tile.artisanworktables.workshop.scribe.name=Írnok Műhelye
+tile.artisanworktables.workshop.tailor.name=Szabó Műhelye
+tile.artisanworktables.workshop.tanner.name=Tímár Műhelye
+
+# Eszköztár
+tile.artisanworktables.toolbox.name=Eszköztár
+tile.artisanworktables.mechanical_toolbox.name=Mechanikai Eszköztár
+
+# Munkaasztal Eszközök
+item.artisanworktables.artisans.cutters.name=Kézműves %s Vágó
+item.artisanworktables.artisans.hammer.name=Kézműves %s Kalapácsa
+item.artisanworktables.artisans.framing.hammer.name=Kézműves %s Keretező Kalapács
+item.artisanworktables.artisans.handsaw.name=Kézműves %s Kézifűrész
+item.artisanworktables.artisans.beaker.name=Kézműves %s Serleg
+item.artisanworktables.artisans.burner.name=Kézműves %s Égető
+item.artisanworktables.artisans.driver.name=Kézműves %s Vezető
+item.artisanworktables.artisans.spanner.name=Kézműves %s Csavarkulcs
+item.artisanworktables.artisans.gemcutter.name=Kézműves %s Drágakő Vágó
+item.artisanworktables.artisans.pliers.name=Kézműves %s Fogó
+item.artisanworktables.artisans.athame.name=Kézműves %s Athame
+item.artisanworktables.artisans.grimoire.name=Kézműves %s-Bound Grimoire
+item.artisanworktables.artisans.chisel.name=Kézműves %s Véső
+item.artisanworktables.artisans.trowel.name=Kézműves %s Vakolókanál
+item.artisanworktables.artisans.compass.name=Kézműves %s Iránytű
+item.artisanworktables.artisans.quill.name=Kézműves %s Írótoll
+item.artisanworktables.artisans.needle.name=Kézműves %s Tű
+item.artisanworktables.artisans.shears.name=Kézműves %s Nyíróolló
+item.artisanworktables.artisans.lens.name=Kézműves %s Lencse
+item.artisanworktables.artisans.sifter.name=Kézműves %s Szita
+item.artisanworktables.artisans.cutting.board.name=Kézműves %s Vágódeszka
+item.artisanworktables.artisans.pan.name=Kézműves %s Serpenyő
+item.artisanworktables.artisans.mortar.name=Kézműves %s Mozsár
+item.artisanworktables.artisans.knife.name=Kézműves %s Kés
+item.artisanworktables.artisans.punch.name=Kézműves %s Lyukasztó
+item.artisanworktables.artisans.groover.name=Kézműves %s Karcoló
+item.artisanworktables.artisans.carver.name=Kézműves %s Fafaragó
+item.artisanworktables.artisans.razor.name=Kézműves %s Penge
+item.artisanworktables.artisans.hatchet.name=Kézműves %s Szekerce
+item.artisanworktables.artisans.file.name=Kézműves %s Akta
+item.artisanworktables.artisans.pencil.name=Kézműves %s Ceruza
+item.artisanworktables.artisans.tsquare.name=Kézműves %s Fejes Vonalzó
+item.artisanworktables.artisans.solderer.name=Kézműves %s Forrasztó
+
+# Minták
+item.artisanworktables.design.pattern.written.name=Tervezői Minta
+item.artisanworktables.design.pattern.blank.name=Üres Tervezői Minta
+
+# JEI
+jei.artisanworktables.tooltip.shapeless.recipe=Formátlan Recept
+jei.artisanworktables.tooltip.chance=%s%s%% esély a készítésre
+jei.artisanworktables.xp.cost=XP Költség: %d
+jei.artisanworktables.level.cost=Szint Költség: %d
+jei.artisanworktables.xp.required=Minimum XP: %d
+jei.artisanworktables.level.required=Minimum Level: %d
+
+# GUI
+gui.artisanworktables.tooltip.fluid.empty=Üres
+gui.artisanworktables.tooltip.fluid.destroy=%sFolyadék megsemmisítés: %sSHIFT + BAL-KLIKK
+gui.artisanworktables.tooltip.button.export.shaped=Export Formázott
+gui.artisanworktables.tooltip.button.export.shapeless=Export Formátlan
+gui.artisanworktables.tooltip.button.clear.table=Mindent Töröl
+gui.artisanworktables.tooltip.button.creative.disabled=Asztal Mód: Túlélő
+gui.artisanworktables.tooltip.button.creative.enabled=Asztal Mód: Kreatív
+gui.artisanworktables.tooltip.button.oredict.linked=ÉrcSzótár Mód: Öszekapcsolt
+gui.artisanworktables.tooltip.button.oredict.unlinked=ÉrcSzótár Mód: Nem összekapcsolt
+gui.artisanworktables.tooltip.button.locked.disabled=Cella Mód: Nyitott
+gui.artisanworktables.tooltip.button.locked.enabled=Cella Mód: Lezárt
+gui.artisanworktables.tooltip.automator.power=%d / %d RF
+
+# Ötlet
+item.artisanworktables.tooltip.durability=Durability: %d / %d
+item.artisanworktables.tooltip.creative.table.oredict.header=ÉrcSzótár: %s(SHIFT + BAL-KLIKK)
+item.artisanworktables.tooltip.creative.table.oredict.none=-semmi-
+
+# Chat
+chat.artisanworktables.message.recipe.copy.success=A recept a vágólapra másolva
+chat.artisanworktables.message.recipe.copy.error=Hiba a recept másolásakor, a részleteket lásd a naplóban
