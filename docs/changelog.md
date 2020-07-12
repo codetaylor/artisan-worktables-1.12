@@ -1,3 +1,10 @@
+**1.23.6**
+
+  * **Added:**
+    * hu_hu.lang [(#247)](https://github.com/codetaylor/artisan-worktables/pull/247)
+    
+---
+
 **1.23.5**
 
   * **Fixed:**
