@@ -977,18 +977,19 @@ public class ArtisanRecipe
     World world = context.getWorld();
     IItemHandler secondaryOutputHandler = context.getSecondaryOutputHandler();
     ItemStack result = extraOutput.toItemStack();
+    ItemStack insertResult = result.copy();
 
     for (int i = 0; i < 3; i++) {
-      result = secondaryOutputHandler.insertItem(i, result, false);
+      insertResult = secondaryOutputHandler.insertItem(i, insertResult, false);
 
-      if (result.isEmpty()) {
+      if (insertResult.isEmpty()) {
         break;
       }
     }
 
-    if (!result.isEmpty() && !world.isRemote) {
+    if (!insertResult.isEmpty() && !world.isRemote) {
       BlockPos pos = context.getPosition();
-      Util.spawnStackOnTop(world, result, pos.add(0, 1, 0), 1.0);
+      Util.spawnStackOnTop(world, insertResult, pos.add(0, 0, 0), 1.0);
     }
 
     return ArtisanItemStack.from(result);
