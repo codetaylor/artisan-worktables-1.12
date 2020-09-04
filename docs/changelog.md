@@ -1,3 +1,10 @@
+**1.23.8**
+
+  * **Fixed:**
+    * Error executing recipe functions added to copied vanilla recipes [(#251)](https://github.com/codetaylor/artisan-worktables/issues/251)
+
+---
+
 **1.23.7**
 
   * **Fixed:**

@@ -6,6 +6,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.util.Util;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirement;
+import com.codetaylor.mc.athenaeum.integration.crafttweaker.mtlib.helpers.CTInputHelper;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -231,8 +232,20 @@ public class CTArtisanRecipe
     this.getMarksTools(context, marks);
 
     try {
+      // Fix for issue #251:
+      // The output item stack will not be an instance of CTArtisanItemStack
+      // when the recipe is a copy of a vanilla recipe.
+      IItemStack outputIItemStack;
+
+      if (output instanceof CTArtisanItemStack) {
+        outputIItemStack = ((CTArtisanItemStack) output).getIItemStack();
+
+      } else {
+        outputIItemStack = CTInputHelper.toIItemStack(output.toItemStack());
+      }
+
       IItemStack functionResult = recipeFunction.process(
-          ((CTArtisanItemStack) output).getIItemStack(),
+          outputIItemStack,
           marks,
           this.getCraftingInfo(context.getWorld(), context.getPlayer().get(), context.getCraftingMatrixHandler())
       );
