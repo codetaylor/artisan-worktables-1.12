@@ -1,3 +1,10 @@
+**1.24.0**
+
+  * **Added:**
+    * `PREVENT_CONCURRENT_USAGE` Config option to prevent players from concurrently using tables
+    
+---
+
 **1.23.8**
 
   * **Fixed:**

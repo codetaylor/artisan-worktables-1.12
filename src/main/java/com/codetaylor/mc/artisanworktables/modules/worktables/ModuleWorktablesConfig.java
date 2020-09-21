@@ -20,6 +20,13 @@ import java.util.*;
 public class ModuleWorktablesConfig {
 
   @Config.Comment({
+      "Set to true to allow only one player to use a table at a time.",
+      "If true, players cannot open the table GUI when another player already",
+      "has it open."
+  })
+  public static boolean PREVENT_CONCURRENT_USAGE = false;
+
+  @Config.Comment({
       "Tables in this list will allow crafting any of the vanilla recipes.",
       "Table id format is (type):(tier)",
       "By default, all tables are allowed."

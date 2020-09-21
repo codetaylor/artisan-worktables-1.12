@@ -1,13 +1,18 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables;
 
+import com.codetaylor.mc.artisanworktables.modules.worktables.gui.AWContainer;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.annotation.Nullable;
@@ -145,5 +150,24 @@ public class Util {
     result.addAll(joinedTableMap.values());
     //return result.size() < 2 ? Collections.emptyList() : result;
     return result;
+  }
+
+  public static boolean anyPlayerHasContainerOpen(WorldServer world, BlockPos pos) {
+
+    MinecraftServer minecraftServer = world.getMinecraftServer();
+    PlayerList playerList = minecraftServer.getPlayerList();
+    List<EntityPlayerMP> players = playerList.getPlayers();
+
+    for (EntityPlayerMP entityPlayerMP : players) {
+
+      if (entityPlayerMP.openContainer instanceof AWContainer) {
+        TileEntityBase tile = ((AWContainer) entityPlayerMP.openContainer).getTile();
+
+        if (tile.getPos().equals(pos)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

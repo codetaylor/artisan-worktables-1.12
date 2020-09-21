@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworktables.modules.worktables.block;
 
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumType;
+import com.codetaylor.mc.artisanworktables.modules.worktables.ModuleWorktablesConfig;
 import com.codetaylor.mc.artisanworktables.modules.worktables.Util;
 import com.codetaylor.mc.artisanworktables.modules.worktables.gui.element.GuiElementTabs;
 import com.codetaylor.mc.artisanworktables.modules.worktables.tile.spi.TileEntityBase;
@@ -32,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
@@ -89,10 +91,10 @@ public abstract class BlockBase
 
   @Override
   public boolean onBlockActivated(
-      World worldIn,
+      World world,
       BlockPos pos,
       IBlockState state,
-      EntityPlayer playerIn,
+      EntityPlayer player,
       EnumHand hand,
       EnumFacing facing,
       float hitX,
@@ -100,28 +102,33 @@ public abstract class BlockBase
       float hitZ
   ) {
 
-    if (worldIn.isRemote) {
+    if (world.isRemote) {
       GuiElementTabs.RECALCULATE_TAB_OFFSETS = true;
       return true;
     }
 
-    TileEntity tileEntity = worldIn.getTileEntity(pos);
+    TileEntity tileEntity = world.getTileEntity(pos);
 
     if (tileEntity instanceof TileEntityBase) {
 
-      FluidTank tank = ((TileEntityBase) tileEntity).getTank();
-
-      if (FluidHelper.drainWaterFromBottle(playerIn, tank)
-          || FluidHelper.drainWaterIntoBottle(playerIn, tank)
-          || FluidUtilFix.interactWithFluidHandler(playerIn, hand, tank)) {
+      if (ModuleWorktablesConfig.PREVENT_CONCURRENT_USAGE
+          && Util.anyPlayerHasContainerOpen((WorldServer) world, pos)) {
         return true;
       }
 
-      playerIn.openGui(ModArtisanWorktables.INSTANCE, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+      FluidTank tank = ((TileEntityBase) tileEntity).getTank();
+
+      if (FluidHelper.drainWaterFromBottle(player, tank)
+          || FluidHelper.drainWaterIntoBottle(player, tank)
+          || FluidUtilFix.interactWithFluidHandler(player, hand, tank)) {
+        return true;
+      }
+
+      player.openGui(ModArtisanWorktables.INSTANCE, 1, world, pos.getX(), pos.getY(), pos.getZ());
       return true;
     }
 
-    return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+    return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
   }
 
   @Override
