@@ -1,3 +1,10 @@
+**1.24.1**
+
+  * **Fixed:**
+    * Explicitly hidden recipes become visible with Artisan Integrations
+    
+---
+
 **1.24.0**
 
   * **Added:**

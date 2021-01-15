@@ -22,8 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -210,13 +208,16 @@ public class PluginJEI
               continue;
             }
 
-            boolean shouldHide = false;
+            boolean shouldHide = recipe.isHidden();
 
-            for (IRequirement requirement : recipe.getRequirements().values()) {
+            if (!shouldHide) {
 
-              if (requirement.shouldJEIHideOnUpdate()) {
-                shouldHide = true;
-                break;
+              for (IRequirement requirement : recipe.getRequirements().values()) {
+
+                if (requirement.shouldJEIHideOnUpdate()) {
+                  shouldHide = true;
+                  break;
+                }
               }
             }
 
