@@ -1,9 +1,10 @@
 **1.24.2**
 
   * **Changed:**
-    * Optimized ToolEntry memory usage [(#257)](https://github.com/codetaylor/artisan-worktables/issues/257)
-    * Optimized JEIRecipeWrapper memory usage [(#257)](https://github.com/codetaylor/artisan-worktables/issues/257)
-    
+    * Optimized ToolEntry memory usage by 53.7% [(#257)](https://github.com/codetaylor/artisan-worktables/issues/257)
+    * Optimized JEIRecipeWrapper memory usage by 99.8% [(#257)](https://github.com/codetaylor/artisan-worktables/issues/257)
+    * Further optimized ToolEntry memory usage by 86.0% [(#257)](https://github.com/codetaylor/artisan-worktables/issues/257)
+
 ---
 
 **1.24.1**

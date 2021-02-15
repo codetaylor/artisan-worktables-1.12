@@ -3,7 +3,32 @@ package com.codetaylor.mc.artisanworktables.api.internal.recipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ToolEntry {
+
+  private static final ThreadLocal<List<ItemStack>> TOOL_CACHE = ThreadLocal.withInitial(ArrayList::new);
+
+  private static ItemStack cache(ItemStack itemStack) {
+
+    if (itemStack.hasTagCompound()) {
+      return itemStack;
+    }
+
+    List<ItemStack> list = TOOL_CACHE.get();
+
+    for (ItemStack stack : list) {
+
+      if (stack.getItem() == itemStack.getItem()
+          && stack.getMetadata() == itemStack.getMetadata()) {
+        return stack;
+      }
+    }
+
+    list.add(itemStack);
+    return itemStack;
+  }
 
   private final IArtisanIngredient tool;
   private final ItemStack[] toolItemStacks;
@@ -18,7 +43,7 @@ public class ToolEntry {
     this.toolItemStacks = new ItemStack[toolMatchingStacks.length];
 
     for (int i = 0; i < toolMatchingStacks.length; i++) {
-      this.toolItemStacks[i] = toolMatchingStacks[i].toItemStack();
+      this.toolItemStacks[i] = ToolEntry.cache(toolMatchingStacks[i].toItemStack());
     }
   }
 
