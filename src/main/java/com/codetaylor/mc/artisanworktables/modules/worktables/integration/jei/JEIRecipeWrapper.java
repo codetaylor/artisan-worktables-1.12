@@ -29,58 +29,13 @@ public class JEIRecipeWrapper
 
   public static EnumTier CATEGORY_TIER = EnumTier.WORKTABLE;
 
-  private ArtisanRecipe artisanRecipe;
-  private List<List<ItemStack>> inputs;
-  private List<List<ItemStack>> secondaryInputs;
-  private List<List<ItemStack>> tools;
-  private List<ItemStack> output;
+  private final ArtisanRecipe artisanRecipe;
 
   public JEIRecipeWrapper(
       ArtisanRecipe artisanRecipe
   ) {
 
     this.artisanRecipe = artisanRecipe;
-    this.inputs = new ArrayList<>();
-    this.secondaryInputs = new ArrayList<>();
-    this.tools = new ArrayList<>();
-
-    for (IArtisanIngredient input : this.artisanRecipe.getIngredientList()) {
-      ItemStack[] matchingStacks = input.toIngredient().getMatchingStacks();
-      List<ItemStack> list = new ArrayList<>(matchingStacks.length);
-
-      for (ItemStack matchingStack : matchingStacks) {
-        list.add(matchingStack.copy());
-      }
-      this.inputs.add(list);
-    }
-
-    for (int i = 0; i < artisanRecipe.getToolCount(); i++) {
-      ItemStack[] tools = this.artisanRecipe.getTools(i);
-      List<ItemStack> itemStackList = new ArrayList<>(tools.length);
-
-      for (ItemStack tool : tools) {
-        itemStackList.add(tool.copy());
-      }
-
-      this.tools.add(itemStackList);
-    }
-
-    List<OutputWeightPair> output = this.artisanRecipe.getOutputWeightPairList();
-    this.output = new ArrayList<>(output.size());
-
-    for (OutputWeightPair pair : output) {
-      this.output.add(pair.getOutput().toItemStack().copy());
-    }
-
-    for (IArtisanIngredient ingredient : this.artisanRecipe.getSecondaryIngredients()) {
-      ItemStack[] matchingStacks = ingredient.toIngredient().getMatchingStacks();
-      List<ItemStack> list = new ArrayList<>(matchingStacks.length);
-
-      for (ItemStack matchingStack : matchingStacks) {
-        list.add(matchingStack.copy());
-      }
-      this.secondaryInputs.add(list);
-    }
   }
 
   public ResourceLocation getRegistryName() {
@@ -90,7 +45,19 @@ public class JEIRecipeWrapper
 
   public List<List<ItemStack>> getInputs() {
 
-    return this.inputs;
+    List<List<ItemStack>> result = new ArrayList<>();
+
+    for (IArtisanIngredient input : this.artisanRecipe.getIngredientList()) {
+      ItemStack[] matchingStacks = input.toIngredient().getMatchingStacks();
+      List<ItemStack> list = new ArrayList<>(matchingStacks.length);
+
+      for (ItemStack matchingStack : matchingStacks) {
+        list.add(matchingStack.copy());
+      }
+      result.add(list);
+    }
+
+    return result;
   }
 
   public FluidStack getFluidStack() {
@@ -105,7 +72,14 @@ public class JEIRecipeWrapper
 
   public List<ItemStack> getOutput() {
 
-    return this.output;
+    List<OutputWeightPair> output = this.artisanRecipe.getOutputWeightPairList();
+    List<ItemStack> result = new ArrayList<>(output.size());
+
+    for (OutputWeightPair pair : output) {
+      result.add(pair.getOutput().toItemStack().copy());
+    }
+
+    return result;
   }
 
   public boolean isShaped() {
@@ -125,12 +99,37 @@ public class JEIRecipeWrapper
 
   public List<List<ItemStack>> getTools() {
 
-    return this.tools;
+    List<List<ItemStack>> result = new ArrayList<>();
+
+    for (int i = 0; i < artisanRecipe.getToolCount(); i++) {
+      ItemStack[] tools = this.artisanRecipe.getTools(i);
+      List<ItemStack> itemStackList = new ArrayList<>(tools.length);
+
+      for (ItemStack tool : tools) {
+        itemStackList.add(tool.copy());
+      }
+
+      result.add(itemStackList);
+    }
+
+    return result;
   }
 
   public List<List<ItemStack>> getSecondaryInputs() {
 
-    return this.secondaryInputs;
+    List<List<ItemStack>> result = new ArrayList<>();
+
+    for (IArtisanIngredient ingredient : this.artisanRecipe.getSecondaryIngredients()) {
+      ItemStack[] matchingStacks = ingredient.toIngredient().getMatchingStacks();
+      List<ItemStack> list = new ArrayList<>(matchingStacks.length);
+
+      for (ItemStack matchingStack : matchingStacks) {
+        list.add(matchingStack.copy());
+      }
+      result.add(list);
+    }
+
+    return result;
   }
 
   public ItemStack getSecondaryOutput() {
@@ -152,9 +151,9 @@ public class JEIRecipeWrapper
   public void getIngredients(IIngredients ingredients) {
 
     List<List<ItemStack>> inputs = new ArrayList<>();
-    inputs.addAll(this.inputs);
-    inputs.addAll(this.tools);
-    inputs.addAll(this.secondaryInputs);
+    inputs.addAll(this.getInputs());
+    inputs.addAll(this.getTools());
+    inputs.addAll(this.getSecondaryInputs());
     ingredients.setInputLists(ItemStack.class, inputs);
 
     FluidStack fluidIngredient = this.artisanRecipe.getFluidIngredient();
@@ -164,7 +163,7 @@ public class JEIRecipeWrapper
     }
 
     List<ItemStack> output = new ArrayList<>();
-    output.addAll(this.output);
+    output.addAll(this.getOutput());
     output.add(this.getSecondaryOutput());
     output.add(this.getTertiaryOutput());
     output.add(this.getQuaternaryOutput());
