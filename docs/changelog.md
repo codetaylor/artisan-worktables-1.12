@@ -1,3 +1,10 @@
+**1.24.2**
+
+  * **Changed:**
+    * Optimized ToolEntry [(#257)](https://github.com/codetaylor/artisan-worktables/issues/257)
+    
+---
+
 **1.24.1**
 
   * **Fixed:**

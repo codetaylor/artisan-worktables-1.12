@@ -166,7 +166,7 @@ public interface IArtisanRecipe {
    * @param toolIndex the tool slot index [0,2]
    * @return the array of acceptable tools for the given tool slot index
    */
-  IArtisanItemStack[] getTools(int toolIndex);
+  ItemStack[] getTools(int toolIndex);
 
   /**
    * @param toolIndex the tool slot index [0,2]

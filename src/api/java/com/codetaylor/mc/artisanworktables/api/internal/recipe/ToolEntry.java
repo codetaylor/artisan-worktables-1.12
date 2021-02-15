@@ -5,26 +5,26 @@ import net.minecraft.item.ItemStack;
 
 public class ToolEntry {
 
-  private IArtisanIngredient tool;
-  private IArtisanItemStack[] toolStacks;
-  private ItemStack[] toolItemStacks;
-  private int damage;
+  private final IArtisanIngredient tool;
+  private final ItemStack[] toolItemStacks;
+  private final int damage;
 
   public ToolEntry(IArtisanIngredient tool, int damage) {
 
     this.tool = tool;
-    this.toolStacks = tool.getMatchingStacks();
     this.damage = damage;
-    this.toolItemStacks = new ItemStack[this.toolStacks.length];
 
-    for (int i = 0; i < this.toolStacks.length; i++) {
-      this.toolItemStacks[i] = this.toolStacks[i].toItemStack();
+    IArtisanItemStack[] toolMatchingStacks = tool.getMatchingStacks();
+    this.toolItemStacks = new ItemStack[toolMatchingStacks.length];
+
+    for (int i = 0; i < toolMatchingStacks.length; i++) {
+      this.toolItemStacks[i] = toolMatchingStacks[i].toItemStack();
     }
   }
 
-  public IArtisanItemStack[] getToolStacks() {
+  public ItemStack[] getToolStacks() {
 
-    return this.toolStacks;
+    return this.toolItemStacks;
   }
 
   public IArtisanIngredient getTool() {

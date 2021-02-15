@@ -1,7 +1,6 @@
 package com.codetaylor.mc.artisanworktables.modules.worktables.integration.jei;
 
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
@@ -18,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class JEIRecipeWrapper
@@ -57,11 +55,11 @@ public class JEIRecipeWrapper
     }
 
     for (int i = 0; i < artisanRecipe.getToolCount(); i++) {
-      IArtisanItemStack[] tools = this.artisanRecipe.getTools(i);
+      ItemStack[] tools = this.artisanRecipe.getTools(i);
       List<ItemStack> itemStackList = new ArrayList<>(tools.length);
 
-      for (IArtisanItemStack tool : tools) {
-        itemStackList.add(tool.toItemStack().copy());
+      for (ItemStack tool : tools) {
+        itemStackList.add(tool.copy());
       }
 
       this.tools.add(itemStackList);

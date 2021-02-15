@@ -189,10 +189,10 @@ public class ArtisanRecipe
   }
 
   @Override
-  public IArtisanItemStack[] getTools(int toolIndex) {
+  public ItemStack[] getTools(int toolIndex) {
 
     if (toolIndex >= this.tools.length) {
-      return new IArtisanItemStack[0];
+      return new ItemStack[0];
     }
 
     return this.tools[toolIndex].getToolStacks();
