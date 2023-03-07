@@ -1,40 +1,51 @@
 ext {
 
-  modid = 'artisanworktables'
+    modid = 'artisanworktables'
 
-  forge = [
-    version: '1.12.2-14.23.5.2847'
-  ]
-
-  mappings = [
-    channel: 'snapshot',
-    version: 'snapshot_20171003'
-  ]
-
-  manifest = [
-    attributesEnabled: false,
-    attributes: [
-      'Specification-Title': 'examplemod',
-      'Specification-Vendor': 'examplemodsareus',
-      'Specification-Version': '1', // We are version 1 of ourselves
-      'Implementation-Title': project.name,
-      'Implementation-Version': "${version}",
-      'Implementation-Vendor' :'examplemodsareus',
-      'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+    forge = [
+            version: '1.12.2-14.23.5.2847'
     ]
-  ]
 
-  replace = [
-    'required-after:athenaeum;': 'required-after:athenaeum@[1.12.2-1.19.0,);',
-    'after:crafttweaker;': 'after:crafttweaker@[4.1.11.500,);',
-    'after:jei;': 'after:jei@[4.8.5.139,);'
-  ]
+    mappings = [
+            channel: 'snapshot',
+            version: 'snapshot_20171003'
+    ]
+
+    manifest = [
+            attributesEnabled: false,
+            attributes: [
+                    'Specification-Title': 'artisanworktables',
+                    'Specification-Vendor': 'codetaylor',
+                    'Specification-Version': '1', // We are version 1 of ourselves
+                    'Implementation-Title': project.name,
+                    'Implementation-Version': "${version}",
+                    'Implementation-Vendor' :'codetaylor',
+                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            ]
+    ]
+
+    replace = [
+            'required-after:athenaeum;': 'required-after:athenaeum@[1.12.2-1.19.0,);',
+            'after:crafttweaker;': 'after:crafttweaker@[4.1.11.500,);',
+            'after:jei;': 'after:jei@[4.8.5.139,);'
+    ]
 
 }
 
-repositories {}
+repositories {
+    maven {
+        name = "CurseMaven"
+        url = 'https://cfa2.cursemaven.com'
+    }
+    maven {
+        name = 'blamejared'
+        url = 'https://maven.blamejared.com'
+    }
+}
 
 dependencies {
-  compile project(":athenaeum")
-  compile 'curse.maven:crafting-tweaks:2562139'
+    deobfCompile 'curse.maven:Athenaeum-284350:3533386'
+    deobfCompile 'curse.maven:CraftingTweaks-233071:2562139'
+    deobfCompile 'CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.685'
+    deobfCompile 'mezz.jei:jei_1.12.2:4.16.1.302'
 }
