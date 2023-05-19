@@ -7,7 +7,7 @@ RecipeBuilder setRecipeFunction(IRecipeFunction recipeFunction);
 RecipeBuilder setRecipeAction(IRecipeAction recipeAction);
 ```
 
-For more information on recipe functions, please refer to the [official CraftTweaker documentation](http://crafttweaker.readthedocs.io/en/latest/#).
+For more information on recipe functions, please refer to the [official CraftTweaker documentation](https://docs.blamejared.com/1.12/en/Vanilla/Recipes/Crafting/Recipe_Functions).
 
 !!! note
     JEI will not display the results of the provided recipe function. It is not practical to try and determine all possible outputs of any given recipe function, therefore, JEI will only display the normal results of a recipe.
